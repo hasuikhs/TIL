@@ -1,0 +1,39 @@
+ol, ol li{
+    font-size:1.2rem;
+}
+
+ul, ul li{
+    font-size: 1.2em;
+}
+
+.vw{
+    font-size:10vw;
+}
+
+.vh{
+    font-size: 10vh;
+}
+
+.div-vw{
+    width:15vw;
+    height: 15vw;
+    background-color: indianred;
+}
+
+.div-vh{
+    width: 20vh;
+    height: 20vh;
+    background-color: lightblue;
+}
+
+.div-vmin{
+    width: 100vmin;
+    height: 100vmin;
+    background-color: burlywood;
+}
+
+.div-vmax{
+    width: 15vmax;
+    height: 15vmax;
+    background-color: darkslateblue;
+}
