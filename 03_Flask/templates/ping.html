@@ -7,8 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    {% for movie in movies %}
-        <li>{{ movie }}</li>
-    {% endfor %}
+    <form action="/pong" method="GET">
+        이름 : <input type="text" name="user_name"><br>
+        <input type="submit">
+    </form>
 </body>
 </html>

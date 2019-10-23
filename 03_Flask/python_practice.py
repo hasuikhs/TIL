@@ -71,7 +71,7 @@ prices = input('물품 가격을 입력하세요: ')
 makes = prices.split(';')
 result = []
 for make in makes:
-    result.appent(int(make))
+    result.append(int(make))
 # => [30000, 20000, 10000]
 
 result.sort(reverse=True)
