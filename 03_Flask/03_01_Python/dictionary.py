@@ -231,12 +231,17 @@ if 'requests' in t4ir.get("language").get("python")["python standard library"]:
 else:
     print('False')
 
+print('requests' in t4ir['language']['python']['python standard library']) 
+print('requests' in t4ir.get('language').get('python').get('python standard library')) 
+
+
 """
 난이도** 3. connected반의 반장의 이름을 출력하세요. : depth 있는 접근
 출력예시)
 정세환
 """
 print("반장의 이름을 출력")
+print(t4ir['classes']['connected']['class president'])
 print(t4ir.get("classes").get("connected").get("class president"))
 """
 난이도*** 4. t4ir에서 배우는 언어들을 출력하세요. : dictionary.keys() 반복
