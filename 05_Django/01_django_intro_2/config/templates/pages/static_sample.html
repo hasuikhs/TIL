@@ -1,0 +1,17 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Static 파일 실습</title>
+
+  <link rel="stylesheet" href="{% static 'stylesheets/sample.css' %}">
+</head>
+<body>
+  <h1>정적 파일 출력을 실습해봅시다!</h1>
+  <img src="{% static 'images/back.jpg' %}" alt="back">
+</body>
+</html>
