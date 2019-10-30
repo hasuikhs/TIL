@@ -1,0 +1,8 @@
+923088036:AAHeOmJdITuhTvlQsUVu_pteRlzNlsXKHic
+
+https://api.telegram.org/bot923088036:AAHeOmJdITuhTvlQsUVu_pteRlzNlsXKHic/getMe
+
+chat_id
+970224450
+
+https://93ba33bc.ngrok.io
