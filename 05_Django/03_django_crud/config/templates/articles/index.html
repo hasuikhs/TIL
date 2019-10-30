@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <p> 하이 ? </p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">Articles</h1>
+<a href="/articles/new/">[NEW]</a>
+<hr>
+{% for article in articles %}
+  
+   <p>
+    [{{ article.pk }}] <a href="/articles/{{ article.pk }}">{{ article.title }}</a>
+  </p>
+  
+<hr>
+{% endfor %}
+{% endblock  %}

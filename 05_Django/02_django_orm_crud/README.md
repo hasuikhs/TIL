@@ -84,6 +84,12 @@ Article.objects.create(title='sdsd', content='sdsd')
 
 ### 2.2 Read
 
+- ipython을 설치하면 shell 모양을 `In [횟수]` 로 표현이 된다.
+
+```bash
+$ pip install ipython
+```
+
 ```sqlite
 # 1. pk를 기준으로 내림차순하기
 In [15]: articles = Article.objects.order_by('-pk')
