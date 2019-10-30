@@ -24,19 +24,19 @@
 
   - migrations 폴더에서 확인해 볼 수 있다.(`0001_initial.py`, ...)
 
-    ![3](C:\Users\student\Desktop\새 폴더 (2)\191030\3.JPG)
+    ![3](README.assets/3.JPG)
 
 - `sqlmigrate`
 
   - 데이터베이스에 실제로 반영하기 전에 **설계한 Python 코드가 SQL문으로 바뀐 모습을 확인**해 볼 수 있다.
 
-    ![4](C:\Users\student\Desktop\새 폴더 (2)\191030\4.JPG)
+    ![4](README.assets/4.JPG)
 
 - `showmigrations`
 
   - migration 설계도를 작성했는데, 이 **설계도가 실제 DB에 반영되었는지 여부를 확인**
 
-    ![5](C:\Users\student\Desktop\새 폴더 (2)\191030\5.JPG)
+    ![5](README.assets/5.JPG)
 
 - `migrate`
 
@@ -44,9 +44,9 @@
 
   - 모델의 변경사항과 데이터베이스 스키마를 동기화한다.
 
-    ![6](C:\Users\student\Desktop\새 폴더 (2)\191030\6.JPG)
+    ![6](README.assets/6.JPG)
 
-    ![7](C:\Users\student\Desktop\새 폴더 (2)\191030\7.JPG)
+    ![7](README.assets/7.JPG)
 
 ## 2. ORM - CRUD
 
