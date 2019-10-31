@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">Jobs</h1>
+<a href="{% url 'jobs:new' %}">[NEW]</a>
+<a href="{% url 'jobs:past_job' %}">[PAST_JOB]</a>
+<hr>
+{% for job in jobs %}
+<p>[{{ job.pk }}] {{ job.name }}의 전생 직업은 {{ job.past_job }} 입니다.</p>
+{% endfor %}
+{% endblock  %}

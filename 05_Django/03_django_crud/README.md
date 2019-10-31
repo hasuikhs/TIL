@@ -46,8 +46,6 @@ urlpatterns = [
 ]
 ```
 
-
-
 ### 0.4 템플릿 경로 커스터마이징 + `base.html` 만들기
 
 > 29일(화) 수업내용 확인!
@@ -100,7 +98,8 @@ $ python manage.py migrate
     $ python manage.py sqlmigrate articles 0001
     ```
 
-    
+
+-----
 
 ## 1. CREATE
 
@@ -245,6 +244,8 @@ def create(request):
         return redirect('/articles/')
     ```
 
+-----
+
 ## 2. READ (Detail 페이지)
 
 게시글 목록이 출력되는 메인 페이지에서 글 내용, 수정 시각 등 모든 정보를 보여줄 필요는 없다. **메인 페이지에선 글 번호, 글 제목과 같은 기본적인 내용만 보여주고, 사용자가 클릭했을 때 게시글 상세정보 페이지로 이동**하도록 만들어보자.
@@ -298,65 +299,12 @@ urlpatterns = [
 ...
 ```
 
-## 2. READ (Detail 페이지)
-
-> 게시글 목록이 출력되는 메인 페이지에서 글 내용, 수정 시각 등 모든 정보를 보여줄 필요는 없다. 메인 페이지에선 글 번호, 글 제목과 같은 기본적인 내용만 보여주고, 사용자가 클릭햇을 때 게시글 상세정보 페이졸 이동하도록 만들어보자.
-
-```python
-# views.py : Variable Routing 적용
-# 사용자가 요청을 보낸 URL로부터 게시글 PK 값을 전달 받는다.
-def detail(request, article_pk):
-    article = Article.objects.get(pk=article_pk)
-    context = { 'article' : article }
-    return render(request, 'articles/detail.html', context)
-```
-
-```python
-# urls.py : Variable Routing 적용
-# 사용자가 게시글을 조회할 때 articles/1, articles/2 처럼 게시글들 중에 1번 게시글, 게시글들 중에 2번 게시글과 같은 모습으로 접근하는 것이 자연스럽다.
-urlpatterns = [
-    path('<int:article_pk>/', views.detail),
-    ...
-]
-```
-
-```html
-<!-- detail.html -->
-{% extends 'base.html' %}
-
-{% block body %}
-<h1 class="text-center">DETAIL</h1>
-<p>글 번호 : {{ article.pk }}</p>
-<p>글 제목 : {{ article.title }}</p>
-<p>글 내용 : {{ article.content }}</p>
-<p>생성 시각 : {{ article.created_at }}</p>
-<p>수정 시각 : {{ article.updated_at }}</p>
-<hr>
-<a href="/articles/">[BACK]</a>
-{% endblock  %}
-```
-
-```html
-<!-- index.html -->
-{% extends 'base.html' %}
-
-{% block body %}
-<h1 class="text-center">Articles</h1>
-<a href="/articles/new/">[NEW]</a>
-<hr>
-{% for article in articles %}
-  
-   <p>
-    [{{ article.pk }}] <a href="/articles/{{ article.pk }}">{{ article.title }}</a>
-  </p>
-  
-<hr>
-{% endfor %}
-{% endblock  %}
-```
+-----
 
 ## 3. UPDATE
 
 
+
+-----
 
 ## 4. DELETE

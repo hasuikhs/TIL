@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">NEW</h1>
+<form action="{% url 'jobs:past_job' %}" method="POST">
+  {% csrf_token %}
+  NAME : <input type="text" name="name">
+  <input type="submit">
+</form>
+<a href="{% url 'jobs:index' %}">[BACK]</a>
+{% endblock  %}

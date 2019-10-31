@@ -2,14 +2,14 @@
 
 {% block body %}
 <h1 class="text-center">Articles</h1>
-<a href="/articles/new/">[NEW]</a>
+<a href="{% url 'articles:new' %}">[NEW]</a>
 <hr>
 {% for article in articles %}
   
    <p>
-    [{{ article.pk }}] <a href="/articles/{{ article.pk }}">{{ article.title }}</a>
+    [{{ article.pk }}] <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
   </p>
-  
+  <a href="{% url 'articles:detail' article.pk %}">[DETAIL]</a>
 <hr>
 {% endfor %}
 {% endblock  %}
