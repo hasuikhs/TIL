@@ -2,17 +2,41 @@
 
 {% block body %}
 <h1 class="text-center">영화 상세 정보</h1>
-<p>영화 번호 : {{ movie.pk }}</p>
-<p>영화명 : {{ movie.title }}</p>
-<p>영화명(영문명) : {{ movie.title_en }}</p>
-<p>누적 관객수 : {{ movie.audience }}</p>
-<p>개봉일 : {{ movie.open_date }}</p>
-<p>장르 : {{ movie.genre }}</p>
-<p>관람등급 : {{ movie.watch_grade }}</p>
-<p>평점 : {{ movie.score }}</p>
-<img src="{{ movie.poster_url }}" alt="poster_url"/>
-<p>영화 소개</p><br>
-<p> {{ movie.description }}</p>
+<table>
+<tr>
+<td>영화명 : <td>
+<td>{{ movie.title }}</td>
+</tr>
+<tr>
+<td>영화명(영문명) : </td>
+<td>{{ movie.title_en }}</td>
+</tr>
+<tr>
+<td>누적 관객수 : </td>
+<td>{{ movie.audience }}</td>
+</tr>
+<tr>
+<td>개봉일 : </td>
+<td>{{ movie.open_date }}</td>
+</tr>
+<tr>
+<td>장르 : </td>
+<td>{{ movie.genre }}</td>
+</tr>
+<tr>
+<td>관람등급 : </td>
+<td>{{ movie.watch_grade }}</td>
+</tr>
+<td>평점 : </td>
+<td>{{ movie.score }}</td>
+</tr>
+<tr>
+<td><img src="{{ movie.poster_url }}" alt="poster_url"/></td>
+<tr>
+<td>영화 소개</td>
+<td> {{ movie.description }}</td>
+</tr>
+</table>
 <hr>
 <a href="{% url 'movies:index' %}">[영화 목록으로]</a>
 <a href="{% url 'movies:edit' movie.pk %}">[영화 정보 수정하기]</a>

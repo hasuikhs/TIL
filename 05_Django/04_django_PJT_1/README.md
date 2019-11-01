@@ -795,6 +795,8 @@ urlpatterns = [
 
 - 삭제를 한 후에 `index.html`로 redirect 된 모습입니다. 영화가 삭제 되었다.
 
+-----
+
 - **추가사항 **
 
   - 등록, 수정, 삭제 시 `등록 되었습니다` 를 넣고싶다면 각 태그에 아래 코드를 추가해주자!
@@ -809,7 +811,26 @@ urlpatterns = [
     <input type="submit" onclick="alert('수정 되었습니다!');">
     ```
 
-    ```html
+    ````html
     <!-- detail.html -->
     <a href="{% url 'movies:delete' movie.pk %}" onclick="alert('삭제 되었습니다');">[영화 삭제하기]</a>
     ```
+  
+  - 코드들을 살펴보면 `views.py`에 쓰이는 모델들 (ex-`Movie`)에 빨간줄이 들어오는데 이를 해결하기 위해서는 한가지 파이썬 모듈을 설치하고 설정해야한다.
+  
+    ```bash
+    $ pip install pylint-django
+    ```
+  
+    - `ctrl + shift + p`를 를 통해 터미널을 열고 `Open Settings(JSON)`를 연다.
+    - 해당 jsom 파일에 다음의 코드를 넣어주면 문제가 해결된다.
+  
+    ```json
+    ...,
+    "python.linting.pylintArgs":[
+    	"--load-plugins=pylint_django",
+    	"--erros-only",
+    ],
+    ```
+
+-----
