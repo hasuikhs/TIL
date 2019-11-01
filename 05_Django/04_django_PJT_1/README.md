@@ -378,6 +378,420 @@ urlpatterns = [
 $ python manage.py runserver
 ```
 
-- 해당 페이지의 주소로 하면 다은과 같은 기본적인 Movies의 Index페이지가 보여진다.
+- 해당 페이지의 주소로 하면 다음과 같은 기본적인 Movies의 Index페이지가 보여진다.
 
-![image-20191101114230160](README.assets/image-20191101114230160.png)
+![image-20191101125921988](README.assets/image-20191101125921988.png)
+
+-----
+
+## 3. CREATE & READ
+
+### 3.1 CREATE FORM 만들기
+
+- 새로운 영화를 추가하는 로직을 작성해보자.
+
+```python
+# movies/views.py
+
+...
+# 사용자에게 게시글 작성 폼을 보여주는 함수
+def new(request):
+    return render(request, 'movies/new.html')
+```
+
+```html
+<!-- config/templates/movies/new.html -->
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">영화 등록</h1>
+<form action="/movies/create/" method="POST">
+{% csrf_token %}
+  영화명 : <input type="text" name="title"><br>
+  영화명(영문명) : <input type="text" name="title_en"><br>
+  누적 관객수 : <input type="number" name="audience"><br>
+  개봉일 : <input type="date" name="open_date"><br>
+  장르 : <input type="text" name="genre"><br>
+  관람등급 : <input type="text" name="watch_grade"><br>
+  평점 : <input type="number" name="score"><br>
+  포스터 이미지 URL: <input type="text" cols="100" name="poster_url"><br>
+  영화 소개 : <br>
+  <textarea name="description" cols="30" rows="10"></textarea>
+  <input type="submit">
+</form>
+<hr>
+<a href="/movies/">[영화 목록으로]</a>
+{% endblock %}
+```
+
+```python
+# movies/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index),
+    path('new/', views.new),
+    path('create/', views.create),
+]
+```
+
+- 하지만 여기까지 왔다고 해도 `index.html`에는 `new.html`로 이동하는 태그가 존재하지 않는다. 만들어주자.
+
+```html
+<!-- config/templates/movies/index.html -->
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">Movies</h1>
+<a href="{% url 'movies:new' %}">[새 영화 등록]</a>
+
+{% endblock  %}
+```
+
+- 여기서 또한 해당 `movies:new`를 사용하기 위해서는 `movies/urls.py`에 `app_name` 속성 값을 정해줘야한다.
+
+```python
+# movies/urls.py
+app_name = 'movies'
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('new/', views.new, name='new'),
+    path('create/', views.create, name='create'),
+]
+```
+
+- 여기까지 잘 따라 왔다면 server를 실행시켜보자.
+
+```bash
+$ python manage.py runserver
+```
+
+- index 페이지로 가보면
+
+![image-20191101134621449](README.assets/image-20191101134621449.png)
+
+- 위와 같은 페이지를 확인 할 수 있고 `[새 영화 등록]`을 누르면 영화를 등록할 수 있는 폼이 있는 주소로 이동한다.
+
+![image-20191101135009269](README.assets/image-20191101135009269.png)
+
+- 또한 `영화 목록으로` 돌아가는 페이지도 잘 동작 하는 것을 확인 가능하다.
+
+- 이제 영화를 등록할 함수를 작성해보자.
+
+### 3.2 CREATE & DB 저장 
+
+```python
+# movies/views.py
+from django.shortcuts import render, redirect
+from .models import Movie
+
+# 사용자로부터 데이터를 받아서 DB에 저장하는 함수
+def create(request):
+    title = request.POST.get('title')
+    title_en = request.POST.get('title_en')
+    audience = request.POST.get('audience')
+    open_date = request.POST.get('open_date')
+    genre = request.POST.get('genre')
+    watch_grade = request.POST.get('genre')
+    score = request.POST.get('score')
+    poster_url = request.POST.get('poster_url')
+    description = request.POST.get('description')
+	
+    movie = Movie(title=title, title_en=title_en, audience=audience,
+                  open_date=open_date, genre=genre, watch_grade=watch_grade,
+                  score=score, poster_url=poster_url, description=description)
+    movie.save()
+
+    # 저장이 되었다면 방금 저장된 객체를 확인해야한다 Detail 페이지를 만들어 확인하자!
+    return redirect(f'/movies/{movie.pk}/')
+```
+
+### 3.3 READ(Detail 페이지)
+
+```python
+# movies/views.py
+# 영화 상세정보를 가져오는 함수
+def detail(request, movie_pk):
+    movie = Movie.objects.get(pk=movie_pk)
+    context = { 'movie' : movie }
+    return render(request, 'movies/detail.html', context)
+```
+
+```html
+<!-- config/templates/movies/detail.html -->
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">영화 상세 정보</h1>
+<p>영화 번호 : {{ movie.pk }}</p>
+<p>영화명 : {{ movie.title }}</p>
+<p>영화명(영문명) : {{ movie.title_en }}</p>
+<p>누적 관객수 : {{ movie.audience }}</p>
+<p>개봉일 : {{ movie.open_date }}</p>
+<p>장르 : {{ movie.genre }}</p>
+<p>관람등급 : {{ movie.watch_grade }}</p>
+<p>평점 : {{ movie.score }}</p>
+<img src="{{ movie.poster_url }}" alt="poster_url"/>
+<p>영화 소개</p><br>
+<p> {{ movie.description }}</p>
+<hr>
+<a href="{% url 'movies:index' %}">[영화 목록으로]</a>
+{% endblock %}
+```
+
+```python
+# movies/urls.py
+app_name = 'movies'
+urlpatterns = [
+    ...
+    path('<int:movie_pk>/', views.detail, name='detail'),
+]
+```
+
+- 이제 영화를 등록하면 등록한 영화의 상세 정보 페이지를 확인 할 수 있다.
+
+![image-20191101144123370](README.assets/image-20191101144123370.png)
+
+### 3.4 Index 추가사항
+
+- 현재 Index 페이지에 가면 새 영화를 등록하는 버튼만이 존재하는 것을 확인 할 수 있다.
+
+- 이제 Index에서 등록된 영화들의 목록을 볼 수 있게 `views.py`와 `index.html`을 수정해보자.
+
+```python
+# movies/views.py
+
+def index(request):
+    movie = Movie.objects.all()
+    context = {'movies' : movie}
+    return render(request, 'movies/index.html', context)
+```
+
+```html
+<!-- config/templates/movies/index.html -->
+...
+{% block body %}
+<h1 class="text-center">Movies</h1>
+<a href="{% url 'movies:new' %}">[새 영화 등록]</a>
+<hr>
+{% for movie in movies %}
+   <p>
+    [{{ movie.pk }}] <a href="{% url 'movies:detail' movie.pk %}">{{ moive.title }}</a>
+  </p>
+<hr>
+{% endfor %}
+{% endblock  %}
+...
+```
+
+![image-20191101145404156](README.assets/image-20191101145404156.png)
+
+- 이제 영화 제목을 누르면 해당 영화의 상세 정보를 볼 수 있다.
+
+### 3.5  Admin 페이지 등록
+
+- 데이터가 정상적으로 들어갔는지를 확인하기 위해 admin 페이지로 들어가보자.
+- 먼저 `bash`에서 적당한 관리자 계정을 하나 생성하자.
+
+```bash
+$ python manage.py createsuperuser
+```
+
+```python
+# movies/admin.py
+from django.contrib import admin
+from .models import Movie
+# Register your models here.
+
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'title', 'title_en', 'audience', 
+                    'open_date', 'genre', 'watch_grade', 'score', 
+                    'poster_url', 'description')
+
+admin.site.register(Movie, MovieAdmin)
+```
+
+- 이제 서버를 실행하고 ` http://127.0.0.1:8000/admin/ `로 이동하면 다음과 같은 페이지가 뜬다.
+
+![image-20191101150441355](README.assets/image-20191101150441355.png)
+
+- 앞서 생성해둔 관리자 계정으로 접속하면 Django 관리자 페이지에 접속할 수 있다.
+
+![image-20191101150559316](README.assets/image-20191101150559316.png)
+
+- 사이트 관리 에 MOVIES Application을 확인 할 수 있다. 들어가서 자료를 확인 해보자.
+
+![image-20191101150710892](README.assets/image-20191101150710892.png)
+
+-----
+
+## 4. UPDATE
+
+### 4.1 UPDATE Form으로 가는 함수
+
+- 먼저 `views.py`에서 수정 하는 폼으로 가는 함수부터 생성해보자!
+
+```python
+# movies/views.py 
+# 사용자한테 게시글 수정 폼을 전달
+def edit(request, movie_pk):
+    movie = Movie.objects.get(pk=movie_pk)
+    context = { 'movie': movie }
+    return render(request, 'movies/edit.html', context)
+```
+
+- `edit.html`을 작성할때 `form`의 `action` 속성은 잠시 비워두자!
+
+```html
+<!-- config/templates/movies/edit.html -->
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">영화 정보 수정</h1> 
+
+<form action="" method="POST">
+{% csrf_token %}
+  영화명 : <input type="text" name="title" value="{{ movie.title }}"><br>
+  영화명(영문명) : <input type="text" name="title_en" value="{{ movie.title_en }}"><br>
+  누적 관객수 : <input type="number" name="audience" value="{{ movie.audience }}"><br>
+  개봉일 : <input type="date" name="open_date" value="{{ movie.open_date }}"><br>
+  장르 : <input type="text" name="genre" value="{{ movie.genre }}"><br>
+  관람등급 : <input type="text" name="watch_grade" value="{{ movie.watch_grade }}"><br>
+  평점 : <input type="number" name="score" value="{{ movie.number }}"><br>
+  포스터 이미지 URL: <input type="text" cols="100" name="poster_url" value="{{ movie.poster_url }}"><br>
+  영화 소개 : <br>
+  <textarea name="description" cols="30" rows="10" value="{{ movie.description }}"></textarea>
+  <input type="submit">
+</form>
+<hr>
+<a href="/movies/">[영화 목록으로]</a>
+{% endblock %}
+```
+
+```python
+# movies/urls.py
+app_name = 'movies'
+urlpatterns = [
+    ...
+    path('<int:movie_pk>/edit/', views.edit, name='edit'),
+]
+```
+
+- 이렇게 되면 edit form 이 완성 되었다.
+
+![image-20191101162523907](README.assets/image-20191101162523907.png)
+
+- 하지만, 상세 영화 정보에서 수정하는 버튼이 존재하지 않아, 수정을 할 수가 없다.
+- 상세 영화 페이지 하단에 `영화 정보 수정하기`버튼을 생성해보자!
+
+```html
+<!-- config/templates/movies/detail.html -->
+{% block body %}
+...
+<a href="{% url 'movies:edit' movie.pk %}">[영화 정보 수정하기]</a>
+{% endblock %}
+```
+
+![image-20191101162602278](README.assets/image-20191101162602278.png)
+
+### 4.2 UPDATE Form에서 자료를 받아 UPDATE 하는 함수
+
+- 이제 수정 폼에서 수정된 데이터를 입력하고 수정하는 함수를 작성해 보자!
+
+```python
+# movies/view.py
+
+# 수정 내용 전달 받아서 DB에 저장(반영)
+def update(request, movie_pk):
+    # 1. 수정할 게시글 인스턴스 가져오기
+    movie = Movie.objects.get(pk=movie_pk)
+    
+    # 2. 폼에서 전달받은 데이터 덮어쓰기
+    movie.title = request.POST.get('title')
+    movie.title_en = request.POST.get('title_en')
+    movie.audience = request.POST.get('audience')
+    movie.open_date = request.POST.get('open_date')
+    movie.genre = request.POST.get('genre')
+    movie.watch_grade = request.POST.get('genre')
+    movie.score = request.POST.get('score')
+    movie.poster_url = request.POST.get('poster_url')
+    movie.description = request.POST.get('description')
+    
+    # 3. DB 저장
+    movie.save()
+    
+    # 4. 저장 끝났으면 게시글 Detail로 redirect 시키기
+    return redirect(f'/students/{movie.pk}/')
+```
+
+- 아까 `edit.html`의 `form` 태그의 `action` 속성을 작성해주자!
+
+```html
+<!-- config/templates/movies/edit.html -->
+
+...
+{% block body %}
+<h1 class="text-center">영화 정보 수정</h1> 
+<form action="{% url 'movies:update' movie.pk %}" method="POST">
+...
+```
+
+```python
+# movies/urls.py
+
+app_name = 'movies'
+urlpatterns = [
+	...
+    path('<int:movie_pk>/update/', views.update, name='update'),
+]
+```
+
+- 영화 소개를 "I WILL BE BACK" 에서 "내가 돌아왔다" 로 바꿔보자
+
+![image-20191101162746365](README.assets/image-20191101162746365.png)
+
+- 바뀐 모습을 확인해보자!
+
+![image-20191101162820440](README.assets/image-20191101162820440.png)
+
+-----
+
+## 5. DELETE
+
+- 이제 영화를 삭제하는 로직을 작성해보자!
+
+```python
+# movies/views.py
+def delete(request, movie_pk):
+    movie = Movie.objects.get(pk=movie_pk)
+    movie.delete()
+    return redirect('/movies/')
+```
+
+```python
+# movies/urls.py
+app_name = 'movies'
+urlpatterns = [
+	...
+    path('<int:movie_pk>/delete/', views.delete, name='delete'),
+]
+```
+
+- 로직은 작성 되었지만 아직은 삭제할 수 있는 버튼이 없어 삭제가 불가능하므로 상세 정보 페이지에서 삭제 버튼을 생성해주자!
+
+```html
+<!-- config/templates/movies/detail.html -->
+...
+<a href="{% url 'movies:delete' movie.pk %}">[영화 삭제하기]</a>
+{% endblock %}
+```
+
+![image-20191101163655454](README.assets/image-20191101163655454.png)
+
+- 영화를 삭제해보자!
+
+![image-20191101163731286](README.assets/image-20191101163731286.png)
+
+- 삭제를 한 후에 `index.html`로 redirect 된 모습니다. 영화가 삭제 되었다.
+
