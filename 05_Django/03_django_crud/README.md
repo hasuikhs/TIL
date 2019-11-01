@@ -48,7 +48,7 @@ urlpatterns = [
 
 ### 0.4 템플릿 경로 커스터마이징 + `base.html` 만들기
 
-> 29일(화) 수업내용 확인!
+> 02_django_intro_2 확인!
 >
 > 아래 코드 템플릿이 깨질 경우 `base.html`에 Bootstrap CSS, JS 파일 적용했는지 확인
 
@@ -97,7 +97,6 @@ $ python manage.py migrate
     ```bash
     $ python manage.py sqlmigrate articles 0001
     ```
-
 
 -----
 
@@ -248,7 +247,7 @@ def create(request):
 
 ## 2. READ (Detail 페이지)
 
-게시글 목록이 출력되는 메인 페이지에서 글 내용, 수정 시각 등 모든 정보를 보여줄 필요는 없다. **메인 페이지에선 글 번호, 글 제목과 같은 기본적인 내용만 보여주고, 사용자가 클릭했을 때 게시글 상세정보 페이지로 이동**하도록 만들어보자.
+>  게시글 목록이 출력되는 메인 페이지에서 글 내용, 수정 시각 등 모든 정보를 보여줄 필요는 없다. **메인 페이지에선 글 번호, 글 제목과 같은 기본적인 내용만 보여주고, 사용자가 클릭했을 때 게시글 상세정보 페이지로 이동**하도록 만들어보자.
 
 ```python
 # views.py : Variable Routing 적용
@@ -303,8 +302,97 @@ urlpatterns = [
 
 ## 3. UPDATE
 
+- 수정 할 폼으로 이동하는 로직
 
+```python
+# articles/views.py
+# 사용자한테 게시글 수정 폼을 전달
+def edit(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    context = { 'article': article }
+    return render(request, 'articles/edit.html', context)
+```
+
+```python
+# articles/urls.py
+
+# 이처럼 app_name을 지정하고 path에서 name을 지정하면 html에서나 vies.py 에서
+# app_name:name 으로 redirect만으로만 가능하다.
+app_name = 'articles'
+urlpatterns = [
+    ...
+    path('<int:article_pk>/edit/', views.edit, name='edit'), # UPDATE Logic - 폼 전달
+    path('<int:article_pk>/update/', views.update, name='update'), # UPDATE Logic - DB 저장
+    ...
+]
+```
+
+```html
+<!-- config/templates/articles/edit.html -->
+
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">EDIT</h1>
+<!-- views.py의 update 함수로 POST 형태로 이동 -->
+<form action="{% url 'articles:update' article.pk %}" method="POST">
+  {% csrf_token %}
+  TITLE: <input type="text" name="title" value="{{ article.title }}"><br>
+  CONTENT: 
+  <textarea name="content" cols="30" rows="10">
+    {{ article.content }}
+  </textarea>
+  <input type="submit">
+</form>
+<hr>
+<!-- urls.py 의 형식이 지정된  url로 이동-->
+<a href="{% url 'articles:detail' article.pk %}">[BACK]</a>
+{% endblock  %}
+```
+
+- 수정 할 폼(edit.html)에서 수정되는 값을 받아서 Update 하는 로직
+
+```python
+# aricles/views.py
+# 수정 내용 전달 받아서 DB에 저장(반영)
+def update(request, article_pk):
+    # 1. 수정할 게시글 인스턴스 가져오기
+    article = Article.objects.get(pk=article_pk)
+    
+    # 2. 폼에서 전달받은 데이터 덮어쓰기
+    article.title = request.POST.get('title')
+    article.content = request.POST.get('content')
+    
+    # 3. DB 저장
+    article.save()
+    
+    # 4. 저장 끝났으면 게시글 Detial로 이동시키기
+    # return redirect(f'/articles/{article.pk}/')
+    return redirect('articles:detail' , article.pk)
+```
 
 -----
 
 ## 4. DELETE
+
+> Detail 페이지로 이동하면 해당 글을 삭제할 수 있는 버튼이 존재한다. 그 버튼을 이용해 해당 글을 삭제해보자
+
+```python
+# articles/urls.py
+app_name = 'articles'
+urlpatterns = [
+   	...
+    path('<int:article_pk>/delete/', views.delete, name='delete'),  # DELETE Logic
+    ...
+]
+```
+
+```python
+# articles/views.py
+def delete(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    article.delete()
+    # 삭제 후에 articles의 index를 redirect 시켜주자
+    return redirect('articles:index')
+```
+
