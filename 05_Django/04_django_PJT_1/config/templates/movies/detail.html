@@ -16,5 +16,5 @@
 <hr>
 <a href="{% url 'movies:index' %}">[영화 목록으로]</a>
 <a href="{% url 'movies:edit' movie.pk %}">[영화 정보 수정하기]</a>
-<a href="{% url 'movies:delete' movie.pk %}">[영화 삭제하기]</a>
+<a href="{% url 'movies:delete' movie.pk %}" onclick="alert('삭제 되었습니다');">[영화 삭제하기]</a>
 {% endblock %}

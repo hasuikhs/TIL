@@ -793,5 +793,23 @@ urlpatterns = [
 
 ![image-20191101163731286](README.assets/image-20191101163731286.png)
 
-- 삭제를 한 후에 `index.html`로 redirect 된 모습니다. 영화가 삭제 되었다.
+- 삭제를 한 후에 `index.html`로 redirect 된 모습입니다. 영화가 삭제 되었다.
 
+- **추가사항 **
+
+  - 등록, 수정, 삭제 시 `등록 되었습니다` 를 넣고싶다면 각 태그에 아래 코드를 추가해주자!
+
+    ```html
+    <!-- new.html -->
+    <input type="submit" onclick="alert('등록되었습니다!');">
+    ```
+
+    ```html
+    <!-- edit.html -->
+    <input type="submit" onclick="alert('수정 되었습니다!');">
+    ```
+
+    ```html
+    <!-- detail.html -->
+    <a href="{% url 'movies:delete' movie.pk %}" onclick="alert('삭제 되었습니다');">[영화 삭제하기]</a>
+    ```
