@@ -747,7 +747,7 @@ urlpatterns = [
 ]
 ```
 
-- 영화 소개를 "I WILL BE BACK" 에서 "내가 돌아왔다" 로 바꿔보자
+- 영화 소개를 "I WILL BE BACK" 에서 "내가 돌아왔다" 로 바꿔보자.
 
 ![image-20191101162746365](README.assets/image-20191101162746365.png)
 
@@ -793,7 +793,7 @@ urlpatterns = [
 
 ![image-20191101163731286](README.assets/image-20191101163731286.png)
 
-- 삭제를 한 후에 `index.html`로 redirect 된 모습입니다. 영화가 삭제 되었다.
+- 삭제를 한 후에 `index.html`로 redirect 된 모습이다. 영화가 삭제 되었다.
 
 -----
 
@@ -823,7 +823,7 @@ urlpatterns = [
     ```
   
     - `ctrl + shift + p`를 를 통해 터미널을 열고 `Open Settings(JSON)`를 연다.
-    - 해당 jsom 파일에 다음의 코드를 넣어주면 문제가 해결된다.
+    - 해당 json 파일에 다음의 코드를 넣어주면 문제가 해결된다.
   
     ```json
     ...,
