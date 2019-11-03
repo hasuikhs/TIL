@@ -388,6 +388,10 @@ $ python manage.py runserver
 
 ### 3.1 CREATE FORM 만들기
 
+- Form으로 받는 `type`은 다음과 같다.
+
+![1572779737338](README.assets/1572779737338.png)
+
 - 새로운 영화를 추가하는 로직을 작성해보자.
 
 ```python
@@ -629,6 +633,10 @@ admin.site.register(Movie, MovieAdmin)
 ## 4. UPDATE
 
 ### 4.1 UPDATE Form으로 가는 함수
+
+- 업데이틀를 하는 Form의 데이터 `type`은 다음과 같다.
+
+![1572779849298](README.assets/1572779849298.png)
 
 - 먼저 `views.py`에서 수정 하는 폼으로 가는 함수부터 생성해보자!
 
