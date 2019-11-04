@@ -913,6 +913,10 @@ urlpatterns = [
 
 4. `csv`파일을 `json` 형식으로 바꾸기 위해서 ` https://github.com/educiao-hphk/csv2json-fixture `에서 `csv2json.py`파일을 포함한 모든 파일을 적당한 장소에 다운로드 받는다.
 
+   - 잘 모르겠다면 다음과 같이 받을 수 있다.
+
+     ![image-20191104141028226](README.assets/image-20191104141028226.png)
+
 5. `csv2json.py` 파일을 열어서 encoding 문제를 해결하기 위해서 다음과 같이 수정해 주자.
 
    ```python
@@ -921,7 +925,7 @@ urlpatterns = [
    fo.close()
    ```
 
-6.  `csv2json.py` 파일이 포함된 폴더에 `csv`파일을 넣는다.
+6. `csv2json.py` 파일이 포함된 폴더에 `csv`파일을 넣는다.
 
 7. 해당 폴더에서 `bash`로 열어서 다음과 같이 쳐주자!
 
