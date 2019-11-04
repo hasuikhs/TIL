@@ -1,21 +1,68 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1 class="text-center">영화 등록</h1>
+<h1 class="text-center">영화등록 <span class="badge badge-secondary">New</span></h1>
 <form action="/movies/create/" method="POST">
 {% csrf_token %}
-  영화명 : <input type="text" name="title"><br>
-  영화명(영문명) : <input type="text" name="title_en"><br>
-  누적 관객수 : <input type="number" name="audience"><br>
-  개봉일 : <input type="date" name="open_date"><br>
-  장르 : <input type="text" name="genre"><br>
-  관람등급 : <input type="text" name="watch_grade"><br>
-  평점 : <input type="number" name="score"><br>
-  포스터 이미지 URL: <input type="text" cols="100" name="poster_url"><br>
-  영화 소개 : <br>
-  <textarea name="description" cols="30" rows="10"></textarea>
-  <input type="submit" onclick="alert('등록되었습니다!');">
+
+  <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">영화명</span>
+  </div>
+  <input type="text" class="form-control" placeholder="영화명" aria-label="영화명" name="title" aria-describedby="basic-addon1">
+</div>
+  <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">영화명(영문명)</span>
+  </div>
+  <input type="text" class="form-control" placeholder="영화명(영문명)" aria-label="영화명(영문명)" name="title_en" aria-describedby="basic-addon1">
+</div>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">누적 관객수</span>
+  </div>
+  <input type="number" class="form-control" placeholder="누적 관객수" aria-label="누적 관객수" name="audience" aria-describedby="basic-addon1">
+</div>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">개봉일</span>
+  </div>
+  <input type="date" class="form-control" placeholder="개봉일" aria-label="개봉일" name="open_date" aria-describedby="basic-addon1">
+</div>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">장르</span>
+  </div>
+  <input type="text" class="form-control" placeholder="장르" aria-label="장르" name="genre" aria-describedby="basic-addon1">
+</div>
+  <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">관람등급</span>
+  </div>
+  <input type="text" class="form-control" placeholder="관람등급" aria-label="관람등급" name="watch_grade" aria-describedby="basic-addon1">
+</div>
+  
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">평점</span>
+  </div>
+  <input type="number" class="form-control" placeholder="평점" aria-label="평점" name="score" aria-describedby="basic-addon1">
+</div>
+  <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">포스터 이미지 URL</span>
+  </div>
+  <input type="text" class="form-control" placeholder="poster_url" aria-label="poster_url" name="poster_url" aria-describedby="basic-addon1">
+</div>
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text">영화 소개</span>
+  </div>
+  <textarea class="form-control" aria-label="With textarea" name="description"></textarea>
+</div>
+<br>
+  <input class="btn btn-primary" type="submit" value="등록하기"onclick="alert('등록되었습니다!');">
 </form>
 <hr>
-<a href="/movies/">[영화 목록으로]</a>
+<a class="btn btn-primary" href="/movies/" role="button">영화 목록으로</a>
 {% endblock %}

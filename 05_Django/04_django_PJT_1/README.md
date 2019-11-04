@@ -842,3 +842,142 @@ urlpatterns = [
     ```
 
 -----
+
+-----
+
+# Seed Data(Initial Data) 입력하기
+
+>  우리가 애플리케이션을 제작할 때 미리 준비해둔 데이터 혹은 애플리케이션 테스트용 데이터가 필요한 경우가 있다. 이때, 데이터를 하드코딩으로 일일이 넣을 수도 있다. **하지만 `fixtures`라는 기능을 이요해서 준비해둔 데이터를 쉽게 데이터베이스에 넣을 수 있다.**
+
+## 1. 이미 데이터가 있을 경우
+
+- `manage.py dumpdata > movies.json` 명령어를 통해서 현재 앱에서 가지고 있는 데이터를 빼낼 수 있다.
+
+  ```bash
+  $ python manage.py dumpdata > movies.json
+  ```
+
+- 이전 DB가 날아가더라도 dumpdata를 통해 빼둔 데이터들을 다시 한번 활용할 수 있다.
+
+## 2. 준비해둔 fixture 데이터들을 넣고 싶을 경우
+
+- `CSV`(Comma-Seperated Values)
+
+  - 데이터들을 콤마( , )로 구분해서 비교적 간단한 텍스트 형태의 포맷으로 바꾼 형식
+  - 스프레드시트, 엑셀에서 주로 활용한다.(데이터 크기 축소)
+
+- `fixture`는 **장고가 데이터베이스에 import할 수 있는 데이터의 모음**
+
+  - `JSON`, `XML`, `YAML` 포맷의 fixture들을 불러올 수 있다.
+
+- 장고에서 모델링한 데이터가 어떻게 생겼는지 확인
+
+  ```json
+  [
+      {
+          "model": "movies.movie",
+          "pk": 5,
+          "fields": {
+              "title": "\ud130\ubbf8\ub124\uc774\ud130",
+              "title_en": "The Terminator",
+              "audience": 5000000,
+              "open_date": "1984-12-22",
+              "genre": "\uc561\uc158",
+              "watch_grade": "\uc561\uc158",
+              "score": 9.0,
+              "poster_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ8zmYulntNzfbi-2w7igpctwVF9bj1KKxpep3O6zw2lray94Qv",
+              "description": "jo"
+          }
+      },
+      ...
+  ]
+  ```
+
+- 프로젝트를 진행할 때 Seed Data(Initial Data)를 제공받았을 경우, Seed Data 형식을 먼저 확인하고 형식에 맞게 모델링을 진행하자!
+
+- Seed Data 활용하는 방법
+
+  1. Application의 데이터베이스를 하드코딩으로 미리 만들어둔 뒤, `dumpdata` 명령어를 통해 fixture 데이터 형태로 만들어두고 , 그 다음부턴 데이터베이스를 초기화시켜도 `loaddata` 명령어를 통해 다시 데이터를 불러와서 사용할 수 있다.
+  2. 이미 Seed Data를 제공받았을 경우, 그냥 fixtures 폴더에 넣어두고 불러와서 사용한다.
+
+- `fixture` 데이터 내용을 바꾸거나, 모델링해둔 내용을 바꾸고 싶으면 당연히 다시 `loaddata` 과정을 수행한다.
+
+### 2.0 CSV to JSON
+
+1. 먼저 준비해둔 `csv`파일을 다운로드 받는다.
+2. 받은 `csv`파일을 excel로 열지말고 구글 스프레드시트 같은 editor로 열어서 pk를 넣고 번호를 넣는다.
+
+![image-20191104134528475](README.assets/image-20191104134528475.png)
+
+3. 수정된 `csv`파일을 다운로드 받는다.
+
+4. `csv`파일을 `json` 형식으로 바꾸기 위해서 ` https://github.com/educiao-hphk/csv2json-fixture `에서 `csv2json.py`파일을 포함한 모든 파일을 적당한 장소에 다운로드 받는다.
+
+5. `csv2json.py` 파일을 열어서 encoding 문제를 해결하기 위해서 다음과 같이 수정해 주자.
+
+   ```python
+   with open(out_file, 'w', encoding=ENCODING) as fo:
+       fo.write('%s' % json.dumps(entries, indent=4, ensure_ascii=False))
+   fo.close()
+   ```
+
+6.  `csv2json.py` 파일이 포함된 폴더에 `csv`파일을 넣는다.
+
+7. 해당 폴더에서 `bash`로 열어서 다음과 같이 쳐주자!
+
+   ```bash
+   $ python csv2json.py movies.csv movies.Movie
+   ```
+
+   ```bash
+   $ python csv2json.py csv파일 애플리케이션.모델
+   ```
+
+8. 성공적으로 변환이 되었다면 다음과 같이 출력된다.
+
+   ```bash
+   Converting movies.csv from CSV to JSON as movies.json
+   ```
+
+9. 그렇다면 해당 폴더를 살펴보면 `movies.json`파일이 생성된다.
+
+   ![image-20191104135451920](README.assets/image-20191104135451920.png)
+
+10. `json`파일을 `movies/`의 `fixture/`폴더에 넣어주자. 없으면 만들어야한다.
+
+    ![image-20191104135737450](README.assets/image-20191104135737450.png)
+
+11. 이제 진행중이던 프로젝트에서 다음과 같이 쳐주자.
+
+    ```bash
+    student@M150123 MINGW64 ~/Desktop/TIL/05_Django/04_django_PJT_1 (master)
+    $ python manage.py loaddata movies.json
+    ```
+
+    - 성공했다면
+
+      ```bash
+      Installed 6 object(s) from 1 fixture(s)
+      ```
+
+    - 실패했다면 type이 맞는지 확인해보자.
+
+12. 이제 sqlite를 열어 `json`파일이 잘 모델링 되었는지 확인해보자.
+
+    ![image-20191104140019647](README.assets/image-20191104140019647.png)
+
+## 3. 장고가 Fixture 파일을 찾는 방식
+
+- 기본적으로 애플리테이션 안에 있는 `fixtures`라는 디렉토리를 탐색한다.
+
+- 환경설정에 `FIXTURE_DIRS` 옵션을 통해 장고가 바라보는 또다른 디렉토리를 정의할 수 있다.
+
+  - `loaddata` 명령어 수행할 때, 다른 경로보다 우선으로 탐색한다.
+
+  ```
+  04_django_PJT_1/
+  	config/
+  	movies/
+  		fixtures/
+  			movies.json
+  ```

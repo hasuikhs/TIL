@@ -2,11 +2,11 @@
 
 {% block body %}
 <h1 class="text-center">Movies</h1>
-<a href="{% url 'movies:new' %}">[새 영화 등록]</a>
+<a href="{% url 'movies:new' %}" class="badge badge-dark">[새 영화 등록]</a>
 <hr>
 {% for movie in movies %}
    <p>
-    [{{ movie.pk }}] <img src="{{movie.poster_url}}" alt="poster_url"><a href="{% url 'movies:detail' movie.pk %}">{{ movie.title }}</a>
+    [{{ movie.pk }}] <img src="{{movie.poster_url}}" alt="poster_url" width="100px" height="120px"><a href="{% url 'movies:detail' movie.pk %}">{{ movie.title }}</a>
   </p>
 <hr>
 {% endfor %}

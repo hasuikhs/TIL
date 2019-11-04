@@ -5,7 +5,7 @@ class Movie(models.Model):
     title = models.CharField(max_length=100)    # CharField는 max_length가 필수
     title_en = models.CharField(max_length=100)
     audience = models.IntegerField()
-    open_date = models.DateField()
+    open_date = models.CharField(max_length=100)
     genre = models.CharField(max_length=100)
     watch_grade = models.CharField(max_length=20)
     score = models.FloatField()
