@@ -441,6 +441,9 @@ urlpatterns = [
 ```
 
 - 하지만 여기까지 왔다고 해도 `index.html`에는 `new.html`로 이동하는 태그가 존재하지 않는다. 만들어주자.
+- **잠깐!**  이 프로젝트는 현재 `urls.py`에서 **namespace를 이용해 url을 간결하게 표현 중**이다.
+  - 그렇기 때문에 `urls.py`의 `app_name`과 각 `path`의 `name`을 합쳐서 `html`파일에서 `app_name:name`으로 표현 되고 있다.
+  - `urls.py`를 지나치지 말고 꼭 확인 한 후 넘어가도록 하자.
 
 ```html
 <!-- config/templates/movies/index.html -->
@@ -589,7 +592,12 @@ def index(request):
 ...
 ```
 
+- `{% url 'movies:detail' movie.pk %}`의 의미는 `movies`라는 `app_name`의 `detail`이라는 `name`을 가진 `html `파일을 찾아서 인자로 `movie.pk`를 받아들인다. 
+- 만약 인자가 여러개라면 순서를 꼭 지켜줘야한다.
+
 ![image-20191101145404156](README.assets/image-20191101145404156.png)
+
+
 
 - 이제 영화 제목을 누르면 해당 영화의 상세 정보를 볼 수 있다.
 
@@ -730,7 +738,7 @@ def update(request, movie_pk):
     movie.save()
     
     # 4. 저장 끝났으면 게시글 Detail로 redirect 시키기
-    return redirect(f'/students/{movie.pk}/')
+    return redirect(f'/movies/{movie.pk}/')
 ```
 
 - 아까 `edit.html`의 `form` 태그의 `action` 속성을 작성해주자!
