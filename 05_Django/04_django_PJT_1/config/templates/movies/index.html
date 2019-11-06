@@ -2,7 +2,7 @@
 
 {% block body %}
 <h1 class="text-center">Movies</h1>
-<a href="{% url 'movies:new' %}" class="badge badge-dark">[새 영화 등록]</a>
+<a href="{% url 'movies:create' %}" class="badge badge-dark">[새 영화 등록]</a>
 <hr>
 {% for movie in movies %}
    <p>

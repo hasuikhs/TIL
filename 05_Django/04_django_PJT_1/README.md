@@ -993,3 +993,297 @@ urlpatterns = [
   		fixtures/
   			movies.json
   ```
+
+-----
+
+# RESTful 하게 로직 변경하기
+
+## 1. CREATE 변경
+
+- `movies/views.py`
+
+  - 사용자에게 게시글 작성 폼을 보여주는 함수`new` 를 삭제하고 `views.py`를 다음과 같이 고치자.
+
+  ```python
+  # 사용자로부터 데이터를 받아서 DB에 저장하는 함수
+  def create(request):
+      if request.Method == 'POST':
+  
+          title = request.POST.get('title')
+          title_en = request.POST.get('title_en')
+          audience = request.POST.get('audience')
+          open_date = request.POST.get('open_date')
+          genre = request.POST.get('genre')
+          watch_grade = request.POST.get('genre')
+          score = request.POST.get('score')
+          poster_url = request.POST.get('poster_url')
+          description = request.POST.get('description')
+  
+          movie = Movie(title=title, title_en=title_en, audience=audience,
+                        open_date=open_date, genre=genre, watch_grade=watch_grade,
+                        score=score, poster_url=poster_url, description=description)
+          movie.save()
+  
+          return redirect(f'/movies/{movie.pk}/')
+      else:
+          return render(request, 'movies/create.html')
+  ```
+
+- `new.html` 파일을 `create.html`로 이름을 변경하자.
+
+![image-20191105112735104](README.assets/image-20191105112735104.png)
+
+- `index.html`
+
+  ```html
+  <a href="{% url 'movies:new' %}" class="badge badge-dark">[새 영화 등록]</a>
+  <!-- new를 create로 변경 -->
+  <a href="{% url 'movies:create' %}" class="badge badge-dark">[새 영화 등록]</a>
+  ```
+
+- `movies/urls.py`
+
+  - `urlpatterns`의 `new` 함수를 삭제해준다.
+
+  ```python
+  app_name = 'movies'
+  urlpatterns = [
+      path('', views.index, name='index'),
+      # path('new/', views.new, name='new'),
+      path('create/', views.create, name='create'),
+      path('<int:movie_pk>/', views.detail, name='detail'),
+      path('<int:movie_pk>/edit/', views.edit, name='edit'),
+      path('<int:movie_pk>/update/', views.update, name='update'),
+      path('<int:movie_pk>/delete/', views.delete, name='delete'),
+  ]
+  ```
+
+-----
+
+## 2. UPDATE 변경
+
+- `views.py`
+
+  - 사용자에게 게시글 수정 폼을 보여주는 `edit` 함수를 삭제하고 `views.py`를 다음과 같이 고치자.
+
+  ```python
+  # 수정 내용 전달 받아서 DB에 저장(반영)
+  def update(request, movie_pk):
+      # 1. 수정할 게시글 인스턴스 가져오기
+      movie = Movie.objects.get(pk=movie_pk)
+      if request.method == 'POST':
+          # 2. 폼에서 전달받은 데이터 덮어쓰기
+          movie.title = request.POST.get('title')
+          movie.title_en = request.POST.get('title_en')
+          movie.audience = request.POST.get('audience')
+          movie.open_date = request.POST.get('open_date')
+          movie.genre = request.POST.get('genre')
+          movie.watch_grade = request.POST.get('genre')
+          movie.score = request.POST.get('score')
+          movie.poster_url = request.POST.get('poster_url')
+          movie.description = request.POST.get('description')
+  
+          # 3. DB 저장
+          movie.save()
+  
+          # 4. 저장 끝났으면 게시글 Detial로 이동시키기
+          return redirect(f'/movies/{movie.pk}/')
+      else:
+          context = { 'movie': movie }
+          return render(request, 'movies/update.html', context)
+  ```
+
+- `edit.html` 파일을 `update.html`로 이름을 변경하자.
+
+  ![image-20191105114501050](README.assets/image-20191105114501050.png)
+
+  - `detail.html`의 하단의 정보를 수정하는 url을 update로 변경하자.
+
+  ```html
+  ...
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:index' %}'">영화 목록으로</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:update' movie.pk %}'">영화 정보 수정하기</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:delete' movie.pk %}'">영화 삭제하기</button>
+  </div>
+  ...
+  ```
+
+- `movies/urls.py`
+
+  - `urlpatterns`의 `edit` 함수를 삭제해준다.
+
+  ```python
+  app_name = 'movies'
+  urlpatterns = [
+      path('', views.index, name='index'),
+      path('create/', views.create, name='create'),
+      path('<int:movie_pk>/', views.detail, name='detail'),
+      # path('<int:movie_pk>/edit/', views.edit, name='edit'),
+      path('<int:movie_pk>/update/', views.update, name='update'),
+      path('<int:movie_pk>/delete/', views.delete, name='delete'),
+  ]
+  ```
+
+# 댓글 기능 추가하기
+
+- 댓글을 추가하기 위해서는 먼저 `models.py` 에서 `comment` 관련 사항을 정의해야한다.
+
+```python
+from .models import Movie, Comment	# 까먹지말자 import 
+
+class Comment(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    content = models.CharField(max_length=250)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # Model Level에서 Metadata 설정
+    class Meta:
+        ordering = ['pk',]
+
+    def __str__(self):
+        return lf.content
+```
+
+- 댓글 기능 또한 RESTful 하게 만들도록 하자.
+
+## 1. CREATE(댓글 쓰기)
+
+- `movies/views.py`
+
+  ```python
+  # 댓글 생성 뷰 함수
+  def comments_create(request, movie_pk):
+      movie = Movie.objects.get(pk=movie_pk)
+      if request.method == 'POST':
+          content = request.POST.get('content')
+          comment = Comment(movie=movie, content=content)
+          comment.save()
+          return redirect('movies:detail', movie_pk)
+      else:
+          return redirect('movies:detail', movie_pk)
+  ```
+
+- `config/templates/movies/detail.html`
+
+  ```html
+  <!-- detail.html 하단에 작성하자 -->
+  ...
+  <hr>
+  {% comment %} 댓글 작성 Form {% endcomment %}
+  <form action="{% url 'movies:comments_create' movie.pk %}" method="POST">
+      {% csrf_token %}
+      <input type="text" name="content">
+      <input type="submit" value="댓글 작성하기">
+  </form>
+  <hr>
+  ...
+  ```
+
+- `movies/urls.py`
+
+  ```python
+  urlpatterns = [
+      ...
+      path('<int:movie_pk>/comments/', views.comments_create, name='comments_create'),
+  ]
+  ```
+
+- 서버를 실행하고 `detail.html`을 열어 확인하자.
+
+  ![image-20191106085654225](README.assets/image-20191106085654225.png)
+
+- 하지만 댓글이 작성되는지는 확인 할 수 없다. 이제 댓글을 확인하는 작업을 해보자.
+
+## 2. DETAIL(댓글 보기)
+
+- `movies/views.py`
+
+  ```python
+  # detail 함수를 다음과 같이 수정하자.
+  def detail(request, movie_pk):
+      movie = Movie.objects.get(pk=movie_pk)
+      comments = movie.comment_set.all()
+      context = {
+           'movie' : movie,
+           'comments' : comments,
+      }
+      return render(request, 'movies/detail.html', context)
+  ```
+
+  - `comment_set.all()`은 해당 movie에 관련된 댓글들을 모두 불러온다.
+
+- `datail.html`
+
+  ```html
+  ...
+  {% for comment in comments %}
+  <li>
+      {{ comment.content }}
+  </li>
+  {% empty %}
+  <p>
+      악플보다 무섭다는 무플 ㅠㅠ
+  </p>
+  {% endfor %}
+  ```
+
+  - `{% empty %}`를 이용하면 댓글이 없는 상황의 메시지를 보여준다.
+
+  - **댓글이 없는 경우**
+
+    ![image-20191106085545729](README.assets/image-20191106085545729.png)
+
+  - **댓글이 있는 경우**
+
+    ![image-20191106090308694](README.assets/image-20191106090308694.png)
+
+## 3. DELETE(댓글 삭제)
+
+- `movies/views.py`
+
+  ```python
+  # 댓글 삭제 뷰 함수
+  def comments_delete(request, movie_pk, comment_pk):
+      if request.method =='POST':
+          comment = Comment.objects.get(pk=comment_pk)
+          comment.delete()
+      return redirect('movies:detail', movie_pk)
+  ```
+
+- `detail.html`
+
+  - 다음과 같이 수정하자.
+
+  ```html
+  ...
+  <li>
+      {{ comment.content }}
+      <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST" style="display: inline;"
+          onclick="return confirm('진짜 삭제...?')">
+          {% csrf_token %}
+          <input type="submit" value="DELETE">
+      </form>
+  </li>
+  ...
+  ```
+
+- `urls.py`
+
+  ```python
+  ...
+  urlpatterns = [
+      ...
+      path('<int:movie_pk>/comments/<int:comment_pk>/delete/', views.comments_delete, name='comments_delete'),
+  ]
+  ...
+  ```
+
+- 이제 삭제해보자.
+
+  ![image-20191106091837632](README.assets/image-20191106091837632.png)
+
+- 삭제한 후의 모습
+
+  ![image-20191106091909489](README.assets/image-20191106091909489.png)
