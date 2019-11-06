@@ -12,4 +12,6 @@ urlpatterns = [
     # path('<int:article_pk>/edit/', views.edit, name='edit'), # UPDATE Logic - 폼 전달
     # GET(edit) / POST(update)
     path('<int:article_pk>/update/', views.update, name='update'), # UPDATE Logic - DB 저장
+    path('<int:article_pk>/comments/', views.comments_create, name='comments_create'),
+    path('<int:article_pk>/comments/<int:comment_pk>/delete/', views.comments_delete, name='comments_delete'),
 ]

@@ -1,7 +1,25 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block body %}
 <h1 class="text-center">DETAIL</h1>
+
+<!--
+    article.image.url -> 파일 주소
+    article.image -> 파일 이름 (sample.png))
+-->
+<!--
+    [이미지가 없는 게시글일 경우 조건문 분기]
+    1. 샘플 이미지(static)를 넣어두고, 이미지 없는 게시글은 샘플 이미지가 나오도록 한다.
+    2. 이비지 있는 경우에만 이미지를 보여준다.
+-->
+{% if article.image %}
+    <img src="{{ article.image.url }}" alt="{{ article.image }}" style="max-width: 500px;">
+{% else %}
+    <p>사진이 없어요...</p>
+    <img src="{% static 'articles/images/no_image.jpg' %}" alt="no_image">
+{% endif %}
+
+
 <p>글 번호 : {{ article.pk }}</p>
 <p>글 제목 : {{ article.title }}</p>
 <p>글 내용 : {{ article.content }}</p>
@@ -11,9 +29,35 @@
 <a href="{% url 'articles:index' %}">[BACK]</a>
 <a href="{% url 'articles:update' article.pk %}">[EDIT]</a>
 
-<form action="{% url 'articles:delete' article.pk %}" method="POST"
-         style="display: inline;" onclick="return confirm('진짜 삭제...?')">
-{% csrf_token %}
+<form action="{% url 'articles:delete' article.pk %}" method="POST" style="display: inline;"
+    onclick="return confirm('진짜 삭제...?')">
+    {% csrf_token %}
     <input type="submit" value="DELETE">
 </form>
+<hr>
+{% comment %} 댓글 작성 Form {% endcomment %}
+<form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="content">
+    <input type="submit" value="작성하기">
+</form>
+<hr>
+{% comment %} 1번방법 {% endcomment %}
+{{ comments|length }}개의 댓글이 있습니다...
+{% comment %} 2번방법 {% endcomment %}
+{{ article.comment_set.all|length}}개의 댓글이 있습니다...
+{% comment %} 3번방법 {% endcomment %}
+{{ comments.count }}개의 댓글이 있습니다...
+{% for comment in comments %}
+<li>
+    {{ comment.content }}
+    <form action="{% url 'articles:comments_delete' article.pk comment.pk%}" method="POST" style="display: inline;"
+        onclick="return confirm('진짜 삭제...?')">
+        {% csrf_token %}
+        <input type="submit" value="DELETE">
+    </form>
+</li>
+{% empty %}
+    <p>악플보다 무섭다는 무플 ㅠㅠ</p>
+{% endfor %}
 {% endblock  %}

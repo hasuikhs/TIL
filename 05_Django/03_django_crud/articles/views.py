@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Article
+from .models import Article, Comment
 
 # Create your views here.
 def index(request):
@@ -18,8 +18,9 @@ def create(request):
         
         title = request.POST.get('title')
         content = request.POST.get('content')
+        image = request.FILES.get('image')
 
-        article = Article(title=title, content=content)
+        article = Article(title=title, content=content, image=image)
         article.save()
     
         return redirect('articles:detail', article.pk)
@@ -31,7 +32,11 @@ def create(request):
 # 게시글 상세정보를 가져오는 함수
 def detail(request, article_pk):
     article = Article.objects.get(pk=article_pk)
-    context = { 'article' : article }
+    comments = article.comment_set.all()
+    context = {
+         'article' : article,
+         'comments' : comments,
+    }
     return render(request, 'articles/detail.html', context)
 
 # 
@@ -59,3 +64,21 @@ def update(request, article_pk):
     else:
         context = { 'article': article }
         return render(request, 'articles/update.html', context)
+
+# 댓글 생성 뷰 함수
+def comments_create(request, article_pk):
+    article = Article.objects.get(pk=article_pk)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        comment = Comment(article=article, content=content)
+        comment.save()
+        return redirect('articles:detail', article_pk)
+    else:
+        return redirect('articles:detail', article_pk)
+
+# 댓글 삭제 뷰 함수
+def comments_delete(request, article_pk, comment_pk):
+    if request.method =='POST':
+        comment = Comment.objects.get(pk=comment_pk)
+        comment.delete()
+    return redirect('articles:detail', article_pk)
