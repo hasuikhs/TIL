@@ -16,6 +16,22 @@
     {% csrf_token %}
     <input type="submit" value="DELETE">
 </form>
+<hr>
+<form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+    {% csrf_token %}
+    {{ comment_form }}
+    <input type="submit" value="댓글 작성">
+</form>
+<hr>
+<p><b>댓글 목록({{ comments|length }}개)</b>
+    <p>
+        {% for comment in comments %}
+        <p>[{{ forloop.revcounter}}] {{ comment.content }}
+            <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <input type="submit" value="삭제" />
+            </form>
+        </p>
 
-
-{% endblock  %}
+        {% endfor %}
+        {% endblock  %}

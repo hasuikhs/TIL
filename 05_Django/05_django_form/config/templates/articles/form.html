@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
 {% block body %}
-<h1 class="text-center">FORM</h1>
+{% if request.resolver_match.url_name == 'create' %}
+<h1 class="text-center">CREATE</h1>
+{% else %}
+<h1 class="text-center">UPDATE</h1>
+{% endif %}
 <!--
   action 값이 공백일 경우, 현재 위치하고 있는 주소로 요청을 보낸다.
   폼을 던져주는 경로, DB에 저장하는 경로가 동일하다면 공백으로 해도 정상적으로 동작한다.  
 -->
-<form action="" method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit">
-</form>
-<hr>
+
+<div class="container">
+  <form action="" method="POST">
+    {% csrf_token %}
+    {% comment %} {{ form.as_p }} {% endcomment %}
+    {% bootstrap_form form layout='inline' %}
+    <div class="text-center">
+      {% buttons submit='제출' reset='초기화' %}{% endbuttons %}
+    </div </form> </div> <hr>
+</div>
+{% if request.resolver_match.url_name == 'create' %}
 <a href="{% url 'articles:index' %}">[BACK]</a>
+{% else %}
+<a href="{% url 'articles:detail' article.pk %}">[BACK]</a>
+{% endif %}
 {% endblock  %}
