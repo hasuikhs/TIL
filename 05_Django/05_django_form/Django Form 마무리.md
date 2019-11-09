@@ -176,15 +176,12 @@ $ pip install bootstrap4
   admin.site.register(Comment, CommentAdmin)
   ```
 
-  
-
-
 
 -----
 
 ## 4. View Decorators
 
-> Django가 제공하는
+> Django가 제공하는 decorator 활용하기
 
 
 
@@ -193,3 +190,31 @@ $ pip install bootstrap4
 - view 함수가 POST 메서드 요청만 승인하도록 하는 데코레이터
 - 일치하지 않는 요청이면 `405 Method Not Allowed` 에러 발생시킴
 
+```python
+# views.py
+
+@require_POST
+def delete(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    article.delete()
+    return redirect('articles:index')
+
+@require_POST
+def comments_create(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        # save 메서드 -> 선택 인자 : (기본값) commit=True
+        # DB에 바로 저장되는 것을 막아준다.
+        comment = comment_form.save(commit=False)
+        comment.article = article
+        comment.save()
+    return redirect('articles:detail', article.pk)
+    
+
+@require_POST
+def comments_delete(request, article_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+    return redirect('articles:detail', article_pk)
+```
