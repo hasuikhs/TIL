@@ -238,7 +238,7 @@ urlpatterns = [
 ]
 ```
 
-```html
+```django
 <!-- templates/index.html -->
 <h1>Hello, Django!</h1>
 
@@ -307,7 +307,7 @@ def area(request, r):
     return render(request, 'area.html', context)
 ```
 
-```html
+```django
 <!-- info.html -->
 <h1>나의 이름은 {{ name }} 이다 </h1>
 <h2>나의 나이는 {{ age }} 이고, 취미는 {{ hobby }}, 특기는 {{ specialty }}</h2>
@@ -358,7 +358,7 @@ def template_language(request):
     return render(request, 'template_language.html', context)
 ```
 
-```html
+```django
 <!-- template_language.html -->
 <h1>1. 반복문</h1>
 <h4>메뉴판</h4>
@@ -491,7 +491,7 @@ def lotto(request):
     return render(request, 'lottos.html', context)
 ```
 
-```html
+```django
 <!-- isbirth.html -->
 {% if  result %}
   <p>예</p>

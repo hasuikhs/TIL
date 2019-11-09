@@ -188,7 +188,7 @@ urlpatterns = [
 			base.html
 ```
 
-```html
+```django
 <!-- config/templates/base.html  -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -350,7 +350,7 @@ def index(request):
     return render(request, 'movies/index.html')
 ```
 
-```html
+```django
 <!-- config/tempates/movies/index.html -->
 <!-- 이전에 추가했었던 base.html을 상속받는다 -->
 {% extends 'base.html' %}
@@ -403,7 +403,7 @@ def new(request):
     return render(request, 'movies/new.html')
 ```
 
-```html
+```django
 <!-- config/templates/movies/new.html -->
 {% extends 'base.html' %}
 
@@ -445,7 +445,7 @@ urlpatterns = [
   - 그렇기 때문에 `urls.py`의 `app_name`과 각 `path`의 `name`을 합쳐서 `html`파일에서 `app_name:name`으로 표현 되고 있다.
   - `urls.py`를 지나치지 말고 꼭 확인 한 후 넘어가도록 하자.
 
-```html
+```django
 <!-- config/templates/movies/index.html -->
 {% extends 'base.html' %}
 
@@ -525,7 +525,7 @@ def detail(request, movie_pk):
     return render(request, 'movies/detail.html', context)
 ```
 
-```html
+```django
 <!-- config/templates/movies/detail.html -->
 {% extends 'base.html' %}
 
@@ -575,7 +575,7 @@ def index(request):
     return render(request, 'movies/index.html', context)
 ```
 
-```html
+```django
 <!-- config/templates/movies/index.html -->
 ...
 {% block body %}
@@ -659,7 +659,7 @@ def edit(request, movie_pk):
 
 - `edit.html`을 작성할때 `form`의 `action` 속성은 잠시 비워두자!
 
-```html
+```django
 <!-- config/templates/movies/edit.html -->
 {% extends 'base.html' %}
 
@@ -701,7 +701,7 @@ urlpatterns = [
 - 하지만, 상세 영화 정보에서 수정하는 버튼이 존재하지 않아, 수정을 할 수가 없다.
 - 상세 영화 페이지 하단에 `영화 정보 수정하기`버튼을 생성해보자!
 
-```html
+```django
 <!-- config/templates/movies/detail.html -->
 {% block body %}
 ...
@@ -743,7 +743,7 @@ def update(request, movie_pk):
 
 - 아까 `edit.html`의 `form` 태그의 `action` 속성을 작성해주자!
 
-```html
+```django
 <!-- config/templates/movies/edit.html -->
 
 ...
@@ -796,7 +796,7 @@ urlpatterns = [
 
 - 로직은 작성 되었지만 아직은 삭제할 수 있는 버튼이 없어 삭제가 불가능하므로 상세 정보 페이지에서 삭제 버튼을 생성해주자!
 
-```html
+```django
 <!-- config/templates/movies/detail.html -->
 ...
 <a href="{% url 'movies:delete' movie.pk %}">[영화 삭제하기]</a>
@@ -817,17 +817,17 @@ urlpatterns = [
 
   - 등록, 수정, 삭제 시 `등록 되었습니다` 를 넣고싶다면 각 태그에 아래 코드를 추가해주자!
 
-    ```html
+    ```django
     <!-- new.html -->
     <input type="submit" onclick="alert('등록되었습니다!');">
     ```
 
-    ```html
+    ```django
     <!-- edit.html -->
     <input type="submit" onclick="alert('수정 되었습니다!');">
     ```
 
-    ````html
+    ````django
     <!-- detail.html -->
     <a href="{% url 'movies:delete' movie.pk %}" onclick="alert('삭제 되었습니다');">[영화 삭제하기]</a>
     ```
@@ -1035,7 +1035,7 @@ urlpatterns = [
 
 - `index.html`
 
-  ```html
+  ```django
   <a href="{% url 'movies:new' %}" class="badge badge-dark">[새 영화 등록]</a>
   <!-- new를 create로 변경 -->
   <a href="{% url 'movies:create' %}" class="badge badge-dark">[새 영화 등록]</a>
@@ -1099,7 +1099,7 @@ urlpatterns = [
 
   - `detail.html`의 하단의 정보를 수정하는 url을 update로 변경하자.
 
-  ```html
+  ```django
   ...
   <div class="btn-group" role="group" aria-label="Basic example">
     <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:index' %}'">영화 목록으로</button>
@@ -1167,7 +1167,7 @@ class Comment(models.Model):
 
 - `config/templates/movies/detail.html`
 
-  ```html
+  ```django
   <!-- detail.html 하단에 작성하자 -->
   ...
   <hr>
@@ -1216,7 +1216,7 @@ class Comment(models.Model):
 
 - `datail.html`
 
-  ```html
+  ```django
   ...
   {% for comment in comments %}
   <li>
@@ -1256,7 +1256,7 @@ class Comment(models.Model):
 
   - 다음과 같이 수정하자.
 
-  ```html
+  ```django
   ...
   <li>
       {{ comment.content }}

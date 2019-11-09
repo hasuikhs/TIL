@@ -35,7 +35,7 @@
       return render(request, 'throw.html')
   ```
 
-  ```html
+  ```django
   <!-- 2. template/throw.html -->
   <form action="/catch/" name="GET">
     <input type="text" name="message">
@@ -83,7 +83,7 @@ def art(request):
     return render(request, 'pages/art.html')
 ```
 
-```html
+```django
 <!-- 2. art.html -->
 <form action="/pages/result2/" name="GET">
   <input type="text" name="word">
@@ -124,7 +124,7 @@ def result2(request):
     return render(request, 'pages/result.html', context)
 ```
 
-```html
+```django
 <!-- 5. result.html -->
 <pre>{{result}}</pre>
 ```
@@ -190,7 +190,7 @@ def user_new(request):
     return render(request, 'pages/user_new.html')
 ```
 
-```html
+```django
 <!-- 2. user_new.html -->
 <form action="/pages/user_create/" method="POST">
   {% csrf_token %}
@@ -224,7 +224,7 @@ def user_create(request):
     return render(request, 'pages/user_create.html', context)
 ```
 
-```html
+```django
 <!-- 5. user_create.html -->
 <h1>{{ user_id }}님 환영합니다!</h1>
 <h2>당신의 비밀번호는 {{ pwd }}입니다.</h2>
@@ -256,7 +256,7 @@ def static_sample(request):
     return render(request, 'pages/static_sample.html')
 ```
 
-```html
+```django
 <!-- static_sample.html -->
 {% load static %}
 
