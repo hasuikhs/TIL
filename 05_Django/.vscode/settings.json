@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\STU\\Anaconda3\\python.exe",
     
     "files.associations": {
         "**/*.html": "html",
