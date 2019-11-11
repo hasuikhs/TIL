@@ -10,6 +10,8 @@
   - `쿠키` : 클라이언트 로컬에 파일로 저장
   - `세션` : 서버에 저장 (session_id는 쿠키 형태로 클라이언트 로컬에 저장됨)
 
+-----
+
 ## 1. Accounts
 
 - 기존 앱에서 구현해도 되지만, Django에서는 일반적으로 기능 단위로 애플리케이션을 나누는 것이 일반적이므로 `accounts`라는 새로운 앱을 만들어보자.
@@ -56,14 +58,30 @@
   ```
 
 
+-----
+
 ## 2. SignUp
 
 - 회원가입 로직은 CRUD 중에 'CREATE'에 가깝다.
 - `class User`는 이미 Django가 만들어 두었고, User 클래스와 연동되는 ModelForm인 `UserCreationForm`도 Django가 이미 준비해두었다.
 
 ```python
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            auth_login(request, user)
+            return redirect('articles:index')
+    else:
+        form = UserCreationForm
+    context = {'form':form}
+    return render(request, 'accounts/signup.html', context)
 ```
+
+-----
 
 ## 3. Login
 
@@ -74,8 +92,24 @@
   - `AuthenticationForm(request, request.POST)`
 
 ```python
+def login(request):
+    if request.user.is_authenticated:
+        return redirect('articles:index')
 
+    if request.method=='POST': 
+        form = AuthenticationForm(request, request.POST)
+        # embed()
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            # return redirect('articles:index')
+            return redirect(request.GET.get('next') or 'articles:index')
+    else:
+        form = AuthenticationForm()
+    context = {'form' : form}
+    return render(request, 'accounts/login.html', context)
 ```
+
+-----
 
 ## 4. Logout
 
@@ -83,12 +117,10 @@
   - 현재 유지하고 있는 `session`을 DELETE하는 로직
 
 ```python
-
+def logout(request):
+    auth_logout(request)
+    return redirect('articles:index')
 ```
-
-
-
-
 
 #### `login_required`  데코레이터
 
@@ -131,10 +163,113 @@ def login(request):
     return render(request, 'accounts/login.html', context)
 ```
 
-
+-----
 
 ## 5. SignOut(회원탈퇴)
 
 - CRUD 로직에서 User 테이블에서 User 레코드 하나를 삭제시키는 DELETE 로직과 흡사하다.
 - 로그인 된 상태에서만 회원 탈퇴 링크를 만들어서 접근할 수 있도록 한다.
-- 
+
+```python
+@require_POST
+def delete(request):
+    request.user.delete()
+    return redirect('articles:index')
+```
+
+### update_session_auth_hash
+
+- `update_session_auth_hash(request, user)`
+
+- 문제점
+  - 비밀번호 변경은 잘 되는데, 변경이 끝나면 로그인이 풀려버린다.
+  - 자동으로 로그아웃이 되버린 이유는 비밀번호가 변경되면서 기존 세션과의 회원 인증 정보가 일치하지 않게 되었기 때문이다.
+
+
+
+
+
+## 8. Auth Form 합치기
+
+- `base.html`
+
+  ```django
+  {% load bootstrap4 %}
+  {% load gravatar %}
+  <!DOCTYPE html>
+  <html lang="ko">
+  
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>auth</title>
+      <!-- Bootstrap CSS -->
+      {% bootstrap_css %}
+  </head>
+  
+  <body>
+      <div class="container">
+      {% if user.is_authenticated %}
+          <h2>
+          <img src="http://s.gravatar.com/avatar/{{ user.email|makemd5 }}?s=80&d=mp">
+          어서오세요, {{ user.username}}
+          </h2>
+          <a href="{% url 'accounts:logout' %}">로그아웃</a>
+          <form action="{% url 'accounts:delete' %}" method="POST" style="display:inline;">
+              {% csrf_token %}
+              <input type="submit" value="회원탈퇴">
+          </form>
+          <a href="{% url 'accounts:update' %}">정보수정</a>
+          <form action="{% url 'accounts:change_password' %}" method="POST" style="display:inline;">
+              {% csrf_token %}
+              <input type="submit" value="암호변경">
+          </form>
+      {% else %}
+          <a href="{% url 'accounts:login' %}">로그인</a>
+          <a href="{% url 'accounts:signup' %}">회원가입</a>
+      {% endif %}
+      
+      
+          {% block body %}
+          {% endblock  %}
+      </div>
+  
+      <!-- Bootstrap JS-->
+      {% bootstrap_javascript jquery='full' %}
+  </body>
+  
+  </html>
+  ```
+
+- `form.html`
+
+  ```django
+  {% extends 'base.html' %}
+  {% load bootstrap4 %}
+  {% block body %}
+  {% if request.resolver_match.url_name == 'create' %}
+  <h1 class="text-center">CREATE</h1>
+  {% else %}
+  <h1 class="text-center">UPDATE</h1>
+  {% endif %}
+  ...
+  ```
+
+-----
+
+## 9. Gravatar - 프로필 이미지 만들기
+
+- 이메일을 활용해서 프로필 사진을 만들어주는 서비스
+- 한번 등록하면, 이를 지원하는 사이트에서는 모두 해당 프로필 이미지를 사용할 수 있다.
+- 이메일 체크
+  - `http://ko.gravatar.com/site/check/`
+  - 이메일 주소를 해시(MD5)로 바꾸고 URL으로 접속하면 이미지가 뜬다.(`?s=80` 으로 사이즈 조절 가능)
+- **Python으로 Hash 만들기**
+  - md5 hash 생성
+    - `import hashlib`
+  - 혹시 모를 공백, 대문자등을 방지하기 위한 Python 문법들
+    - `.strip()`, `lower()` 
+
+### 9.1 Custom Template tag & filters
+

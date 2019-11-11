@@ -1,4 +1,5 @@
 {% load bootstrap4 %}
+{% load gravatar %}
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -6,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PJT1</title>
+    <title>auth</title>
     <!-- Bootstrap CSS -->
     {% bootstrap_css %}
 </head>
@@ -14,11 +15,19 @@
 <body>
     <div class="container">
     {% if user.is_authenticated %}
-        <h2>어서오세요, {{ user.username}}</h2>
+        <h2>
+        <img src="http://s.gravatar.com/avatar/{{ user.email|makemd5 }}?s=80&d=mp">
+        어서오세요, {{ user.username}}
+        </h2>
         <a href="{% url 'accounts:logout' %}">로그아웃</a>
         <form action="{% url 'accounts:delete' %}" method="POST" style="display:inline;">
             {% csrf_token %}
             <input type="submit" value="회원탈퇴">
+        </form>
+        <a href="{% url 'accounts:update' %}">정보수정</a>
+        <form action="{% url 'accounts:change_password' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <input type="submit" value="암호변경">
         </form>
     {% else %}
         <a href="{% url 'accounts:login' %}">로그인</a>
