@@ -1,8 +1,10 @@
+from IPython import embed
 from django.shortcuts import render, redirect
 
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -26,11 +28,13 @@ def login(request):
     if request.user.is_authenticated:
         return redirect('articles:index')
 
-    if request.method=='POST':
+    if request.method=='POST': 
         form = AuthenticationForm(request, request.POST)
+        # embed()
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('articles:index')
+            # return redirect('articles:index')
+            return redirect(request.GET.get('next') or 'articles:index')
     else:
         form = AuthenticationForm()
     context = {'form' : form}
@@ -38,4 +42,9 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
+    return redirect('articles:index')
+
+@require_POST
+def delete(request):
+    request.user.delete()
     return redirect('articles:index')
