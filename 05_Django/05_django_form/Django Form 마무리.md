@@ -47,7 +47,83 @@
 
 ## 2. Django Bootstrap
 
+- `bootstrap4 를 깔자.`
 
+```bash
+STU@DESKTOP-4VU7OGG MINGW64 ~/Documents/Git/TIL/05_Django (master)
+$ pip install bootstrap4
+```
+
+- `base.html` 에서 넣어줬던 부트스트랩을 바꿔주자.
+
+```django
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PJT1</title>
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+</head>
+
+<body>
+    <div class="container">
+    {% if user.is_authenticated %}
+        <h2>어서오세요, {{ user.username}}</h2>
+        <a href="{% url 'accounts:logout' %}">로그아웃</a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">로그인</a>
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+    {% endif %}
+    
+    
+        {% block body %}
+        {% endblock  %}
+    </div>
+
+    <!-- Bootstrap JS-->
+    {% bootstrap_javascript jquery='full' %}
+</body>
+
+</html>
+```
+
+- `form.html` 도 바꿔주자.
+
+```django
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block body %}
+{% if request.resolver_match.url_name == 'create' %}
+<h1 class="text-center">CREATE</h1>
+{% else %}
+<h1 class="text-center">UPDATE</h1>
+{% endif %}
+<!--
+  action 값이 공백일 경우, 현재 위치하고 있는 주소로 요청을 보낸다.
+  폼을 던져주는 경로, DB에 저장하는 경로가 동일하다면 공백으로 해도 정상적으로 동작한다.  
+-->
+
+<div class="container">
+  <form action="" method="POST">
+    {% csrf_token %}
+    {% comment %} {{ form.as_p }} {% endcomment %}
+    {% bootstrap_form form layout='inline' %}
+    <div class="text-center">
+      {% buttons submit='제출' reset='초기화' %}{% endbuttons %}
+    </div </form> </div> <hr>
+</div>
+{% if request.resolver_match.url_name == 'create' %}
+<a href="{% url 'articles:index' %}">[BACK]</a>
+{% else %}
+<a href="{% url 'articles:detail' article.pk %}">[BACK]</a>
+{% endif %}
+{% endblock  %}
+```
 
 -----
 
@@ -100,15 +176,12 @@
   admin.site.register(Comment, CommentAdmin)
   ```
 
-  
-
-
 
 -----
 
 ## 4. View Decorators
 
-> Django가 제공하는
+> Django가 제공하는 decorator 활용하기
 
 
 
@@ -117,3 +190,31 @@
 - view 함수가 POST 메서드 요청만 승인하도록 하는 데코레이터
 - 일치하지 않는 요청이면 `405 Method Not Allowed` 에러 발생시킴
 
+```python
+# views.py
+
+@require_POST
+def delete(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    article.delete()
+    return redirect('articles:index')
+
+@require_POST
+def comments_create(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        # save 메서드 -> 선택 인자 : (기본값) commit=True
+        # DB에 바로 저장되는 것을 막아준다.
+        comment = comment_form.save(commit=False)
+        comment.article = article
+        comment.save()
+    return redirect('articles:detail', article.pk)
+    
+
+@require_POST
+def comments_delete(request, article_pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+    return redirect('articles:detail', article_pk)
+```

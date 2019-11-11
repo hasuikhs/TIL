@@ -121,7 +121,7 @@ def create(request):
     return render(request, 'articles/create.html')
 ```
 
-```html
+```django
 <!-- articles/new.html -->
 {% extends 'base.html' %}
 
@@ -175,7 +175,7 @@ def create(request):
       return render(request, 'articles/index.html', context)
   ```
 
-  ```html
+  ```django
   <!-- articles/index.html -->
   {% extends 'base.html' %}
   
@@ -197,7 +197,7 @@ def create(request):
   * 지금은 GET 요청으로 보내고 있어서 쿼리 스트링에 데이터가 노출되고 있다. 이는 우리 서버의 데이터 구조가 노출될 위험도 있고, URL 경로로만 게시글 작성이 가능하면 서버 폭파의 위험성이 증가한다.
   * POST 요청으로 바꾸어 HTTP body에 내용을 숨기고 작성자의 신원을 확인하는 절차를 거치도록 하자.
 
-  ```html
+  ```django
   <!-- articles/new.html -->
   {% extends 'base.html' %}
   
@@ -269,7 +269,7 @@ urlpatterns = [
 ]
 ```
 
-```html
+```django
 <!-- detail.html -->
 {% extends 'base.html' %}
 
@@ -285,7 +285,7 @@ urlpatterns = [
 {% endblock %}
 ```
 
-```html
+```django
 <!-- index.html -->
 ...
 {% for article in articles %}
@@ -327,7 +327,7 @@ urlpatterns = [
 ]
 ```
 
-```html
+```django
 <!-- config/templates/articles/edit.html -->
 
 {% extends 'base.html' %}

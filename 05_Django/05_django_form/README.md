@@ -141,7 +141,7 @@
       return render(request, 'articles/index.html', context)
   ```
 
-  ```html
+  ```django
   <!-- index.html -->
   {% extends 'base.html' %}
   
@@ -172,7 +172,7 @@
           return render(request, 'articles/create.html')
   ```
 
-  ```html
+  ```django
   <!-- create.html -->
   {% extends 'base.html' %}
   
@@ -205,7 +205,7 @@
       return render(request, 'articles/detail.html', context)
   ```
 
-  ```html
+  ```django
   <!-- detail.html -->
   {% extends 'base.html' %}
   

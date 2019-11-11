@@ -65,7 +65,7 @@
 
     - `new.html`을 `create.html`로 이름 변경
 
-    ```html
+    ```django
     {% extends 'base.html' %}
     
     {% block body %}
@@ -85,7 +85,7 @@
 
     - `index.html`
 
-    ```html
+    ```django
     {% extends 'base.html' %}
     
     {% block body %}
@@ -144,7 +144,7 @@
 
     - `edit.html`을 `update.html`로 이름 변경
 
-    ```html
+    ```django
     {% extends 'base.html' %}
     
     {% block body %}
