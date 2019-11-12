@@ -28,11 +28,21 @@
 
 ### 1.1 Article 모델 클래스 수정
 
+```
 
+```
 
-### 1.2 Article 
+### 1.2 Create 로직 수정
 
+```
 
+```
+
+### 1.3 Update, Delete 로직 수정
+
+```
+
+```
 
 ## 2. User - Comment
 

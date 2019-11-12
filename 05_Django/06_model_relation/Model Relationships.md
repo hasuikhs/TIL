@@ -213,6 +213,29 @@
   ]
   ```
 
+### 2.1 1:N의 한계
+
+### 2.2 중개 모델 생성
+
+- 1:N 으로만 구현하려니 예약 정보 시스템을 표현하기 어렵다.
+  - 에를 들어 Patient가 다른 Doctor에게 진료를 받고자 할때, 기존 기록을 지우지 않으려면 새로운 Patient 인스턴스를 생성해야 한다.
+- 중개 모델(class Reservation)을 만들어서 Doctor와 Patient를 이어주는 예약 정보를 담아보자.
+
+### 2.3 `through` 옵션
+
+- patient 입장에서 `reservation_set` 형태로 예약정보를 가져오는 것은 너무 불편하다.
+  - 마찬가지로 Doctor도 `reservation_set` 형태로 예약 정보를 먼저 불러온 뒤에 Patient 정보를 꺼내올 수 있다.
+- `through` 옵션을 통해 Doctor 정보를 중개 모델을 거치지 않고, 다이렉트로 가져와보자.
+
+### 2.4 `related_name`
+
+- 이제 Patient 입장에서는 `patient.doctors.all()`과 같은 형태로 쉽게 Doctor 정보를 가져올 수 있다.
+- 마찬가지로 Doctor 입장에서도 `doctor.patients.all()`과 같은 형태로 Patient 정보를 가져올 수 있게끔, `related_name` 옵션을 사용해보자.
+
+### 2.5 Many To Many
+
+- 단순히 Doctor와 Patient를 이어줄 생각이라면, 굳이 중개모델이 필요 없다. `ManyToManyField`만 사용하면 장고가 자동으로 중개 테이블을 만들어준다.
+
 - `models.py`
 
   ```python
