@@ -55,7 +55,7 @@ class ArticleForm(forms.ModelForm):
     # ex) 사진 한장 (촬영장비이름, 촬영환경 등)
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = ('title', 'content',)
         # 원하는것만 할경우
         # fields = ('title', 'content',)
 

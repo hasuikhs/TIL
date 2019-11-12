@@ -1,3 +1,7 @@
+
+
+
+
 # 종합 실습 프로젝트 1
 
 ## 0. 환경 설정
@@ -1287,3 +1291,276 @@ class Comment(models.Model):
 - 삭제한 후의 모습
 
   ![image-20191106091909489](README.assets/image-20191106091909489.png)
+
+## Athentication
+
+## 1. Accounts
+
+### 1.1 accounts application 생성
+
+- `accounts` 앱을 생성하자.
+
+```bash
+(venv)
+student@M150123 MINGW64 ~/Desktop/TIL/05_Django/04_django_PJT_1 (master)
+$ python manage.py startapp accounts
+```
+
+### 1.2 `settings.py` 등록
+
+- `INSTALLED_APPS`에 등록(잊지말자 출생신고)
+
+```python
+INSTALLED_APPS = [
+    ...
+    'accounts',
+    ...
+]
+```
+
+### 1.3 URL 분리
+
+- URL 분리을 분리하자.
+
+```python
+# config/urls.py
+
+urlpatterns = [
+    ...
+    path('accounts/', include('accounts.urls')),
+]
+
+# accounts/urls.py
+
+from django.urls import path
+from . import views
+
+app_name = 'accounts'
+urlpatterns = [
+    
+]
+```
+
+## 2. SignUp
+
+- 회원가입하는 로직을 작성하자.
+
+- `views.py`
+
+```python
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login as auth_login
+from .forms import CustomUserChangeForm, CustomUserCreationForm
+
+def signup(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # 회원가입이 완료되면 로그인하고 인덱스 페이지로...
+            auth_login(request, user)
+            return redirect('movies:index')
+    else:
+        form = CustomUserCreationForm
+    context = {'form':form}
+    return render(request, 'accounts/auth_form.html', context)
+```
+
+- `forms.py`
+
+```python
+from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        # User 클래스를 바로 사용하는 것이 아니라, get_user_model()을 사용해서 User 클래스를 참조한다.
+        model = get_user_model()
+        # UserChangeForm -> User 클래스 -> AbstractUser 클래스
+        # Django 공식문서 : user-model
+        fields = ('email', 'last_name', 'first_name',)
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = get_user_model()
+        fields = ('username', 'password1', 'password2', 'email',)
+```
+
+- `urls.py`
+
+```python
+urlpatterns = [
+    path('signup/', views.signup, name='signup'),
+]
+```
+
+- `base.html`
+
+  - bootstrap을 사용하기 위해서 깔아주자.
+
+    ```bash
+    $ pip install bootstrap4
+    ```
+
+  - 깔았다면 `INSTALLED_APP`에 출생 신고하자.
+
+    ```python
+    INSTALLED_APPS = [
+        ...
+        'bootstrap4',
+        ...
+    ]
+    ```
+
+- Django에서 제공하는 bootstrap 모듈을 이용해서 `base.html`을 수정하자.
+```django
+{% load bootstrap4 %}
+{% load gravatar %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>auth</title>
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+</head>
+
+<body>
+    <div class="container">
+    {% if user.is_authenticated %}
+        <h2>
+        <img src="http://s.gravatar.com/avatar/{{ user.email|makemd5 }}?s=80&d=mp">
+        어서오세요, {{ user.username}}
+        </h2>
+        <a href="{% url 'accounts:logout' %}">로그아웃</a>
+        <form action="{% url 'accounts:delete' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <input type="submit" value="회원탈퇴">
+        </form>
+        <a href="{% url 'accounts:update' %}">정보수정</a>
+        <form action="{% url 'accounts:change_password' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <input type="submit" value="암호변경">
+        </form>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">로그인</a>
+        <a href="{% url 'accounts:signup' %}">회원가입</a>
+    {% endif %}
+    
+    
+        {% block body %}
+        {% endblock  %}
+    </div>
+
+    <!-- Bootstrap JS-->
+    {% bootstrap_javascript jquery='full' %}
+</body>
+
+</html>
+```
+- `auth_form.html`
+
+```django
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block body %}
+{% if request.resolver_match.url_name == 'signup' %}
+    <h1>회원가입</h1>
+{% elif request.resolver_match.url_name == 'login' %}
+    <h1>로그인</h1>
+{% elif request.resolver_match.url_name == 'update' %}
+    <h1>회원정보수정</h1>
+{% else %}
+    <h1>비밀번호변경</h1>
+{% endif %}
+<hr>
+<form action="" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons submit='제출' reset='초기화' %}
+    {% endbuttons %}
+</form>
+{% endblock %}
+```
+
+- 회원가입 페이지를 확인하자.
+
+  ![image-20191112131749832](README.assets/image-20191112131749832.png)
+
+## 3. LogIn
+
+- `views.py`
+
+```python
+def login(request):
+    if request.user.is_authenticated:
+        return redirect('movies:index')
+
+    if request.method=='POST': 
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            # return redirect('articles:index')
+            return redirect(request.GET.get('next') or 'movies:index')
+    else:
+        form = AuthenticationForm()
+    context = {'form' : form}
+    return render(request, 'accounts/auth_form.html', context)
+```
+
+- `urls.py`
+
+```python
+urlpatterns = [
+    path('signup/', views.signup, name='signup'),
+    path('login/', views.login, name='login'),
+]
+```
+
+- tempatetags
+
+  ![image-20191112140828711](README.assets/image-20191112140828711.png)
+
+  - `gravatar.py`
+
+    ```python
+    import hashlib
+    from django import template
+    
+    # 기존 템플릿 라이브러리에 새로운 템플릿 추가
+    register = template.Library()
+    
+    # 아래 함수를 필터로 등록
+    @register.filter
+    def makemd5(email):
+        return hashlib.md5(email.encode('utf-8').lower().strip()).hexdigest()
+    ```
+
+## 4.  LogOut
+
+- `views.py`
+
+  ```python
+  from django.contrib.auth import logout as auth_logout
+  
+  def logout(request):
+      auth_logout(request)
+      return redirect('articles:index')
+  ```
+
+- `urls.py`
+
+  ```python
+  urlpatterns = [
+      path('signup/', views.signup, name='signup'),
+      path('login/', views.login, name='login'),
+      path('logout/', views.logout, name='logout'),
+  ]
+  ```
+
+  
