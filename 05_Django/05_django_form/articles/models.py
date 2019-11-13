@@ -9,6 +9,9 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                         related_name='like_articles', blank=True)
+
     # 객체 표시 형식 수정
     def __str__(self):
         return f'[{self.pk}] {self.title}'

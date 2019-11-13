@@ -1,0 +1,23 @@
+<div class="col-12 col-sm-6 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ article.title }}</h5>
+        <p class="card-text">
+            
+            <a href="{% url 'articles:like' article.pk %}"
+                {% comment %}사용자가 좋아요 안누른 상태 (빈하트){% endcomment %}
+                {% if request.user in article.like_users.all %}
+                {% comment %} python list in {% endcomment %}
+                    <i class="fas fa-heart"></i>
+                {% comment %} 누른 상태 (꽉찬 하트) {% endcomment %}
+                {% else %}
+                    <i class="far fa-heart"></i>
+                {% endif %}
+            </a><br>
+            글쓴이 : {{ article.user.username }}<br>
+        {{ article.like_users.all|length }}명이 이글을 좋아합니다.<br>
+        {{ article.created_at }}</p>
+        <a href="{% url 'articles:detail' article.pk %}" class="btn btn-primary">상세보기</a>
+      </div>
+    </div>
+</div>

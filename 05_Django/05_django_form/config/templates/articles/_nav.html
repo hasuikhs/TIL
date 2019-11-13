@@ -1,0 +1,55 @@
+{% load gravatar %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    
+    <a class="navbar-brand" href="{% url 'articles:index' %}">
+    <img class="rounded-circle mr-2" src="https://s.gravatar.com/avatar/{{ user.email|makemd5 }}?s=80&d=mp" alt="">
+    Hello, {{ user.username }}
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+            <li class="nav-item active">
+                <a class="btn btn-secondary" href="{% url 'articles:list' %}" role="button">좋은글보기</a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-secondary" href="{% url 'articles:explore' %}" role="button">전부보기</a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-secondary" href="{% url 'accounts:logout' %}" role="button">로그아웃</a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-secondary" href="{% url 'accounts:profile' user.username %}" role="button">마이페이지</a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-secondary" href="{% url 'accounts:update' %}" role="button">정보수정</a>
+            </li>
+            <li class="nav-item active">
+                <form action="{% url 'accounts:change_password' %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <input class="btn btn-secondary" type="submit" value="암호변경">
+                </form>
+            </li>
+            <li class="nav-item active">
+                <form action="{% url 'accounts:delete' %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <input class="btn btn-secondary" type="submit" value="회원탈퇴">
+                </form>
+            </li>
+        {% else %}
+            <li class="nav-item active">
+                <a class="btn btn-secondary" href="{% url 'accounts:login' %}" role="button">로그인</a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-secondary" href="{% url 'accounts:signup' %}" role="button">회원가입</span></a>
+            </li>
+        {% endif %}
+
+        </ul>
+    </div>
+</nav>

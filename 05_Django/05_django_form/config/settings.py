@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'accounts',
     'articles',
     'bootstrap4',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,3 +124,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # LOGIN_URL = '/members/login/'
+
+# 기본값 : auth.User
+AUTH_USER_MODEL = 'accounts.User'
