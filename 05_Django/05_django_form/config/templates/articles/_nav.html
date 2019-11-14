@@ -15,7 +15,7 @@
         <ul class="navbar-nav">
         {% if user.is_authenticated %}
             <li class="nav-item active">
-                <a class="btn btn-secondary" href="{% url 'articles:list' %}" role="button">좋은글보기</a>
+                <a class="btn btn-secondary" href="{% url 'articles:list' %}" role="button">팔로워 글보기</a>
             </li>
             <li class="nav-item active">
                 <a class="btn btn-secondary" href="{% url 'articles:explore' %}" role="button">전부보기</a>
