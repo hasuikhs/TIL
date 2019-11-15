@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="text-center">영화 상세 정보</h1>
+<p>영화 번호 : {{ movie.pk }}</p>
+<p>영화명 : {{ movie.title }}</p>
+<p>영화명(영문명) : {{ movie.title_en }}</p>
+<p>누적 관객수 : {{ movie.audience }}</p>
+<p>개봉일 : {{ movie.open_date }}</p>
+<p>장르 : {{ movie.genre }}</p>
+<p>관람등급 : {{ movie.watch_grade }}</p>
+<p>평점 : {{ movie.score }}</p>
+<img src="{{ movie.poster_url }}" alt="poster_url"/>
+<p>영화 소개</p><br>
+<p> {{ movie.description }}</p>
+<hr>
+<a href="{% url 'movies:index' %}">[영화 목록으로]</a>
+<a href="{% url 'movies:update' movie.pk %}">[영화 정보 수정하기]</a>
+<a href="{% url 'movies:delete' movie.pk %}">[영화 삭제하기]</a>
+{% endblock %}

@@ -2,7 +2,7 @@
 
 ## 1. URL Resolver
 
-- CREATE 로직과 UPDATE 로직이 같은 form.html을 공유하고 있는데, 둘다 `<h1>CREATE</h1>`라는 헤더가 출력되고 있따.
+- CREATE 로직과 UPDATE 로직이 같은 form.html을 공유하고 있는데, 둘다 `<h1>CREATE</h1>`라는 헤더가 출력되고 있다.
 
 - URL Resolver는 사용자가 요청한 URL과 장고 내부로 들어오는 URL 사이에서 번역 역할을 해준다.
 
