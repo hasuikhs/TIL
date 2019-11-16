@@ -1,17 +1,30 @@
 from django.db import models
 
 # Create your models here.
-class Movie(models.Model):
-    title = models.CharField(max_length=100)    # CharField는 max_length가 필수
-    title_en = models.CharField(max_length=100)
-    audience = models.IntegerField()
-    open_date = models.DateField()
-    genre = models.CharField(max_length=100)
-    watch_grade = models.CharField(max_length=20)
-    score = models.FloatField()
-    poster_url = models.TextField()
-    description = models.TextField()
+class User(models.Model):
+    name = models.TextField()
 
-    # 객체 표시 형식 수정
     def __str__(self):
-        return f'[{self.pk}] {self.title}'
+        return f'{self.name}'
+        
+class Movie(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    poster = models.ImageField()
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.title}'
+
+class Rating(models.Model):
+    score = models.FloatField()
+    content = models.CharField(max_length=100)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.score}'
