@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Movie
+from .forms import MovieForm
 
 # Create your views here.
 def index(request):
@@ -10,16 +11,17 @@ def index(request):
 def new(request):
     if request.method == 'POST':
 
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        poster = request.POST.get('poster')
+        form = MovieForm(request.POST)
+        if form.is_valid():
+            movie = form.save(commit=False)
+            movie.user = request.user
+            movie.save()        
 
-        movie = Movie(title=title, description=description, poster=poster)
-        movie.save()
-
-        return redirect(f'/movies/{movie.pk}/')
+        return redirect('movies:detail', movie.pk)
     else:
-        return render(request, 'movies/new.html')
+        form = MovieForm()
+    context = { 'form' : form }
+    return render(request, 'movies/new.html', context)
 
 def detail(request, movie_pk):
     movie = Movie.objects.get(pk=movie_pk)
