@@ -58,6 +58,7 @@ def edit(request, pk):
     }
     return render(request, 'movies/form.html', context)
 
-def ratings_delete(request, movie_pk):    if request.method == 'POST':
+def ratings_delete(request, movie_pk):
+        if request.method == 'POST':
         rating.delete()
         return redirect('movies:detail', movie_pk)
