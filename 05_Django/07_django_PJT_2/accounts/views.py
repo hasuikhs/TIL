@@ -7,6 +7,11 @@ from django.contrib.auth.decorators import login_required
 
 
 def signup(request):
+    # 로그인을 했을 경우
+    if request.user.is_authenticated:
+        return redirect('movies:index')
+    
+    # POST 요청일 경우
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -15,7 +20,9 @@ def signup(request):
             return redirect('movies:index')
     else:
         form = UserCreationForm
-    context = {'form':form}
+    context = {
+        'form':form
+    }
     return render(request, 'accounts/auth_form.html', context)
 
 def login(request):

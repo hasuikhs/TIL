@@ -18,6 +18,8 @@ $ pip install django
 $ pip install django-bootstrap4
 
 $ pip install bootstrap4
+
+$ pip install django-imagekit
 ```
 
 #### 0.1.3 Project 생성
@@ -39,6 +41,7 @@ $ python manage.py startapp movies
 INSTALLED_APPS = [
     'movies',
     'bootstrap4',
+    'imagekit',
     ...
 ]
 ...
@@ -135,33 +138,28 @@ TEMPLATES = [
 
 ```python
 # movies/models.py
-class User(models.Model):
-    name = models.TextField()
-
-    def __str__(self):
-        return f'{self.name}'
         
 class Movie(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    poster = models.ImageField()
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    poster = ProcessedImageField(
+        upload_to='movies/posters',
+        processors=[ResizeToFill(400, 600)],
+        format='PNG', # or JPEG, etc.
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f'{self.title}'
 
 class Rating(models.Model):
     score = models.FloatField()
-    content = models.CharField(max_length=100)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
+    content = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.score}'
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 ```
 
 - 이제 마이그레이션 하자.
@@ -176,7 +174,7 @@ $ python manage.py migrate
 
 ## 2. Accounts
 
-### 2.1 accoutns Application 생성
+### 2.1 accounts Application 생성
 
 ```bash
 $ python manage.py startapp accounts
@@ -219,17 +217,22 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login
 
 def signup(request):
+    # 로그인을 했을 경우
+    if request.user.is_authenticated:
+        return redirect('movies:index')
+    
+    # POST 요청일 경우
     if request.method == 'POST':
-        # Django에서 기본적으로 제공하는 폼
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # 회원가입후 자동으로 로그인이 되는 로직
             auth_login(request, user)
             return redirect('movies:index')
     else:
         form = UserCreationForm
-    context = { 'form' : form }
+    context = {
+        'form':form
+    }
     return render(request, 'accounts/auth_form.html', context)
 ```
 
@@ -264,18 +267,25 @@ def signup(request):
 
 ```python
 def login(request):
+    # 로그인 했을 경우
     if request.user.is_authenticated:
         return redirect('movies:index')
 
-    if request.method=='POST': 
+    # POST 요청일 경우
+    if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
-            auth_login(request, form.get_user())
+            user = form.get_user()
+            auth_login(request, user)
             return redirect(request.GET.get('next') or 'movies:index')
+    # GET 요청일 경우
     else:
         form = AuthenticationForm()
-    context = {'form' : form}
-    return render(request, 'accounts/auth_form.html', context)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/login.html', context)
 ```
 
 - `accounts/urls.py`
@@ -314,7 +324,9 @@ from .models import Movie
 # Create your views here.
 def index(request):
     movie = Movie.objects.all()
-    context = {'movies' : movie}
+    context = {
+        'movies' : movie
+    }
     return render(request, 'movies/index.html', context)
 ```
 
@@ -332,16 +344,22 @@ urlpatterns=[
 {% extends 'base.html' %}
 
 {% block body %}
-<h1 class="text-center">Movies</h1>
-<a href="{% url 'movies:create' %}">[새 영화 등록]</a>
-<hr>
-{% for movie in movies %}
-   <p>
-    [{{ movie.pk }}] {{ movie.title }}
-  </p>
-<hr>
-{% endfor %}
-{% endblock  %}
+
+<h1>Movie List</h1>
+
+{% if user.is_authenticated %}
+<a href="{% url 'movies:new' %}">새 영화 등록</a>
+{% endif %}
+
+<ul>
+  {% for movie in movies %}
+  <li>
+    <a href="{% url 'movies:detail' movie.pk %}">{{ movie.title }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
 ```
 
 - `127.0.0.1:8000/movies/` 로 접속시
@@ -352,22 +370,50 @@ urlpatterns=[
 
 ![image-20191116202545168](README.assets/image-20191116202545168.png)
 
+- `movies/forms.py`
+
+```python
+from django import forms
+from .models import Movie, Rating
+
+
+class MovieForm(forms.ModelForm):
+    class Meta:
+        model = Movie
+        fields = ('title', 'description', 'poster',)
+
+
+class RatingForm(forms.ModelForm):
+    score = forms.FloatField(
+            initial=5,
+            max_value=5, min_value=0,
+            widget=forms.NumberInput(attrs={'step': '0.1'}),
+        )
+
+    class Meta:
+        model = Rating
+        fields = ('score', 'content',)
+```
+
 - `movies/views.py`
 
 ```python
+@login_required
 def new(request):
     if request.method == 'POST':
-
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        poster = request.POST.get('poster')
-
-        movie = Movie(title=title, description=description, poster=poster)
-        movie.save()
-
-        return redirect(f'/movies/{movie.pk}/')
+        form = MovieForm(request.POST, request.FILES)
+        if form.is_valid():
+            movie = form.save(commit=False)
+            movie.user = request.user
+            movie.save()
+            return redirect('movies:detail', movie.pk)
     else:
-        return render(request, 'movies/new.html')
+        form = MovieForm()
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'movies/form.html', context)
 ```
 
 - `movies/urls.py`
@@ -378,23 +424,22 @@ urlpatterns=[
 ]
 ```
 
-- `config/templates/movies/new.html`
+- `config/templates/movies/form.html`
+  - edit와 new html 통합
 
 ```django
 {% extends 'base.html' %}
 
 {% block body %}
-<h1 class="text-center">영화 등록</h1>
-<form action="/movies/new/" method="POST">
-{% csrf_token %}
-  영화명 : <input type="text" name="title"><br>
-  영화 소개 : <br>
-  <textarea name="description" cols="30" rows="10"></textarea>
-  포스터 : <input type="file" name="poster">
+
+<h1>Movie Form</h1>
+
+<form action="" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
   <input type="submit">
 </form>
-<hr>
-<a href="/movies/">[영화 목록으로]</a>
+
 {% endblock %}
 ```
 
@@ -403,12 +448,15 @@ urlpatterns=[
 - `movies/views.py`
 
 ```python
-def detail(request, movie_pk):
-    movie = Movie.objects.get(pk=movie_pk)
-    comments = movie.comment_set.all()
+def detail(request, pk):
+    movie = Movie.objects.get(pk=pk)
+    ratings = movie.rating_set.all()
+    rating_form = RatingForm()
+
     context = {
-         'movie' : movie,
-         'comments' : comments,
+        'movie': movie,
+        'ratings': ratings,
+        'rating_form': rating_form,
     }
     return render(request, 'movies/detail.html', context)
 ```
@@ -426,27 +474,31 @@ urlpatterns=[
 ```django
 {% extends 'base.html' %}
 
+
 {% block body %}
-<h1 class="text-center">영화 상세 정보</h1>
-<table>
-<tr>
-<td>영화명 : <td>
-<td>{{ movie.title }}</td>
-</tr>
-<tr>
-<td>영화 소개</td>
-<td> {{ movie.description }}</td>
-</tr>
-<tr>
-<td>포스터</td>
-<td>{{ movie.poster }}</td>
-</tr>
-</table>
-<div class="btn-group" role="group" aria-label="Basic example">
-  <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:index' %}'">영화 목록으로</button>
-  <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:update' movie.pk %}'">영화 정보 수정하기</button>
-  <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:delete' movie.pk %}'">영화 삭제하기</button>
+
+<h1>Movie Detail</h1>
+
+<p>User: {{ movie.user.username }}</p>
+<p>Title: {{ movie.title }}</p>
+<p>Description: {{ movie.description }}</p>
+{% if movie.poster %}
+<p>Poster: <img src="{{ movie.poster.url }}" alt="Poster"></p>
+{% endif %}
+<p>Created At: {{ movie.created_at }}</p>
+<p>Updated At: {{ movie.updated_at }}</p>
+
+<div>
+  <a href="{% url 'movies:index' %}">목록</a>
+  {% if user == movie.user %}
+  <a href="{% url 'movies:edit' movie.pk %}">수정</a>
+  <form action="{% url 'movies:delete' movie.pk %}" method="POST" style="display: inline-block;">
+    {% csrf_token %}
+    <input type="submit" value="삭제">
+  </form>
+  {% endif %}
 </div>
+
 <hr>
 {% endblock %}
 ```
@@ -456,23 +508,24 @@ urlpatterns=[
 - `movies/views.py`
 
 ```python
-def update(request, movie_pk):
-    # 1. 수정할 게시글 인스턴스 가져오기
-    movie = Movie.objects.get(pk=movie_pk)
+@login_required
+def edit(request, pk):
+    movie = Movie.objects.get(pk=pk)
+    if movie.user != request.user:
+        return redirect('movies:index')
+
     if request.method == 'POST':
-        # 2. 폼에서 전달받은 데이터 덮어쓰기
-        movie.title = request.POST.get('title')
-        movie.description = request.POST.get('description')
-        movie.poster = request.POST.get('poster')
-
-        # 3. DB 저장
-        movie.save()
-
-        # 4. 저장 끝났으면 게시글 Detial로 이동시키기
-        return redirect(f'/movies/{movie.pk}/')
+        form = MovieForm(request.POST, request.FILES, instance=movie)
+        if form.is_valid():
+            movie = form.save()
+            return redirect('movies:detail', movie.pk)
     else:
-        context = { 'movie': movie }
-        return render(request, 'movies/update.html', context)
+        form = MovieForm(instance=movie)
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'movies/form.html', context)
 ```
 
 - `movies/urls.py`
@@ -481,26 +534,6 @@ def update(request, movie_pk):
 urlpatterns=[
     path('<int:movie_pk>/edit/', views.edit, name='edit'),
 ]
-```
-
-- `config/templates/movies/edit.html`
-
-```django
-{% extends 'base.html' %}
-
-{% block body %}
-<h1 class="text-center">영화 정보 수정</h1> 
-<form action="{% url 'movies:edit' movie.pk %}" method="POST">
-{% csrf_token %}
-  영화명 : <input type="text" name="title" value="{{ movie.title }}"><br>
-  영화 소개 : <br>
-  <textarea name="description" cols="30" rows="10" value="{{ movie.description }}"></textarea>
-  포스터 : <input type="file" name="poster">
-  <input type="submit" onclick="alert('수정 되었습니다!');">
-</form>
-<hr>
-<a href="/movies/">[영화 목록으로]</a>
-{% endblock %}
 ```
 
 ### 3.6 Delete

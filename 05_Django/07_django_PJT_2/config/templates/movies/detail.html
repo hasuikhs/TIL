@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
 
+
 {% block body %}
-<h1 class="text-center">영화 상세 정보</h1>
-<table>
-<tr>
-<td>영화명 : <td>
-<td>{{ movie.title }}</td>
-</tr>
-<tr>
-<td>영화 소개</td>
-<td> {{ movie.description }}</td>
-</tr>
-<tr>
-<td>포스터</td>
-<td>{{ movie.poster }}</td>
-</tr>
-</table>
-<div class="btn-group" role="group" aria-label="Basic example">
-  <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:index' %}'">영화 목록으로</button>
-  <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:update' movie.pk %}'">영화 정보 수정하기</button>
-  <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'movies:delete' movie.pk %}'">영화 삭제하기</button>
+
+<h1>Movie Detail</h1>
+
+<p>User: {{ movie.user.username }}</p>
+<p>Title: {{ movie.title }}</p>
+<p>Description: {{ movie.description }}</p>
+{% if movie.poster %}
+<p>Poster: <img src="{{ movie.poster.url }}" alt="Poster"></p>
+{% endif %}
+<p>Created At: {{ movie.created_at }}</p>
+<p>Updated At: {{ movie.updated_at }}</p>
+
+<div>
+  <a href="{% url 'movies:index' %}">목록</a>
+  {% if user == movie.user %}
+  <a href="{% url 'movies:edit' movie.pk %}">수정</a>
+  <form action="{% url 'movies:delete' movie.pk %}" method="POST" style="display: inline-block;">
+    {% csrf_token %}
+    <input type="submit" value="삭제">
+  </form>
+  {% endif %}
 </div>
+
 <hr>
 {% endblock %}
