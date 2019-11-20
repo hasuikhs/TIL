@@ -1,0 +1,32 @@
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>auth</title>
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/9f917798c5.js" crossorigin="anonymous"></script>
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    {% include 'articles/_nav.html'%}
+    <div class="container">
+
+    
+        {% block body %}
+        {% endblock  %}
+    </div>
+
+    <!-- Bootstrap JS-->
+    {% bootstrap_javascript jquery='full' %}
+</body>
+
+</html>
