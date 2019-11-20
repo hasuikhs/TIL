@@ -108,7 +108,7 @@ def hashtag(request, hash_pk):
 
 - 구조
 
-  ![image-20191114131344359](C:%5CUsers%5Cstudent%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20191114131344359.png)
+  ![image-20191114131344359](Hashtag%20,%20Social%20Login.assets/image-20191114131344359.png)
 
 ```django
 <!-- hashtag.html -->
@@ -147,7 +147,7 @@ urlpatterns = [
 <hr>
 ```
 
-![image-20191114132017959](C:%5CUsers%5Cstudent%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20191114132017959.png)
+![image-20191114132017959](Hashtag%20,%20Social%20Login.assets/image-20191114132017959.png)
 
 ```python
 # make_link.py
@@ -227,17 +227,13 @@ urlpatterns = [
 
 - KAKAO Developers에 로그인해서 앱을 만들고 다음 사진과 같이 진행하자.
 
-![image-20191114141450757](C:%5CUsers%5Cstudent%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20191114141450757.png)
+![image-20191114141450757](Hashtag%20,%20Social%20Login.assets/image-20191114141450757.png)
 
-![image-20191114141641695](C:%5CUsers%5Cstudent%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20191114141641695.png)
+![image-20191114141736108](Hashtag%20,%20Social%20Login.assets/image-20191114141736108.png)
 
-![image-20191114141736108](C:%5CUsers%5Cstudent%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20191114141736108.png)
+![image-20191114141856808](Hashtag%20,%20Social%20Login.assets/image-20191114141856808.png)
 
-![image-20191114141856808](C:%5CUsers%5Cstudent%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20191114141856808.png)
-
-
-
-![image-20191114142033387](C:%5CUsers%5Cstudent%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20191114142033387.png)
+![image-20191114142033387](Hashtag%20,%20Social%20Login.assets/image-20191114142033387.png)
 
 - 클라이언트 아이디에 REST API 키를 넣고
 - 비밀 키에 클라이언트 Secret 코드를 넣자.
