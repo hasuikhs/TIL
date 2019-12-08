@@ -1,0 +1,27 @@
+#back {
+    width : 90%;
+    background-color: #eeeeee;
+    padding : 15px;
+    margin: 0 auto;
+}
+
+#img {
+    width: 100%;
+    text-align: center;
+    padding : 5px;
+    opacity: 0.9;
+}
+
+#title {
+    text-align : center;
+    font-size : 30px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color : #333334;
+}
+
+#content {
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #646464;
+}
