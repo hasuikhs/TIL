@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Survey Form</title>
+    <link rel="stylesheet" href="SurveyForm.css">
+</head>
+<body>
+    <div id="main">
+        <h2 style="text-align : center;">Survey Form</h2>
+        <div id="form">
+            <form>
+                <p style="text-align : center;">Let us know how we can improve freeCodeCamp</p>
+                <table>
+                    <tr>
+                        <td><sup>*</sup> Name: </td>
+                        <td><input class="input" type="text" name="name" placeholder="Enter your name"></td>
+                    </tr>
+                    <tr>
+                        <td><sup>*</sup> Email: </td>
+                        <td><input class="input" type="text" name="email" placeholder="Enter your Email"></td>
+                    </tr>
+                    <tr>
+                        <td><sup>*</sup> Age: </td>
+                        <td><input class="input" type="number" min="0" max="200" name="age" placeholder="Age"></td>
+                    </tr>
+                    <tr>
+                        <td>Which option best describes your current role?</td>
+                        <td>
+                            <select class="input" name="job">
+                                <option value="student">Student</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
