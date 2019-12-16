@@ -10,26 +10,55 @@
         <h2 style="text-align : center;">Survey Form</h2>
         <div id="form">
             <form>
-                <p style="text-align : center;">Let us know how we can improve freeCodeCamp</p>
                 <table>
                     <tr>
-                        <td><sup>*</sup> Name: </td>
-                        <td><input class="input" type="text" name="name" placeholder="Enter your name"></td>
+                        <td colspan="2" style="text-align : center;">Let us know how we can improve freeCodeCamp</td>
                     </tr>
                     <tr>
-                        <td><sup>*</sup> Email: </td>
-                        <td><input class="input" type="text" name="email" placeholder="Enter your Email"></td>
+                        <td class="label"><sup>*</sup> Name: </td>
+                        <td class="contents"><input class="input" type="text" name="name" placeholder=" Enter your name"></td>
                     </tr>
                     <tr>
-                        <td><sup>*</sup> Age: </td>
-                        <td><input class="input" type="number" min="0" max="200" name="age" placeholder="Age"></td>
+                        <td class="label"><sup>*</sup> Email: </td>
+                        <td class="contents"><input class="input" type="text" name="email" placeholder=" Enter your Email"></td>
                     </tr>
                     <tr>
-                        <td>Which option best describes your current role?</td>
-                        <td>
-                            <select class="input" name="job">
+                        <td class="label"><sup>*</sup> Age: </td>
+                        <td class="contents"><input class="input" type="number" min="0" max="200" name="age" placeholder=" Age"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Which option best describes your current role?</td>
+                        <td class="contents">
+                            <select class="option" name="job">
                                 <option value="student">Student</option>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><sup>*</sup> How likely is that you would recommend freeCodeCamp to a friend?</td>
+                        <td class="contents">
+                            <label><input type="radio" name="recommend" value="definitely"> Definitely </label><br>
+                            <label><input type="radio" name="recommend" value="maybe"> Maybe</label><br>
+                            <label><input type="radio" name="recommend" value="not sure"> Not sure</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">What do you like most in FCC:</td>
+                        <td class="contents">
+                            <select class="option" name="like">
+                                <option value="">Select an option</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <p>Things that should be improved in the future</p>
+                            <p>(Check all that apply):</p>
+                        </td>
+                        <td class="contents">
+                            <input type="checkbox" name="future" value="front"> Front-end Projects<br>
+                            <input type="checkbox" name="future" value="back"> Back-end Projects<br>
+                            <input type="checkbox" name="future" value="data"> Data Visualization<br>
                         </td>
                     </tr>
                 </table>

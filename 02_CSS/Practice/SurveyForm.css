@@ -17,3 +17,20 @@ table {
 .input {
     width: 300px;
 }
+
+.option {
+    width: 120px;
+}
+
+.label {
+    margin-top: 50px;
+    text-align: right;
+}
+
+.contents {
+    text-align: left;
+}
+
+.checkbox_align {
+    vertical-align: middle;
+}
