@@ -2,6 +2,8 @@
 
 [CSS Practice Site](https://medium.com/better-programming/7-projects-to-practice-html-css-skills-for-beginners-cba7521a45b)
 
+**피드백 노션** : [클릭](https://www.notion.so/homekeeper/CSS-c53c39ba4af1442280aca0e523cac5a9)
+
 ## 1주차
 
 ### 1. div? span?
