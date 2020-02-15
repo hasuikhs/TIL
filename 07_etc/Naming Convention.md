@@ -131,9 +131,4 @@
     |  btn_Search.gif   |    btn_srch.gif    |     영문 소문자      |
     |  1btn_search.gif  |    btn_srch.gif    | 숫자로 시작하지 않음 |
   
-  ### 2.3 CSS
-  
-  - 모든 속성은 영문 소문자로만 작성
-  - 
-  
   
