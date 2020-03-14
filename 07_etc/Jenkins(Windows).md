@@ -85,4 +85,94 @@
 
 ![image-20200311165655479](Jenkins(Windows).assets/image-20200311165655479.png)
 
-[https://kutar37.tistory.com/entry/Jenkins-%EC%B6%94%EA%B0%80%EC%84%A4%EC%A0%95-Maven-JDK-Git-Plugin-2](https://kutar37.tistory.com/entry/Jenkins-추가설정-Maven-JDK-Git-Plugin-2)
+#### 3.4.1 Plugin 설치
+
+- 필요한 플러그인은 다음과 같음
+  - Git plugin
+  - GItHub plugin (GitLab도 가능)
+  - Deploy to container plugin
+- 처음 설치할때 **Suggested plugin**을 선택했다면, Git과 GitHub 플러그인은 기본으로 설치되어 있음
+
+![image-20200314161355676](Jenkins(Windows).assets/image-20200314161355676.png)
+
+- 설치 후 재시작
+
+## 4. Git Setting
+
+### 4.1 Git 토큰 발급
+
+- **프로필**을 누르고 **Settings** 진입
+
+- 왼쪽 사이드 메뉴에서 **Developer setting** 진입
+
+  ![image-20200314164742550](Jenkins(Windows).assets/image-20200314164742550.png)
+
+- 진입후 **Personal access tokens** 클릭
+
+  ![image-20200314164853664](Jenkins(Windows).assets/image-20200314164853664.png)
+
+- **Generate new token**을 눌러 새 토큰을 발급
+
+  - **repo**와 **admin:repo_hook** 체크
+
+  ![image-20200314165126863](Jenkins(Windows).assets/image-20200314165126863.png)
+
+- **Generate token하고 발급 받은 토큰을 복사**
+
+### 4.2 Git - Jenkins 연동
+
+- Jenkins 관리로 돌아와서 **시스템 설정**
+
+  ![image-20200314165438316](Jenkins(Windows).assets/image-20200314165438316.png)
+
+- **GitHub**를 찾아서 **Add GitHub Server**를 누르고 API URL은 그대로 두고 **Add 버튼**을 클릭
+
+  - **kind를 Secret text**, **Secret**에 아까 Git에서 발급받은 토큰을 입력
+
+    ![image-20200314165748193](Jenkins(Windows).assets/image-20200314165748193.png)
+
+- Test connection을 하면 정상적으로 연동이 되는지 확인 가능하다.
+
+  ![image-20200314170042423](Jenkins(Windows).assets/image-20200314170042423.png)
+
+## 5. GitHub 프로젝트 연동 및 자동 배포
+
+### 5.1 GitHub 프로젝트 연동
+
+- **Jenkins 메인페이지**에서, **New Item 메뉴**를 선택 후 **Freestyle project** 진입
+
+  ![image-20200314170821676](Jenkins(Windows).assets/image-20200314170821676.png)
+
+- **GitHub project 체크** 후 프로젝트 URL을 입력
+
+  ![image-20200314171022469](Jenkins(Windows).assets/image-20200314171022469.png)
+
+- **소스코드 관리** 탭에서 **Git을 선택 후 Repository URL**에 프로젝트 URL에 .git을 붙인 URL을 입력
+
+  ![image-20200314171234263](Jenkins(Windows).assets/image-20200314171234263.png)
+
+- **Credentials**에서 Add 버튼을 누르고, Git id/pw를 이용한다면 username, password에 각각 입력
+
+  ![image-20200314171456743](Jenkins(Windows).assets/image-20200314171456743.png)
+
+### 5.2 자동 배포
+
+- **빌드 후 조치** 탭에서 **Deploy war/ear a container**를 선택 후
+
+- 다음과 같이 입력
+
+  ![image-20200314174922852](Jenkins(Windows).assets/image-20200314174922852.png)
+
+- 배포 서버의 톰켓경로를 찾아서 `톰켓경로/conf/tomcat-user.xml`에래 role과 user를 추가
+
+  ```xml
+  <role rolename="manager-gui"/>
+  <role rolename="manager-script"/>
+  <role rolename="manager-status"/>
+  <user name="아이디" password="패스워드" roles="manager-gui,manager-script,manager-status" />
+  ```
+
+- tomcat URL과 Credentials를 입력
+
+  ![image-20200314175836325](Jenkins(Windows).assets/image-20200314175836325.png)
+
