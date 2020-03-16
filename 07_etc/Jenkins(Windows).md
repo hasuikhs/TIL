@@ -81,7 +81,7 @@
 
 ![image-20200311165312053](Jenkins(Windows).assets/image-20200311165312053.png)
 
-### 3.4 Plugin 관리
+### 3.4 기타 관리
 
 ![image-20200311165655479](Jenkins(Windows).assets/image-20200311165655479.png)
 
@@ -96,6 +96,12 @@
 ![image-20200314161355676](Jenkins(Windows).assets/image-20200314161355676.png)
 
 - 설치 후 재시작
+
+#### 3.4.2 시스템 설정
+
+- 시스템 설정 - Jenkins URL의 LocalHost를 현재 컴퓨터의 IP로 변경
+
+  ![image-20200316102324557](Jenkins(Windows).assets/image-20200316102324557.png)
 
 ## 4. Git Setting
 
@@ -127,7 +133,7 @@
 
 - **GitHub**를 찾아서 **Add GitHub Server**를 누르고 API URL은 그대로 두고 **Add 버튼**을 클릭
 
-  - **kind를 Secret text**, **Secret**에 아까 Git에서 발급받은 토큰을 입력
+  - **kind를 Secret text**, **Secret**에 아까 Git에서 발급받은 토큰과 구분용 ID를 입력
 
     ![image-20200314165748193](Jenkins(Windows).assets/image-20200314165748193.png)
 
@@ -155,7 +161,23 @@
 
   ![image-20200314171456743](Jenkins(Windows).assets/image-20200314171456743.png)
 
-### 5.2 자동 배포
+### 5.2 Webhook
+
+- **GitHub repository - Settings - Webhooks 메뉴에서 add webhook 클릭**
+
+- Payload URL에는 `Jenkins 주소/github-webhook/`을 입력
+
+  ![image-20200316113437245](Jenkins(Windows).assets/image-20200316113437245.png)
+
+- 다시 젠킨스로 돌아와서 프로젝트의 **빌드 유발** 탭에서 **GitHub hook trigger for GITScm polling** 체크
+
+  ![image-20200316114059278](Jenkins(Windows).assets/image-20200316114059278.png)
+
+- Build 탭에서 **Invoke top-level Maven targets** 선택 후 아래와 같이 입력
+
+  ![image-20200316114312172](Jenkins(Windows).assets/image-20200316114312172.png)
+
+### 5.3 자동 배포
 
 - **빌드 후 조치** 탭에서 **Deploy war/ear a container**를 선택 후
 
