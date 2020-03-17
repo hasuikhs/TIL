@@ -198,3 +198,25 @@
 
   ![image-20200314175836325](Jenkins(Windows).assets/image-20200314175836325.png)
 
+- 만약 아파치 톰켓이 설치된 `설치루트/webapps`에 **manager 폴더**가 없다면 홈페이지에서 압축파일을 받아서 가져오자
+
+- 또한 `localhost:포트/manager`에서 **403 애러**가 난다면 `/webapps/manager/META-INF`의 `context.xml` 수정
+
+  ```xml
+  <!--
+  	<value ... />
+  -->
+  ```
+
+- Jenkins로 돌아와서 **Build Now**
+
+  ![image-20200317123627363](Jenkins(Windows).assets/image-20200317123627363.png)
+
+- 빌드 성공 여부
+
+  ![image-20200317123651323](Jenkins(Windows).assets/image-20200317123651323.png)
+
+- 주소로 들어가 보면 확인
+
+  ![image-20200317123824543](Jenkins(Windows).assets/image-20200317123824543.png)
+
