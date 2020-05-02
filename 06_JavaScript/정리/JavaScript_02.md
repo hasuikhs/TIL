@@ -210,7 +210,7 @@ window.onload = function () {
 }
 ```
 
-```java
+```javascript
 // 익명 함수로 처리
 window.onload = function () {
 	let btn = document.getElementById("btn")
