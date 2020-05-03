@@ -187,7 +187,7 @@ window.onload = function() {	// window.onload는 HTML 문서가 로드될 때 �
     - 버블링 : 이벤트가 발생한 요소부터 window까지 이벤트를 전파
     - 캡처링 : window로부터 이벤트가 발생한 요소까지 이벤트 전파
 
-    <img src="JavaScript_02.assets/9935C9425AE422C52C.png" alt="캡처링 버블링" style="zoom: 33%;" />
+    <img src="JavaScript_02.assets/9935C9425AE422C52C.png" alt="캡처링 버블링" style="zoom: 50%;" />
 
 ```javascript
 window.onload = function () {
@@ -228,8 +228,6 @@ window.onload = function () {
 }
 ```
 
-
-
 #### 2.2.3 이벤트 종류
 
 - 이벤트 핸들러는 이벤트 앞에 on을 붙여줌(적용 방법 1 참고)
@@ -258,3 +256,52 @@ window.onload = function () {
 |   keyup   |         키를 누르고 놓았을 때         |
 |   move    |      윈도우나 프레임을 움직일 때      |
 |  resize   |  윈도우나 프레임 사이즈를 움직일 때   |
+
+## 3. 클로저(Closure)
+
+### 3.1 정적 유효범위
+
+- JavaScript에서는 코드가 적힌 순간 변수의 유효범위가 점해짐
+- 이것을 정적 유효범위(Lexical Scope)라고 부름
+
+```javascript
+function main) {
+    var name = 'main'
+}
+```
+
+- `var`로 선언한 변수의 유효범위는 함수를 벗어날 수 없음 즉, 함수 아네서 선언한 변수는 함수 밖에서 접근 불가능
+
+```javascript
+var name = 'main'
+
+function print() {
+    console.log(name)
+}
+function main() {
+    name = 'fMain'
+    print()
+}
+
+main()
+```
+
+- 위의 코드의 실행 결과는 `fMain`
+- `main()` 메서드가 실행된 후 전역변수인 `name`의 값을 변경하였기 때문에  `fMain` 출력
+
+```javascript
+var name = 'main'
+
+function print() {
+    console.log(name)
+}
+function main() {
+    var name = 'fMain'
+    print()
+}
+
+main()
+```
+
+- 위의 코드의 실행 결과는 `main`
+- `main()` 메서드의 `name` 변수는 전역변수인 `name` 변수가 아니고 `main()` 함수 안에서 선언되어 함수 밖으로 벗어날 수 없기 때문
