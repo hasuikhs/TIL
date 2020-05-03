@@ -283,10 +283,9 @@ function main() {
     print()
 }
 
-main()
+main()		// fMain 출력
 ```
 
-- 위의 코드의 실행 결과는 `fMain`
 - `main()` 메서드가 실행된 후 전역변수인 `name`의 값을 변경하였기 때문에  `fMain` 출력
 
 ```javascript
@@ -300,8 +299,36 @@ function main() {
     print()
 }
 
-main()
+main()		// main 출력
 ```
 
-- 위의 코드의 실행 결과는 `main`
 - `main()` 메서드의 `name` 변수는 전역변수인 `name` 변수가 아니고 `main()` 함수 안에서 선언되어 함수 밖으로 벗어날 수 없기 때문
+
+### 3.2 클로저란?
+
+- 외부함수의 맥락(Context)에 접근 가능한 내부함수 좀 더 포괄적으로는 함수 선언시 생성되는 유효범위
+
+- 함수 내에 선언된 로컬 변수를 외부에서도 참조 가능한 기능
+- 관점에 따라 모든 JavaScript 함수가 클로저라고 볼 수 있음
+- 클로저는 남발하면 위험, 가비지컬렉션 대상이 되어야할 객체들이 메모리 상에 남게 되므로, 클로저를 남발하면 오버플로우 발생 가능
+
+```javascript
+function outFunc(value) {
+    var outVal = 'this value is '
+    
+    function inFunc() {
+        return outVal + value
+    }
+    
+    return inFunc
+}
+
+var result  = outFunc('value01')
+console.log('result : ' + result())	// result : this value is value01
+```
+
+- 내부함수 `inFunc()`에서 `outFunc()`의 인자와 지역변수에 접근이 가능
+- `outFunc()`의 return 값은 `inFunc()`라는 내부함수
+- `outFunc()` 함수가 실행되면, `outFunc()`의 Scope는 끝이 나기 때문에 `outFunc()` 인자인 value와 지역변수인 outVal는 메모리에서 정리되어야 하지만, 실제 console.log에서 result를 호출하면, 내부함수 `inFunc()`가 선언될 때 `outFunc()` 함수의 인자와 outVal 지역변수를 `inFunc()`의 클로저 객체로 남아 실제로 `inFunc()`가 호출될 때 클로저 객체를 통해서 `outFunc()`의 인자와 변수에 접근이 가능
+- 이것이 클로저가 하는 일
+
