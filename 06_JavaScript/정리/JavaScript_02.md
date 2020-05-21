@@ -107,7 +107,7 @@
   }
   ```
 
-- **setAttribute(attribute, value)**
+- **`setAttribute(attribute, value)`**
 
   - 요소의 속성의 정보를 바꿀 수 있는 메소드
   - 첫번째 인자는 바꾸고 싶은 속성, 두 번째 인자는 바꿀 값
@@ -256,6 +256,67 @@ window.onload = function () {
 |   keyup   |         키를 누르고 놓았을 때         |
 |   move    |      윈도우나 프레임을 움직일 때      |
 |  resize   |  윈도우나 프레임 사이즈를 움직일 때   |
+
+### 2.3 이벤트 거는 방법
+
+#### 2.3.1 DOM을 이용한 방법
+
+```html
+<button id-"btn">버튼</button>
+```
+
+- 이전에 사용한 방법
+
+```javascript
+let btn = document.getElementById("btn")
+btn.onclick = function() {
+    // 이벤트
+}
+```
+
+- addEventListener를 이용한 방법
+
+```javascript
+let btn = document.getElementById("btn")
+btn.addEventListener("click", () => {
+    // 이벤트
+})
+```
+
+#### 2.3.2 jQuery를 이용한 방법
+
+```javascript
+$("#btn").click(function(){
+    // 이벤트
+})
+```
+
+#### 2.3.2 태그에 거는 방법
+
+- 기본 방법
+
+  ```html
+  <button onclick="click()">버튼</button>
+  ```
+
+  ```javascript
+  function click(){
+      // 이벤트
+  }
+  ```
+
+- data 속성을 이용해 인자를 보내고 쓰는 방법
+
+  ```html
+  <button onclick="click(this)" data-d1="d1" data-d2="d2">버튼</button>
+  ```
+
+  ```javascript
+  function click(para) {
+      $(para).data("d1")
+      // ...
+  }
+  ```
 
 ## 3. 클로저(Closure)
 
