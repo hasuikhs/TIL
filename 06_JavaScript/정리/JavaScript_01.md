@@ -303,6 +303,7 @@ console.log(sum)
 
 - `arr.find(callback(element, index, array))`
 - 주어진 판별 함수를 만족하는 첫번째 요소의 값을 반환
+  
   - 값이 없으면 `undefined`
 - 조건에 맞는 인덱스가 아니라 요소 자체를 원할 때 사용
 
@@ -424,7 +425,7 @@ console.log(sub(2, 1))
 
 ### 5.3 화살표 함수(Arrow Function)
 
-- ES6 이후 사용 가능
+- ES6+
 - function과 중괄호 숫자를 줄이려고 고안된 문법
   1. function 키워드 생략 가능
   2. 함수에 매개변수 하나 -> `()` 생략 가능
@@ -466,7 +467,7 @@ person.Products			// {cup : "cup", phone : "phone"}
 person.Products.cup		// "cup"
 ```
 
-- ES6 이후
+- ES6+
 
 ```javascript
 let books = ['DOM 스크립트', '시스템 성능 구조']
@@ -483,4 +484,3 @@ const bookShop = {
     magazines
 }
 ```
-

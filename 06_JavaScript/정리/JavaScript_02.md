@@ -182,12 +182,12 @@ window.onload = function() {	// window.onload는 HTML 문서가 로드될 때 �
 
   - **실행할 이벤트 리스너** : 지정된 이벤트가 발생했을 때 실행할 이벤트 리스너를 전달
 
-  - **이벤트 전파 방식** : false면 버블링(Bubbling), true면 캡처링(Capturing) 방식
+  - **이벤트 전파 방식(Optional)** : false면 버블링(Bubbling), true면 캡처링(Capturing) 방식
 
     - 버블링 : 이벤트가 발생한 요소부터 window까지 이벤트를 전파
     - 캡처링 : window로부터 이벤트가 발생한 요소까지 이벤트 전파
 
-    <img src="JavaScript_02.assets/9935C9425AE422C52C.png" alt="캡처링 버블링" style="zoom: 50%;" />
+    <img src="JavaScript_02.assets/image-20200504132422506.png" alt="image-20200504132422506" style="zoom:120%;" />
 
 ```javascript
 window.onload = function () {
@@ -211,7 +211,7 @@ window.onload = function () {
 ```
 
 ```javascript
-// 익명 함수로 처리
+// 익명 함수로 처리하는 방법
 window.onload = function () {
 	let btn = document.getElementById("btn")
 	const idText = document.getElementById("text")
@@ -230,7 +230,7 @@ window.onload = function () {
 
 #### 2.2.3 이벤트 종류
 
-- 이벤트 핸들러는 이벤트 앞에 on을 붙여줌(적용 방법 1 참고)
+- 이벤트 핸들러는 이벤트 앞에 on을 붙여줌(2.2.1 참고)
 
 |   종류    |                 설명                  |
 | :-------: | :-----------------------------------: |
@@ -392,4 +392,3 @@ console.log('result : ' + result())	// result : this value is value01
 - `outFunc()`의 return 값은 `inFunc()`라는 내부함수
 - `outFunc()` 함수가 실행되면, `outFunc()`의 Scope는 끝이 나기 때문에 `outFunc()` 인자인 value와 지역변수인 outVal는 메모리에서 정리되어야 하지만, 실제 console.log에서 result를 호출하면, 내부함수 `inFunc()`가 선언될 때 `outFunc()` 함수의 인자와 outVal 지역변수를 `inFunc()`의 클로저 객체로 남아 실제로 `inFunc()`가 호출될 때 클로저 객체를 통해서 `outFunc()`의 인자와 변수에 접근이 가능
 - 이것이 클로저가 하는 일
-
