@@ -307,16 +307,47 @@ $("#btn").click(function(){
 
 - data 속성을 이용해 인자를 보내고 쓰는 방법
 
-  ```html
-  <button onclick="click(this)" data-d1="d1" data-d2="d2">버튼</button>
-  ```
-
-  ```javascript
-  function click(para) {
-      $(para).data("d1")
-      // ...
-  }
-  ```
+  - 바닐라 JS 
+  
+    - 첫번째 방법
+  
+      ```html
+    <button onclick="click(this)" data-d1="d1" data-d2="d2">버튼</button>
+      ```
+    
+      ```javascript
+      function(para) {
+          para.getAttribute("data-d1")
+      }
+      ```
+      
+    - onclick을 안쓰는 방법
+    
+      ```html
+      <button id="btn" data-d1="d1" data-d2="d2">버튼</button>
+      ```
+    
+      ```javascript
+      let btn = document.getElementById("btn")
+      btn.addEventListener("click", () => {
+          btn.dataset.d1
+          btn.dataset.d2
+          // 이벤트
+      })
+      ```
+    
+  - jQuery 
+  
+    ```html
+    <button onclick="click(this)" data-d1="d1" data-d2="d2">버튼</button>
+    ```
+  
+    ```javascript
+    function click(para) {
+        $(para).data("d1")
+        // ...
+    }
+    ```
 
 ## 3. 클로저(Closure)
 
