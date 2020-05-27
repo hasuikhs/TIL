@@ -222,7 +222,63 @@ var textarea = document.querySelectorAll('textarea')
 console.log(textarea[0].isEqualNode(textarea[1]))	// false
 ```
 
+## 2. Document 노드
+
+### 2.1 일반적인 HTML 문서 정보 얻기
+
+```javascript
+console.log('title = ' + document.title)
+console.log('url = ' + document.url)
+console.log('referrer = ' + document.referrer)
+console.log('lastModified = ' + document.lastModified)
+```
+
+### 2.2 document 정보 바로가기
+
+```javascript
+console.log(document.doctype)	// <!doctype html>
+console.log(document.documentElement)	// <html lang="en">
+console.log(document.head)	// <head> 출력
+console.log(document.body)	// <body> 출력
+```
+
+### 2.3 focus()
+
+- 포커스를 가지고 있거나 활성 상태인 노드 참조 얻기
+
+  ```html
+  <body>
+      <textarea></textarea>
+  </body>
+  <script>
+  	document.querySelector('textarea').focus()
+      
+      console.log(document.activeElement)
+  </script>
+  ```
+
+  - 실행하게 되면 textarea에 커서가 깜빡임
+
+- 문서 혹은 문서 내의 특정 노드가 포커스를 가지고 있는지 판별
+
+  ```javascript
+  <body>
+      <textarea></textarea>
+  </body>
+  <script>
+      document.querySelector('textarea').focus()
+  
+      setTimeout(function() {
+          console.log(document.hasFocus(document.querySelector('textarea')))
+      }, 5000)	// textarea에 포커스가 있을 경우 true
+  
+  	setTimeout(function() {
+          console.log(document.hasFocus())
+      }, 5000)	// 현재 창이 포커스된 경우 truev
+  </script>
+  ```
+
+  
 
 
-####  
 
