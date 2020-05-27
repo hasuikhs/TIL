@@ -90,54 +90,139 @@ document.getElementById('B').innerText		// "Whats Shaking"
 document.getElementById('B').outerText		// "Whats Shaking"
 ```
 
-#### 1.4.4 appendChild() 및 insertBefore()를 사용하여 노드 개체 추가하기
+#### 1.4.4 appendChild(), insertBefore(), removeChild(), replaceChild()
 
 - `appendChild(노드)`
 
+  ```html
+  <body>
+  	<p>Hi</p>
+  </body>
+  ```
+
+  ```javascript
+  var elementNode = document.createElement('strong')
+  var textNode = document.createTextNode(' Dude')
+  
+  document.querySelector('p').appendChild(elementNode)
+  document.querySelector('strong').appendChild(textNode)
+  
+  console.log(document.body.innerHtml)	// <p>Hi<strong> Dude</strong></p>
+  ```
+
+- `insertBefore(노드, 참조위치)` 
+
+  ```html
+  <body>
+      <ul>
+          <li>2</li>
+          <li>3</li>
+      </ul>
+  </body>
+  ```
+
+  ```javascript
+  var text1 = document.create.createTextNode('1')
+  var li = document.createElement('li')
+  li.appendChild(text1)
+  
+  var ul = document.querySelector('ul')
+  ul.insertBefore(li, ul.firstChild)
+  
+  console.log(document.body.innerHTML)
+  /*
+  <ul>
+  	<li>1</li>
+  	<li>2</li>
+  	<li>3</li>
+  </ul>
+  */
+  ```
+
+- `removeChild(노드)`
+
+  ```html
+  <div id="A">Hi</div>
+  <div id="B">Dude</div>
+  ```
+
+  ```javascript
+  // element 노드 삭제
+  var divA = document.getElementById('A')
+  divA.parentNode.removeChild(divA)
+  
+  // 텍스트 노드 삭제
+  var divB = document.getElementById('B').firstChild;
+  divB.parentNode.removeChild(divB)
+  ```
+
+- `replaceChild(new 노드, old 노드)`
+
+  ```html
+  <div id="A">Hi</div>
+  <div id="B">Dude</div>
+  ```
+
+  ```javascript
+  // element 노드 교체
+  var divA = document.getElementById('A')
+  var newSpan = document.createElement('span')
+  newSpan.textContent = 'Howdy'
+  divA.parentNode.replaceChild(newSpan, divA)
+  
+  // 텍스트 노드 교체
+  var divB = document.getElementById('B').firstChild
+  var newText = document.createTextNode('buddy')
+  divB.parentNode.replaceChild(newText, divB)
+  ```
+
+### 1.5 DOM 내의 노드 탐색
+
 ```html
 <body>
-	<p>Hi</p>
+    <ul><!-- comment -->
+    	<li id="A">foo</li>
+    	<li id="B">bar</li>
+    	<!-- comment -->
+	</ul>
 </body>
 ```
 
 ```javascript
-var elementNode = document.createElement('strong')
-var textNode = document.createTextNode(' Dude')
-
-document.querySelector('p').appendChild(elementNode)
-document.querySelector('strong').appendChild(textNode)
-
-console.log(document.body.innerHtml)	// <p>Hi<strong> Dude</strong></p>
-```
-
-- `insertBefore(노드, 참조위치)` :
-
-```html
-<body>
-    <ul>
-        <li>2</li>
-        <li>3</li>
-    </ul>
-</body>
-```
-
-```javascript
-var text1 = document.create.createTextNode('1')
-var li = document.createElement('li')
-li.appendChild(text1)
-
 var ul = document.querySelector('ul')
-ul.insertBefore(li, ul.firstChild)
 
-console.log(document.body.innerHTML)
-/*
-<ul>
-	<li>1</li>
-	<li>2</li>
-	<li>3</li>
-</ul>
-*/
+// ul의 첫번째 자식?
+console.log(ul.firstElementChild.nodeName)	// li
+
+// ul의 마지막 자식?
+console.log(ul.lastElementChild.nodeName)	// li
+
+// 첫번째 li의 nextSibling?
+console.log(ul.querySelector('#A').nextElementSibling.nodeName)	// li
+
+// 마지막 li의 previousSibling?
+console.log(ul.querySelector('#B').previousElementSibling.nodeName)	// li
+```
+
+### 1.6 동일 노드 판단
+
+```html
+<input type="text">
+<input type="text">
+
+<textarea>foo</textarea>
+<textarea>bar</textarea>
+```
+
+```javascript
+var input = document.querySelectorAll('input')
+console.log(input[0].isEqualNode(input[1]))	// true
+
+var textarea = document.querySelectorAll('textarea')
+console.log(textarea[0].isEqualNode(textarea[1]))	// false
 ```
 
 
+
+####  
 
