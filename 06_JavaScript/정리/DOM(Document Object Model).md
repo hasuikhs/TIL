@@ -268,17 +268,10 @@ console.log(document.body)	// <body> 출력
   <script>
       document.querySelector('textarea').focus()
   
-      setTimeout(function() {
-          console.log(document.hasFocus(document.querySelector('textarea')))
-      }, 5000)	// textarea에 포커스가 있을 경우 true
-  
   	setTimeout(function() {
           console.log(document.hasFocus())
-      }, 5000)	// 현재 창이 포커스된 경우 truev
+      }, 6000)	// 현재 창이 포커스된 경우 truev
   </script>
   ```
 
   
-
-
-
