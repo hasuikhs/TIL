@@ -29,7 +29,7 @@
   </body>
   ```
 
-  ```
+  ```javascript
   ${"p"}.hide();
   ```
 
@@ -41,7 +41,7 @@
   </body>
   ```
 
-  ```
+  ```javascript
   $(".menu").slideup();
   ```
 
@@ -53,13 +53,13 @@
   </body>
   ```
 
-  ```
+  ```javascript
   $("#check").show();
   ```
 
 - 그 외 선택자
 
-  ```
+  ```javascript
   $("*") 	// 모든 요소 선택
   $(this)	// 현재 요소 선택
   $("p.myclass")	// <p> 요소 중 class가 "myclass"인 요소
@@ -81,13 +81,13 @@
 
 - 기본 형식
 
-  ```
+  ```javascript
   $.get(URL, callback);	// 서버로부터 로드를 원하는 URL, get()이 완료뒨 후 호출되는 함수
   ```
 
 - 예
 
-  ```html
+  ```javascript
   $("button").click(function(){
     	$.get("test.jsp", function(data, status){
     		alert("데이터: " + data + "상태: " + status);
@@ -100,14 +100,14 @@
 
 - 기본 형식
 
-  ```
+  ```javascript
   $.post(URL, data, callback);
   // get 형태와 비슷하지만 request 요청과 함께 보내지는 key/value 형태로 data를 보낸다.
   ```
 
 - 예
 
-  ```
+  ```javascript
   $("button").click(function(){
   	$.post("test.jsp", { name:"hong", age:"21" }, function(data, status){
   		alert("데이터: " + data + "상태: " + stauts);
@@ -119,7 +119,7 @@
 
 - 형식
 
-  ```
+  ```javascript
   $.ajax({
       url: "",			// 요청 url을 의미한다.
       type: "",			// 데이터 전송방식. GET 또는 POST
@@ -128,16 +128,21 @@
       					// xml, json, html, script를 선택할 수 있다.
   
       data: "",			// 서버로 데이터를 전송할 때 사용한다. "name="+name 이런 형태로
-      success: function(data){	// ajax 성공 시 실행되는 이벤트
-    		// 성공시
-      },
-      error: function (request, status, error){	// 실패 시 실행되는 이벤트       
-  		// 에러시
-      }
-  });
+  })
+  .done(function(data) {
+      // ajax 성공 시 실행되는 이벤트
+  })
+  .fail(function(requeat, status, error) {
+      // ajax 실패시 실행되는 이벤트
+      // status 상태, error 에러명
+  })
+.always(function(xhr, status) {
+      // 성공, 실패 상관없이 항상 실행되는 이벤트
+  })
   ```
-
   
+
+
 
 ## 3. JSON(JavaScript Object Notation)
 
@@ -151,7 +156,7 @@
 
 #### 3.2.1 name-value 형식의 쌍(pair)
 
-```
+```json
 {
 	"name" : "kim",
 	"phone" : "01012345678"
@@ -160,7 +165,7 @@
 
 #### 3.2.2 값들의 순서화된 리스트 형식
 
-```
+```json
 {
 	"name" : "kim",
 	"hobby" : ["요리", "수영"]
