@@ -274,4 +274,123 @@ console.log(document.body)	// <body> 출력
   </script>
   ```
 
+
+## 3. Element 노드
+
+### 3.1 HTML Element 개요
+
+- HTML 문서 내의 각 element들은 고유한 성질을 가짐
+- 각자 element를 DOM 트리 내의 노드 개체로 인스턴스화하는 고유한 JavaScript 생성자를 가짐
+
+### 3.2 HTML Element 개체의 속성 및 메서드
+
+- Element 생성 - `createElement('태그명')`
+
+  ```javascript
+  document.createElement('태그명')
+  ```
+
+- Element 태그 이름 얻기 - `tagName`, `nodeName`
+
+  - 원본 HTML 문서에서의 대소문자 여부에 관계없이 대문자로 반환
+
+  ```javascript
+  document.querySelector('a').tagName		// A 출력
   
+  document.querySelector('a').nodeName	// A 출력
+  ```
+
+- Element의 Attribute 및 값에 대한 리스트/컬렉션 얻기 - `attributes`
+
+  ```html
+  <button type="button" class="btn-class" id="btn-id"></button>
+  ```
+
+  ```javascript
+  document.querySelector('button').attributes
+  // NamedNodeMap {0: type, 1: class, 2: id, type: type, class: class, id: id, length: 3}
+  ```
+
+- Element의 Attribute 값 획득/설정/제거 
+
+  - `getAttribute('속성명')`, `setAttribute('속성명', '옵션')`, `removeAttribute('속성명')`
+
+  ```html
+  <button type="button" class="btn-class" id="btn-id"></button>
+  ```
+
+  ```javascript
+  let atts = document.querySelector('button')
+  
+  atts.removeAttribute('type')
+  atts.removeAttribute('class')
+  atts.removeATtribute('id')
+  
+  atts.setAttribute('type', 'button')
+  atts.setAttribute('class', 'btn-class')
+  atts.setAttribute('id', 'btn-id')
+  
+  atts.getAttribute('type')
+  atts.getAttribute('class')
+  atts.getAttribute('id')
+  ```
+
+- Element가 특정 attribute를 가지고 있는지 확인 - `hasAttribute('속성명')`
+
+  ```javascript
+  atts.hasAttribute('type')	// 있다면 true, 없다면 false
+  ```
+
+- Class Attribute 값 리스트 얻기 - `classList`
+
+  ```html
+  <div class="this is div"></div>
+  ```
+
+  ```javascript
+  let elm = document.querySelector('div')
+  
+  console.log(elm.classList)	// this is div {0="this", 1="is", 2="div", length=3, ...}
+  
+  console.log(elm.className)	// this is div
+  ```
+
+- Class Attribute에 하위 값 추가 및 제거 - `add`, `remove`
+
+  ```javascript
+  elm.classList.add('div2')
+  elm.classList.remove('div')
+  ```
+
+- Class Attribute 값이 특정 값을 가지고 있는지 판별 - `classList.contains('속성명')`
+
+  ```javascript
+  elm.classList.contains('is')
+  ```
+
+- data-* Attribute를 가져오고 설정
+
+  ```html
+  <div data-foo-foo="foo" data-bar-bar="bar"></div>
+  ```
+
+  ```javascript
+  var elm = document.querySelector('div')
+  
+  // 가져오기
+  console.log(elm.dataset.fooFoo)	// foo
+  console.log(elm.dataset.barBar)	// bar
+  
+  // 설정하기
+  elm.dataset.gooGoo = "goo"
+  console.log(elm.dataset)
+  // DOMStringMap {fooFoo='foo', barBar="bar" gooGoo="goo"}
+  
+  console.log(elm)
+  // <div data-foo-foo="foo" data-bar-bar="bar" data-goo-goo="goo"></div>
+  ```
+
+  
+
+
+
