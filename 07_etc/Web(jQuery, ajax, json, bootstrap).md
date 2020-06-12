@@ -82,14 +82,14 @@
 - 기본 형식
 
   ```javascript
-  $.get(URL, callback);	// 서버로부터 로드를 원하는 URL, get()이 완료뒨 후 호출되는 함수
+  $.get(URL, data, callback);	// 서버로부터 로드를 원하는 URL, get()이 완료뒨 후 호출되는 함수
   ```
 
 - 예
 
   ```javascript
   $("button").click(function(){
-    	$.get("test.jsp", function(data, status){
+    	$.get("test.jsp", { name:"hong", age:"21" }, function(data, status){
     		alert("데이터: " + data + "상태: " + status);
     	});
   });
