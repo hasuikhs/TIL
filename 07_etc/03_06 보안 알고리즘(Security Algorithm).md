@@ -18,7 +18,7 @@
 
 ## 1. 암호화(Encryption)
 
-![image-20200221130541917](03_06 보안 알고리즘(Security Algorithm).assets/image-20200221130541917.png)
+![image-20200221130541917](03_06_보안_알고리즘(Security_Algorithm).assets/image-20200221130541917.png)
 
 - 가장 쉬운 암호화는 **XOR 연산** 방법이다.
 - 비트 연산으로 XOR를 하면 "A xor B = C 이면 A = B xor C"와 같은 관계식이 성립한다.
@@ -26,7 +26,7 @@
 
 ## 2. 해시 함수(Hash Function)
 
-![img](03_06 보안 알고리즘(Security Algorithm).assets/201812270ed33b604a9155fc4.png)
+![img](03_06_보안_알고리즘(Security_Algorithm).assets/201812270ed33b604a9155fc4.png)
 
 - **해시 값** : 주어진 데이터를 고정 길이의 숫자로 변환한 값
   - 입력 크기에 무관하게 해시 값의 길이는 같음
@@ -51,7 +51,7 @@
 
   - '키 배분 문제'가 발생하지 않는다.
 
-  ![img](03_06 보안 알고리즘(Security Algorithm).assets/noname03.png)
+  ![img](03_06_보안_알고리즘(Security_Algorithm).assets/noname03.png)
 
 - 도중에 공개키를 바꿔치기 하는 'man-in-the-middle attach'에 취약하다.
 
@@ -66,11 +66,11 @@
 
 - 합성만 가능하고 분해는 안되는 키 합성 방법
 
-![img](03_06 보안 알고리즘(Security Algorithm).assets/noname04.png)
+![img](03_06_보안_알고리즘(Security_Algorithm).assets/noname04.png)
 
 ## 7. 메시지 인증 코드(MAC, Message Authentification Code)
 
 - 인증과 변조 검출의 두 가지 기능을 가지는 구조
 - 공개키 암호 방식 또는 디피-헬만 키 교환법으로 안전하게 암호키를 두 번 전송하면 된다.
 
-![image-20200221135408764](03_06 보안 알고리즘(Security Algorithm).assets/image-20200221135408764.png)
+![image-20200221135408764](03_06_보안_알고리즘(Security_Algorithm).assets/image-20200221135408764.png)
