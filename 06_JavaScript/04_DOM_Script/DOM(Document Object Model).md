@@ -390,7 +390,58 @@ console.log(document.body)	// <body> 출력
   // <div data-foo-foo="foo" data-bar-bar="bar" data-goo-goo="goo"></div>
   ```
 
+
+## 4. Element 노드 선택
+
+### 4.1 특정 Element 노드 선택하기
+
+- `querySelector()`
+
+  - 특정 name이나 id를 제한하지 않고 css 선택자를 사용하여 요소를 찾음
+
+    - 요소가 여러개일 경우 처음의 요소를 반환
+
+    > `(#sections)` -> sections 아이디를 가진 요소를 찾음
+    >
+    > `(.section)` -> section 클래스명을 가진 요소를 찾음
+
+- `getElementById()`
+
+  - id를 기준으로 해당 id를 가진 요소를 찾음
+
+### 4.2 Element 노드 리스트 선택 및 생성
+
+- `querySelectorAll()`
+  - 하나의 요소를 반환하는 `querySelector()`와는 다르게 리스트를 반환
+- `getElementsByTagName()`
+  - 해당되는 Tag명 에 따른 요소들의 리스트를 반환
+- `getElementsByClassName()`
+  - 해당 Class명을 가진 요소들을 리스트로 반환
+
+- `children`
+
+  - 특정 노드가 포함된 상위의 노드를 선택하여 하위 노드 리스트 반환
+
+  ```javascript
+  var ulElement = document.querySelector('ul').children
+  console.log(ulElement)	// [<li>, <li>]
+  ```
+
+### 4.3 사전에 구성된 Element 노드 선택/리스트
+
+- `document.all`
+  - HTML 문서 내의 모든 요소
+- `document.forms`
+  - HTML 문서 내의 모든 `<form>` 요소
+- `document.images`
+  - HTML 문서 내의 모든 `<img>` 요소
+- `document.links`
+  - HTML 문서 내의 모든 `<a>` 요소
+- `document.scripts`
+  - HTML 문서 내의 모든 `<script>` 요소
+- `document.styleSheets`
+  - HTML 문서 내의 모든 `<link>` 또는 `<style>` 요소
+
+
+
   
-
-
-
