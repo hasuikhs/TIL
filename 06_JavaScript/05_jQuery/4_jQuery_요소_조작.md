@@ -103,4 +103,84 @@
   $('.content').wrapInner('<div class="wrapper"></div>')
   ```
 
+
+## 2. 요소의 복사 및 삭제
+
+### 2.1 요소의 복사
+
+#### 2.1.1 .clone()
+
+- 선택한 요소를 복사하여 새로운 요소를 생성
+
+- 복사하지 않고 사용하면 기존의 HTML 요소에 영향
+
+  ```javascript
+  $('#firstItem').clone().appendTo('#list')
+  ```
+
+### 2.2 요소의 대체
+
+- 선택한 요소나 콘텐츠를 지정된 요소나 콘텐츠로 대체
+
+#### 2.2.1 .replaceAll()
+
+- 선택한 요소를 지정된 요소로 대체
+
+  ```javascript
+  // class가 'item'인 각 요소를 id가 'firstItem'인 요소로 대체
+  $('#firstItem').replaceAll('.item')
+  ```
+
+#### 2.2.2 .replaceWith()
+
+- 선택한 요소를 지정된 요소로 대체
+
+- .replaceAll()과 비슷하지만, 소스와 타겟의 위치가 반대
+
+  ```javascript
+  // class가 'item'인 모든 요소를 id가 'firstItem'인 요소로 대체
+  $('.item').replaceWith('#firstItem')
+  ```
+
+### 2.3 요소의 삭제
+
+#### 2.3.1 .remove()
+
+- 선택한 요소를 DOM 트리에서 삭제
+
+- 이때 삭제되는 요소와 연관된 jQuery 데이터나 이벤트도 모두 함께 삭제
+
+  ```javascript
+  // class가 'content'인 요소 중에서 class가 각각 'first', 'second' 요소 모두 삭제
+  $('.content').remove('.first, .second')
+  ```
+
+#### 2.3.2 .detach()
+
+- 선택한 요소를 DOM 트리에서삭제
+
+- .remove()와는 달리 연관된 데이터나 이벤트는 삭제되지 않음
+
+  ```javascript
+  $('.content').detach()
+  ```
+
+#### 2.3.3 .empty()
+
+- 선택한 요소의 자식 요소를 모두 삭제
+
+- .remove()나 .detach()와 달리 선택된 요소 그 자체는 삭제되지 않음
+
+  ```javascript
+  $('#container').empty()
+  ```
+
+#### 2.3.4 .unwrap()
+
+- 부모의 요소를 삭제
+
+  ```javascript
+  $('span').upwrap()
+  ```
+
   
