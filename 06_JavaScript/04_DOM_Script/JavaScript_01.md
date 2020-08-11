@@ -384,7 +384,7 @@ while (i < 6){
   }
   ```
 
-- `for ... in ` 문
+- `for ... in ` 문 - Object
 
   ```javascript
   let obj = {
@@ -396,6 +396,18 @@ while (i < 6){
   for (let key in obj) {
       console.log(key, obj[key])
   }
+  ```
+
+- `foreach`
+
+  - 오로지 Array 객체에서만 사용 가능
+
+  ```javascript
+  var items  ['item1', 'item2', 'item3']
+  
+  items.forEach(item => {
+      console.log(item)
+  })
   ```
 
 ## 5. 함수
