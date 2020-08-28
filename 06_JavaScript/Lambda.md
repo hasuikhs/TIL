@@ -1,5 +1,7 @@
 # Lambda식 주의점
 
+https://trustyoo86.github.io/javascript/2019/08/27/js-optimization.html
+
 - 일반 함수와 람다식 함수
 
   ```javascript
