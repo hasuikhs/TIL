@@ -138,4 +138,85 @@
     |  btn_Search.gif   |    btn_srch.gif    |     영문 소문자      |
     |  1btn_search.gif  |    btn_srch.gif    | 숫자로 시작하지 않음 |
   
+### 2.3 JavaScript Naming Convention
+
+#### 2.3.1 변수
+
+- 변수의 이름은 **lowerCamelCase**로 표기
+
+- **변수의 첫 글자는 알파벳**
+
+  ```javascript
+  // bad
+  let 123Number = 123;
+  let HELLO_WORLD = 'Hello World';
   
+  // good
+  let number = 369;
+  let helloWorld = 'Hello World';
+  ```
+
+#### 2.3.2 함수
+
+- 함수는 **lowerCamelCase**로 표기
+
+  ```javascript
+  // bad
+  function GetData() {
+      // ...
+  }
+  
+  // good
+  function getData() {
+      // ...
+  }
+  ```
+
+- 함수의 이름은 동사 또는 동사 구문으로 표기
+
+  ```javascript
+  // bad
+  function whatIsThis() {
+   	// ...   
+  }
+  
+  // good
+  function isThis() {
+      // ...
+  }
+  ```
+
+- 함수를 default export할 때는 lowerCamelCase로 표기
+
+  ```javascript
+  function makeStyleGuide() {
+      // ...
+  }
+  
+  export default makeStyleGuide;
+  ```
+
+- 함수 라이브러리를 export할 때는 **PascalCase**
+
+- 함수의 parameter는 lowerCamelCase로 표기, 한 글자의 parameter는 public method에서는 사용하지 말 것
+
+  ```javascript
+  // bad 
+  function someFunction(PARAMETERONE, PARAMETERTWO) {
+      // ...
+  }
+  
+  // good
+  function someFunciton(parameterOne, parameterTwo) {
+      // ...
+  }
+  ```
+
+- **template 함수의 parameter는 모두 간결해야하고 한글자 또는 한단어**여야 한다.
+
+  **또, 모두 대문자로 표기**
+
+
+
+
+
