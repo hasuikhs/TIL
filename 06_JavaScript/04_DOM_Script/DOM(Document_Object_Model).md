@@ -412,12 +412,15 @@ console.log(document.body)	// <body> 출력
 ### 4.2 Element 노드 리스트 선택 및 생성
 
 - `querySelectorAll()`
+  
   - 하나의 요소를 반환하는 `querySelector()`와는 다르게 리스트를 반환
 - `getElementsByTagName()`
+  
   - 해당되는 Tag명 에 따른 요소들의 리스트를 반환
 - `getElementsByClassName()`
-  - 해당 Class명을 가진 요소들을 리스트로 반환
-
+  
+- 해당 Class명을 가진 요소들을 리스트로 반환
+  
 - `children`
 
   - 특정 노드가 포함된 상위의 노드를 선택하여 하위 노드 리스트 반환
@@ -442,6 +445,69 @@ console.log(document.body)	// <body> 출력
 - `document.styleSheets`
   - HTML 문서 내의 모든 `<link>` 또는 `<style>` 요소
 
+### 4.4 선택될 Element를 검증하기 위해 matches() 사용
+
+```html
+<ul id="birds">
+  <li>Orange-winged parrot</li>
+  <li class="endangered">Philippine eagle</li>
+  <li>Great white pelican</li>
+</ul>
+```
+
+```javascript
+var birds = document.getElementsByTagName('li');
+
+for (var i = 0; i < birds.length; i++) {
+	if (birds[i].matches('.endangered')) {
+    	console.log('The ' + birds[i].textContent + ' is endangered!');
+	}
+}
+```
+
+- 특정 요소들에서 특정 조건을 가진 코드를 수행할때 사용 가능
+
+## 5. Element 노드 지오메트리와 스크롤링 지오메트리
+
+### 5.1 offsetParent를 기준으로 element의 offsetTop 및 offsetLeft 값 접근
+
+- offsetTop 및 offsetLeft 속성을 사용하면, offsetParent로부터 element 노드의 오프셋 픽셀 값 접근 가능
+- 이 element 노드 속성들은 element 노드 속성들은 element의 바깥쪽 최상단 경계로부터 offsetParent의 안쪽 좌상단 경계까지의 거리를 픽셀로 제공
+- offsetParent의 값은 가장 가까운 부모 element 중에서 css 위치 값이 static이 아닌 element를 검색하여 결정
+- 아무 element도 발견되지 않으면, offsetParent의 값은 `<body>` element나 document
+
+```html
+<div id="blue">
+    <div id="red">
+    </div>
+</div>
+```
+
+```css
+#blue {
+    height: 100px,
+    width: 100px,
+    background-color:blue;
+   	border: 10px solid gray;
+}
+
+#red {
+    height: 50px,
+    width: 50px,
+    background-color:red,
+    border: 10px solid gray
+}
+```
+
+```javascript
+var div = document.querySelector('#red');
+
+console.log(div.offsetLeft);	// 60 출력
+console.log(div.offsetTop);		// 60 출력
+console.log(div.offsetParent);	// <body> 출력
+```
+
+![image-20200910141656182](DOM(Document_Object_Model).assets/image-20200910141656182.png)
 
 
-  
+
