@@ -136,6 +136,20 @@
 
   - `var htmlstr = htmlstring;`이 성능 개선의 핵심
   - 전역 객체에 존재하는 `htmlstring` 속성을 `makeList()` 함수의 지역 변수에 할당하여 활성화 객체에서 바로 찾을 수 있게 한 것
+  
+- 실제 속도 측정
+
+  ```javascript
+  var start = new Date().getTime();
+  // console.time('timer')
+  for (var i = 0; i < 10000; i++) {
+      // code
+  }
+  var elapsed = new Date().getTime() - start;
+  // console.timeEnd('timer')
+  ```
+
+  - 위의 코드로 실행 시 기존 2172ms -> 2070ms 로 약 5% 더 빨라진 것을 확인 가능
 
 ### 2.3 프로토타입 체인
 
@@ -150,4 +164,89 @@
 - **인스턴스 객체가 원본 객체 생성자 함수의 프로토타입 속성을 탐색할 때도 탐색을 위한 프로토타입 체인 생성**
 
 - 프로토타입에 존재하는 속성을 사용할 때 스코프 체인에서와 마찬가지로 지역변수에 담아서 사용한다면 불필요한 탐색 과정을 줄여 성능 향상 가능
+
+## 3. 반복문과 성능
+
+- 자바스크립트의 반복분 for, for-in, while, do-while 구문에도 성능 차이 존재
+- 결과적으로 for-in을 제외한 반복문의 성능은 비슷
+  - for-in은 인자로 주어진 배열을 배열이 아닌 일반 객체로 취급하며, 반복 시점마다 객체의 모든 속성을 무작위로 탐색하기 때문에 배열 탐색에서 성능이 현저하게 저하
+  - **선형적인 색인으로 접근 불가능한 객체의 속성을 탐색하는데만 사용**
+
+- 반복문도 스코프 체인의 탐색 경로를 줄이고 자바스크립트의 성능을 최대화하기 위해 활성화 객체에 복사해 두고 사용
+
+  ```javascript
+  var arr = [...];
+  for (var i = 0, len = arr.length; i < len; i++) {
+      // code
+  }
+  ```
+
+## 4. 문자열 연산과 성능
+
+### 4.1 문자열 생성 성능
+
+- String 객체 사용
+
+  ```javascript
+  var str = new String('String string string');
+  ```
+
+- 리터럴 사용
+
+  ```javascript
+  var str = 'String string string';
+  ```
+
+- 문자열 생성에는 리터럴을 사용하는 것이 좋음
+
+### 4.2 문자열 연산 성능 비교
+
+- `+=` 연산자를 이용한 문자열 병합
+
+  ```javascript
+  var str = '';
+  for (var i = 0; i < 100; i++) {
+      str += 'test';
+  }
+  ```
+
+  - `+=` 연산자는 두  문자열을 합친 새로운 문자열을 만들고 새로운 메모리 위치에 저장함과 동시에 기존 문자열에 대한 참조를 변경하는 연산을 반복적 실행
+
+- `Array.join()` 메서드를 이용한 문자열 병합
+
+  ```javascript
+  var arr = [];
+  for (var i = 0; i < 100; i++) {
+      arr[i] = 'test';
+  }
+  arr.join('');
+  ```
+
+  - **`Array.join()` 메서드를 사용하여 연산하면 비교적 메모리에 효율적으로 접근 가능한 배열 사용**
+  - 배열에 저장된 문자열을 모두 합쳐 하나의 문자열을 생성하고 저장하므로 문자열이 병합될수록 점점 더 큰 문자열을 생성하고 저장해야 하는 **`+=` 연산에 비해 불필요한 문자열 참조 변경과 재생성 작업이 없음**
+
+- **성능 측정 비교**
+
+  ```javascript
+  // += 연산
+  var start = new Date().getTime();
+  var plusStr = ''
+  for (var i = 0; i < 1000000; i++) {
+      plusStr += 'test'
+  }
+  var end = new Date().getTime() - start;
+  // 1000번 테스트 평균 값 : 63.64 ms
+  ```
+
+  ```javascript
+  // Array.join
+  var start = new Date().getTime();
+  var joinArr1 = [];
+  for (var i = 0; i < 1000000; i++) {
+      joinArr1.push('test');
+  }
+  joinArr1.join('');
+  var end = new Date().getTime() - start;
+  // 1000번 테스트 평균 값 : 38.49 ms
+  ```
 
