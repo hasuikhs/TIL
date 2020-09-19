@@ -511,3 +511,153 @@ console.log(div.offsetParent);	// <body> 출력
 
 
 
+- blue 사각형의 스타일에 절대 위치를 지정하면
+
+  ```css
+  #blue {
+  	...
+  	position: absolute;
+  }
+  ```
+
+  - offsetParent의 값은 div가 되고 `offsetLeft`와 `offsetTop`의 값은 25가 되는데, 이는 offsetParent가 `<body>`가 아닌 blue 사각형 div 이기 때문
+
+### 5.2 뷰포트 기준으로 offset 접근
+
+- **`getBoundingClientRect()`를 사용하여 뷰포트를 기준으로 element의 테두리 offset 접근**
+
+  ```html
+  <style>
+  div {
+      height: 50px;
+      width : 50px;
+      background-color : red;
+      border : 10px solid gray;
+      margin : 100px;
+  }
+  </style>
+  <div></div>
+  <script>
+      var divTest = document.querySelector('div').getBoundingClientRect();
+      console.log(divTest.top, divTest.right, divTest.bottom, divTest.left); // 100, 170, 170, 100
+  </script>
+  ```
+
+- **뷰포트에서 element의 크기(테두리 + 패딩 + 내용) 얻기**
+
+  - `getBoundingClientRect()`는 height와 width 속성/값도 가짐
+  - height와 width 속성은 element의 크기를 가리키는데, 전체 크기는 div
+
+  ```javascript
+  var divTest = document.querySelector('div');
+  
+  // getBoundingClientRect() 사용
+  console.log(divTest.getBoundingClientRect().height, divTest.getBoundingClientRect().width); 
+  // 테두리 10 + 패딩 0 + 내용 50 + 패딩 0 + 테두리 10 = 70
+  
+  // offsetHeight, offsetWidth 사용
+  console.log(divTest.offsetHeight, divTest.offsetWidth);
+  ```
+
+- **뷰포트에서 테두리를 제외한 element의 크기(패딩 + 내용) 얻기**
+
+  ```javascript
+  var divTest = document.querySelector('div');
+  
+  console.log(divTest.clientHeight, divTest.clientWidth);
+  // 패딩 0 + 내용 50 + 패딩 0 = 50
+  ```
+
+- **`elementFromPoint()` 사용하여 뷰포트의 특정 지점에서 최상단 element 얻기**
+
+  - `elementFromPoint()`를 사용하면 HTML 문서의 특정 지점에서 최상단 element에 대한 참조 접근 가능
+
+  ```javascript
+  console.log(document.elementFromPoint(50, 50));
+  ```
+
+- **`scrollHeight`와 `scrollWidth`를 사용하여 스크롤될 element의 크기 얻기**
+
+  - 스크롤될 노드의 높이와 너버 반환
+
+  ```html
+  <style>
+      * {
+          margin : 0;
+          padding : 0;
+      }
+      div {
+          height : 150px;
+          width : 100px;
+          overflow : auto;
+      }
+      p {
+          height : 2000px;
+          width : 1000px;
+          background-color : red;
+      }
+  </style>
+  <div>
+      <p></p>
+  </div>
+  <script>
+  	var divTest = document.querySelector('div');
+      console.log(divTest.scrollHeight, divTest.scrollWidth);
+      console.log(divTest.clientHeight, divTest.clientWidth);
+  </script>
+  ```
+
+  - 스크롤 가능한 영역 내에 있는 노드가 스크롤 가능한 영역의 뷰포트보다 작은 경우에, 해당 노드의 높이와 너비를 알아야 한다면, scrollHeight와 scrollWidth는 뷰포트의 크기를 반환하므로 지양
+  - **스크롤될 노드가 스크롤 영역보다 작은 경우, 스크롤 가능한 영역 내에 포함된 노드의 크기를 판별하려면 clientHeight, clientWidth 사용**
+
+- **scrollTop와 scrollLeft를 사용하여 top 및 left로부터 스크롤될 픽셀을 가져오거나 설정**
+
+  - 스크롤 때문에 현재 뷰포트에서 보이지 않는 left나 top까지의 픽셀을 반환
+
+  ```javascript
+  var divTest = document.querySelector('div');
+  divTest.scrollTop = 750;
+  divTest.scrollLeft = 750;
+  console.log(divTest.scrollTop, divTest.scrollLeft);
+  ```
+
+  - left나 top까지 뷰포트에서 보이지 않는 내용을 픽셀로 측정한 것
+
+- **scrollIntoView()를 사용하여 element를 View로 스크롤하기**
+
+  - 스크롤이 가능한 노드 내에 있는 노드를 선택하면, `scrollIntoView()` 메서드를 사용하여 선택된 노드가 view로 스크롤되도록 할 수 있음
+
+  ```html
+  <style>
+      div {
+          height : 50px;
+          width : 300px;
+          overflow : auto;
+      }
+      p {
+          background-color : red;
+      }
+  </style>
+  <div>
+      <content>
+      	<p>1</p>
+          <p>2</p>
+          <p>3</p>
+          <p>4</p>
+          <p>5</p>
+      </content>
+  </div>
+  <script>
+  document.querySelector('content').children[2].scrollIntoView(true);
+  </script>
+  ```
+
+  - `scrollIntoView()` 메서드에 매개변수 `true`를 전달하면, 해당 메서드로 하여금 스크롤될 대상 element의 top으로 스크롤하라는 것(`true`는 기본값)
+  - element의 bottom으로 스크롤 시키고 싶다면 , `scrollIntoView()` 메서드에 false 매개변수를 전달
+
+
+
+
+
+
+
