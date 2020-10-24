@@ -655,9 +655,48 @@ console.log(div.offsetParent);	// <body> 출력
   - `scrollIntoView()` 메서드에 매개변수 `true`를 전달하면, 해당 메서드로 하여금 스크롤될 대상 element의 top으로 스크롤하라는 것(`true`는 기본값)
   - element의 bottom으로 스크롤 시키고 싶다면 , `scrollIntoView()` 메서드에 false 매개변수를 전달
 
+## 6.  Element 노드 인라인 스타일
 
+### 6.1 style attribute(element 인라인 CSS 속성) 개요
 
+- 모든 HTML element는 해당 element에 한정된 인라인 css 속성을 넣는 데 사용 가능한 style attribut를 가짐
 
+  ```html
+  <div style="background-color:red; border:1px solid black;" />
+  ```
 
+- 코드에서 style 속성이 아닌 CSSStyleDeclaration 개체를 반환한다는 점에 유의
+
+- CSSStyleDeclaration 개체에는 element의 인라인 스타일만이 포함, 즉 스타일시트에서 단계적으로 내려오면서 계산되지 않음
+
+### 6.2 개별 인라인 CSS 속성 가져오기, 설정, 제거
+
+```html
+<div></div>
+```
+
+```javascript
+var divStyle = document.querySelector('div').style;
+
+// 설정
+divStyle.backgroundColor = 'red';
+divStyle.border = '1px solid black';
+divStyle.width = '100px';
+divStyle.height = '100px';
+
+// 가져오기
+console.log(divStyle.backgroundColor);
+console.log(divStyle.border);
+console.log(divStyle.width);
+console.log(divStyle.height);
+
+// 제거
+divStyle.backgroundColor = '';
+divStyle.border = '';
+divStyle.width = '';
+divStyle.height = '';
+```
+
+### 6.3 모든 인라인 CSS 속성 가져오기, 설정, 제거
 
 
