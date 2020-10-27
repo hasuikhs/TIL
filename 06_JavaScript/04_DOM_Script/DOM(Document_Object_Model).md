@@ -699,4 +699,26 @@ divStyle.height = '';
 
 ### 6.3 모든 인라인 CSS 속성 가져오기, 설정, 제거
 
+```javascript
+var div = document.querySelector('div');
+var divStyle = div.style;
+
+// cssText를 사용하여 설정
+divStyle.cssText = 'background-color:red;';
+
+// cssText를 사용하여 가져옴
+console.log(divStyle.cssText);
+
+// 제거
+divStyle.cssText = '';
+
+// setAttribute를 사용하여 설정
+div.setAttribute('style', 'background-color: red');
+
+// getAttribute를 사용하여 가져옴
+console.log(div.getAttribute('style'));
+
+// 제거
+div.removeAttribute('style');
+```
 
