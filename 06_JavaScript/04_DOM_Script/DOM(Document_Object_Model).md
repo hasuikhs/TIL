@@ -722,3 +722,85 @@ console.log(div.getAttribute('style'));
 div.removeAttribute('style');
 ```
 
+# 7. Text 노드
+
+### 7.1 Text 개체 개요
+
+- HTML  문서에서 텍스트는 text 노드를 만들어내는 Text() 생성자 함수의 인스턴스로 표현
+
+- HTML 문서가 해석될 때, HTML 페이지의 element 사이에 석여있는 텍스트는 text 노드로 변환
+
+  ```html
+  <p>Hi</p>
+  
+  <script>
+  	var textHi = document.querySelector('p').firstChild;
+  
+  	console.log(textHi.constructor);	// Text() 출력
+  
+  	console.log(textHi);	// Text {textContent="hi", length=2, ...}
+  </script>
+  ```
+
+  - **Text() 생성자 함수가 text 노드를 생성하지만, Text가 CharaterData, Node, Object로부터 상속**
+
+### 7.2 Text 개체 및 속성
+
+- Text 노드에 존재하는 속성과 메서드에 관련된 정확한 정보를 얻으려면, 브라우저에서 얻는것이 가장 좋음
+
+- 다음 코드를 통해 text 노드에 존재하는 속성과 메서드를 얻을 수 있음
+
+  ```html
+  <p>hi</p>
+  
+  <script>
+  	var text = document.querySelector('p').firstChild;
+      
+      // text의 고유 속성
+      console.log(Object.keys(text).sort());
+      
+      // text의 고유 속성과 상속받은 속성
+      var textPropertiesIncludeInherited = [];
+      for (var p in text) {
+          textPropertiesIncludeInherited.push(p);
+      }
+      console.log(textPropertiesIncludeInherited.sort());
+      
+      // text가 상속받은 속성만
+      var textPropertiesOnlyInherited = [];
+      for (var p in text) {
+          if(!text.hasOwnProperty(p)) {
+              textPropertiesOnlyInherited.push(p);
+          }
+      }
+      console.log(textPropertiesOnlyInherited.sort());
+  </script>
+  ```
+
+### 7.3 공백은 text 노드를 생성
+
+- DOM이 생성될 때, 테스트 문자뿐만 아니라 공백 역시 text 노드로 만들어짐
+
+  ```html
+  <p id="p1"></p>
+  <p id="p2"></p>
+  
+  <script>
+  	console.log(document.querySelector('#p1').firstChild);	// null 출력
+      console.log(document.querySelector('#p2').firstChild.nodeName);	// #text 출력
+  </script>
+  ```
+
+  - **DOM에서 공백이나 텍스트 문자가 보통 text 노드로 표현되는 것을 잊지 말자**
+
+  ```html
+  <p id="p1"></p>
+  <p id="p2"></p>
+  
+  <script>
+  	console.log(document.querySelector('#p1').nextSibling);	// Text 출력
+  </script>
+  ```
+
+  - 키보드를 사용하여 HTML 문서에 문자나 공백이 입력 가능하다면, text 노드로 변환될 가능성 있음
+  - HTML 문서를 최소화하거나 압축되지 않는 한, 일반적인 HTML 페이지는 상당한 수의 공백과 줄 바굼 text 노드를 가짐
