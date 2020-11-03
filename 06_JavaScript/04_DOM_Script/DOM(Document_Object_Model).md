@@ -728,7 +728,7 @@ div.removeAttribute('style');
 
 - HTML  문서에서 텍스트는 text 노드를 만들어내는 Text() 생성자 함수의 인스턴스로 표현
 
-- HTML 문서가 해석될 때, HTML 페이지의 element 사이에 석여있는 텍스트는 text 노드로 변환
+- HTML 문서가 해석될 때, HTML 페이지의 element 사이에 섞여있는 텍스트는 text 노드로 변환
 
   ```html
   <p>Hi</p>
@@ -804,3 +804,63 @@ div.removeAttribute('style');
 
   - 키보드를 사용하여 HTML 문서에 문자나 공백이 입력 가능하다면, text 노드로 변환될 가능성 있음
   - HTML 문서를 최소화하거나 압축되지 않는 한, 일반적인 HTML 페이지는 상당한 수의 공백과 줄 바굼 text 노드를 가짐
+
+### 7.4 Text 노드 생성 및 삽입하기
+
+- Text 노드는 브라우저가 HTML 문서를 해석해서 문서 내용을 기반으로 DOM이 구축될 때 자동 생성
+
+- 자동으로 생성된 이후에는 createTextNode()를 사용해서 프로그래밍적으로 text 노드를 생성 가능
+
+- 프로그래밍적으로 생성된 DOM 구조에도 text 노드 삽입 가능
+
+  ```javascript
+  var textNode = document.createTextNode('Hi');
+  document.querySelector('div').appendChild(textNode);
+  
+  var elementNode = document.createElement('p');
+  elementNode.appendChild(textNode);
+  ```
+
+### 7.5 .data나 nodeValue로 text 노드 값 가져오기
+
+- Text 노드로 표현되는 텍스트 값과 데이터는 .data나 nodeValue 속성을 사용하여 노드에서 추출 가능
+
+- 두 속성 모두 Text 노드에 포함된 텍스트를 반환
+
+  ```html
+  <p>
+      Hi, <strong>copy</strong>
+  </p>
+  ```
+
+  ```javascript
+  document.querySelector('p').firstChild.data;		// Hi
+  document.querySelector('p').firstChild.nodeValue;	// Hi
+  ```
+
+### 7.6 text 노드 조작
+
+- Text 노드가 메서드를 상속받는 CharacterData 개체는 Text 노드의 하위 값을 조작하기 위한 메서드 제공
+
+  ```html
+  <p>Go Big Blue Blue</p>
+  ```
+
+  ```javascript
+  var pElementText = document.querySelector('p').firstChild;
+  
+  // 추가
+  pelementText.appendData('!');			// go Big Blue Blue!
+  
+  // 첫번째 'Blue'를 삭제
+  pElementText.deleteData(7, 5);			// go Big Blue!
+  
+  // 'Blue'를 다시 삽입
+  pElementText.insertData(7, 'Blue ');	// go Big Blue Blue!
+  
+  // 'Blue'를 'Bunny'로 바꿈
+  pElementText.replaceData(7, 5, 'Bunny ');	// go Big Bunny Blue!
+  
+  // 부분 문자열 'Bunny Blue'를 추출
+  pElementText.substringData(7, 10);		// Bunny Blue
+  ```
