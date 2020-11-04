@@ -864,3 +864,66 @@ div.removeAttribute('style');
   // 부분 문자열 'Bunny Blue'를 추출
   pElementText.substringData(7, 10);		// Bunny Blue
   ```
+
+### 7.7 복수의 형제 텍스트 노드가 발생하는 경우
+
+- 브라우저에서 생성한 DOM 트리가 지능적으로 텍스트 노드들을 결합하기에, 통상적으로는 형제 Text 노드가 인접해서 나타나지 않음
+
+- 형제 텍스트 노드가 발생 가능한 두 가지 경우 존재
+
+  - 텍스트 노드가 Element 노드를 포함하면(예: `<p>Hi, <strong>cody</strong> welcome!</p>`), 텍스트가 적절한 노드 그룹으로 분할
+
+    ```html
+    <p>Hi, <strong>cody</strong> welcome!</p>
+    
+    <script>
+    	var pElement = document.querySelector('p');
+        
+        console.log(pElement.childNodes.length);	// 3 출력
+    
+        console.log(pElement.firstChild.data);		// 텍스트 노드 'Hi'
+        console.log(pElement.firstChild.nextSibling)// Element 노드 <strong>
+        console.log(pElement.lastChild.data)		// 텍스트 노드 'welcome!'
+    </script>
+    ```
+
+  - 코드로 생성한 element에 프로그래밍적으로 Text 노드를 추가할 때 발생
+
+    ```javascript
+    var pElementNode = document.createElement('p');
+    var textNodeHi	 = document.createTextNode('Hi ');
+    var textNodeCody = document.createTextNode('Cody');
+    
+    pElementNode.appendChild(textNodeHi);
+    pElementNode.appendChild(textNodeCody);
+    
+    document.querySelector('div').appendChild(pElementNode);
+    
+    console.log(document.querySelector('div p').childNodes.length);	// 2 출력
+    ```
+
+### 7.8 textContent를 사용 마크업이 제거된 모든 자식 텍스트 노드 반환
+
+- textContent 속성은 모든 자식 텍스트 노드를 가져오는 것뿐 아니라, 노드의 내용을 특정 Text  노드로 설정하는데 사용 가능
+
+- 노드에 포함된 모든 텍스트 노드의 문자열을 합쳐서 반환
+
+- 이 기능은 HTML 문서에서 모든 텍스트 노드를 매우 쉽게 추출 가능케 함
+
+- 노드 내부에 캡슐화된 깊이에 관계없이 모든 자식 텍스트 노드를 취합한다는 점에 유의
+
+  ```html
+  <body>
+      <h1> Dude</h1>
+  	<p>yout <strong>rock!</strong></p>
+  </body>
+  ```
+
+  ```javascript
+  console.log(document.body.textContent); // 공백이 추가된 Dude you rock! 출력
+  ```
+
+  
+
+
+
