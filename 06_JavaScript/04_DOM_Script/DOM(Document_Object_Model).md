@@ -923,7 +923,58 @@ div.removeAttribute('style');
   console.log(document.body.textContent); // 공백이 추가된 Dude you rock! 출력
   ```
 
+
+### 7.9 textContent와 innerText 간의 차이
+
+- innerText에는 CSS가 반영
+  - 숨겨진 텍스트가 있을 경우 innerText는 무시
+- innerText는 CSS의 영향을 받으므로 리플로우(reflow)가 발생
+  - 리플로우(reflow)
+    - 문서 내 요소의 위치와 도형을 다시 계산하기 위한 웹브라우저 프로세스 이름
+    - 문서의 일부 또는 전체를 다시 렌더링하는데 사용
+    - 간혹 단일 요소를 리플로우하려면 상위 요소 및 이어지는 모든 요소도 리플로우 가능
+- innerText는 `<script>`와 `<style>` element 내에 포함된 Text 노드를 무시
+- textContent와 달리 innerText는 텍스트를 정규화해서 반환
+  - 문서 내에 있는 것을 마크업만 제거해서 그대로 반환
+- innerText는 비표준이고 브라우저에 국한되지만, textContent는 DOM 사양으로 구현
+
+### 7.10 normalize() 사용하여 형제 텍스트 노드들을 단일 텍스트 노드로 결합
+
+- 형제 Text 노드들은 통상적으로 텍스트를 DOM에 프로그래밍적으로 추가한 경우에만 나타남
+
+- Element 노드를 포함하고 있지 않은 형제 text 노드들을 제거하기 위해 normalize() 사용
+
+  ```javascript
+  var pElementNode = document.createElement('p');
+  var textNodeHi	 = document.createTextNode('Hi');
+  var textNodeCody = document.createTextNode('Cody');
   
+  pElementNode.appendChild(textNodeHi);
+  pElementNode.appendChild(textNodeCody);
+  
+  console.log(pElementNode);		//	<p> "Hi""Cody" </p>
+  console.log(pElementNode.childNodes.length);	// 2 출력
+  
+  pElementNode.normalize();	// 형제 텍스트 노드들을 결합
+  
+  console.log(pElementNode);		// <p>HiCody</p>
+  console.log(pElementNode.childNodes.length);	// 1 출력
+  ```
 
+### 7.11 splitText()를 사용하여 텍스트 노드 분할
 
+- Text 노드에서 splitText()를 호출하면, 해당 텍스트 노드를 변경
 
+  ```html
+  <p>Hey Yo!</p>
+  ```
+
+  ```javascript
+  console.log(document.querySelector('p').firstChild.splitText(4).data);
+  // Yo! 출력
+  
+  console.log(document.querySelector('p').firstChild.textContent);
+  // Hey 출력
+  ```
+
+  
