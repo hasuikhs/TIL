@@ -32,3 +32,37 @@ promise.then(function(value) {
     // 실패 코드
 })
 ```
+
+- `then` 메소드는 `Promise` 객체를 리턴하고 인수로 받은 콜백 함수들의 리턴 값을 이어 받아 chaining이 가능
+
+### 1.3 Callback Hell
+
+- `Promise` 이전의 비동기 처리는 Callback 함수를 설정하는 방식으로 이루어짐
+- 비동기가 완료되는 시점에 실행이 되는 callback 함수로 완료를 인지하고 그 다음 처리하게 됨
+- **비동기 처리를 연속으로 해야하는 경우 Callback 함수에 Callback 함수가 들어가고 또 그 함수에 Callback 함수가 들어가는 현상을 Callback Hell 이라고 함**
+
+```javascript
+// 이전의 코드
+a (function(resultA) {
+    b(resultA, function(resultB) {
+        c(resultB, function(resultC) {
+            d(resultC, function(resultD) {
+              // callback ...
+            });
+        });
+    });
+}
+   
+// then 이용 코드
+promise.then(function(a) {
+    
+}).then(function(b) {
+    
+}).then(function(c) {
+    
+}).then(function(d) {
+    
+});
+```
+
+- 물론 `Promise`를 이용하여 Callback Hell을 완전히 탈출 가능한 것은 아니지만, Callback을 함수로 바로 넘겨받지 않고 객체에 이어서 사용 가능하게  되므로 훨씬 보기 쉬워짐
