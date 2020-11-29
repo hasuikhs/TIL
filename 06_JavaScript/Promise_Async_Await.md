@@ -66,3 +66,7 @@ promise.then(function(a) {
 ```
 
 - 물론 `Promise`를 이용하여 Callback Hell을 완전히 탈출 가능한 것은 아니지만, Callback을 함수로 바로 넘겨받지 않고 객체에 이어서 사용 가능하게  되므로 훨씬 보기 쉬워짐
+
+## 2. Async, Await
+
+> `async`와 `await`는 JavaScript의 비동기 처리 패턴 중 가장 최근에 나온 문법이다. 기존의 비동기 처리 방식인 callback 함수와 `Promise`의 단점을 보완하고 개발자가 읽기 좋은 코드를 작성 가능케 함
