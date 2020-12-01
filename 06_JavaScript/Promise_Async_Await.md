@@ -82,3 +82,21 @@ async function 함수명() {
 - 먼저 함수의 앞에 `async`라는 예약어를 붙이고, 함수의 내부 로직 중 HTTP 통신을 하는 비동기 처리 코드 앞에 `await`를 붙임
 - **주의할 점은 비동기 처리 메서드가 꼭 `Promise` 객체를 반환해야 `await`가 의도대로 동작함**
 - 일반적으로 `await`의 대사이 되는 비동기 처리 코드는 `Axios` 등 `Promise`를 반환하는 API 호출 함수
+
+### 2.2 예외 처리
+
+- `async`와 `await`에서 예외를 처리하는 방법은 `try` `catch`
+
+  ```javascript
+  async function asyncFunction() {
+      try {
+          var foo = await fetch();
+      } catch (error) {
+          console.log(error)
+      }
+  }
+  ```
+
+- 코드를 실행하다가 발생한 네트워크 통신 오류뿐 아니라, 간단한 타입의 오류 등의 일반적인 오류까지도 `catch`로 잡을 수 있음
+
+- 발견된 에러는 `error` 객체에 담기기 때문에 에러의 유형에 맞게 에러 처리를 하면 됨
