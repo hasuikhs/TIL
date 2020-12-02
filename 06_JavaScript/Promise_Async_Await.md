@@ -80,8 +80,24 @@ async function 함수명() {
 ```
 
 - 먼저 함수의 앞에 `async`라는 예약어를 붙이고, 함수의 내부 로직 중 HTTP 통신을 하는 비동기 처리 코드 앞에 `await`를 붙임
+
 - **주의할 점은 비동기 처리 메서드가 꼭 `Promise` 객체를 반환해야 `await`가 의도대로 동작함**
+
 - 일반적으로 `await`의 대사이 되는 비동기 처리 코드는 `Axios` 등 `Promise`를 반환하는 API 호출 함수
+
+- 일반 함수에는 `await`는 사용 불가능
+
+- `await`는 최상위 레벨 코드에는 사용 불가능
+
+  ```javascript
+  // 최상위 레벨 코드 
+  let response = await fetch(url);
+  
+  // 익명 async 함수로 코드를 감싸면 사용 가능
+  async () => {
+      let response = await fetch(url);
+  }
+  ```
 
 ### 2.2 예외 처리
 
