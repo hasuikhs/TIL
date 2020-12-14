@@ -4,7 +4,11 @@ const cron = require('node-cron');
 const { Builder, By, Key, until } = require('selenium-webdriver');
 
 var connection = mysql.createConnection({
-    
+    host: '220.230.114.96',
+    user: '2n9soft',
+    port: '3306',
+    password: '2n9soft',
+    database: 'trk_admin'
 });
 
 console.log('cron schedule 시작');
@@ -37,21 +41,24 @@ cron.schedule('0 0 8 1 * 1', () => {
         console.log('ssh 생성');
 
         ssh.connect({
-           
+            host: '210.89.189.75',
+            username: 'a2n9soft',
+            port: 22,
+            password: 'qoxmAos$CTS)!',
             tryKeyboard: true
         }).then(function () {
             ssh.execCommand('ps -ef|grep php', {}).then(async function (result) {
                 var grep = result.stdout;
 
                 if (!grep.includes('cronDaily_cts.sh')) {
-                    await ssh.execCommand('command', {}).then(function (result) {
+                    await ssh.execCommand('/bin/bash /home/a2n9soft/www/html/excelreport/cronDaily_cts.sh', {}).then(function (result) {
                         console.log('결과 : ' + result.stdout);
                         console.log('에러 : ' + result.stderr);
                     });
                 }
 
                 if (!grep.includes('cronDaily_lezhin.sh')) {
-                    await ssh.execCommand('command', {}).then(function (result) {
+                    await ssh.execCommand('/bin/bash /home/a2n9soft/www/html/excelreport/cronDaily_lezhin.sh', {}).then(function (result) {
                         console.log('결과 : ' + result.stdout);
                         console.log('에러 : ' + result.stderr);
                     });
@@ -87,8 +94,8 @@ async function getLezhinResult() {
     var today = year + '' + month + '' + day;
 
     await driver.get('https://ncpej.logger.co.kr/login/login.tsp');
-    await driver.findElement(By.name('cusId')).sendKeys('id', Key.RETURN);
-    await driver.findElement(By.name('password')).sendKeys('pass', Key.RETURN);
+    await driver.findElement(By.name('cusId')).sendKeys('khasui', Key.RETURN);
+    await driver.findElement(By.name('password')).sendKeys('198281', Key.RETURN);
     await driver.findElement(By.name('sdate')).sendKeys(today, Key.RETURN);
     
     await driver.switchTo().alert().accept();
