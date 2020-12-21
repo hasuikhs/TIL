@@ -351,13 +351,13 @@ $("#btn").click(function(){
 
 ## 3. 클로저(Closure)
 
-### 3.1 정적 유효범위
+### 3.1 정적 유효범위(Lexical Scope)
 
 - JavaScript에서는 코드가 적힌 순간 변수의 유효범위가 점해짐
 - 이것을 정적 유효범위(Lexical Scope)라고 부름
 
 ```javascript
-function main) {
+function main() {
     var name = 'main'
 }
 ```
