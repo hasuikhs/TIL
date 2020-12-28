@@ -283,6 +283,15 @@ btn.addEventListener("click", () => {
 })
 ```
 
+- 한번만 동작하는 이벤트 선언
+
+```javascript
+let btn = document.getElementById("btn")
+btn.addEventListener('click', () => {
+    // 이벤트
+}, {once: true});
+```
+
 #### 2.3.2 jQuery를 이용한 방법
 
 ```javascript
