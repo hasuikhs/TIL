@@ -44,5 +44,36 @@
 
 ### 1.4 ES6+ 지원
 
+## 2. 시작하기
 
+### 2.1 TypeScript 설치
+
+```bash
+$ npm install -g typescript
+```
+
+### 2.2 실행
+
+- `Hello Word!`  출력
+
+  ```typescript
+  // helloworld.ts
+  console.log('Hello World!');
+  ```
+
+- TypeScript를 JavaScript로 컴파일 하려면
+
+  - **브라우저는 TypeScript를 지원하지 않으므로, TypeScript로 작성된 소스 코드는 지원되는 JavaScript로 재작성 필요**
+
+  ```bash
+  $ tsc helloworld.ts		# Generates file helloworld.js
+  ```
+
+- 실행은 `node` 명령어 사용
+
+  ```bash
+  $ node helloworld.ts
+  ```
+
+  
 
