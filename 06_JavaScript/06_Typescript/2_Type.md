@@ -143,5 +143,78 @@
   }
   ```
 
+- **Function**
+
+  - **함수만** 가리키는 변수를 선언
+
+  ```typescript
+  let fun: Function = () => console.log('Hello');
   
+  fun = 123; // Error
+  ```
+
+### 2.2 제네릭
+
+- 컴파일시 타입 안정성을 보장
+- 캐스팅 관련 코드 제거 가능
+
+#### 2.2.1 기본 사용
+
+```typescript
+function throwBack<T> (arg: T) {	// T : type argument 다른 문자 사용해도 상관 없음
+    return arg;
+}
+
+let outputStr = identity<string> ('myString');
+
+let outputNum = identity<number> ( 100 );
+```
+
+#### 2.2.2 타입 상속 방법
+
+- 타입을 제한하는 형태
+
+```typescript
+function add<T extends number> (a: T, b: T) {
+    return a + b;
+}
+```
+
+#### 2.2.3 오버로드 방법
+
+```typescript
+function add<T> (a: T, b: T): T;
+function add<T> (a: any, b: any) {
+    return a + b;
+}
+```
+
+#### 2.2.4 2개 이상의 타입 변수 선언
+
+```typescript
+function set<T, T2>(a: T, b: T2): T;
+function set(key: any, value: any) {
+    return arr[key] = value;
+}
+
+set<string, string|number> ('1', 1);
+```
+
+### 2.3 데코레이터
+
+- 데코레이터를 만들 때는 함수를 사용하므로,  **모든 데코레이터는 JavaScript 함수임을 아는 것이 중요**
+- Java의 `@(Annotation)`과는 조금 다름
+
+```typescript
+function firstDecorator(arg: Function) {
+    console.log(arg);
+}
+
+@firstDecorator
+class Person {
+    
+}
+```
+
+
 
