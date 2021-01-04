@@ -216,5 +216,47 @@ class Person {
 }
 ```
 
+### 2.4 Union Type
 
+- TypeScript는 **여러 유형을 가질 수 있는 변수를 정의 가능한데 이를 Union Type** 이라 함
+- JavaScript 코드에서 TypeScript 코드로 마이그레이션 할 때 일부 상황에 유리
 
+```typescript
+// string, number 유형 두개 가능
+let myVar: string|number;
+
+myVar = 100;	// OK
+myVar = 'str';	// OK
+
+myVar = true;	// Error
+```
+
+### 2.5 Literal Type
+
+- 무한한 수의 잠재적 케이스에서 유한한 수의 잠재적 케이스로 좁힘
+
+- 변수
+
+  ```typescript
+  type AppStatus = 'ACTIVE' | 'INACTIVE' | 'ONHOLD';
+  
+  let currStatus: AppStatus;
+  
+  currStatus = 'ACTIVE';	// OK
+  currStatus = 'DELETED'; // ERROR
+  ```
+
+- 함수 인수
+
+  ```typescript
+  type AppStatus = 'ACTIVE' | 'INACTIVE' | 'ONHOLD';
+  
+  function showMe(currentStatus: AppStatus): void {
+      console.log(currentStatus);
+  }
+  
+  showMe('ACTIVE');	// OK
+  showMe('DELETED');	// Error
+  ```
+
+  
