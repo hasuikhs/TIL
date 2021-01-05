@@ -2,6 +2,23 @@
 
 ### 2.1 정적 유형
 
+- **타입 주석(Type Annotation)**
+
+  - 변수 뒤에 `:` 으로 type을 지정해 주는 것
+
+    ```typescript
+    let num: number = 123;
+    ```
+
+- **타입 추론(Type Interface)**
+
+  - TypeScript는 타입 주석을 생략 가능한데, 타입 주석이 생략되면 대입 연산자(`=`)의 오른쪽 값을 분석해 변수의 타입을 결정
+  - 타입 추론은 JavaScript와 TypeScript 소스 코드 간의 호환성을 보장하기에 `.js` 파일을 `.ts` 파일로 확장자만 바꿔도 TypeScript에서 바로 동작함
+
+  ```typescript
+  let num = 123;
+  ```
+
 #### 2.1.1 기본 유형
 
 - **Number**
