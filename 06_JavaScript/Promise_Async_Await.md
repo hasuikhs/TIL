@@ -70,6 +70,8 @@ promise.then(function(a) {
 ## 2. Async, Await
 
 > `async`와 `await`는 JavaScript의 비동기 처리 패턴 중 가장 최근에 나온 문법이다. 기존의 비동기 처리 방식인 callback 함수와 `Promise`의 단점을 보완하고 개발자가 읽기 좋은 코드를 작성 가능케 함
+>
+> `yield` 대신 사용할 수 있음
 
 ### 2.1 기본 문법
 
@@ -83,7 +85,7 @@ async function 함수명() {
 
 - **주의할 점은 비동기 처리 메서드가 꼭 `Promise` 객체를 반환해야 `await`가 의도대로 동작함**
 
-- 일반적으로 `await`의 대사이 되는 비동기 처리 코드는 `Axios` 등 `Promise`를 반환하는 API 호출 함수
+- 일반적으로 `await`의 대상이 되는 비동기 처리 코드는 `Axios` 등 `Promise`를 반환하는 API 호출 함수
 
 - 일반 함수에는 `await`는 사용 불가능
 
