@@ -75,5 +75,13 @@ $ npm install -g typescript
   $ node helloworld.ts
   ```
 
-  
 
+- ts-node 를 사용하면 TypeScript 코드를 ES5로 변환하고 실행까지 동시에 사용 가능
+
+  ```bash
+  $ npm install -g ts-node
+  
+  $ ts-node helloworld.ts
+  ```
+
+  
