@@ -51,6 +51,40 @@
 
 ## 3.2 Module
 
+- `export` 와 `import`를 사용하여 모듈화
 
+- **`export`**
 
+  - `export` 키워드는 `function`, `interface`, `class`, `type`, `let`, `const` 앞에 붙일 수 있음
+  - TypeScript는 JavaScript와 호환하기 위해 `export default` 구문 제공
+    - `export default`는 한 모듈이 내보내는 기능 중 오직 하나에만 붙일 수 있음
+    - `export default`가 붙은 기능은 `import`문으로 중괄호 없이 사용 가능
+    - `export` 가 있는 파일에서도 사용 가능
 
+- **`import`**
+
+  - `export` 키워드로 내보낸 심벌을 사용하려면 `import` 키워드로 불러와야 함
+
+  - 기본 형태는 다음과 같음
+
+    ```typescript
+    import { 심벌 목록 } from '파일의 상대 경로';
+    ```
+
+  - `as`를 사용한 `import`
+
+    ```typescript
+    import * as 심벌 from '파일 상대 경로';
+    ```
+
+    - 예제
+
+      ```typescript
+      // export 
+      export function myFunction() {};
+      
+      // import
+      import * as U from 'export 파일 위치';
+      
+      U.myFunction();
+      ```
