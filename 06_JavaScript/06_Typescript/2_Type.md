@@ -124,6 +124,33 @@
   }
   ```
 
+  - 인터페이스를 설계할 때 **필수 속성**과 **선택 속성**을 정할 수 있음
+
+    - 선택 속성은 변수명 뒤에 `?`를 붙임
+
+    ```typescript
+    interface Person {
+        name: string;
+        age: number;
+        etc?: boolean;
+    }
+    
+    let person1: Person = {name: 'foo', age: 30};
+    let person2: Person = {name: 'bar', age: 32, etc: true};
+    ```
+
+  - **Anonymous Interface**
+
+    - `interface` 키워드를 사용하지 않고 이름이 없는 인터페이스 생성
+
+    ```typescript
+    let person: {
+        name: string;
+        age: number;
+        etc?: boolean
+    } = {name: 'foo', age: 31};
+    ```
+
 - **Class**
 
   - 개체를 만들기위한 템플릿
@@ -131,7 +158,7 @@
   ```typescript
   class Person {
       
-      // 변수
+      // 변수 [private | protected | public] 기본 public
       name: string;
       
       // 생성자
