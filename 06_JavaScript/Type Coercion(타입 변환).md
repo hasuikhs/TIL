@@ -1,5 +1,18 @@
 # Type Coercion(타입 변환)
 
+## 0. 타입 추론
+
+- **대입 연산자 `=` 오른쪽 값에 따라 변수의 타입을 지정하는 것을 타입 추론**이라 함
+
+- 각 변수는 초깃값에 해당하는 타입으로 지정됨
+
+  ```javascript
+  let n = 1;		// n의 타입을 number로 판단
+  let b = true;	// b의 타입을 boolean으로 판단
+  let s = 'hello'	// s의 타입을 string으로 판단
+  let o = {}		// o의 타입을 object로 판단
+  ```
+
 ## 1. 타입 변환?
 
 - JavaScript의 모든 값은 타입이 존재
