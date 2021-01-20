@@ -19,3 +19,11 @@ function printMe(me: {name: string, age: number, etc?: boolean}) {
 }
 
 printMe(ai)
+
+let person: object = {name: 'jack', age: 32};
+
+console.log((<{name: string}> person).name);
+
+console.log((person as object)['name']);
+
+console.log(person['name'])
