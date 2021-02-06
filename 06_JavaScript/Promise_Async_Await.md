@@ -67,6 +67,25 @@ promise.then(function(a) {
 
 - 물론 `Promise`를 이용하여 Callback Hell을 완전히 탈출 가능한 것은 아니지만, Callback을 함수로 바로 넘겨받지 않고 객체에 이어서 사용 가능하게  되므로 훨씬 보기 쉬워짐
 
+### 1.4 Promise.all()
+
+- 순회 가능한 객체에 주어진 모든 Promise가 이행한 후,  혹은 Promise가 주어지지 않았을 때 이행하는 Promise 반환
+- 주어진 Promise 중 하나가 거부하는 경우, 첫 번째로 거절한 프로미스의 이유를 사용해 자신도 거부
+- **즉, 모든 Promise가 이행될 때까지 기다렸다가 그 결과값을 담은 배열을 반환**
+
+```javascript
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3]).then((values) => {
+  console.log(values);
+});
+// Array [3, 42, "foo"]
+```
+
 ## 2. Async, Await
 
 > `async`와 `await`는 JavaScript의 비동기 처리 패턴 중 가장 최근에 나온 문법이다. 기존의 비동기 처리 방식인 callback 함수와 `Promise`의 단점을 보완하고 개발자가 읽기 좋은 코드를 작성 가능케 함
