@@ -18,4 +18,9 @@ function solution(numbers) {
     return sumArr.sort((a, b) => a - b);
 }
 
+var arr = [3, 2, 6];
+var divisor = 10;
+
+arr.filter(value => value % divisor === 0).sort((a, b) => a - b).
+
 console.log(solution(numbers))
