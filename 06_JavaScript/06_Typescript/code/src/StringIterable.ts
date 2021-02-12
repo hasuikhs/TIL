@@ -7,7 +7,7 @@ export class StringIterable implements Iterable<string> {
         let currentIndex    = that.currentIndex, length = that.strings.length;
 
         const iterator: Iterator<string> = {
-            next(): { value: string, done: boolean } {
+            next(): { value: any, done: boolean | undefined } {
                 const value = currentIndex < length ? that.strings[currentIndex++] : undefined;
                 const done  = value == undefined;
 
