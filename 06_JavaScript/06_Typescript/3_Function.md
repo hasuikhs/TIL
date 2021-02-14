@@ -1,6 +1,6 @@
-# 2. Function
+# 3. Function
 
-## 2.1 함수 선언
+## 3.1 함수 선언
 
 - 기본적인 함수 선언
 
@@ -12,7 +12,7 @@
 
 - **JavaScript 처럼 매개변수와 반환값에 대한 타입 주석을 생략 가능하지만, 특히 함수는 구현 의도를 알기 어렵기 때문에 지양**
 
-#### 2.1.1 void 타입
+#### 3.1.1 void 타입
 
 - 값을 반환하지 않는 ㅎ마수
 
@@ -22,7 +22,7 @@ function myFunction(name: string, age: number): void {
 }
 ```
 
-#### 2.1.2 함수 시그니처(function signature)
+#### 3.1.2 함수 시그니처(function signature)
 
 - 변수에 타입이 있는 것처럼 **함수도 타입이 있는데 이를 함수 시그니처라 함**
 
@@ -36,7 +36,7 @@ function myFunction(name: string, age: number): void {
   }
   ```
 
-#### 2.1.3 type 키워드
+#### 3.1.3 type 키워드
 
 - 기존에 존재하는 타입을 단순히 이름만 바꿔서 사용 가능케 함
 - 이러한 기능을 타입 별칭(type alias)라고 함
@@ -53,7 +53,7 @@ type strNumFunc = (string, number) => void;
 let f: strNumFunc = function(a: string, b: number): void {};
 ```
 
-#### 2.1.4 선택적 매개변수
+#### 3.1.4 선택적 매개변수
 
 - 함수의 매개변수에도 물음표(`?`)를 붙일 수 있음
 
@@ -61,7 +61,7 @@ let f: strNumFunc = function(a: string, b: number): void {};
 function myFunction(arg1: string, arg?: number): void{};
 ```
 
-### 2.2 함수 표현식
+### 3.2 함수 표현식
 
 - **함수 선언문에서 함수 이름을 제외한 코드를 함수 표현식(function expression)**
 
@@ -69,7 +69,7 @@ function myFunction(arg1: string, arg?: number): void{};
 let add = function(a, b) {return a + b};
 ```
 
-#### 2.2.1 일등 함수(First-class Function)
+#### 3.2.1 일등 함수(First-class Function)
 
 - JavaScript와 TypeScript는 일등 함수 기능이 있으므로 함수형 프로그래밍 언어
 - 일등 함수란 함수와 변수를 구분하지 않음
@@ -82,7 +82,7 @@ let f = function(a, b) {return a + b};
 f = function(a, b) {return a - b};
 ```
 
-#### 2.2.2 계산법
+#### 3.2.2 계산법
 
 - **조급한 계산법(Eager Evaluation) - 엄격한 계산법(Strict Evaluation)**
 
@@ -102,7 +102,7 @@ f = function(a, b) {return a - b};
   - 필요없는 계산을 하지 않으므로 실행을 더 빠르게 할 수 있음
   - 일반적인 함수형 프로그래밍에서 사용
 
-#### 2.2.3 함수 호출 연산자
+#### 3.2.3 함수 호출 연산자
 
 - 어떤 변수가 함수 표현식을 담고 있다면, 변수 이름 뒤에 함수 호출 연산자(function call operation) `()`를 붙여 호출 가능
 
@@ -114,7 +114,7 @@ add(1, 2); // 함수 호출 연산자
 
 - 컴파일러는 함수 호출문을 만나면 지금까지 미뤄뒀던 함수 표현식에 대해 조급한 계산법을 적용(함수 표현식의 몸통 부분을 실행)해 함수 표현식을 값으로 바꿈
 
-#### 2.2.4 익명 함수
+#### 3.2.4 익명 함수
 
 - **연산자 우선순위(operator precedence)**를 고려하여 코드를 분해
 - 아래의 2행에서 컴파일러는 게으른 계산법을 적용해 놔두지만, 3번째 중에서 함수 호출 연산자를 만나서 2행의 함수의 몸통에 조급한 계산법을 적용
@@ -125,7 +125,7 @@ let value =
 	(1, 2)	// 3
 ```
 
-#### 2.2.5 const 키워드와 함수 표현식
+#### 3.2.5 const 키워드와 함수 표현식
 
 - **함수 표현식을 담는 변수는 `let` 보다는 `const` 키워드로 선언**
 - `let` 키워드는 변수의 값이 변할 가능성이 있지만 `const` 키워드로 선언하면 함 수 내용이 이후에 절대 바뀌지 않음
