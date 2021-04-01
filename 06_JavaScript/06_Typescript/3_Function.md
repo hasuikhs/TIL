@@ -134,3 +134,57 @@ let value =
 const func = () => {};
 ```
 
+### 3.3 화살표 함수와 표현식 문
+
+```typescript
+const 함수 이름 = (매개변수1: 타입1, 매개변수2: 타입2[, ...]) : 반환 타입 => 함수 몸통
+```
+
+#### 3.3.1 실행문과 표현식 문
+
+- 오래전부터 프로그래밍 언어는 실행문 지향 언어(execution-oriented language)와 표현식 지향 언어(expression-oriented language)로 구분
+- JavaScript의 ES5는 실행문 지향 언어이지만, ESNext와 **TypeScript는 실행문과 표현식 모두 지원하는데 이를 다중 패러다임 언어(multi-paradigm language)**라 함
+
+- 실행문이 실행된 결과를 알려면 반드시 return 키워드를 사용해야하지만, 표현식 문은 return 하지 않아도 됨
+
+#### 3.3.2 실행문과 표현식 차이
+
+- 실행문 언어는 다음과 같은 결과값을 반환하지 않음
+
+  ```typescript
+  function func1(a: number, b: number): boolean {
+      a > b
+  }
+  ```
+
+- 이 문제를 해결하기 위해 return 키워드 도입
+
+  ```typescript
+  function func1(a: number, b: number): boolean {
+      return a > b
+  }
+  ```
+
+- **return은 반드시 함수 몸통에서만 사용 가능**
+
+- 한줄로 된 표현식 함수는 return 생략 가능
+
+  ```typescript
+  const func1 = (a: number, b:number): boolean => a > b
+  ```
+
+#### 3.3.3 표현식과 표현식 문의 차이
+
+```typescript
+let a = 1, b = 0
+if (a > b) console.log(true)	// 표현식
+const func = (a: number, b: number): boolean => a > b	// 표현식 문
+```
+
+- 2행에서 a > b 코드는 C언어에서 '표현식'이라고 했기에 이후 프로그래밍 언어들도 C언어와 같은 의미로 표현식이 됨
+- 그러므로, C언어 관점에서 실행문의 일부일 뿐 그 자체가 실행문은 아님
+- 하지만 표현식 지향 언어 관점에서 3행의 a > b 코드는 그 자체가 '실행문'
+- 결국 **'표현식'이란 용어는 두 가지 형태로 사용되는데, 이를 구분하기 위해 표현식과 표현식 문을 사용**
+
+
+
