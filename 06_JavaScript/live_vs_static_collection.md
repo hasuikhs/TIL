@@ -39,4 +39,4 @@
   - 즉, 실행 결과가 여럿인 경우 HTMLCollection
   - HTMLCollection은 모두 문서가 바뀔 때 **실시간으로 반영되는 Live Collection**
   
-- **Node Collection이 Live인지 Static이지 생각하지 않고 DOM 조작시 , 생각한 대로 동작하는 경우가 존재하므로 주의 필요**
+- **Node Collection이 Live인지 Static이지 생각하지 않고 DOM 조작시 , 생각한 대로 동작하지 않는 경우가 존재하므로 주의 필요**
