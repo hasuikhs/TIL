@@ -1,4 +1,4 @@
-# Jenkins(Windows)
+# Jenkins
 
 ## 1. Jenkins ?
 
@@ -10,9 +10,60 @@
 
 ### 2.1 Jenkins 다운로드 및 설치
 
-- [다운로드](https://jenkins.io/download/thank-you-downloading-windows-installer-stable/)
+#### 2.1.1 Window
 
+- [다운로드](https://jenkins.io/download/thank-you-downloading-windows-installer-stable/)
 - 정상적으로 설치가 완료되면 Jenkins 웹 서버가 자동으로 구동(`localhost:8080`)
+
+#### 2.1.2 Ubuntu
+
+- Jenkins는 java가 필요하므로, java가 설치되어 있는지 확인 아니면 설치
+
+  ```bash
+  # 설치 확인
+  $ java -version
+  
+  # 설치
+  $ sudo apt-get install openjdk-8-jdk
+  ```
+
+- Jenkins 설치를 위한 repository key 추가
+
+  ```bash
+  $ wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+  ```
+
+- repository 추가
+
+  ```bash
+  $ echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list
+  ```
+
+- apt-get 업데이트 후 jenkins 설치
+
+  ```bash
+  $ sudo apt-get update
+  $ sudo apt-get install jenkins
+  ```
+
+- Jenkins 실행 전 포트 변경
+
+  ```bash
+  $ sudo vi /etc/default/jenkins 
+  ```
+
+  - 파일 안에서 HTTP_PORT를 찾아 원하는 포트로 변경
+
+    ```
+    # port for HTTP connector (default 8080; disable with -1)
+    HTTP_PORT=<포트 번호>
+    ```
+
+- jenkins 실행
+
+  ```bash
+  $ sudo systemctl start jenkins
+  ```
 
 ### 2.2 잠금 해제
 
