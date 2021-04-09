@@ -62,6 +62,13 @@
 - jenkins 실행
 
   ```bash
+  # jenkins 자동 실행
+  $ sudo systemctl enable jenkins
+  
+  # jenkins 실행 상태 확인
+  $ sudo systemctl status jenkins
+  
+  # jenkins 실행
   $ sudo systemctl start jenkins
   ```
 
