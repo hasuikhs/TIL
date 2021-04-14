@@ -11,4 +11,6 @@
     User id
   ```
 
-  
+- CentOS 6 버전에서는 추천하지 않음
+
+  - https://weejw.tistory.com/375
