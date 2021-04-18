@@ -7,27 +7,20 @@
  * @param {number} columnNumber
  * @return {string}
  */
-var convertToTitle = function(columnNumber) {
-    
-    var trans = columnNumber.toString(26);
-    var result = '';
-    
-    for (var i = 0; i < trans.length; i++) {
-        var tmp = trans[i]
-        console.log(tmp)
-        if (tmp == '0') {
-            result = result.substring(0, result.length - 1)
-            result += 'Z'
-        } else if (/^[0-9]$/.test(tmp)) {
-            result += String.fromCharCode(tmp.charCodeAt(0) + 16)
-        } else if (/^[a-z]$/.test(tmp)) {
-            result += String.fromCharCode(tmp.charCodeAt(0) - 23)
+var convertToTitle = function(n) {
+    if (n == 0) return null;
+    let result = '';
+    while (n > 0) {
+        let r = n % 26;
+        let d = parseInt(n / 26);
+        if (r == 0) {
+            r = 26;
+            d = d - 1;
         }
-        console.log(result)
-        
-    }    
-    
-    return result;
+        result += String.fromCharCode (64 + r);
+        n = d;
+    }
+    return result.split('').reverse().join("");
 };
 ```
 
