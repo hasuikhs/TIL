@@ -32,6 +32,41 @@
 
 ## 2. 적용
 
+### 2.0 공통
+
+- 변수명에 관사와 전치사를 넣지 않는다.
+
+  ```javascript
+  var a_cat	// x
+  var cat		// O
+  ```
+
+- 변수명에 전치사는 최대한 생략한다.
+
+  ```javascript
+  var the_number_of_worker	// x
+  var worker_num				// O
+  ```
+
+- 단수와 복수를 구분한다.
+
+- 사용하는 언어의 암묵적인 규칙을 지킨다. (JAVA: CamelCase, python: snake_case etc..)
+
+- 통상적으로 사용되는 변수명/규칙을 사용한다. (tmp, cnt, idx etc..)
+
+- 상수는 모두 대문자로 표시한다.
+
+  ```javascript
+  const HOUR_OF_DAY = 24;
+  ```
+
+- 변수가 길면 적당히 잘라준다.
+
+- 로직이 끝나면 한 줄 띄워준다. 
+
+  - 이 부분은 개인적으로 꼭 해줬으면 좋겠다.
+  - 다른 사람이 짠 코드를 볼 때 너무 힘들다.
+
 ### 2.1 JAVA Naming Convention
 
 #### 2.1.1 패키지(Package)
@@ -137,7 +172,6 @@
     |      bnm.gif      | btn_naver_mail.gif |  임의 축약하지 않음  |
     |  btn_Search.gif   |    btn_srch.gif    |     영문 소문자      |
     |  1btn_search.gif  |    btn_srch.gif    | 숫자로 시작하지 않음 |
-  
 ### 2.3 JavaScript Naming Convention
 
 #### 2.3.1 변수
