@@ -17,3 +17,15 @@ var isPalindrome = function(s) {
 }
 ```
 
+- 추가 문제
+
+  - input: character array
+
+  ```javascript
+  // 기본적으로 그냥 어레이가 들어오므로 리버스만 하면 뒤집어짐
+  var reverseString = function(s) {
+      return s.reverse();
+  }
+  ```
+
+  
