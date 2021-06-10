@@ -94,7 +94,7 @@ def hello():
     # end of file !!!!
     # debug 모드를 활성화해서 서버 새로고침을 생략
     if __name__ == '__main__':
-        app.run(debug.True)
+        app.run(debug=True)
     ```
 
   - 명령어 실행

@@ -30,6 +30,8 @@ def scrap(target, user):
     th = threading.Thread(target=response_after, args=(10, ))
     th.start()
     
+    
+    
     # if (request.headers.get('<header에 담기는 api token 등>') == None):
     #     abort(401)
     
@@ -58,4 +60,6 @@ def page_not_found(error):
 
 
 if __name__ =='__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+    # debug=True를 붙이면 두번 실행되는 것처럼 보인다
+    # debug를 사용안하면 되고, use_reloader=False 옵션을 추가
+    app.run(host='0.0.0.0', port=5000, debug=True)
