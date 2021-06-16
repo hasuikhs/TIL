@@ -293,5 +293,96 @@ def pong():
 
 ### 3. Nginx 배포
 
-- 가상환경을 사용하지 않는 배포 방법
-- wsgi 사용 시도 3회차 실패... gunicorn 사용 도전
+- 가상환경을 사용하지 않고 gunicorn, nginx 사용
+- 원하는 위치 `/home/user/test` 와 비슷한 곳으로 커서 이동 후
+
+#### 3.1 Gunicorn, Nginx 설치
+
+```bash
+$ sudo apt-get install nginx
+$ sudo pip install gunicorn
+```
+
+#### 3.2 Flask
+
+- 테스트용 앱 생성
+
+  ```bash
+  $ touch test.py
+  ```
+
+  ```python
+  # test.py
+  from flask import Flask
+  
+  app = Flask(__name__)
+  
+  @app.route('/')
+  def hello():
+      return 'hello'
+  
+  if __name__ == '__main__':
+      app.run(port='5757', use_reloader=False)
+  ```
+
+- 구동 확인
+
+  ```bash
+  $ python test.py
+  ```
+
+
+#### 3.3 Gunicorn
+
+- Gunicorn으로 구동
+
+  ```bash
+  $ gunicorn -w 2 -b 127.0.0.1:5757 test:app -D
+  ```
+
+  - `-w` 워커 옵션
+  - `-b` 바인딩
+    - 호스트는 flask와 같아야 오류가 나지 않음
+    - flask 기본 호스트는 127.0.0.1
+    - flask와 gunicorn에 바인딩할 호스트가 모두 0.0.0.0 이면 외부에서 페이지가 뜨는지 확인 가능
+  - `-D` 백그라운드 실행
+
+#### 3.4 Nginx 설정
+
+- 설정 파일
+
+  ```bash
+  $ sudo vi /etc/nginx/sites-available/<name>.conf
+  ```
+
+  ```
+  server {
+  	listen <port>:
+  	server_name <name>;
+  	
+  	access_log /var/log/nginx/<name>.access.log;
+  	error_log /var/log/nginx/<name>.error.log;
+  	
+  	location / {
+  		proxy_pass http://127.0.0.1:5757;
+  		proxy_set_header Host $host;
+  		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  	}
+  }
+  ```
+
+  ```bash
+  $ sudo ln -s /etc/nginx/sites-available/<name>.conf /etc/nginx/sites-enabled/
+  ```
+
+- 문법 nginx 문법 확인
+
+  ```bash
+  $ sudo nginx -t
+  ```
+
+- Nginx 실행
+
+  ```bash
+  $ sudo systemctl restart nginx.service
+  ```
