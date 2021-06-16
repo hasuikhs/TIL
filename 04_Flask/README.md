@@ -291,7 +291,7 @@ def pong():
   ```
 
 
-### 3. Nginx 배포
+### 3. Nginx 배포 - Proxy
 
 - 가상환경을 사용하지 않고 gunicorn, nginx 사용
 - 원하는 위치 `/home/user/test` 와 비슷한 곳으로 커서 이동 후
@@ -337,7 +337,7 @@ $ sudo pip install gunicorn
 - Gunicorn으로 구동
 
   ```bash
-  $ gunicorn -w 2 -b 127.0.0.1:5757 test:app -D
+  $ sudo gunicorn -w 2 -b 127.0.0.1:5757 test:app -D
   ```
 
   - `-w` 워커 옵션
@@ -386,3 +386,88 @@ $ sudo pip install gunicorn
   ```bash
   $ sudo systemctl restart nginx.service
   ```
+
+### 4. Nginx 배포 - Socket
+
+#### 4.1 Gunicorn, Nginx 설치
+
+3.1과 같음
+
+#### 4.2 Flask
+
+3.2와 같음
+
+#### 4.3 Gunicorn
+
+- Gunicorn으로 구동
+
+  ```bash
+  $ sudo gunicorn --bind unix:/tmp/gunicorn.sock app:app
+  ```
+
+- 서비스 등록
+
+  ```bash
+  $ sudo vi /etc/systemd/system/<service_name>.service
+  ```
+
+  ```
+  [Unit]
+  Description=gunicorn daemon
+  After=network.target
+  
+  [Service]
+  User=<linux_account>
+  Group=<linux_account_group>
+  WorkingDirectory=<project_path>
+  ExecStart=/usr/local/bin/gunicorn --workers 2 --bind unix:/tmp/gunicorn.sock app:app
+  # gunicorn이 위치하는 곳을 ExecStart에 넣아야함
+  
+  [Install]
+  WantedBy=multi-user.target
+  ```
+
+- 서비스 실행
+
+  ```bash
+  $ sudo systemctl restart <service_name>.service
+  $ sudo systemctl enable <service_name>.service
+  ```
+
+#### 4.4 Nginx 설정
+
+- 설정 파일
+
+  ```bash
+  $ sudo vi /etc/nginx/sites-available/<name>.conf
+  ```
+
+  ```
+  server {
+          listen <port>;
+          server_name <name>;
+          
+          access_log /var/log/nginx/<name>.access.log;
+  		error_log /var/log/nginx/<name>.error.log;
+  
+          location / {
+                  include proxy_params;
+                  proxy_pass http://unix:tmp/gunicorn.sock;
+          }
+  }
+  ```
+
+- nginx 문법 확인
+
+  ```bash
+  $ sudo nginx -t
+  ```
+
+- nginx 실행
+
+  ```bash
+  $ systemctl start nginx.service
+  ```
+
+  
+
