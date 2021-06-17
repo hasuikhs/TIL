@@ -389,6 +389,9 @@ $ sudo pip install gunicorn
 
 ### 4. Nginx 배포 - Socket
 
+- Unix 계열 시스템에서는 포트로 서비스하기보다는 Unix Socket을 사용하는 것이 빠르고 효율적
+- Unix Socket은 같은 머신 내의 프로세스간 통신이기 때문에 네트워크 소켓처럼 네트워킹을 위한 라우팅 작업이 필요없고 이 때문에 발생 가능한 여러 문제나 딜레이를 피하고 가볍게 통신 가능
+
 #### 4.1 Gunicorn, Nginx 설치
 
 3.1과 같음
