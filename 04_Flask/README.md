@@ -291,7 +291,191 @@ def pong():
   ```
 
 
-### 3. Nginx 배포
+### 3. Nginx 배포 - Proxy
 
-- 가상환경을 사용하지 않는 배포 방법
-- wsgi 사용 시도 3회차 실패... gunicorn 사용 도전
+- 가상환경을 사용하지 않고 gunicorn, nginx 사용
+- 원하는 위치 `/home/user/test` 와 비슷한 곳으로 커서 이동 후
+
+#### 3.1 Gunicorn, Nginx 설치
+
+```bash
+$ sudo apt-get install nginx
+$ sudo pip install gunicorn
+```
+
+#### 3.2 Flask
+
+- 테스트용 앱 생성
+
+  ```bash
+  $ touch test.py
+  ```
+
+  ```python
+  # test.py
+  from flask import Flask
+  
+  app = Flask(__name__)
+  
+  @app.route('/')
+  def hello():
+      return 'hello'
+  
+  if __name__ == '__main__':
+      app.run(port='5757', use_reloader=False)
+  ```
+
+- 구동 확인
+
+  ```bash
+  $ python test.py
+  ```
+
+
+#### 3.3 Gunicorn
+
+- Gunicorn으로 구동
+
+  ```bash
+  $ sudo gunicorn -w 2 -b 127.0.0.1:5757 test:app -D
+  ```
+
+  - `-w` 워커 옵션
+  - `-b` 바인딩
+    - 호스트는 flask와 같아야 오류가 나지 않음
+    - flask 기본 호스트는 127.0.0.1
+    - flask와 gunicorn에 바인딩할 호스트가 모두 0.0.0.0 이면 외부에서 페이지가 뜨는지 확인 가능
+  - `-D` 백그라운드 실행
+
+#### 3.4 Nginx 설정
+
+- 설정 파일
+
+  ```bash
+  $ sudo vi /etc/nginx/sites-available/<name>.conf
+  ```
+
+  ```
+  server {
+  	listen <port>:
+  	server_name <name>;
+  	
+  	access_log /var/log/nginx/<name>.access.log;
+  	error_log /var/log/nginx/<name>.error.log;
+  	
+  	location / {
+  		proxy_pass http://127.0.0.1:5757;
+  		proxy_set_header Host $host;
+  		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  	}
+  }
+  ```
+
+  ```bash
+  $ sudo ln -s /etc/nginx/sites-available/<name>.conf /etc/nginx/sites-enabled/
+  ```
+
+- 문법 nginx 문법 확인
+
+  ```bash
+  $ sudo nginx -t
+  ```
+
+- Nginx 실행
+
+  ```bash
+  $ sudo systemctl restart nginx.service
+  ```
+
+### 4. Nginx 배포 - Socket
+
+- Unix 계열 시스템에서는 포트로 서비스하기보다는 Unix Socket을 사용하는 것이 빠르고 효율적
+- Unix Socket은 같은 머신 내의 프로세스간 통신이기 때문에 네트워크 소켓처럼 네트워킹을 위한 라우팅 작업이 필요없고 이 때문에 발생 가능한 여러 문제나 딜레이를 피하고 가볍게 통신 가능
+
+#### 4.1 Gunicorn, Nginx 설치
+
+3.1과 같음
+
+#### 4.2 Flask
+
+3.2와 같음
+
+#### 4.3 Gunicorn
+
+- Gunicorn으로 구동
+
+  ```bash
+  $ sudo gunicorn --bind unix:/tmp/gunicorn.sock app:app
+  ```
+
+- 서비스 등록
+
+  ```bash
+  $ sudo vi /etc/systemd/system/<service_name>.service
+  ```
+
+  ```
+  [Unit]
+  Description=gunicorn daemon
+  After=network.target
+  
+  [Service]
+  User=<linux_account>
+  Group=<linux_account_group>
+  WorkingDirectory=<project_path>
+  ExecStart=/usr/local/bin/gunicorn --workers 2 --bind unix:/tmp/gunicorn.sock app:app
+  # gunicorn이 위치하는 곳을 ExecStart에 넣아야함
+  # sock 파일을 /tmp/ 위치가 아닌 다른 곳에 넣어줘도 상관없음
+  
+  [Install]
+  WantedBy=multi-user.target
+  ```
+
+  ```bash
+  $ sudo ln -s /etc/nginx/sites-available/<name>.conf /etc/nginx/sites-enabled/
+  ```
+
+- 서비스 실행
+
+  ```bash
+  $ sudo systemctl restart <service_name>.service
+  $ sudo systemctl enable <service_name>.service
+  ```
+
+#### 4.4 Nginx 설정
+
+- 설정 파일
+
+  ```bash
+  $ sudo vi /etc/nginx/sites-available/<name>.conf
+  ```
+
+  ```
+  server {
+          listen <port>;
+          server_name <name>;
+          
+          access_log /var/log/nginx/<name>.access.log;
+  		error_log /var/log/nginx/<name>.error.log;
+  
+          location / {
+                  include proxy_params;
+                  proxy_pass http://unix:tmp/gunicorn.sock;
+          }
+  }
+  ```
+
+- nginx 문법 확인
+
+  ```bash
+  $ sudo nginx -t
+  ```
+
+- nginx 실행
+
+  ```bash
+  $ systemctl start nginx.service
+  ```
+
+  
+

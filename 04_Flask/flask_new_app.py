@@ -60,6 +60,8 @@ def page_not_found(error):
 
 
 if __name__ =='__main__':
-    # debug=True를 붙이면 두번 실행되는 것처럼 보인다
-    # debug를 사용안하면 되고, use_reloader=False 옵션을 추가
+    # Flask를 사용하여 서버를 띄우면, 두개의 process가 뜸
+    # 첫번째 프로세스는 Flask 역할 (Http request/response 처리)
+    # 두번째 프로세스는 Flask 관련 코드가 변경되면 자동으로 dev 서버를 reload해 주는 역할
+    # 실제 운영에서는 debug를 사용안하면 되고, use_reloader=False 옵션을 추가
     app.run(host='0.0.0.0', port=5000, debug=True)
