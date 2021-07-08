@@ -309,7 +309,7 @@ $("#btn").click(function(){
 })
 ```
 
-#### 2.3.2 태그에 거는 방법
+#### 2.3.3 태그에 거는 방법
 
 - 기본 방법
 
@@ -330,7 +330,7 @@ $("#btn").click(function(){
     - 첫번째 방법
   
       ```html
-    <button onclick="click(this)" data-d1="d1" data-d2="d2">버튼</button>
+      <button onclick="click(this)" data-d1="d1" data-d2="d2">버튼</button>
       ```
     
       ```javascript
@@ -366,6 +366,16 @@ $("#btn").click(function(){
         // ...
     }
     ```
+
+#### 2.3.4 동적 요소 이벤트 걸기
+
+```javascript
+document.addEventListener('click', event => {
+    if (event.target.className == 'btn-copy') {
+    	// ...
+    }
+});
+```
 
 ## 3. 클로저(Closure)
 
