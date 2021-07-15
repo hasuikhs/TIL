@@ -136,11 +136,10 @@
       // ajax 실패시 실행되는 이벤트
       // status 상태, error 에러명
   })
-.always(function(xhr, status) {
+  .always(function(xhr, status) {
       // 성공, 실패 상관없이 항상 실행되는 이벤트
   })
   ```
-  
 
 
 
@@ -315,3 +314,39 @@ public void 문자열_JSON을_파싱() {
   ```
 
 - 부트스트랩 사이트에 가서 왼쪽의 사이드바에서 자신이 필요한 부분을 사용하자.
+
+### 4.3 그리드 시스템
+
+- 부트스트랩은 layout과 content  정렬을 위한 그리드 시스템 제공
+
+- `container`, `row`, `column` 기본 사용법
+
+  ```html
+  <div class="container">
+      <div class="row">
+          <div class="col-4">col1</div>
+          <div class="col-4">col2</div>
+          <div class="col-4">col3</div>
+      </div>
+  </div>
+  ```
+
+  - `container`
+    - ``container`가 감싸고 있는 contents를 가운데 정렬해줌
+    - 반응형으로 width를 지정하고 싶을 경우 `.container`
+    - width를 화면의 100%로 지정하고 싶을 경우 `.container-fluid`
+  - `row`
+    - `column`을 감싸는 역할
+  - `column`
+    - `row`에 들어가는 각각의 content
+    - **1개의 `row`를 가로로 12칸으로 나눴을 때 몇 칸을 차지할 것인지를 지정**
+
+- 화면의 크기에 따라 가로 사이즈가 달라지도록 옵션 추가 가능
+
+  |                         | Extra small |  Small   |  Medium  |  Large   | Extra large |
+  | :---------------------: | :---------: | :------: | :------: | :------: | :---------: |
+  | **Max container width** | None (auto) |  540px   |  720px   |  960px   |   1140px    |
+  |    **Class prefix**     |    .col-    | .col-sm- | .col-md- | .col-lg- |   .col-xl   |
+
+  
+
