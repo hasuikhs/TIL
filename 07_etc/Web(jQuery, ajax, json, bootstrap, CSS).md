@@ -348,5 +348,39 @@ public void 문자열_JSON을_파싱() {
   | **Max container width** | None (auto) |  540px   |  720px   |  960px   |   1140px    |
   |    **Class prefix**     |    .col-    | .col-sm- | .col-md- | .col-lg- |   .col-xl   |
 
-  
+
+## 5. CSS
+
+### 5.1 Media Query
+
+- 기기의 유형과 , 어떤 특성이나 수치(화면 해상도, 뷰포트 너비 등)에 따라 웹 사이트나 앱의 스타일을 수정할 때 유용
+
+- **기본 문법**
+
+  - 프로그래밍 언어의 `if`문과 비슷함
+
+  ```css
+  @media all (조건) {
+      스타일
+  }
+  ```
+
+  - 미디어 타입
+
+    - `all`
+      - 모든 장치에 적용
+
+    - `print`
+
+      - 페이지가 인쇄된 경우에만 설정하고, 페이지가 브라우저에 로드될 때에는 적용되지 않음
+
+      ```css
+      @media print {
+          스타일
+      }
+      ```
+
+    - `screen`
+
+      - 화면을 출력하는 디스플레이가 있는 미디어
 
