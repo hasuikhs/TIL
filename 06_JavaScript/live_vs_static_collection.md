@@ -21,9 +21,12 @@
 - **NodeList**
   - NodeList는 `element.childNodes`나 `document.querySelectorAll()`과 같은 메소드에 의해 반환
   - 마치 Array와 비슷하게 생겼지만 배열과는 다른데 이것을 **유사 배열**이라 함
+  - 배열이 아니기 때문에 **배열에 사용 가능한 메소드를 대부분 사용 불가능**
+    - 배열 메소드를 사용하기 위해서는 NodeList를 실제 배열로 변환하는 등의 방법을 사용해야 함
+    - 최신 브라우저에서는 `forEach()` 같은 메소드를 지원함
   - 중요한 점은 대부분의 NodeList는 **Live Collection** 으로 DOM의 변경 사항을 실시간으로 반영
   - 하지만 `document.querySelectorAll()`는 **Static Collection**으로 DOM의 변경 사항이 실시간으로 반영되지 않음
-
+  
 - **HTMLElement**
 
   - 모든 종류의 HTML 요소
