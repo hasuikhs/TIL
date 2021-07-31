@@ -276,4 +276,33 @@
   var ret = `a와 b를 더하면 ${a + b}이다.`;
   ```
 
+
+## 5. 함수 성능
+
+### 5.1 indexOf vs includes
+
+- 배열 안에 해당 속성이 존재하는지를 확인하는 함수
+
+- `indexOf()`
+
+  ``` javascript
+  var arr = ['one', 'two', 'three'];
   
+  arr.indexOf('one'); // 0
+  ```
+
+  - 찾는 원소가 존재할 시 0 이상의 숫자, 즉 위치를 알려줌
+  - -1 이 나오면 존재하지 않는 원소
+
+- `includes()`
+
+  ```javascript
+  var arr = ['one', 'two', 'three'];
+  
+  arr.includes('one'); // true
+  ```
+
+- https://www.measurethat.net/Benchmarks/Show/4064/0/indexof-vs-includes-vs-lodash-includes
+
+- 에 따르면 `includes`가 조금더 나은 성능을 보여줌
+
