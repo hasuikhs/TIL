@@ -384,3 +384,44 @@ public void 문자열_JSON을_파싱() {
 
       - 화면을 출력하는 디스플레이가 있는 미디어
 
+### 5.2 우선 순위 높이기
+
+- CSS를 사용하다 보면 `!important`를 사용 했음에도 우선순위가 밀리는 경우가 있음
+
+  ```html
+  <table>
+  	<thead>
+      	<th>th1</th>
+          <th>th2</th>
+      </thead>
+      <tbody>
+      	<tr>
+          	<td>td1</td>
+              <td>td2</td>
+          </tr>
+      </tbody>
+  </table>
+  ```
+
+  ```css
+  /* 시도한 css */
+  td {
+      background-color: #EAEAEA !important;
+  }
+  ```
+
+  - 당연히 스타일이 먹었을거라 생각했지만 우선순위가 밀려서 적용되지 않는 것을 확인하였음
+
+- 위와 같은 경우에는 css의 우선순위를 높여주는 방법을 사용함
+
+- 우선순위를 높이기 위해서는 부모 태그를 써주고 우선순위를 더 높이려면 부모의 부모를 써주는 식으로 순위를 높일 수 있음
+
+- 즉 부모가 더 많은 쿼리가 우선순위가 높음
+
+  ```css
+  tr > td {
+      background-color: #EAEAEA !important;
+  }
+  ```
+
+  - `tr > td` < `tbody > tr > td` < `table > tbody > tr > td` 이런식으로 높일 수 있음
