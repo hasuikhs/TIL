@@ -104,6 +104,8 @@ async function 함수명() {
 
 - **주의할 점은 비동기 처리 메서드가 꼭 `Promise` 객체를 반환해야 `await`가 의도대로 동작함**
 
+  - `setTimeout`은 `Promise`를 반환하지 않음
+
 - 일반적으로 `await`의 대상이 되는 비동기 처리 코드는 `Axios` 등 `Promise`를 반환하는 API 호출 함수
 
 - 일반 함수에는 `await`는 사용 불가능
