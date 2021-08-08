@@ -1,6 +1,7 @@
 ## MutationObserver
 
 - DOM의 변화를 감지하고 변화가 감지될 때 콜백함수를 발생시키는 JavaScript 내장 객체
+- 단, 지나친 남용은 옵저버 간의 연쇄 작용을 심화시켜 디버깅을 매우 힘들게 할 수 있음
 
 ### 1. 생성자 - `MutationObserver()`
 
@@ -59,19 +60,26 @@ Array takeRecords();
 // 1. 감시할 대상 선정
 var target = document.getElementById('some-id');
 
-// 2. MutationObserver 인스턴스 생성
-var observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-        console.log(mutation.type);
-    });
-});
-
-// 3. 감지할 DOM의 변화 옵션 설정
+// 2. 감지할 DOM의 변화 옵션 설정
 var config = {
     attributes: true,
     childList: true,
     characterData: true
 };
+
+// 변경이 감지되었을 때 실행할 Callback 함수
+const callback = (mutationsList, observer) => {
+    for(let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+            // code
+        } else if (mutaion.type === 'attributes') {
+            // code
+        }
+    }
+}
+
+// 3. MutationObserver 인스턴스 생성
+const observer = new MutationObserver(callback);
 
 // 4. 실행
 observer.observe(target, config);
