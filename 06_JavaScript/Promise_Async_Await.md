@@ -139,3 +139,46 @@ async function 함수명() {
 - 코드를 실행하다가 발생한 네트워크 통신 오류뿐 아니라, 간단한 타입의 오류 등의 일반적인 오류까지도 `catch`로 잡을 수 있음
 
 - 발견된 에러는 `error` 객체에 담기기 때문에 에러의 유형에 맞게 에러 처리를 하면 됨
+
+### 2.3 예제
+
+```javascript
+function echo(str) {
+
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            console.log(str)
+            resolve();	// resolve
+        }, 1000 * Math.random());
+    })
+
+}
+
+async function aa() {
+    await echo('라면 구입');
+    await echo('냄비 준비');
+    await echo('냄비에 물담기');
+    await echo('끓이기');
+    await echo('라면 스프 넣기');
+    await echo('식사');
+}
+
+aa();
+```
+
+```javascript
+async function aa() {
+    console.log('A');
+    let box = await new Promise(function(resolve, reject) {
+        console.log('END');
+        // await + Promise 조합에서 resolve()를 하지 않으면 다음 라인으로 넘어가지 않음 
+        // await 가 없으면 그냥 넘어감
+		// resolve(); 
+
+    });
+    console.log('B');
+}
+
+aa()
+```
+
