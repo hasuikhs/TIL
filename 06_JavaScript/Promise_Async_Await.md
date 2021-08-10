@@ -182,3 +182,20 @@ async function aa() {
 aa()
 ```
 
+```javascript
+async function aa() {
+
+    let _resolve;
+    let promise = new Promise((resolve, reject) => {
+        _resolve = resolve;
+    });
+    setTimeout(_resolve, 2000);
+
+    console.log('A');
+    let box = await promise;
+    console.log('B');
+}
+
+aa();
+```
+
