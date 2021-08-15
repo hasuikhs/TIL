@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="date"></div>
+    <script>
+        var date = document.querySelector('#date');
+        var saveStr = 'before';
+        date.innerHTML = 'DATE: ' + dateFormat(new Date(2021, 7, 14));
+
+        var storageData1 = {
+            'saveDate': saveStr,
+            'expireTime': dateFormat(new Date(2021, 7, 14))
+        }
+
+        localStorage.setItem('saveData', JSON.stringify(storageData1));
+
+        setTimeout(() => {
+            var storageData2 = localStorage.getItem('saveData');
+
+            if (storageData2['expireTime'] != dateFormat(new Date())) {
+                localStorage.removeItem('saveData');
+            }
+        }, 5000);
+
+
+        function dateFormat(date) {
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+
+            month = month < 10 ? `0${month}` : month;
+            day = day < 10 ? `0${day}` : day;
+
+            return `${year}-${month}-${day}`;
+        }
+    </script>
+</body>
+
+</html>
