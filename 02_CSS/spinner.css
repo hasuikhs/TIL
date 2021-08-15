@@ -20,64 +20,44 @@
 
 
 /*
-* t-spinner
-*/
-
-.t-spinner {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #000;
-    background: -moz-linear-gradient(left, #000 10%, rgba(255, 255, 255, 0) 42%);
-    background: linear-gradient(to right, #000 10%, rgba(255, 255, 255, 0) 42%);
-    position: relative;
-    animation: t-spinner;
-}
-
-@keyframes t-spinner {
-    to {
-        transform: rotate(1turn);
-    }
-}
-
-
-/*
 * Chasing Tail Spinner
 */
 
 circle {
     fill: transparent;
-    stroke: #000;
+    stroke: #ff7300;
     stroke-linecap: round;
     stroke-dasharray: calc(3.14px * 40);
     stroke-dashoffset: 40;
-    -webkit-animation: c-spinner 2s linear infinite;
-    -moz-animation: c-spinner 3s linear infinite;
-    -ms-animation: c-spinner 3s linear infinite;
-    -o-animation: c-spinner 3s linear infinite;
-    animation: c-spinner 3s linear infinite;
+    -webkit-animation: chasing-spinner 2s linear infinite;
+    -moz-animation: chasing-spinner 3s linear infinite;
+    -ms-animation: chasing-spinner 3s linear infinite;
+    -o-animation: chasing-spinner 3s linear infinite;
+    animation: chasing-spinner 3s linear infinite;
 }
 
-.chasing-spinner {
+.spinner40 {
     width: 40px;
     height: 40px;
     display: block;
     transform-origin: calc(0.5px * 40) calc(0.5px * 40) 0;
-    -webkit-animation: c-rotateSpinner 2s linear infinite;
-    -moz-animation: c-rotateSpinner 3s linear infinite;
-    -ms-animation: c-rotateSpinner 3s linear infinite;
-    -o-animation: c-rotateSpinner 3s linear infinite;
-    animation: c-rotateSpinner 3s linear infinite;
+    -webkit-animation: chasing-rotateSpinner 2s linear infinite;
+    -moz-animation: chasing-rotateSpinner 3s linear infinite;
+    -ms-animation: chasing-rotateSpinner 3s linear infinite;
+    -o-animation: chasing-rotateSpinner 3s linear infinite;
+    animation: chasing-rotateSpinner 3s linear infinite;
 }
 
-@keyframes c-spinner {
+@keyframes chasing-spinner {
     0% {
-        stroke-dashoffset: 26.4;
+        stroke-dashoffset: 26.4
         /*calc(0.66 * 40)*/
+        ;
     }
     50% {
-        stroke-dashoffset: 124.6;
+        stroke-dashoffset: 124.6
         /*calc(3.14 * 40)*/
+        ;
     }
     100% {
         stroke-dashoffset: 0.66;
@@ -85,7 +65,7 @@ circle {
     }
 }
 
-@keyframes c-rotateSpinner {
+@keyframes chasing-rotateSpinner {
     0% {
         transform: rotate(0deg);
     }
