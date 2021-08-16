@@ -306,3 +306,45 @@
 
 - 에 따르면 `includes`가 조금더 나은 성능을 보여줌
 
+## 6. Date Format
+
+- JS에서 Date는 format을 제공하지 않아 보통 사용자 정의 함수를 사용(`yyyy-MM-dd`)
+
+  ```javascript
+  function dateFormat(date) {
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+  
+      month = month < 10 ? `0${month}` : month;
+      day = day < 10 ? `0${day}` : day;
+  
+      return `${year}-${month}-${day}`;
+  }
+  
+  var date = dateFormat(new Date());
+  ```
+
+- 다음과 같이도 사용 가능
+
+  ```javascript
+  var date = new Date().toISOString().slice(0, 10);
+  ```
+
+- 속도 비교
+
+  ```javascript
+  console.time('test1');
+  console.log(dateFormat(new Date()));
+  console.timeEnd('test1');
+  // 10회 평균 9.8ms
+  ```
+
+  ```javascript
+  console.time('test2');
+  console.log(new Date(Date.now() - (-540 * 60000)).toISOString().slice(0, 10));
+  console.timeEnd('test2');
+  // 10회 평균 7.6ms
+  ```
+
+  
