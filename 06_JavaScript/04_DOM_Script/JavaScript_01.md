@@ -102,6 +102,8 @@
 
 ## 2. 배열(Array)
 
+- `for ... of ` 사용 가능
+
 ### 2.1 배열 기초
 
 ```javascript
@@ -476,9 +478,12 @@ const f4 = name => `hello! ${name}`
 
 ## 6. 객체
 
+- `for ... in` 문 사용 가능
+
 ```javascript
 const person = {
     name :'홍길동',					// key가 한 단어일 때
+    								  // 따옴표를 작성하지 않아도 문자열로 간주함
     'phone number' : '01012345678',   // key가 여러 단어일 때	  
     Products : {
         cup : 'cup',
@@ -491,6 +496,7 @@ person['name']			// "홍길동"
 person['phone number']	// "01012345678"
 person.Products			// {cup : "cup", phone : "phone"}
 person.Products.cup		// "cup"
+person.title			// undefined
 ```
 
 - ES6+
