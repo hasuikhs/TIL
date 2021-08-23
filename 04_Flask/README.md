@@ -426,15 +426,12 @@ $ sudo pip install gunicorn
   ExecStart=/usr/local/bin/gunicorn --workers 2 --bind unix:/tmp/gunicorn.sock app:app
   # gunicorn이 위치하는 곳을 ExecStart에 넣아야함
   # sock 파일을 /tmp/ 위치가 아닌 다른 곳에 넣어줘도 상관없음
+  # db에 따라서 스케쥴링이 돌아가는 경우 락이 꼬일 수 있으니 worker는 빼도 좋음
   
   [Install]
   WantedBy=multi-user.target
   ```
-
-  ```bash
-  $ sudo ln -s /etc/nginx/sites-available/<name>.conf /etc/nginx/sites-enabled/
-  ```
-
+  
 - 서비스 실행
 
   ```bash
@@ -469,6 +466,12 @@ $ sudo pip install gunicorn
 
   ```bash
   $ sudo nginx -t
+  ```
+
+- sites-enabled에 symlink 추가
+
+  ```bash
+  $ sudo ln -s /etc/nginx/sites-available/<name>.conf /etc/nginx/sites-enabled/
   ```
 
 - nginx 실행
