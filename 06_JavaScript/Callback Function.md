@@ -41,6 +41,45 @@
 
   - Javascript는 `null`과 `undefined` 타입을 제외하고 모든 것을 객체로 다룸
   - 그렇기 때문에 함수를 변수처럼 사용 가능 즉, 다른 언어에서처럼 `()`를 붙일 필요 없음
+  
+- 비동기 코드 순서 맞추기
+
+  ```javascript
+  function f1(callback) {
+      setTimeout(function() {
+          console.log('A');
+          callback();
+      }, Math.random() * 1000);
+  }
+  function f2(callback) {
+      setTimeout(function() {
+          console.log('B');
+          callback();
+      }, Math.random() * 1000);
+  }
+  function f3(callback) {
+      setTimeout(function() {
+          console.log('C');
+          callback();
+      }, Math.random() * 1000);
+  }
+  function f4() {
+      setTimeout(function() {
+          console.log('D');
+      }, Math.random() * 1000);
+  }
+  
+  f1(function() {
+      f2(function() {
+          f3(function() {
+              f4();
+          });
+      });
+  });
+  ```
+
+  - 이를 콜백 지옥이라 한다...
+  - 콜백 지옥을 해결하기 위해서는 `Promise`, `Generator`, `async/await`를 사용해서 해결
 
 ### 2. 주의점
 
