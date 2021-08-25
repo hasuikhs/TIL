@@ -424,9 +424,10 @@ $ sudo pip install gunicorn
   Group=<linux_account_group>
   WorkingDirectory=<project_path>
   ExecStart=/usr/local/bin/gunicorn --workers 2 --bind unix:/tmp/gunicorn.sock app:app
-  # gunicorn이 위치하는 곳을 ExecStart에 넣아야함
+  # gunicorn이 위치하는 곳을 ExecStart에 넣어야함
   # sock 파일을 /tmp/ 위치가 아닌 다른 곳에 넣어줘도 상관없음
   # db에 따라서 스케쥴링이 돌아가는 경우 락이 꼬일 수 있으니 worker는 빼도 좋음
+  # worker가 필요한 경우 worker의 개수는 cpu의 두배를 권장함
   
   [Install]
   WantedBy=multi-user.target
@@ -435,6 +436,8 @@ $ sudo pip install gunicorn
 - 서비스 실행
 
   ```bash
+  $ sudo systemctl daemon-reload
+  
   $ sudo systemctl restart <service_name>.service
   $ sudo systemctl enable <service_name>.service
   ```
