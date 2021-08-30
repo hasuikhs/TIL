@@ -72,6 +72,28 @@
       console.log(copiedObj);	// {no1: 1, no2: 2, no3: 3}
       ```
 
+### :warning: 2-depth 이상 Deep-Copy
+
+- 2 depth 이상인 Array와 Object는 위의 방법으로 Deep-Copy가 되지 않음
+
+  ```javascript
+  let originArr = [1, [2,3]];
+  let copiedArr = [...originArr];
+  
+  copiedArr[1].push(4);
+  console.log(originArr);	// [1, [2, 3, 4]]
+  console.log(copiedArr); // [1, [2, 3, 4]]
+  ```
+
+  ```javascript
+  let originObj = {no1: {no2: 2};
+  let copiedObj = {...originObj};
+  
+  copiedObj['no1']['no2'] = 100;
+  console.log(originObj); // {no1: {no2: 100}}
+  console.log(copiedObj);	// {no1: {no2: 100}}
+  ```
+
 ## 2. Shallow-Copy
 
 - 원래 값과 복사된 값이 같은 참조를 가리키고 있는 복사
