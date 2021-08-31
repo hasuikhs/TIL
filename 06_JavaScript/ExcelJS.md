@@ -41,6 +41,58 @@ sheet.columns = [
 sheet.addRow({'id': 1, 'name': 'test', 'acc_no': 123});
 ```
 
+## 3. Style
+
+```javascript
+let percentFmtKey = ['ctr', 'conv_rate'];
+let wonDollarKey = ['cpc', 'cost', 'm_rvn'];
+
+sheet.eachRow({ includeEmpty: true }, function(row, rowNum) {
+   row.eachCell(function(cell, colNum) {
+       // header
+       if (rowNum == 1) {
+           cell.font = {
+               bold: true
+           };
+           cell.alignment = {
+               horizontal: 'center'
+           };
+           cell.fill = {
+               type: 'pattern',
+               pattern: 'solid',
+               fgColor: {
+                   argb: 'EAEAEA'
+               }
+           }
+       } else {
+           if (percentFmtKey.includes(cell['_column']['_key'])) {
+               cell.numFmt = '#,##0.00%;;-';
+               cell.alignment = {
+                   horizontal: 'right'
+               };
+           } else if (wonDollarKey.includes(cell['_column']['_key'])) {
+               cell.numFmt = '￦ #,##0;;-';
+               cell.alignment = {
+                   horizontal: 'right'
+               }
+           } else {
+               cell.numFmt = '#,##0;;-';
+               cell.alignment = {
+                   horizontal: 'right'
+               }
+           }
+       }
+       
+       cell.border = {
+           top: {style: 'thin'},
+           left: {style: 'thin'},
+           bottom: {style: 'thin'},
+           right: {style: 'thin'}
+       }
+   });
+});
+```
+
 ## file 다운로드
 
 ```javascript
