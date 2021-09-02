@@ -2,6 +2,7 @@
 
 - DOM의 변화를 감지하고 변화가 감지될 때 콜백함수를 발생시키는 JavaScript 내장 객체
 - 단, 지나친 남용은 옵저버 간의 연쇄 작용을 심화시켜 디버깅을 매우 힘들게 할 수 있음
+- IE 11 부터 지원
 
 ### 1. 생성자 - `MutationObserver()`
 
@@ -53,6 +54,25 @@ void disconnect();
 ```javascript
 Array takeRecords();
 ```
+
+#### 2.4 `MutationRecords`
+
+```javascript
+MutationRecodrds = {
+    addedNodes: [],				// 추가된 자식 노드
+    attributeName: null,		// 변경된 속성명
+    attributeNamespace: null,	// 변경된 속성네임스페이스
+    nextSibling: null,			// 다음 형제 태그
+    previousSibling: null,		// 이전 형제 태그
+    oldValue: null,				// 변경전 값
+    removeNodes: [],			// 제거된 자식 노드
+    target: Element,			// 대상 태그
+    type: 'attributes' || 'childList' || 'characterData'	// 변경된 종류
+}
+```
+
+- childList 타입에서는 addedNodes를 이용해서 자식이 추가되는지 확인 가능
+  - 하지만 일부 라이브러리에서는 제대로 작동하지 않는 경우가 존재하므로 직접 해당 태그를 query로 선택해서 처리하기를 추천함
 
 ### 3. 사용
 
