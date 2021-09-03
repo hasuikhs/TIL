@@ -1,6 +1,67 @@
 # String and Array
 
-## 1. 공통점
+## 1. String
+
+### 1.1 `substr()` vs `substring()` vs `slice()`
+
+- 모두 문자열을 잘라주는 역할을 하지만 조금씩 다름
+
+- `substr(start, ?length)`
+
+  - 입력받은 start index 부터 length 만큼을 잘라내어 반환
+
+    ```javascript
+    let str = 'string';
+    
+    str.substr(0, 2);	// str
+    str.substr(1, 2);	// tr
+    ```
+
+- `substring(start, ?end)`
+
+  - 잘라내고 싶은 start index와 last index를 받아서 잘라내 반한
+
+    ```javascript
+    let str = 'string';
+    
+    str.substring(0, 2);	// st
+    str.substring(1, 2);	// t
+    ```
+
+- `slice(start, ?end)`
+
+  - `substring` 과 같음
+
+- `substring()` vs `slice()`
+
+  - start > end 일 경우
+
+    ```javascript
+    let str = 'string';
+    
+    str.substring(1, 0);	// s
+    str.slice(1, 0);		// 빈값
+    ```
+
+    - `substring()` 은 start값과 end 값을 바꾸어 처리
+
+  - start 또는 end 값이 음수인 경우
+
+    ```javascript
+    // substring
+    str.substring(2, -1);	// st
+    str.substring(-1, 2);	// st
+    ```
+
+    - 음수의 경우 0으로 취급하여 처리
+
+    ```javascript
+    // slice
+    str.slice(2, -1);	// rin	// 2에서 길이의 -1 번째 인덱스까지 자름 즉 slice(2, 5)로 처리
+    str.slice(-2, 5);	// n	// slice(4, 5)로 처리
+    ```
+
+## 2. 공통점
 
 ```javascript
 let list = ['js', 'py', 'html', 'css'];
@@ -37,7 +98,7 @@ func1(...str); 	// str 문자열을 뿌림
   console.log(obj[Symbol.iterator]);	// undefined
   ```
 
-## 2. 차이점
+## 3. 차이점
 
 ```javascript
 list[2] = 'conf';
