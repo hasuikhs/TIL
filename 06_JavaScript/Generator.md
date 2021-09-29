@@ -42,5 +42,43 @@
   generator.next(); // {value: undefined, done: true}
   ```
 
-  
 
+## 2. Generator and Iterable
+
+- `for...of` 반복문 사용 가능
+
+  ```javascript
+  function* generateSequence() {
+    yield 1;
+    yield 2;
+    return 3;	// yield 3;
+  }
+  
+  let generator = generateSequence();
+  
+  for(let value of generator) {
+    alert(value); // 1, 2가 출력됨
+  }
+  ```
+
+  - `for...of` Iteration이 `done: true`일 때 마지막 `value`를 무시하기 때문에 마지막 3이 출력되지 않음
+  - `for...of`를 사용했을 때 모든 값이 출력되길 원하면 `yield`로 값을 반한해야 함
+
+- `Symbol.iterator` 대신 Generator를 사용한 코드
+
+  ```javascript
+  let range = {
+      from: 1,
+      to: 5,
+      
+      *[Symbol.iterator]() {	// [Symbol.iterator]: function*() 을 줄인 것
+          for (let value = this.from; value <= this.to; value++) {
+              yield value;
+          }
+      }
+  };
+  
+  alert([...range]);	// 1, 2, 3, 4, 5
+  ```
+
+- Generator는 Iterator를 어떻게 하면 쉽게 구현할지를 염두에 두며 JavaScript에 추가됨
