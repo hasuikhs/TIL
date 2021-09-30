@@ -82,3 +82,45 @@
   ```
 
 - Generator는 Iterator를 어떻게 하면 쉽게 구현할지를 염두에 두며 JavaScript에 추가됨
+
+## 3. Generator Composition
+
+- Generator 안에 Generator를 embedding 할 수 있게 해주는 Generator의 특별 기능
+
+- 즉, Generator 안에 Generator를 할당
+
+- `yield*`을 사용하여 사용 가능
+
+  ```javascript
+  function* generateSequence(start, end) {
+    for (let i = start; i <= end; i++) yield i;
+  }
+  
+  function* generatePasswordCodes() {
+  
+    // 0..9
+    yield* generateSequence(48, 57);
+  
+    // A..Z
+    yield* generateSequence(65, 90);
+  
+    // a..z
+    yield* generateSequence(97, 122);
+  
+  }
+  
+  let str = '';
+  
+  for(let code of generatePasswordCodes()) {
+    str += String.fromCharCode(code);
+  }
+  
+  alert(str); // 0..9A..Za..z
+  ```
+
+  - `yield*` 지시자는 실행을 다른 Generator에 위임
+
+- Generator Composition을 사용하면 한 Generator의 흐름을 자연스럽게 다른 Generator에 삽입 가능
+
+- **Generator Composition을 사용하면 중간 결과 저장 용도의 추가 메모리가 필요하지 않음**
+
