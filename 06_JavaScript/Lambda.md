@@ -52,7 +52,7 @@
     ```javascript
     var param = 'global param';
     
-    function printParam = () => {
+    const printParam = () => {
         console.log(this.param);
     }
     
