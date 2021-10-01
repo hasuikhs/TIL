@@ -1,0 +1,16 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 300px);
+}
+
+.item1 {
+  /* grid는 시작 선의 시작과 끝을 나타냄 */
+  grid-column-start: 1;
+  grid-column-end: 4; 
+}
+
+.item2 {
+  /* 끝 지점을 지정하는게 귀찮다면, span을 이용해 column 넓이 지정 가능 */
+  grid-column-end: span 2;
+}
