@@ -83,6 +83,24 @@
 
 - Generator는 Iterator를 어떻게 하면 쉽게 구현할지를 염두에 두며 JavaScript에 추가됨
 
+- Iterator와는 다르게 `next()` 에 매개변수를 Generator에 전달 가능
+
+  ```javascript
+  function* gen() {
+    while (true) {
+      let value = yield null;
+      console.log(value);
+    }
+  }
+  
+  const g = gen();
+  g.next(1);
+  // "{값 : null, 완료 : false}"
+  g.next(2);
+  // 2
+  // "{값 : null, 완료 : false}"
+  ```
+
 ## 3. Generator Composition
 
 - Generator 안에 Generator를 embedding 할 수 있게 해주는 Generator의 특별 기능
