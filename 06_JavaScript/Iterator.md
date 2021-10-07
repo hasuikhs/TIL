@@ -78,4 +78,42 @@ for (let num of range) {
 
   - 이 코드의 단점은 `for...of` 반복문을 하나의 객체에 동시에 사용 불가능함
 
+
+## 2. 문자열은 iterable
+
+- 배열과 문자열은 가장 광범위하게 쓰이는 내장 iterable
+
+- `for...of`는 문자열의 각 글자를 순회
+
+  ```javascript
+  for (let char of 'test') {
+      alert(char);	// t, e, s, t가 차례대로 출력
+  }
+  ```
+
+- 명시적으로 호출하기
+
+  ```javascript
+  let str = 'hello';
+  
+  let iterator = str[Symbol.iterator]();
+  
+  while (true) {
+      let result = iterator.next();
+      if (result.done) break;
+      alert(result.value);
+  }
+  ```
+
+  - Iterator를 명시적으로 호출하는 경우는 거의 없음
+  - 하지만 이를 사용하면 `for...of`를 사용하는 것보다 과정 더 잘 통제 가능
+
+## 3. Itarable과 유사 배열
+
+- Iterable은 `Symbol.iterator`가 구현된 객체
+
+- 유사 배열은 인덱스와 `length` 프로퍼티가 있어서 배열처럼 보이는 객체
+
+  - Iterable과 유사 배열은 배열이 아니기 때문에 `push`, `pop` 등의 메서드를 지원하지 않음
+
   
