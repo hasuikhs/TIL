@@ -116,4 +116,27 @@ for (let num of range) {
 
   - Iterable과 유사 배열은 배열이 아니기 때문에 `push`, `pop` 등의 메서드를 지원하지 않음
 
+- **`Array.from`**
+
+  - `Array.from`은 iterable이나 유사 배열을 받아 진짜 Array로 만들어줌
+
+  ```javascript
+  let arrayLike = {
+    0: "Hello",
+    1: "World",
+    length: 2
+  };
   
+  let arr = Array.from(arryLike);
+  ```
+
+  - 위에서 선언한 `arrayLike` 객체처럼 배열처럼 숫자를 키값으로 만들어야 함
+
+  - `Array.from(obj[, mapFunc, thisArg])`로 매핑(mapping) 함수를 optional하게 줄 수 있음
+
+    ```javascript
+    let arr = Array.from(arrayLike, item => item + 'plus');
+    ```
+
+    
+
