@@ -118,7 +118,7 @@ for (let num of range) {
 
 - **`Array.from`**
 
-  - `Array.from`은 iterable이나 유사 배열을 받아 진짜 Array로 만들어줌
+  - `Array.from`은 iterable이나 유사 배열을 받아 얕은 복사를 하여 새로운 배열 객체를 만들어줌
 
   ```javascript
   let arrayLike = {
@@ -138,5 +138,16 @@ for (let num of range) {
     let arr = Array.from(arrayLike, item => item + 'plus');
     ```
 
-    
+- **`Spread Syntax`**
+
+  - ES6+ 의 문법으로 배열이나 문자열과 같이 반복가능한 객체를 하나씩 펼쳐서 반환
+
+  ```javascript
+  let str = 'hello';
+  
+  let arr = [...str];
+  console.log(arr);	// ['h', 'e', 'l', 'l', 'o']
+  ```
+
+  
 
