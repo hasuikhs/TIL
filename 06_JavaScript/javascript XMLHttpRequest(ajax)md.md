@@ -16,7 +16,7 @@ if (window.XMLHttpRequest) {
 
 | <center>메소드</center>    | <center>설 명</center>                                       |
 | -------------------------- | ------------------------------------------------------------ |
-| open(method, url[, axync]) | 요청 타입 <br>method : GET, POST<br>url : 서버 위치<br>async  : true(비동기), false(동기, 기본값) |
+| open(method, url[, axync]) | 요청 타입 <br>method : GET, POST<br>url : 서버 위치<br>async  : true(비동기, 기본값), false(동기) |
 | send()                     | 서버로 요청을 보냄(GET 방식)                                 |
 | send(string)               | 서버로 요청을 보냄(POST)                                     |
 
