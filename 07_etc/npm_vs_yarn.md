@@ -11,6 +11,8 @@
 
 ## 2. 사용법
 
+### 2.1 npm, yarn
+
 - **package.json 생성**
 
   ```bash
@@ -63,6 +65,27 @@
   $ yarn upgrade
   ```
 
-  
+### 2.2 npm install options
 
-  
+- `npm install` or `npm i`는 `./node_modules` 폴더에 패키지를 다운받아 설치함
+  - `package.json`의 `dependencies`에 있는 모든 패키지를 설치
+  - npm 5버전 이상부터는 `--save` 옵션 사용하지 않아도 `dependencies`에 항목이 추가됨
+
+| option                  | 설명                                                         |
+| ----------------------- | ------------------------------------------------------------ |
+| `-P`, `--save-prod`     | `package.json`의 `dependencies`에 패키지 등록 (기본값)       |
+| `-D`, `--save-dev`      | `package.json`의 `devDependencies`에 패키지 등록             |
+| `-O`, `--save-optional` | `package.json`의 `optionalDependencies`에 패키지 등록        |
+| `--no-save`             | `dependencies`에 패키지를 등록하지 않음                      |
+| `-g`, `-global`         | 패키지를 프로젝트가 아닌 시스템의 `node_module` 폴더에 설치<br>`package.json`의 `dependencies`에 등록되지 않음 |
+| `--force`               | 패키지가 존재하더라도 무조건 강제로 다운받음                 |
+
+- `dependencies`: 실제 코드에도 포함되며 앱 구동을 위해 필요한 의존성 파일들
+- `devDependencies`:실제 코드에 포함되지 않으며 개발 단계에만 필요한 의존성 파일들
+
+## NPX
+
+- npm 5.2.0 버전 이상에서 사용가능한 도구
+- npm을 좀 더 편하게 사용하기 위해서 npm에서 제공
+- npx는 npm 레지스트리에 올라가있는 패키지를 쉽게 설치하고 관리가능케 도와주는 CLI 도구
+
