@@ -83,9 +83,30 @@
 - `dependencies`: 실제 코드에도 포함되며 앱 구동을 위해 필요한 의존성 파일들
 - `devDependencies`:실제 코드에 포함되지 않으며 개발 단계에만 필요한 의존성 파일들
 
+- 설치할 패키지 뒤에 `@`를 붙이면 특정 버전을 설치하는 것도 가능
+
+  - 설치할 버전을 특정할 수 없다면 이렇게도 가능
+
+    ```bash
+    # 0.0.1 버전에서 0.2.0 중 일치하는 버전 설치
+    $ npm i name@"0.0.1 < 0.2.0"
+    ```
+
 ## NPX
 
 - npm 5.2.0 버전 이상에서 사용가능한 도구
+
 - npm을 좀 더 편하게 사용하기 위해서 npm에서 제공
+
 - npx는 npm 레지스트리에 올라가있는 패키지를 쉽게 설치하고 관리가능케 도와주는 CLI 도구
 
+- npx는 기존에 npm 설치 방법과는 다르게 일일이 설치, 실행, 제거를 할 필요 없이 일회성으로 원하는 패키지를 npm 레지스트리에 접근해서 실행시키고 설치
+
+  ```bash
+  # create-react-app
+  $ which create-react-app
+  create-react-app not found
+  
+  # npx를 사용하면 실행 가능
+  $ npx create-react-app my-app
+  ```
