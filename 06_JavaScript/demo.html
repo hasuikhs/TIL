@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="first-div"></div>
+  <div id="second-div"></div>
+  <div class="first-class"></div>
+
+  <br>
+  <br>
+  <p><strong>Q.</strong> id가 first-div인 요소를 선택해보세요</p>
+  <input id="answer" type="text" placeholder="답 입력" />&nbsp;<span id="answer-text"></span>
+  
+  <script>
+    document.querySelector('#first-div').innerText      = '<div id="first-div"></div>';
+    document.querySelector('#second-div').innerText     = '<div id="second-div"></div>';
+    document.querySelector('div.first-class').innerText = '<div class="first-class"></div>';
+
+    let $correctAnswerEle = document.querySelector('#first-div');
+    let $notyEle          = document.querySelector('#answer-text');
+
+    document.querySelector('#answer').addEventListener('keyup', (event) => {
+      if (event.keyCode == 13) {
+        let $answerEle = document.querySelector(event.target.value);
+        if ($answerEle == $correctAnswerEle) {
+          $answerEle.style.color      = 'green';
+          $answerEle.style.fontWeight = 'bold';
+          
+          $notyEle.innerText   = '정답';
+          $notyEle.style.color = 'green';
+
+        } else {
+          $notyEle.innerText   = '오답';
+          $notyEle.style.color = 'red';
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
