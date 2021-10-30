@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function fetchItems(second) {
+        return new Promise(function(resolve, reject) {
+          setTimeout(function() {
+            var items = [1, 2, 3];
+            console.log(`this function delay time is ${second} sec`);
+            resolve(items); // resolve가 실행되지 않으면 다음 promise 함수가 실행되지 않음
+          }, second * 1_000);
+        });
+      }
+      
+      // fetchItems(2).then(() => fetchItems(1));
+
+      async function test() {
+        await fetchItems(2);
+        await fetchItems(1);
+      }
+      test();
+    </script>
+  </body>
+</html>
