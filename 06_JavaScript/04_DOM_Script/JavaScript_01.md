@@ -99,6 +99,23 @@
 - **var 변수 선언**과 **함수 선언문**에서만 발생
   - **`var` 변수/함수의 선언만** 위로 끌어 올려지며 할당은 끌어 올려지지 않음
   - `let`/`const` 변수 선언과 함수표현식에서는 호이스팅 발생하지 않음
+  
+- JavaScript에서 **Class 또한 함수의 일종이지만 호이스팅이 되지 않음**
+
+  ```javascript
+  const test1 = new Test1();
+  const test2 = new Test2();	// ReferenceError: Cannot access 'Test2' before initialization
+  
+  function Test1() {
+      this.name = 'test1';
+  }
+  
+  class Test2 {
+      constructor() {
+          this.name = 'test2';
+      }
+  }
+  ```
 
 ## 2. 배열(Array)
 
