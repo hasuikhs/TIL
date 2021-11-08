@@ -1,6 +1,23 @@
 # Dependency Injection in JS
 
-### 1. Dependency Injection ?
+## 0. Dependency?
+
+```javascript
+const User = require('./User');
+
+async function addUser(userData) {
+    const user = new User(userData);
+}
+```
+
+- `addUser()` 메서드는 User에 의존성을 가짐 
+- 의존성이 발생하면 긴밀한 결합(tight coupling)이 생기므로, User 모듈이 변경이 되면 addUser 함수도 변경이 됨
+- 의존성이 높아질 경우
+  - 코드 재사용성 감소
+  - 유지보수 비용 증가
+  - 테스트 코드 작성 어려움
+
+## 1. Dependency Injection ?
 
 - Dependency Injection(DI, 의존성 주입)은 하나의 패턴
 - 의존성들을 인자들로 전달해준다면, 모듈 안에서 의존성들을 불러오거나 새로 만드는 것을 피할 수 있음
