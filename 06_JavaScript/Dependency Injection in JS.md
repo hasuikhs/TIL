@@ -21,6 +21,7 @@ async function addUser(userData) {
 
 - Dependency Injection(DI, 의존성 주입)은 하나의 패턴
 - 의존성들을 인자들로 전달해준다면, 모듈 안에서 의존성들을 불러오거나 새로 만드는 것을 피할 수 있음
+- 모듈을 완전히 독립적으로 만들 수 있음
 
 ```javascript
 // 간단한 DB에 접근하는 Service Module
@@ -60,5 +61,19 @@ async function addUser(userData) {
 
      - 위 코드를 쓰면서 service와 repository를 decoupling되면서 repository 변경이 용이해짐
 
+## 2. DI in Node.js
 
+- 의존성은 class에서만 사용할 수 있는게 아님
+- 의존성을 주입할 때 개별 의존성을 하나 하나 인자로 전달하는 것보다 **객체로 감싸서 한번에 주는게 좋음**
+  - 개인적으로 객체로 감싸서 주는 것이 파라미터의 순서를 생각을 안해도 되는 이점도 있는 것 같음
+
+```javascript
+function UsersService({ usersRepository }) {
+    this.usersRepository = usersRepository;
+    
+    this.getUsers = async () => {
+        //...
+    }
+}
+```
 
