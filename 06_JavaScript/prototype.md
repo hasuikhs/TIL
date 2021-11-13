@@ -38,5 +38,36 @@
   Object.prototype.isPrototypeOf(person1); // true
   ```
 
-  
+
+## 2. 기본 객체 프로토타입
+
+```javascript
+var chimp = {
+    hasThumbs: true,
+    swing: function() {
+        return '나무에 매달려';
+    }
+}
+```
+
+- `toString`은 chimp 객체에 없는 함수지만, 실행해도 에러가 나지 않음
+
+- `chimp.toString()`을 호출하면 JS 엔진은 chimp 객체에 해당 함수가 없다는 것을 알고 나서, chimp의 프로토타입인 Object.prototype을 찾아보고 여기에 정의된 `toString` 함수 프로퍼티를 발견하여 반환
+
+- chimp에 `toString` 함수가 있다면, chimp의 프로토타입을 실행하지 않고 곧바로 chimp에서 실행
+
+  ```javascript
+  var chimp = {
+  	// ...
+      toString: function() {
+          return '침팬지';
+      }
+  }
+  ```
+
+## 3. 프로토타입 상속
+
+## 4. 프로토타입 체인
+
+
 
