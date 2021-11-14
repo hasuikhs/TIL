@@ -67,7 +67,58 @@ var chimp = {
 
 ## 3. 프로토타입 상속
 
+- 프로토타입 상속은 기본 프로토타입을 맞춤형 프로토타입으로 대체할 때 진가가 드러남
+
+- 위의 코드에서 chimp 객체와 더불어 bonobo 객체를 생성한다면,  둘은 같은 유인원이므로 공유하는 프로퍼티가 적지 않음
+
+- 이런 공통 프로퍼티를 ape 객체에 담앚두면 객체마다 프로퍼티를 반복할 필요 없음
+
+- 즉, 두 객체를 ape에 연결해 ape를 **공유 프로토타입(Shared Prototype)**으로 둠
+
+  ```javascript
+  var ape = {
+      hasThumbs: true,
+      hasTail: false,
+      swing: function() {
+          return '나무에 매달려';
+      }
+  }
+  
+  var chimp = Object.create(ape);
+  var bonobo = Object.create(ape);
+  bonobo.habitat = '중앙 아프리카';
+  
+  console.log(bonobo.habitat);	// 중앙 아프리카 (bonobo 프로퍼티)
+  console.log(bonobo.hasTail);	// false (ape 프로토타입)
+  console.log(bonobo.swing());	// 나무에 매달려 (ape 프로토타입)
+  ```
+
+  - chimp와 bonobo 모두 ape에서 프로토타입을 물려받음
+  - bonobo에 추가된 habitat 프로퍼티는 ape, chimp 그 누구와도 공유하지 않는 고유 프로퍼티
+  - ape는 공유 프로퍼티라서 수정하면 chimp와 bonobo 모두에 즉시 영향을 미침
+
 ## 4. 프로토타입 체인
 
+- 프로토 타입 체인이라는 다층 프로토타입을 이용하면 여러 계층의 상속 구현 가능
 
+```javascript
+var primate = {
+    stereoscopicVision: true
+};
+
+var ape = Object.create(primate);
+ape.hasThumbs = true;
+ape.hasTail = false;
+ape.swing = function() {
+    return '나무에 매달려';
+}
+
+var chimp = Object.create(ape);
+
+console.log(chimp.hasTail);	// false (ape 프로토타입)
+console.log(chimp.stereoscopicVision);	// true (primate 프로토타입)
+```
+
+- chimp의 프로토타입 체인을 따라 ape까지 올라가 결국 primate에서 이 프로퍼티를 발견해 반환
+- 만약 프로토타입 체인을 다 뒤져도 없으면 undefined를 반환함
 
