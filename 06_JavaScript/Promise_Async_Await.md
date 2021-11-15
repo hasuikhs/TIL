@@ -224,3 +224,67 @@ async function showAvatar() {
 showAvatar();
 ```
 
+## 3. for await ... of
+
+- 반복문 내에서 일어나는 모든 비동기 구문을 기다려주는 구문
+
+```javascript
+// 공통으로 테스트할 함수
+function fetchTest(param) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log(param);
+            resolve();
+        }, 2_000);
+    });
+}
+```
+
+- forEach에 async/await 
+
+  ```javascript
+  let arr = ['a', 'b', 'c', 'd'];
+  
+  arr.forEach(async (char) => {
+      await fetchTest(char);
+  });
+  
+  console.log('forEach 실행 완료');
+  
+  // forEach 실행 완료
+  // a
+  // b
+  // c
+  // d
+  ```
+
+  - **forEach에서는 비동기 작업이 끝나는걸 기다리지 않음**
+  - 2초 뒤에 모든 a, b, c, d가 출력됨
+
+- for await ... of
+
+  ```javascript
+  (async function test() {
+  	for await (let char of arr) {
+          await fetchTest(char);
+      }
+      
+      console.log('for await 실행 완료');
+  })();
+  
+  // a
+  // b
+  // c
+  // d
+  // for await 실행 완료
+  ```
+
+  - 이제야 의도한 대로 하나당 2초씩 총 8초에 걸쳐 출력된 후 최종적으로 실행 완료라고 출력함
+  - 다만, for await 라도 `fetchTest()` 함수 앞에 `await`를 빼면 위의 forEach와 같게 결과를 받을 수 있음
+
+## :information_source: 비교
+
+|                                         | `forEach(async () => {})` | `await Promise.all` | `for await ... of` |
+| --------------------------------------- | :-----------------------: | :-----------------: | :----------------: |
+| 다수 비동기 작업 한번에 실행            |             O             |          O          |         X          |
+| 다수 비동기 작업이 모두 끝나기를 기다림 |             X             |          O          |         O          |
