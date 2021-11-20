@@ -381,8 +381,11 @@ document.addEventListener('click', event => {
 
 ### 3.1 정적 유효범위(Lexical Scope)
 
-- JavaScript에서는 코드가 적힌 순간 변수의 유효범위가 점해짐
-- 이것을 정적 유효범위(Lexical Scope)라고 부름
+- JavaScript에서는 **코드가 적힌 순간 변수의 유효범위가 정해짐**
+- 즉, 함수를 어디서 선언하였는지에 따라 상위 스코프를 결정하며, **함수의 호출이 아니라 함수의 선언에 따라 결정 됨**
+  - 함수를 어디에서 호출하였는지는 스코프 결정에 아무런 의미를 주지 않음
+
+- 이것을 Lexical Scope 또는 Static Scope라고 부름
 
 ```javascript
 function main() {
@@ -423,6 +426,24 @@ main()		// main 출력
 ```
 
 - `main()` 메서드의 `name` 변수는 전역변수인 `name` 변수가 아니고 `main()` 함수 안에서 선언되어 함수 밖으로 벗어날 수 없기 때문
+
+```javascript
+let name = 'main'
+
+function main() {
+    let name = 'fMain'
+    print()
+    
+    function print() {
+        console.log(name)
+    }
+}
+
+main()		// fMain 출력
+console.log(name) // main 출력
+```
+
+- 위와 같이 코드를 고치면 `print()`함수가 `main()` 메서드 안에서 선언되어 스코프가 main 함수 내부이므로 fMain을 출력
 
 ### 3.2 클로저란?
 
