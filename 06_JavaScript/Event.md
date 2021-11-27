@@ -46,7 +46,7 @@ function checkTarget(event) {
       ele.addEventListener('click', event => {
           // event code
       });
-});
+  });
   ```
   
 - 이벤트 위임
@@ -85,3 +85,33 @@ function checkTarget(event) {
   - `return false`
     - jQuery를 사용할 때는 위의 두개 모두를 수행한 것과 같음
     - jQuery를 사용하지 않을 때는 `event.preventDefalut()`와 같음
+
+## 4. Event 객체
+
+### 4.1 Event 생성
+
+```javascript
+let myEvent = new Event(type[, options]);
+```
+
+- `type`
+  - 이벤트 타입을 나타내는 문자열로 `click`등 내장 이벤트나 `my-event` 같은 커스텀 이벤트 지정 가능
+- `options`
+  - `bubbles`: `true/false` -`true`인 경우 이벤트가 버블링 됨 (default: `false`)
+  - `cacelable`: `true/false` - `true`인 경우 브라우저 '기본 동작'이 실행되지 않음 (default: `false`)
+
+### 4.2 dispatchEvent
+
+- 이벤트 객체를 생성한 다음엔 `element.dispatchEvent(event)`를 호출해 요소에 있는 이벤트를 반드시 실행 시켜줘야 함
+
+```html
+<button id="btn" type="button">선택</button>
+<script>
+    let btn = document.querySelector('#btn');
+    btn.addEventListener('click', (event) => {
+        console.log(event.target)
+    });
+    btn.dispatchEvent(new Event('click'));
+</script>
+```
+
