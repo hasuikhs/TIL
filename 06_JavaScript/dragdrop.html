@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      #drop-zone {
+        border: 5px solid black;
+        width: 400px;
+        height: 400px;
+        background: #eaeaea;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        left: 10%;
+      }
+      ul {
+        margin-left: 100px;
+      }
+      ul li {
+        list-style-type: none;
+        float: left;
+      }
+      #text-width {
+        display: inline-block;
+        min-width: 60px;
+      }
+      #text-height {
+        display: inline-block;
+        min-width: 60px;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div
+      id="drop-zone"
+      ondrop="dropHandler(event);"
+      ondragover="dragOverHandler(event);"
+    ></div>
+    <ul>
+      <li>가로: <span id="text-width"></span></li>
+      <li>세로: <span id="text-height"></span></li>
+      <li>비율: <span id="text-rate"></span></li>
+    </ul>
+    <script>
+      function dropHandler(ev) {
+        ev.preventDefault();
+
+        let dropZone = document.querySelector("#drop-zone");
+
+        if (ev.dataTransfer.items) {
+          if (ev.dataTransfer.items[0].kind === "file") {
+            let file = ev.dataTransfer.items[0].getAsFile();
+
+            if (!file.type.includes("image")) {
+              alert("File type is not image");
+              return;
+            }
+
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = async () => {
+              let img = document.createElement("img");
+              img.src = reader.result;
+
+              if (dropZone.children.length > 0) {
+                dropZone.firstElementChild.remove();
+              }
+              document.querySelector("#drop-zone").appendChild(img);
+              document.querySelector("#text-width").innerText = await img.naturalWidth;
+              document.querySelector("#text-height").innerText = await img.naturalHeight;
+
+              let gcd = calGCD(img.naturalWidth, img.naturalHeight);
+
+              document.querySelector("#text-rate").innerText = `${ img.naturalWidth / gcd } : ${img.naturalHeight / gcd}`;
+
+              let result = img.naturalHeight / img.naturalWidth;
+
+              if (result >= 1 / 2 && result <= 4 / 3) {
+                document.querySelector("#text-rate").style.background = '#99FF99';
+              } else {
+                document.querySelector("#text-rate").style.background = '#FF6666';
+              }
+
+            };
+          }
+        }
+      }
+
+      function dragOverHandler(ev) {
+        ev.preventDefault();
+      }
+
+      function calGCD(a, b) {
+        if (b === 0) return a;
+        return calGCD(b, a % b);
+      }
+    </script>
+  </body>
+</html>
