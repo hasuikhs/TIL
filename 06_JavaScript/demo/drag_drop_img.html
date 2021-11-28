@@ -60,27 +60,34 @@
 
             let reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onloadend = async () => {
+            
+            reader.onloadend = () => {
               let img = document.createElement("img");
               img.src = reader.result;
 
               if (dropZone.children.length > 0) {
                 dropZone.firstElementChild.remove();
               }
-              document.querySelector("#drop-zone").appendChild(img);
-              document.querySelector("#text-width").innerText = await img.naturalWidth;
-              document.querySelector("#text-height").innerText = await img.naturalHeight;
 
-              let gcd = calGCD(img.naturalWidth, img.naturalHeight);
+              // 이미지가 로드되기를 기다리지 않으면 naturalWidth, naturalHeight가 0으로 나올 수 있음
+              img.onload = () => {
 
-              document.querySelector("#text-rate").innerText = `${ img.naturalWidth / gcd } : ${img.naturalHeight / gcd}`;
+                let imgWidth = img.naturalWidth;
+                let imgHeight = img.naturalHeight;
 
-              let result = img.naturalHeight / img.naturalWidth;
+                let gcd = calGCD(imgWidth, imgHeight);
+                let result = imgHeight / imgWidth;
 
-              if (result >= 1 / 2 && result <= 4 / 3) {
-                document.querySelector("#text-rate").style.background = '#99FF99';
-              } else {
-                document.querySelector("#text-rate").style.background = '#FF6666';
+                document.querySelector("#drop-zone").appendChild(img);
+                document.querySelector("#text-width").innerText = imgWidth;
+                document.querySelector("#text-height").innerText = imgHeight;
+                document.querySelector("#text-rate").innerText = `${ imgWidth / gcd } : ${ imgHeight / gcd}`;
+
+                if (result >= 1 / 2 && result <= 4 / 3) {
+                  document.querySelector("#text-rate").style.background = '#99FF99';
+                } else {
+                  document.querySelector("#text-rate").style.background = '#FF6666';
+                }
               }
 
             };
@@ -88,10 +95,12 @@
         }
       }
 
+      // 드래그오버 이벤트 함수를 지정하지 않으면 이미지가 드랍존에 올라가지 않고 브라우저로 이미즈를 띄움
       function dragOverHandler(ev) {
         ev.preventDefault();
       }
 
+      // 최대공약수를 구해 비율을 구함
       function calGCD(a, b) {
         if (b === 0) return a;
         return calGCD(b, a % b);
