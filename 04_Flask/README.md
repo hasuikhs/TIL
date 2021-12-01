@@ -337,7 +337,7 @@ $ sudo pip install gunicorn
 - Gunicorn으로 구동
 
   ```bash
-  $ sudo gunicorn -w 2 -b 127.0.0.1:5757 test:app -D
+  $ sudo gunicorn -w 2 -t 120 -b 127.0.0.1:5757 test:app -D
   ```
 
   - `-w` 워커 옵션
@@ -345,6 +345,7 @@ $ sudo pip install gunicorn
     - 호스트는 flask와 같아야 오류가 나지 않음
     - flask 기본 호스트는 127.0.0.1
     - flask와 gunicorn에 바인딩할 호스트가 모두 0.0.0.0 이면 외부에서 페이지가 뜨는지 확인 가능
+  - `-t` 타임아웃 설정 기본값 30 (초)
   - `-D` 백그라운드 실행
 
 #### 3.4 Nginx 설정
