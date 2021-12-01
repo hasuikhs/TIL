@@ -16,10 +16,10 @@ if (cluster.isMaster) {
 } else {
   const app = express();
 
-  app.use(express.urlencoded({extended: true})).use(cors());
+  app.use(express.urlencoded({ extended: true })).use(cors());
 
   app.get('/', (req: Request, res: Response): void => {
-    res.json({message: 'Hello'});
+    res.json({ message: 'Hello' });
   });
 
   app.listen(PORT, (): void => {
