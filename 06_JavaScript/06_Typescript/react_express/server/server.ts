@@ -18,7 +18,7 @@ if (cluster.isMaster) {
 
   app.use(express.urlencoded({ extended: true })).use(cors());
 
-  app.get('/', (req: Request, res: Response): void => {
+  app.get('/hello', (req: Request, res: Response): void => {
     res.json({ message: 'Hello' });
   });
 

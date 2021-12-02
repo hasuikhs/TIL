@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  fetchAPI();
+  
   return (
     <div className="App">
       <header className="App-header">
@@ -18,9 +20,22 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={() => fetchAPI()}>
+          버튼
+        </button>
       </header>
     </div>
   );
+}
+
+async function fetchAPI() {
+  let response = await fetch('/hello');
+
+  if (response.ok) {
+    let result = await response.json();
+    console.log(result);
+    console.log(result.message)
+  }
 }
 
 export default App;
