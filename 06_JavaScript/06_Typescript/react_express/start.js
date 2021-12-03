@@ -4,35 +4,39 @@ import { spawn } from 'child_process';
 
 (async function () {
   const __dirname = path.resolve();
-  const dirs = [__dirname, `${__dirname}/client`, `${__dirname}/server`];
+  const dirObj = {
+    root:   __dirname, 
+    client: `${__dirname}/client`, 
+    server: `${__dirname}/server`
+  };
 
-  for await (let dir of dirs) {
-    console.log('--------------------------------')
-    await checkDir(dir);
+  for (let [dirName, dir] of Object.entries(dirObj)) {
+    await checkDir(dirName, dir);
   }
   
-  let process = spawn('bash', {cwd: __dirname});
-  process.stdin.write(`npm start`);
-  process.stdin.end();
+  executeCommand(__dirname, 'npm start');
 })();
 
-function checkDir(tgtDir) {
-  console.log(tgtDir)
+function checkDir(dirName, tgtDir) {
   return new Promise((resolve, reject) => {
     if (fs.existsSync(`${tgtDir}/node_modules`)) {
-      console.log(`Exist ${tgtDir}/node_modules directory.`);
+      console.log(`Exist node_modules in ${dirName} directory.`);
       resolve();
     } else {
-      console.log(`Not exist ${tgtDir}/node_modules directory.`);
-
-      let process = spawn('bash', {cwd: tgtDir});
-
-      process.stdin.write(`npm i`);
-      process.stdin.end();
-      process.on('close', (code) => {
-        console.log(`End creating node_moduels directory: ${tgtDir}`);
-        resolve();
-      });
+      console.log(`Not exist node_modules in ${dirName} directory.`);
+      executeCommand(tgtDir, 'npm i', `End creating node_modules in ${dirName} directory.`, resolve);
     }
   });
+}
+
+function executeCommand(tgtDir, command, message = undefined, resolve = undefined) {
+  let process = spawn('bash', {cwd: tgtDir});
+
+  process.stdin.write(command);
+  process.stdin.end();
+  
+  process.on('close', (code) => {
+    if (message) console.log(message);
+    if (resolve) resolve();
+  })
 }
