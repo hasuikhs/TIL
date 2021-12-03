@@ -35,8 +35,10 @@ function executeCommand(tgtDir, command, message = undefined, resolve = undefine
   process.stdin.write(command);
   process.stdin.end();
   
-  process.on('close', (code) => {
-    if (message) console.log(message);
-    if (resolve) resolve();
-  })
+  if (message) {
+    process.on('close', (code) => {
+      console.log(message);
+      if (resolve) resolve();
+    });
+  }
 }
