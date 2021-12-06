@@ -1,19 +1,18 @@
-import fs from 'fs';
-import path, { dirname } from 'path';
-import { spawn } from 'child_process';
+const fs = require('fs');
+const path = require('path');
+const { spawn } = require('child_process');
 
 (async function () {
   const __dirname = path.resolve();
   const dirObj = {
-    root:   __dirname, 
-    client: `${__dirname}/client`, 
-    server: `${__dirname}/server`
-  };
+    client: `${__dirname}/client`,
+    server: __dirname
+  }
 
   for (let [dirName, dir] of Object.entries(dirObj)) {
     await checkDir(dirName, dir);
   }
-  
+
   executeCommand(__dirname, 'npm start');
 })();
 
@@ -36,7 +35,7 @@ function executeCommand(tgtDir, command, message = undefined, resolve = undefine
   process.stdin.end();
   
   if (message) {
-    process.on('close', (code) => {
+    process.on('close', code => {
       console.log(message);
       if (resolve) resolve();
     });

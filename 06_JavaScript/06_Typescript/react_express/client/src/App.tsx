@@ -1,7 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import './setupProxy';
 
 function App() {
   fetchAPI();
