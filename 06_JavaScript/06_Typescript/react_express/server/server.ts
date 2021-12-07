@@ -18,7 +18,11 @@ if (cluster.isMaster) {
     app.use(express.urlencoded({ extended: true }));
 
     app.get('/hello', (req: Request, res: Response): void => {
-        res.json({ message: 'Hello' });
+        res.status(200).json({ message: 'Hello' });
+    });
+
+    app.get('*', (req: Request, res: Response) : void => {
+        res.status(404).json({ message: 'error' });
     });
 
     app.listen(PORT, (): void => {
