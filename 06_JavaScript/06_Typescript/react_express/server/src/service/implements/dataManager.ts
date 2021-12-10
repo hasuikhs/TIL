@@ -18,7 +18,7 @@ class DataManager implements DataManagerInterface {
   private _curDB: Datastore;
 
   constructor() {
-    this._path = `${path.resolve()}/server/data`;
+    this._path = `${path.dirname(__filename)}/../../../data`;
 
     this._servers = new Datastore({ filename: `${this._path}/servers.db`, autoload: true });
     this._accounts = new Datastore({ filename: `${this._path}/accounts.db`, autoload: true });
@@ -67,7 +67,11 @@ class DataManager implements DataManagerInterface {
       this._curDB.insert(docExt, (err, result) => {
         if (err) reject(new Error(`Insert error. cause: ${err}`));
 
-        resolve(result);
+        if (result) {
+          resolve(1); // sucess
+        } else {
+          resolve(0); // fail?
+        }
       });
     });
   }

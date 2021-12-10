@@ -1,4 +1,4 @@
-import DataManager from '../src/service/classes/dataManager';
+import DataManager from '../src/service/implements/dataManager';
 
 describe("Test DataManger methods.", () => {
 
