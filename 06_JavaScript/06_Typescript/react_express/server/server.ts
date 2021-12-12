@@ -1,6 +1,8 @@
 import express, { Request, Response, Router } from 'express';
 import cluster from 'cluster';
 import DataManager from './src/service/implements/dataManager';
+import accountRouter from './src/router/api/router.account';
+import docRouter from './src/router/api/router.doc';
 
 const PORT: number = 4000;
 const WORKER_SIZE: number = 2;
@@ -25,68 +27,79 @@ function runServer(): void {
   // GET /user/5/items -> hello items from user 5
   // GET /user/5/items/6 -> hello item 6 from user 5
 
-  const app = express();
   const apiRouter = Router();
-  const idxRouter = Router({ mergeParams: true });
 
-  const types = ['account', 'doc', 'server', 'user'];
-
-  const dataManager = new DataManager();
+  const app = express();
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use('/api', apiRouter);
 
-  apiRouter.route('/:type')
-    .get(async (req: Request, res: Response): Promise<any> => {
-      if (!types.includes(req.params.type)) {
-        return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
-      }
-
-      return res.status(200).json(await dataManager.select(req.params.type));
-    })
-    .post(async (req: Request, res: Response) => {
-      if (!types.includes(req.params.type)) {
-        return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
-      }
-
-      return res.status(200).json(await dataManager.select(req.params.type));
-    });
+  apiRouter.use('/account', accountRouter);
+  apiRouter.use('/doc', docRouter);
 
 
-  idxRouter.route('/:idx')
-    .get((req: Request, res: Response) => {
-      if (!types.includes(req.params.type)) {
-        return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
-      }
-      if (isNaN(parseInt(req.params.idx))) {
-        return res.status(400).json({ message: `Invalid param: ${req.params.idx} is not number` });
-      }
+  // const apiRouter = Router();
+  // const idxRouter = Router({ mergeParams: true });
 
-      return res.status(200).json({ message: `type is ${req.params.type} and idx is ${req.params.idx}` });
-    })
-    .put((req: Request, res: Response) => {
-      if (!types.includes(req.params.type)) {
-        return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
-      }
-      if (isNaN(parseInt(req.params.idx))) {
-        return res.status(400).json({ message: `Invalid param: ${req.params.idx} is not number` });
-      }
+  // const types = ['account', 'doc', 'server', 'user'];
 
-      return res.status(200).json({ message: `type is ${req.params.type} and idx is ${req.params.idx}` });
-    })
-    .delete((req: Request, res: Response) => {
-      if (!types.includes(req.params.type)) {
-        return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
-      }
-      if (isNaN(parseInt(req.params.idx))) {
-        return res.status(400).json({ message: `Invalid param: ${req.params.idx} is not number` });
-      }
+  // const dataManager = new DataManager();
 
-      return res.status(200).json({ message: `type is ${req.params.type} and idx is ${req.params.idx}` });
-    });
+  // app.use(express.json());
+  // app.use(express.urlencoded({ extended: true }));
+  // app.use('/api', apiRouter);
 
-  apiRouter.use('/:type', idxRouter);
+  // apiRouter.route('/:type')
+  //   .get(async (req: Request, res: Response): Promise<any> => {
+  //     if (!types.includes(req.params.type)) {
+  //       return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
+  //     }
+
+  //     return res.status(200).json(await dataManager.select(req.params.type));
+  //   })
+  //   .post(async (req: Request, res: Response) => {
+  //     if (!types.includes(req.params.type)) {
+  //       return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
+  //     }
+
+  //     return res.status(200).json(await dataManager.select(req.params.type));
+  //   });
+
+
+  // idxRouter.route('/:idx')
+  //   .get((req: Request, res: Response) => {
+  //     if (!types.includes(req.params.type)) {
+  //       return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
+  //     }
+  //     if (isNaN(parseInt(req.params.idx))) {
+  //       return res.status(400).json({ message: `Invalid param: ${req.params.idx} is not number` });
+  //     }
+
+  //     return res.status(200).json({ message: `type is ${req.params.type} and idx is ${req.params.idx}` });
+  //   })
+  //   .put((req: Request, res: Response) => {
+  //     if (!types.includes(req.params.type)) {
+  //       return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
+  //     }
+  //     if (isNaN(parseInt(req.params.idx))) {
+  //       return res.status(400).json({ message: `Invalid param: ${req.params.idx} is not number` });
+  //     }
+
+  //     return res.status(200).json({ message: `type is ${req.params.type} and idx is ${req.params.idx}` });
+  //   })
+  //   .delete((req: Request, res: Response) => {
+  //     if (!types.includes(req.params.type)) {
+  //       return res.status(400).json({ message: `${req.params.type} is not in [${types}]` });
+  //     }
+  //     if (isNaN(parseInt(req.params.idx))) {
+  //       return res.status(400).json({ message: `Invalid param: ${req.params.idx} is not number` });
+  //     }
+
+  //     return res.status(200).json({ message: `type is ${req.params.type} and idx is ${req.params.idx}` });
+  //   });
+
+  // apiRouter.use('/:type', idxRouter);
 
   app.get('*', (req: Request, res: Response) => {
     res.status(404).json({ message: 'error' });
