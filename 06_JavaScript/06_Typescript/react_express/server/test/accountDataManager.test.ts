@@ -1,4 +1,4 @@
-import DataManager from '../src/service/implements/dataManager';
+import AccountDataManager from '../src/service/extends/dataManager/accountDataManager';
 
 describe("Test DataManger methods.", () => {
 
@@ -14,7 +14,7 @@ describe("Test DataManger methods.", () => {
   // user
   // {"name":"test_1"}
 
-  const dataManager = new DataManager();
+  const accountDataManager = new AccountDataManager();
 
   it('Insert test', async () => {
 
@@ -22,7 +22,7 @@ describe("Test DataManger methods.", () => {
       "id": "test_id_1", "password": "test_pw_1", "group": ["group_1"]
     }
 
-    await expect(dataManager.insert('account', account)).resolves.toBe(1);
+    await expect(accountDataManager.insert(account)).resolves.toBe(1);
   });
 
   // it('Select test', () => {

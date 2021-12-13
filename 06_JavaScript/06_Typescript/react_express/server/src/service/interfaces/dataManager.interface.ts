@@ -3,10 +3,11 @@ import { account } from '../../domain/account.interface';
 import { user } from '../../domain/user.interface';
 
 interface DataManagerInterface {
-  insert(type: string, doc: server | account | user): Promise<any>;
-  select(type: string, group?: string): Promise<any | any[]>;
-  update(type: string, idx: number, doc: server | account | user): Promise<any>;
-  delete(type: string, idx: number): Promise<any>;
+  insert(doc: server | account | user): Promise<any>;
+  select(idx?: string): Promise<any>;
+  select(group?: string): Promise<any | any[]>;
+  update(idx: number, doc: server | account | user): Promise<any>;
+  delete(idx: number): Promise<any>;
 }
 
 export default DataManagerInterface;
