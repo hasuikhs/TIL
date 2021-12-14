@@ -9,7 +9,7 @@ import DataManagerInterface from '../interfaces/dataManager.interface';
 class DataManager implements DataManagerInterface {
 
   private _path: string;
-  private _curDB: Datastore;
+  readonly _curDB: Datastore;
 
   constructor(type: string) {
     this._path = `${path.dirname(__filename)}/../../../data`;
@@ -43,7 +43,7 @@ class DataManager implements DataManagerInterface {
     });
   }
 
-  async insert(doc: account | doc | server | user): Promise<any> {
+  public async insert(doc: account | doc | server | user): Promise<any> {
 
     let docExt: accountExt | docExt | serverExt | userExt = { ...doc, ...{ idx: await this.getNextIdx() } };
 
@@ -60,18 +60,19 @@ class DataManager implements DataManagerInterface {
     });
   }
 
-  select(group?: string): Promise<any> {
-    if (group) {
-      return new Promise<any[]>((resolve, reject) => {
-        this._curDB.find({ group: group }).sort({ idx: 1 }).exec((err, results) => {
+  // overloading
+  public select(idxOrGroup: number|string): Promise<any|any[]> {
+    if (typeof idxOrGroup === 'number') {
+      return new Promise<any>((resolve, reject) => {
+        this._curDB.findOne({ idx: idxOrGroup }, (err, result) => {
           if (err) reject(new Error(`Select error. cause: ${err}`));
 
-          resolve(results);
+          resolve(result);
         });
       });
     } else {
       return new Promise<any[]>((resolve, reject) => {
-        this._curDB.find({}).sort({ idx: -1 }).exec((err, results) => {
+        this._curDB.find({ group: idxOrGroup }).sort({ idx: 1}).exec((err, results) => {
           if (err) reject(new Error(`Select error. cause: ${err}`));
 
           resolve(results);
@@ -80,7 +81,7 @@ class DataManager implements DataManagerInterface {
     }
   }
 
-  update(idx: number, doc: account | doc | server | user): Promise<any> {
+  public update(idx: number, doc: account | doc | server | user): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this._curDB.update({ idx: idx }, { $set: doc }, {}, (err, result) => {
         if (err) reject(new Error(`Update error. cause: ${err}`));
@@ -90,7 +91,7 @@ class DataManager implements DataManagerInterface {
     });
   }
 
-  delete(idx: number): Promise<any> {
+  public delete(idx: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this._curDB.remove({ idx: idx }, (err, result) => {
         if (err) reject(new Error(`Delete error. cause: ${err}`));

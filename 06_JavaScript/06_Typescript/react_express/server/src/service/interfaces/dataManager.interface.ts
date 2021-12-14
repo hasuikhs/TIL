@@ -4,8 +4,8 @@ import { user } from '../../domain/user.interface';
 
 interface DataManagerInterface {
   insert(doc: server | account | user): Promise<any>;
-  select(idx?: string): Promise<any>;
-  select(group?: string): Promise<any | any[]>;
+  select(idx: number): Promise<any>;
+  select(group: string): Promise<any[]>;
   update(idx: number, doc: server | account | user): Promise<any>;
   delete(idx: number): Promise<any>;
 }
