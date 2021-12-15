@@ -1,4 +1,4 @@
-import AccountDataManager from '../src/service/extends/dataManager/accountDataManager';
+import DataManager from '../src/service/implements/dataManager'
 
 describe("Test DataManger methods.", () => {
 
@@ -14,7 +14,7 @@ describe("Test DataManger methods.", () => {
   // user
   // {"name":"test_1"}
 
-  const accountDataManager = new AccountDataManager();
+  const accountDataManager = new DataManager('account');
 
   it('Insert test', async () => {
 

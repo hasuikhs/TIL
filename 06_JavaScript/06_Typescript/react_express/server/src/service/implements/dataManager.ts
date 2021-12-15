@@ -61,7 +61,7 @@ class DataManager implements DataManagerInterface {
   }
 
   // overloading
-  public select(idxOrGroup: number|string): Promise<any|any[]> {
+  public select(idxOrGroup?: number|string): Promise<any|any[]> {
     if (typeof idxOrGroup === 'number') {
       return new Promise<any>((resolve, reject) => {
         this._curDB.findOne({ idx: idxOrGroup }, (err, result) => {
@@ -70,9 +70,17 @@ class DataManager implements DataManagerInterface {
           resolve(result);
         });
       });
+    } else if (typeof idxOrGroup === 'string') {
+      return new Promise<any[]>((resolve, reject) => {
+        this._curDB.find({ group: idxOrGroup }).sort({ idx: 1 }).exec((err, results) => {
+          if (err) reject(new Error(`Select error. cause: ${err}`));
+
+          resolve(results);
+        });
+      });
     } else {
       return new Promise<any[]>((resolve, reject) => {
-        this._curDB.find({ group: idxOrGroup }).sort({ idx: 1}).exec((err, results) => {
+        this._curDB.find({}).sort({ idx: 1 }).exec((err, results) => {
           if (err) reject(new Error(`Select error. cause: ${err}`));
 
           resolve(results);
