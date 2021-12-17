@@ -5,10 +5,9 @@ import { user } from '../../domain/user.interface';
 interface DataManagerInterface {
   insert(doc: server | account | user): Promise<any>;
 
-  // typescript overloading
-  select(): Promise<any[]>;
-  select(idx: number): Promise<any>;
-  select(group: string): Promise<any[]>;
+  select(): Promise<any[]>;               // overload signature
+  select(idx: number): Promise<any>;      // overload signature
+  select(group: string): Promise<any[]>;  // overload signature
   
   update(idx: number, doc: server | account | user): Promise<any>;
   

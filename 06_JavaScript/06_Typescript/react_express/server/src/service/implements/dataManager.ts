@@ -9,7 +9,7 @@ import DataManagerInterface from '../interfaces/dataManager.interface';
 class DataManager implements DataManagerInterface {
 
   private _path: string;
-  readonly _curDB: Datastore;
+  private _curDB: Datastore;
 
   constructor(type: string) {
     this._path = `${path.dirname(__filename)}/../../../data`;
