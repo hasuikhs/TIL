@@ -25,7 +25,7 @@ describe('Test DataManger methods.', () => {
     await expect(accountDataManager.insert(account)).resolves.toBe(1);
   });
 
-  i.skip('Select all test', async () => {
+  it.skip('Select all test', async () => {
     await expect(accountDataManager.select()).resolves.toEqual([
       {"id":"test_id_1","password":"test_pw_1","group":["group_1"],"idx":1,"_id":"7cwB5ilSPV4W3n4H"},
       {"id":"test_id_1","password":"test_pw_1","group":["group_1"],"idx":2,"_id":"1I69XNSmhxz4oprE"},
