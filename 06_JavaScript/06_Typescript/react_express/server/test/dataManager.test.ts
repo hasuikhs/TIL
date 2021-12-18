@@ -16,7 +16,7 @@ describe('Test DataManger methods.', () => {
 
   const accountDataManager = new DataManager('account');
 
-  it.skip('Insert test', async () => {
+  it.skip('Insert test', async (): Promise<void> => {
 
     let account = {
       "id": "test_id_2", "password": "test_pw_2", "group": ["group_2"]
@@ -25,7 +25,7 @@ describe('Test DataManger methods.', () => {
     await expect(accountDataManager.insert(account)).resolves.toBe(1);
   });
 
-  it.skip('Select all test', async () => {
+  it.skip('Select all test', async (): Promise<void> => {
     await expect(accountDataManager.select()).resolves.toEqual([
       {"id":"test_id_1","password":"test_pw_1","group":["group_1"],"idx":1,"_id":"7cwB5ilSPV4W3n4H"},
       {"id":"test_id_1","password":"test_pw_1","group":["group_1"],"idx":2,"_id":"1I69XNSmhxz4oprE"},
@@ -34,13 +34,13 @@ describe('Test DataManger methods.', () => {
     ]);
   });
 
-  it.skip('Select idx test', async () => {
+  it.skip('Select idx test', async (): Promise<void> => {
     await expect(accountDataManager.select(1)).resolves.toEqual(
       {"id":"test_id_1","password":"test_pw_1","group":["group_1"],"idx":1,"_id":"7cwB5ilSPV4W3n4H"}
     );
   });
 
-  it.skip('Select group test', async () => {
+  it.skip('Select group test', async (): Promise<void> => {
     await expect(accountDataManager.select('group_1')).resolves.toEqual([
       {"id":"test_id_1","password":"test_pw_1","group":["group_1"],"idx":1,"_id":"7cwB5ilSPV4W3n4H"},
       {"id":"test_id_1","password":"test_pw_1","group":["group_1"],"idx":2,"_id":"1I69XNSmhxz4oprE"},
@@ -48,11 +48,11 @@ describe('Test DataManger methods.', () => {
     ]);
   });
 
-  it.skip('Update test', async () => {
+  it.skip('Update test', async (): Promise<void> => {
     await expect(accountDataManager.update(4, {"id":"test_id_2","password":"test_pw_2","group":["group_2"]})).resolves.toBe(1);
   });
 
-  it.skip('Delete test', async () => {
+  it.skip('Delete test', async (): Promise<void> => {
     await expect(accountDataManager.delete(4)).resolves.toBe(1);
   });
 

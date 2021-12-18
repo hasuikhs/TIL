@@ -1,4 +1,4 @@
-import express, { Request, Response, Router, Express } from 'express';
+import express, { Request, Response, Express } from 'express';
 import cluster from 'cluster';
 
 import apiRouter from './src/router/apiRouter';
@@ -18,7 +18,7 @@ if (cluster.isMaster) {
   runServer();
 }
 
-function runServer() {
+function runServer(): Express.Application {
 
   const app: Express = express();
 
@@ -27,12 +27,19 @@ function runServer() {
 
   app.use('/api', apiRouter);
 
+  app.put('/test', (req, res) => {
+    console.log(req.body)
+    return res.json(req.body)
+  })
+
   app.get('*', (req: Request, res: Response) => {
     res.status(404).json({ message: 'error' });
   });
 
-  app.listen(PORT, (): void => {
+  app.listen(PORT, () => {
     console.log(`Express server listening on port ${PORT} and worker ${process.pid}`);
   });
+
+  return app;
 
 }
