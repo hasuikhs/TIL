@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { account, accountExt } from '../../domain/account.interface';
 import DataManager from '../../service/implements/dataManager';
 
 const accountRouter = Router();

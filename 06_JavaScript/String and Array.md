@@ -73,6 +73,8 @@ console.log(str[3]);	// l
 
 - JavaScript에서 String은 Array처럼 `[n]`을 사용하면 해당하는 순서의 글자를 반환
 - `.length` 사용 가능
+  - 내부적으로 `new String()`을 이용하여 String 인스턴스를 생성하기 때문
+
 
 ```javascript
 function func1(a, b, c, d) {

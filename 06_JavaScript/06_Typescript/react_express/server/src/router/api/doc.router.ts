@@ -1,30 +1,31 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { doc, docExt } from '../../domain/doc.interface';
+import DataManager from '../../service/implements/dataManager';
 
 const docRouter = Router();
+const docDataManager = new DataManager('doc');
 
 docRouter.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-docRouter.get('/', (req: Request, res: Response) => {
-  return res.status(200).json({ message: 'get doc all' });
+docRouter.get('/',  async (req: Request, res: Response) => {
+  return res.status(200).json( await docDataManager.select() );
 });
 
-docRouter.get('/:idx([0-9]+)', (req: Request, res: Response) => {
-  return res.status(200).json({ message: `get doc idx ${req.params.idx}`});
+docRouter.get('/:idx([0-9]+)', async (req: Request, res: Response) => {
+  return res.status(200).json( await docDataManager.select(parseInt(req.params.idx)) );
 });
 
-docRouter.post('/', (req: Request, res: Response) => {
-  return res.status(200).json({ message: 'post doc' });
+docRouter.post('/', async (req: Request, res: Response) => {
+  return res.status(200).json( await docDataManager.insert(req.body) );
 });
 
-docRouter.put('/:idx([0-9]+)', (req: Request, res: Response) => {
-  return res.status(200).json({ message: `put accout idx ${req.params.idx}`});
+docRouter.put('/:idx([0-9]+)', async (req: Request, res: Response) => {
+  return res.status(200).json( await docDataManager.update(parseInt(req.params.idx), req.body) );
 });
 
-docRouter.delete('/:idx([0-9]+)', (req: Request, res: Response) => {
-  return res.status(200).json({ message: `delete doc idx ${req.params.idx}`});
+docRouter.delete('/:idx([0-9]+)', async (req: Request, res: Response) => {
+  return res.status(200).json( await docDataManager.delete(parseInt(req.params.idx)) );
 });
 
 export default docRouter;
