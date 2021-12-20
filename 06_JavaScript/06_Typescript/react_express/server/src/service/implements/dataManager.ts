@@ -10,22 +10,16 @@ class DataManager implements DataManagerInterface {
 
   private _path: string;
   private _curDB: Datastore;
+  private types: string[] = ['account', 'doc', 'server', 'user'];
 
   constructor(type: string) {
     this._path = `${path.dirname(__filename)}/../../../data`;
 
-    if (type.includes('account')) {
-      this._curDB = new Datastore({ filename: `${this._path}/accounts.db`,  autoload: true });
-    } else if (type.includes('doc')) {
-      this._curDB = new Datastore({ filename: `${this._path}/docs.db`,      autoload: true });
-    } else if (type.includes('server')) {
-      this._curDB = new Datastore({ filename: `${this._path}/servers.db`,   autoload: true });
-    } else if (type.includes('user')) {
-      this._curDB = new Datastore({ filename: `${this._path}/users.db`,     autoload: true });
+    if (this.types.includes(type)) {
+      this._curDB = new Datastore({ filename: `${this._path}/${type}s.db`, autoload: true } );
     } else {
-      throw new Error('Invalid type.');
+      throw new Error('Ivalid type.');
     }
-
   }
 
   private getNextIdx(): Promise<any> {
