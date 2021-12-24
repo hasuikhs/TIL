@@ -10,11 +10,17 @@
   <script>
     window.onload = async () => {
       const test = await import('./test.js');
-
+      
       test.test1();
       test.test2();
       test.default();
     }
-  </script>
+    </script>
+    <script type="module">
+      import { moduleTest1 } from './module.js';
+
+      moduleTest1();
+    </script>
+    <script type="module" src="hello.js"></script>
 </body>
 </html>
