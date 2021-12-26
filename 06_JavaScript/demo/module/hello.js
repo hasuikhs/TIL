@@ -1,3 +1,3 @@
 import {user} from './user.js';
 
-document.body.innerHTML = user; // John
+document.body.insertAdjacentHTML('beforeend', `<h3>${user} from user.js</h3>`);

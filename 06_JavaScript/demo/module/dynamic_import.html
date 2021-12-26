@@ -7,6 +7,28 @@
   <title>Document</title>
 </head>
 <body>
+  <div data-include-path="header.html"></div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      let elements = document.querySelectorAll('*');
+      elements.forEach($ele => {
+        let includePath = $ele.dataset.includePath;
+        
+        if (includePath) {
+          let xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = (obj) => {
+            if (obj.target.readyState == 4 && obj.target.status == 200) {
+              $ele.outerHTML = obj.target.responseText;
+            }
+          }
+
+          xhttp.open('GET', includePath, true);
+          xhttp.send();
+        }
+      });
+    })
+  </script>
   <script>
     window.onload = async () => {
       const test = await import('./test.js');
