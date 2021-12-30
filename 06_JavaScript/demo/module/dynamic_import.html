@@ -13,6 +13,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       let elements = document.querySelectorAll('*');
       elements.forEach($ele => {
+        // html 파일 자체는 붙지만 해당 파일의 스크립트는 작동하지 않음
         let includePath = $ele.dataset.includePath;
         
         if (includePath) {
