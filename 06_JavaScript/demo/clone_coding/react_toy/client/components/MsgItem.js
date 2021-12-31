@@ -1,0 +1,27 @@
+function MsgItem({
+  userId,
+  tiemstamp,
+  text
+}) {
+  return (
+    <li className="messages__items">
+      <h3>
+        {userId}{ }
+        {tiemstamp}
+        <sub>
+          {new Date(tiemstamp).toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          })}
+        </sub>
+      </h3>
+      {text}
+    </li>
+  );
+}
+
+export default MsgItem;
