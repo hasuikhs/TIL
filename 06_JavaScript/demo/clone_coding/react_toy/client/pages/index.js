@@ -1,6 +1,6 @@
 import MsgList from '../components/MsgList';
 
-function Home() {
+const Home = () => {
   return (
     <>
       <h1>SIMPLE SNS</h1>

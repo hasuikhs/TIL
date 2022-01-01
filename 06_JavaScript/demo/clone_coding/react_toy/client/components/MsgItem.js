@@ -1,15 +1,14 @@
-function MsgItem({
+const MsgItem = ({
   userId,
-  tiemstamp,
+  timestamp,
   text
-}) {
+}) => {
   return (
     <li className="messages__items">
       <h3>
         {userId}{ }
-        {tiemstamp}
         <sub>
-          {new Date(tiemstamp).toLocaleString('ko-KR', {
+          {new Date(timestamp).toLocaleString('ko-KR', {
             year: 'numeric',
             month: 'numeric',
             day: 'numeric',
