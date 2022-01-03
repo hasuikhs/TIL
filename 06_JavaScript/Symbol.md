@@ -6,6 +6,8 @@
 
 - Symbol의 `valueOf` 는 Primitive Type이 아니기 때문에 문자형과 합칠수 없음
 
+  - Symbol은 문자형으로 자동 형 변환되지 않음
+
   ```javascript
   var t = Symbol('test');
   
@@ -14,6 +16,11 @@
   ```
 
 - 주로 이름의 충돌 위험이 없는 **유일한 객체의 프로퍼티 키를 만들기 위해 사용**
+
+  - **Symbol은 유일성이 보장되는 자료형**이기에, 설명이 동일한 Symbol을 여러 개 만들어도 각 심볼값음 다름
+  - **Symbol에 붙이는 설명(Symbol 이름)은 어떤 것에도 영향을 주지 않는 이름표 역할만을 함**
+
+- 키가 Symbol인 프로퍼티는 `for ...in` 반복문에서 배제
 
 - **등장 배경**
   - 프로그래머의 실수 등으로 존재하는 객체의 key 값이 변경 가능한 이슈 존재
@@ -35,6 +42,17 @@ console.log(sym);	// Symbol()
 ```javascript
 let sym = Symbol('test');
 console.log(sym === Symnbol('test')) // false
+```
+
+- 객체 리터럴 {...}을 사용해 객체를 만드는 경우, 대괄호를 사용해 키를 만들어야 함
+
+```javascript
+let id = Symbol('id');
+
+let user = {
+    name: 'John',
+    [id]: 123
+};
 ```
 
 ## 3. 사용
