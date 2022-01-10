@@ -49,7 +49,7 @@ arr.sort(function(a, b) { // 오름차순
 });
 
 arr.sort(function(a, b) { // 내림차순
-    return a.name >b.name ? -1 : a.name <b.name ? 1: 0;
+    return a.name > b.name ? -1 : a.name <b.name ? 1: 0;
 });
 
 arr.sort(function(a, b) {
