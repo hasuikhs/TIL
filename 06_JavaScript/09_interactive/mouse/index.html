@@ -39,12 +39,20 @@
       font-size: 80px;
       color: #fff;
     }
+    .human {
+      position: absolute;
+      width: 300px;
+      left: calc(50% - 150px);
+      z-index: 100;
+    }
   </style>
 </head>
 <body>
   <h1>test</h1>
-  <div class="cursor_item"></div>
-  <button type="button">START</button>
+  <!-- <div class="cursor_item"></div> -->
+  <!-- <button type="button">START</button> -->
+  <img src="./layer-7.png" class="human" alt="사람">
+  <img src="./layer-1.jpg" class="bg" alt="배경">
 
   <script>
     let x = 0;
@@ -54,34 +62,37 @@
     let speed = 0.06;
 
     window.onload = function() {
-      window.addEventListener('click', mouseFunc, false);
+      window.addEventListener('mousemove', mouseFunc, false);
 
-      // loop(x, y);
+      loop();
     }
 
     function mouseFunc(e) {
 
-      x = e.clientX;
-      y = e.clientY;
+      x = (e.clientX - window.innerWidth / 2);
+      y = (e.clientY - window.innerHeight / 2);
 
-      let h1 = document.querySelector('h1');
-      let cursorItem = document.querySelector('.cursor_item');
+      // let h1 = document.querySelector('h1');
+      // let human = document.querySelector('.human');
       
-      h1.innerHTML = `x: ${x} y: ${y}`;
-      cursorItem.style.transform = `translate(${x}px, ${y}px)`;
+      // h1.innerHTML = `x: ${x} y: ${y}`;
+      // human.style.transform = `translate(${mx}px, ${y}px)`;
     }
     
-    // function loop() {
+    function loop() {
 
-    //   // 부드러운 마우스 이동
-    //   mx += (x - mx) * speed;
-    //   my += (y - my) * speed;
+      // 부드러운 마우스 이동
+      mx += (x - mx) * speed;
+      my += (y - my) * speed;
 
-    //   let cursorItem = document.querySelector('.cursor_item');
-    //   cursorItem.style.transform = `translate(${mx}px, ${my}px)`;
+      let human = document.querySelector('.human');
+      let bg    = document.querySelector('.bg');
 
-    //   window.requestAnimationFrame(loop);
-    // }
+      human.style.transform = `translate(${mx / 6}px, ${my / 6}px)`;
+      bg.style.transform = `translate(-${mx / 6}px, -${my / 6}px)`;
+
+      window.requestAnimationFrame(loop);
+    }
 
     </script>
 </body>
