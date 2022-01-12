@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+  <style>
+    body {
+      position: relative;
+      background-color: black;
+      /* cursor: none; */
+    }
+    h1 {
+      color: #fff;
+    }
+    .cursor_item {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      top: 0;
+      left: 0;
+      margin: -50px 0 0 -50px;
+      transition: all 1s cubic-bezier(0.570, -0.140, 0.345, 1.225);
+    }
+    button {
+      font-size: 40px;
+      font-weight: bold;
+      background-color: #fff;
+      color: red;
+      padding: 30px 80px;
+      margin: 50px;
+      cursor: pointer;
+      transition: all 1s ease;
+    }
+    button:hover {
+      background: red;
+      font-size: 80px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>test</h1>
+  <div class="cursor_item"></div>
+  <button type="button">START</button>
+
+  <script>
+    let x = 0;
+    let y = 0;
+    let mx = 0;
+    let my = 0;
+    let speed = 0.06;
+
+    window.onload = function() {
+      window.addEventListener('click', mouseFunc, false);
+
+      // loop(x, y);
+    }
+
+    function mouseFunc(e) {
+
+      x = e.clientX;
+      y = e.clientY;
+
+      let h1 = document.querySelector('h1');
+      let cursorItem = document.querySelector('.cursor_item');
+      
+      h1.innerHTML = `x: ${x} y: ${y}`;
+      cursorItem.style.transform = `translate(${x}px, ${y}px)`;
+    }
+    
+    // function loop() {
+
+    //   // 부드러운 마우스 이동
+    //   mx += (x - mx) * speed;
+    //   my += (y - my) * speed;
+
+    //   let cursorItem = document.querySelector('.cursor_item');
+    //   cursorItem.style.transform = `translate(${mx}px, ${my}px)`;
+
+    //   window.requestAnimationFrame(loop);
+    // }
+
+    </script>
+</body>
+</html>
