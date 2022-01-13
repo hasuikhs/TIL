@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    img {
+      position: absolute;
+    }
+    .vod {
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <img src="https://paidpost-assets.nyt.com/paidpost/allbirds/birds-eye-view/images/1-b90e91a4.png">
+    <img src="https://paidpost-assets.nyt.com/paidpost/allbirds/birds-eye-view/images/2-f3fd6cf5.png">
+    <div class="vod"><video autoplay="" playsinline="" loop="" muted="" src="https://paidpost-assets.nyt.com/paidpost/allbirds/birds-eye-view/videos/3-27c8c3ea.webm"></video></div>
+    <img src="https://paidpost-assets.nyt.com/paidpost/allbirds/birds-eye-view/images/4-105dd65b.png">
+    <img src="https://paidpost-assets.nyt.com/paidpost/allbirds/birds-eye-view/images/5-ac49bfdc.png">
+  </section>
+  <script>
+
+    window.onload = () => {
+      let x = 0;
+      let y = 0;
+      let mx = 0;
+      let my = 0;
+      let speed = 0.01;
+
+      let _imgArr = document.querySelectorAll('img');
+      let _bird = document.querySelector('div');
+
+      window.addEventListener('mouseover', mouseFunc, false);
+
+      function mouseFunc(e) {
+        x = (e.clientX - window.innerWidth / 2);
+        y = (e.clientY - window.innerHeight / 2);
+
+        loop();
+      }
+
+      function loop() {
+        mx += (x - mx) * speed;
+        my += (y - my) * speed;
+
+        _imgArr[0].style.transform = `translate(-${mx / 6}px, -${my / 6}px)`;
+        _imgArr[1].style.transform = `translate(-${mx / 5}px, -${my / 5}px)`;
+        _imgArr[2].style.transform = `translate(-${mx / 3}px, -${my / 3}px)`;
+        _imgArr[3].style.transform = `translate(-${mx / 2}px, -${my / 2}px)`;
+
+        _bird.style.transform = `translate(-${mx / 5}px, -${my / 5}px)`;
+        window.requestAnimationFrame(loop);
+      }
+    }
+  </script>
+</body>
+</html>
