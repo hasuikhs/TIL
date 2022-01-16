@@ -268,3 +268,44 @@
 - 인스턴스 메소드의 첫번째 인자는 언제나 `self`
 - 클래스 메소드의 첫번째 인자는 언제나 `cls`
 
+### 2.5 CSS Naming Convention
+
+#### 2.5.1 BEM
+
+- CSS 제작 방법론으로 개발, 디버깅, 유지보수를 위해 가능한 명확하게 네이밍하는 것이 목표
+
+- **Block**
+
+  - 단독으로 있어도 그 스스로 의미가 있는 것
+
+  ```css
+  .stick-man { }
+  ```
+
+- **Element**
+
+  - 단독으로는 의미가 없고 Block 요소와 같이 있어야 의미가 있는 것
+  - underscore 2개로 표현 (__)
+
+  ```css
+  .stick-man__head { }
+  .stick-man__body { }
+  ```
+
+- **Modifier**
+
+  - Block 요소나 Element 요소의 flag 값으로, 상태가 변하거나 외관을 표현할때 사용
+  - hyphen 2개로 표현(--)
+
+  ```css
+  .stick-man--blue { }
+  .stick-man--red { }
+  ```
+
+#### 2.5.2 Naming Rule
+
+- 기본적으로 CSS는 소문자, 숫자만을 조합하여 hyphen(-)으로 연결하여 네이밍
+
+  ```css
+  .content-box { color: red; }
+  ```
