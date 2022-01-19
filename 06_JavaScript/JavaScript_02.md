@@ -194,9 +194,23 @@ window.onload = function() {	// window.onload는 HTML 문서가 로드될 때 �
   - **이벤트 전파 방식(Optional)** : false면 버블링(Bubbling), true면 캡처링(Capturing) 방식
 
     - 버블링 : 이벤트가 발생한 요소부터 window까지 이벤트를 전파
+    
     - 캡처링 : window로부터 이벤트가 발생한 요소까지 이벤트 전파
-
-    <img src="JavaScript_02.assets/image-20200504132422506.png" alt="image-20200504132422506" style="zoom:120%;" />
+    
+    - 하지만 options 객체로 여러개를 줄 수도 있음
+    
+      ```javascript
+      대상객체.addEventListener(이벤트명, 실행할 이벤트 리스너, {
+      	capture: false,
+          once: true,
+          passive: false,
+      });
+      ```
+    
+      - **capture**: 위의 기본적인 이벤트 전파 방식과 같음
+      - **once**: true면 이벤트가 딱 한번만 발생됨
+      - **passive**: true면 콜백 함수 내부에 preventDefault()가 있다해도 실행되지 않음
+    
 
 ```javascript
 window.onload = function () {

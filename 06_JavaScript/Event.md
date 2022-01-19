@@ -59,7 +59,7 @@ function checkTarget(event) {
   });
   ```
 
-- 이벤트 위임은 다수의 child-element에 각각 이벤트 핸들러 바인딩 하지 않고, 하나의 parnt-element에 이벤트 핸들러를 바인딩
+- 이벤트 위임은 다수의 child-element에 각각 이벤트 핸들러 바인딩 하지 않고, 하나의 parent-element에 이벤트 핸들러를 바인딩
 
 - event.target을 이용하여 해당 클릭 이벤트가 발생한 element를 잡음
 
@@ -98,7 +98,7 @@ let myEvent = new Event(type[, options]);
   - 이벤트 타입을 나타내는 문자열로 `click`등 내장 이벤트나 `my-event` 같은 커스텀 이벤트 지정 가능
 - `options`
   - `bubbles`: `true/false` -`true`인 경우 이벤트가 버블링 됨 (default: `false`)
-  - `cacelable`: `true/false` - `true`인 경우 브라우저 '기본 동작'이 실행되지 않음 (default: `false`)
+  - `cancelable`: `true/false` - `true`인 경우 브라우저 '기본 동작'이 실행되지 않음 (default: `false`)
 
 ### 4.2 dispatchEvent
 
