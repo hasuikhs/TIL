@@ -424,11 +424,16 @@ $ sudo pip install gunicorn
   User=<linux_account>
   Group=<linux_account_group>
   WorkingDirectory=<project_path>
-  ExecStart=/usr/local/bin/gunicorn --workers 2 --bind unix:/tmp/gunicorn.sock app:app
+  ExecStart=/usr/local/bin/gunicorn --workers 2  --max-requests 20  --max-requests-jitter 20  -t 120  --bind unix:/tmp/gunicorn.sock app:app
   # gunicorn이 위치하는 곳을 ExecStart에 넣어야함
   # sock 파일을 /tmp/ 위치가 아닌 다른 곳에 넣어줘도 상관없음
   # db에 따라서 스케쥴링이 돌아가는 경우 락이 꼬일 수 있으니 worker는 빼도 좋음
-  # worker가 필요한 경우 worker의 개수는 cpu의 두배를 권장함
+  # worker가 필요한 경우 worker의 개수는 cpu * 2 + 1을 권장함
+  
+  # 요청이 과도하게 몰려 OOM 장애 방지를 위해서 max-requests 설정
+  # max-request에 도달하여 워커 재시작시 한번에 재시작되는 것을 방지하기 위해
+  # max-requests-jitter 설정 0부터 입력값 (초) 사이 랜덤 정수
+  # -t timeout option 120 (초)
   
   [Install]
   WantedBy=multi-user.target
@@ -462,6 +467,10 @@ $ sudo pip install gunicorn
           location / {
                   include proxy_params;
                   proxy_pass http://unix:tmp/gunicorn.sock;
+                  
+                  proxy_connect_timeout 120;
+                  proxy_send_timeout    120;
+                  proxy_read_timeout    120;
           }
   }
   ```
