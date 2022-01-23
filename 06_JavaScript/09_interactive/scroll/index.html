@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 10000px;
+      background: linear-gradient(140deg, red, orange, yellow, green, indigo, purple, black);
+    }
+    h1 {
+      color: #FFF;
+
+    }
+    .progress {
+      position: fixed;
+      width: 100%;
+      height: 5px;
+      top: 0;
+      left: 0;
+      background-color: #000;
+      z-index: 10;
+    }
+    .bar {
+      position: absolute;
+      width: 50%;
+      height: 5px;
+      top: 0px;
+      left: 0px;
+      background-color: yellow;
+      z-index: 11;
+    }
+  </style>
+</head>
+<body>
+  <h1>스크롤</h1>
+  <div class="progress">
+    <span class="bar"></span>
+  </div>
+  <script>
+    let scrollTop = 0;
+    let bar;
+
+    window.onload = () => {
+      bar = document.querySelector('.bar');
+    }
+
+    window.addEventListener('scroll', () => {
+      scrollTop = document.documentElement.scrollTop;
+      // console.log(`스크롤값 : ${scrollTop}`);
+
+      let per = parseInt(scrollTop / (document.body.scrollHeight - window.outerHeight) * 100);
+      console.log(per);
+
+      bar.style.width = per + '%';
+    });
+  </script>
+</body>
+</html>
