@@ -1,0 +1,1 @@
+from .path1_1 import testFuncPath1
