@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css"/>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+</head>
+<body>
+
+  <div>
+    <table id="test-table" class="display" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>col1</th>
+          <th>col2</th>
+          <th>col3</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const app = new App();
+
+      setTimeout(() => {
+        app.setState();
+
+      }, 5_000);
+    }
+    function App() {
+      if (!new.target) {
+        throw new Error('error');
+      }
+
+      this.$target = document.querySelector('#test-table');
+
+      this.state = [{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      }];
+
+      this.setState = nextState => {
+
+        this.render();
+      }
+
+      // 1번 방법
+      // this.test1 = () => {
+      //   console.log('clicked test1 function!');
+      // }
+
+      this.setEvent = () => {
+        // 1번 방법
+        // this.$target.addEventListener('click', this.test1)
+
+        // 2번 방법 dom level 0 (클래식) - 한 요소에 한 onclick 이벤트만 가능
+        // this.$target.onclick = () => console.log('clicked!')
+      }
+      
+      
+      this.render = () => {
+        if ($.fn.DataTable.isDataTable(this.$target)) {
+          $(this.$target).DataTable().destroy();
+        }
+
+        $(this.$target).DataTable({
+          columns: [{
+            data: 'col1',
+          }, {
+            data: 'col2'
+          },{
+            data: 'col3'
+          }],
+          data: this.state,
+          paging: this.state.length > 5 ? true : false,
+          pageLength: 5,
+          drawCallback: () => this.setEvent()
+        });
+      }
+
+      this.render();
+    }
+  </script>
+</body>
+</html>
