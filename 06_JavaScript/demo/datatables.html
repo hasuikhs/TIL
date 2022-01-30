@@ -45,38 +45,56 @@
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 2,
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 3,
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 4,
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 5,
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 6,
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 7,
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 8,
         col2: 'test-col-2',
         col3: 'test-col-3'
       },{
-        col1: 1,
+        col1: 9,
         col2: 'test-col-2',
         col3: 'test-col-3'
       }];
+
+      this.state2 = [{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 2,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 3,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 4,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      }]
 
       this.setState = nextState => {
 
@@ -84,22 +102,20 @@
       }
 
       // 1번 방법
-      // this.test1 = () => {
-      //   console.log('clicked test1 function!');
-      // }
+      this.test1 = (name) => {
+        console.log(name);
+      }
 
       this.setEvent = () => {
-        // 1번 방법
-        // this.$target.addEventListener('click', this.test1)
-
-        // 2번 방법 dom level 0 (클래식) - 한 요소에 한 onclick 이벤트만 가능
-        // this.$target.onclick = () => console.log('clicked!')
+        this.$target.addEventListener('click', () => console.log('clicked'))
       }
       
       
       this.render = () => {
         if ($.fn.DataTable.isDataTable(this.$target)) {
-          $(this.$target).DataTable().destroy();
+          $(this.$target).DataTable().clear();
+          $(this.$target).DataTable().rows.add(this.state2).draw()
+          return false;
         }
 
         $(this.$target).DataTable({
@@ -113,7 +129,8 @@
           data: this.state,
           paging: this.state.length > 5 ? true : false,
           pageLength: 5,
-          drawCallback: () => this.setEvent()
+          // drawCallback: this.setEvent
+          initComplete: () => this.setEvent()
         });
       }
 
