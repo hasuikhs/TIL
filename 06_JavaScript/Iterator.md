@@ -1,6 +1,10 @@
 # Iterable
 
 - 반복 가능한(iterable) 객체는 배열을 일반화한 객체
+  - **iterable**: iterator를 리턴하는 `[Symbol.iterator]()`를 가진 값
+  - **iterator**: `{ value, done }` 객체를 리턴하는 `next()`를 가진 값
+  - **iterator protocol**: iterable을 `for ...of`, 전개 연산자 등과 함께 동작하도록한 규약
+
 - iterable 이라는 개념을 사용하면 어떤 객체에든 `for...of`  반복문 적용 가능
   - 대표적으로 배열, 문자열
 - 배열이 아닌 객체가 있는데, 이 객체가 어떤 것들의 켈력션을 나타내고 있는 경우 `for..of` 문법 적용하여 유용하게 사용 가능
