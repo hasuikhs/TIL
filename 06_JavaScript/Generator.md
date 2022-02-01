@@ -4,6 +4,8 @@
 - 내부 상태 관리가 가능한 함수
 - 단 한 번의 실행으로 함수의 끝까지 실행이 완료되는 일반 함수와는 달리, 사용자의 요구에 따라 (`yield`와 `next()`를 통해) 일시적으로 정지될 수 있고, 다시 시작 될 수 있음
 - Generator와 Iterable객체를 함께 사용하면 손쉽게 데이터 스트림을 만들 수 있음
+  - Generator는 Iterator이자 Iterable을 생성하는 함수
+
 - Generator Function의 반환으로는 Generator가 반환됨
 
 ## 1. Generator Function
@@ -61,7 +63,7 @@
   }
   ```
 
-  - `for...of` Iteration이 `done: true`일 때 마지막 `value`를 무시하기 때문에 마지막 3이 출력되지 않음
+  - `for...of` Iteration이 `done: true`일 때, 즉 `return`이면 마지막 `value`를 무시하기 때문에 마지막 3이 출력되지 않음
   - `for...of`를 사용했을 때 모든 값이 출력되길 원하면 `yield`로 값을 반한해야 함
 
 - `Symbol.iterator` 대신 Generator를 사용한 코드
