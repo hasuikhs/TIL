@@ -144,6 +144,17 @@ var absoluteValues = arr.map(Math.abs);
 absoluteValues; // [1,2,3,4]
 ```
 
+```javascript
+// map 구현
+const map = (f, iter) => {
+    let res = [];
+    for (const a of iter) {
+        res.push(f(a));
+    }
+    return res;
+}
+```
+
 ### 3.3 `filter()`
 
 - 해당 배열의 모든 요소에 대하여 반복적인 콜백 함수를 실행 후, 그 결과값이 true인 요소들만 새로운 배열에 담아 반환
@@ -153,6 +164,26 @@ var arr = [-10, 5, 100, -20, 40];
 
 var overZero = arr.filter(value => value > 0);
 overZero;	// [5, 100, 40]
+```
+
+```javascript
+// filter 구현
+// f 보조 함수에 평가 위임
+const filter = (f, iter) => {
+    let res = [];
+    for (const a of iter) {
+        if (f(a)) res.push(a);
+    }
+    return res;
+}
+
+let arr = [{
+    num: 4
+}, {
+    num: 5
+}];
+
+console.log(filter(a => a.num < 5, arr));
 ```
 
 ### 3.4 `every()`
@@ -183,6 +214,19 @@ arr.some(value => value < 10);	// true
 var arr = [1, 2, 3, 4];
 
 arr.reduce((value1, value2) => value1 + value2, 0);	// 15
+```
+
+```javascript
+const reduce = (f, acc, iter) => {
+	if (!iter) {
+        iter = acc[Symbol.iterator]();
+        acc = iter.next().value;
+    }
+    for (const a of iter) {
+        acc = f(acc, a);
+    }
+    return acc;
+}
 ```
 
 ### 3.7 `reduceRight()`
