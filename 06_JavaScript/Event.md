@@ -78,6 +78,7 @@ function checkTarget(event) {
 - 이벤트 전파를 막기위한 방법
   - `event.preventDefault()`
     - 현재 이벤트의 기본 동작을 중단
+    - 특히 HTML의 `<form>` 태그는 `<button type="submit">`의 작동을 할때 페이지 이동을 하므로 `<form>`태그의 기본 기능을 사용하고 싶지만,   `addEventListener` 등을 사용해서 이벤트를 발생시킨다면 해당 `event.preventDefault()` 코드를 꼭 써줘야 함
   - `event.stopPropagation()`
     - 현재 이벤트가 상위로 전파되지 않도록 중단
   - `event.stopImmediatePropagation()`
