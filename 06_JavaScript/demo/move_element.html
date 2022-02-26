@@ -30,15 +30,15 @@
   </head>
   <body>
     <ul id="items1" class="ul1">
-      <li class="li1">item 1</li>
-      <li class="li1">item 2</li>
-      <li class="li1">item 3</li>
+      <li class="li1" data-value="items1-1">item 1</li>
+      <li class="li1" data-value="items1-2">item 2</li>
+      <li class="li1" data-value="items1-3">item 3</li>
     </ul>
 
     <ul id="items2" class="ul2">
-      <li class="li2"><span class="handle">::</span>item 1</li>
-      <li class="li2">item 2</li>
-      <li class="li2">item 3</li>
+      <li class="li2" data-value="items2-1"><span class="handle">::</span>item 1</li>
+      <li class="li2" data-value="items2-2">item 2</li>
+      <li class="li2" data-value="items2-3">item 3</li>
     </ul>
 
     <ul id="items3" class="ul2">
@@ -62,12 +62,17 @@
         let el4 = document.getElementById('items4');
 
         let sortable1 = new Sortable(el1, {
-          handle: '.handle',
           group: 'shared1',
           animation: 150
         });
         let sortable2 = new Sortable(el2, {
-          group: 'shared1'
+          group: 'shared1',
+          onAdd: () => {
+            console.log(`after add child cnt : ${el2.childElementCount}`);
+          },
+          onRemove: () => {
+            console.log(`after remove child cnt : ${el2.childElementCount}`);
+          }
         });
 
         let sortable3 = new Sortable(el3, {
