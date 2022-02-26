@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .ul1 {
+        background-color: red;
+      }
+      .ul2 {
+        background-color: blue;
+      }
+
+      .li1 {
+        color: antiquewhite;
+      }
+      .li2 {
+        color: gray;
+      }
+      .handle {
+        color: aqua;
+        cursor: grab;
+      }
+    </style>
+
+  </head>
+  <body>
+    <ul id="items1" class="ul1">
+      <li class="li1">item 1</li>
+      <li class="li1">item 2</li>
+      <li class="li1">item 3</li>
+    </ul>
+
+    <ul id="items2" class="ul2">
+      <li class="li2"><span class="handle">::</span>item 1</li>
+      <li class="li2">item 2</li>
+      <li class="li2">item 3</li>
+    </ul>
+
+    <ul id="items3" class="ul2">
+      <li class="li2">item 1</li>
+      <li class="li2">item 2</li>
+      <li class="li2">item 3</li>
+    </ul>
+
+    <ul id="items4" class="ul2">
+      <li class="li2">item 1</li>
+      <li class="li2">item 2</li>
+      <li class="li2">item 3</li>
+    </ul>
+
+    <script>
+      window.onload = () => {
+        let el1 = document.getElementById('items1');
+        let el2 = document.getElementById('items2');
+
+        let el3 = document.getElementById('items3');
+        let el4 = document.getElementById('items4');
+
+        let sortable1 = new Sortable(el1, {
+          handle: '.handle',
+          group: 'shared1',
+          animation: 150
+        });
+        let sortable2 = new Sortable(el2, {
+          group: 'shared1'
+        });
+
+        let sortable3 = new Sortable(el3, {
+          group: 'shared2'
+        });
+        let sortable4 = new Sortable(el4, {
+          group: 'shared2'
+        })
+      };
+    </script>
+  </body>
+</html>
