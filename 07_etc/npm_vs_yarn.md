@@ -65,6 +65,19 @@
   $ yarn upgrade
   ```
 
+- 모듈 취약점 검사
+
+  ```bash
+  # 모듈 취약점 검사
+  $ npm audit
+  
+  # 모듈 취약점 검사 후 호환되는 버전으로 자동 업데이트
+  $ npm audit fix
+  
+  # audit 기능을 사용하지 않으려면 install 시 no-audit 옵션을 줘야 함
+  $ npm install --no-audit
+  ```
+
 ### 2.2 npm install options
 
 - `npm install` or `npm i`는 `./node_modules` 폴더에 패키지를 다운받아 설치함
