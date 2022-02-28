@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.4/css/select.bootstrap.min.css"/>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+  <style>
+    .tc {
+      text-align: center !important;
+    }
+    .more:hover {
+      background-color: #EAEAEA !important;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <table id="test-table" class="display" style="width: 100%;">
+      <thead>
+        <tr>
+          <th>col1</th>
+          <th>col2</th>
+          <th>col3</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const app = new App();
+    }
+
+    function App() {
+      if (!new.target) {
+        throw new Error('error');
+      }
+
+      this.$target = document.querySelector('#test-table');
+      this.isFirst = true;
+
+      this.state = [{
+        col1: 1,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      },{
+        col1: 2,
+        col2: 'test-col-2',
+        col3: 'test-col-3'
+      }];
+
+      this.state2 = [{
+        col1: 3,
+        col2: 'test-append',
+        col3: 'test-append'
+      }, {
+        col1: 4,
+        col2: 'test-append',
+        col3: 'test-append'
+      }]
+
+      this.cnt = 0;
+
+      this.setState = nextState => {
+
+        this.render();
+      }
+
+
+      this.setEvent = () => {
+        this.$target.addEventListener('click', () => {
+          let tgtEle = event.target.closest('.more');
+
+          if (tgtEle) {
+            if (this.cnt < 5) {
+              $(this.$target).DataTable().rows.add(this.state2).draw();
+            } else {
+              $(this.$target.querySelector('tfoot')).remove();
+            }
+            this.cnt++;
+          }
+        });
+      }
+      
+      
+      this.render = () => {
+        if ($.fn.DataTable.isDataTable(this.$target)) {
+          $(this.$target).DataTable().destroy();
+          return false;
+        }
+
+        $(this.$target).DataTable({
+          columns: [{
+            data: 'col1',
+          }, {
+            data: 'col2'
+          },{
+            data: 'col3'
+          }],
+          data: this.state,
+          paging: this.state.length > 5 ? true : false,
+          pageLength: 5,
+          initComplete: () => this.isFirst && this.setEvent()
+          // drawCallback: () => this.isFirst && this.setEvent
+        });
+
+        $(this.$target).append(`
+          <tfoot id="more" class="more">
+            <td colspan="3" class="tc">더 보기</td>
+          </tfoot>
+        `);
+
+        this.isFirst = false;
+      }
+
+      this.render();
+    }
+  </script>
+</body>
+</html>
