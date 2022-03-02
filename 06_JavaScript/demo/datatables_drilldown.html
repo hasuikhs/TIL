@@ -37,11 +37,7 @@
 </head>
 <body>
 
-  <div id="table">
-  </div>
-
-  <table id="example">
-
+  <table id="table">
   </table>
 
   <script>
@@ -60,6 +56,29 @@
           data: 'col3'
         }]
       });
+
+      setTimeout(() => {
+        table.setConfig([{
+          title: '컬럼4',
+          data: 'col1',
+          render: (data, type, row) => data
+        }, {
+          title: '컬럼5',
+          data: 'col2'
+        }, {
+          title: '컬럼6',
+          data: 'col3'
+        }]);
+        
+          // table.setState([
+          //   {
+          //     col1: 'col1-1',
+          //     col2: 'col1-2',
+          //     col3: 'col1-3'
+          //   }
+          // ]);
+          
+      }, 2_000);
     }
 
     function Table({ targetId, columnsConfig, isDrilldown = false }) {
@@ -78,49 +97,46 @@
       }
 
       this.columnsConfig = columnsConfig;
-      this.$targetTable = document.querySelector(`#custom-table-${targetId}`);
-
       this.state = [];
 
       // 테이블 프레임을 그리는 함수 columnsConfig가 set 될때마다 바뀌어야 함
       this.renderTableFrame = () => {
-        if (this.$targetTable) this.$target.innerHTML = '';
+        if (this.$target) this.$target.innerHTML = '';
 
         this.$target.insertAdjacentHTML('beforeend', `
-          <table id="custom-table-${targetId}">
             <thead>
               <tr>
                 ${this.columnsConfig.map(item => `<td>${item.title}</td>`).join('')}
               </tr>
             </thead>
-          <table>
         `);
       }
-      this.renderTableFrame();
-
 
       this.setConfig = nextColumnsConfig => {
         this.columnsConfig = nextColumnsConfig;
 
+        $(this.$target).DataTable().destroy();
         this.renderTableFrame();
         // columns가 바뀌면 테이블을 새로 그려야 함 해당 div 하위 요소들 모두 삭제
         // 데이터를 새로 가져오는 요청 필요
-
-        this.setState(this.state);
+        
+        this.render();
+        // this.setState(this.state);
       }
 
       this.setState = nextState => {
+        this.state = nextState;
 
         this.render();
       }
 
       this.render = () => {
-        if ($.fn.DataTable.isDataTable(this.$targetTable)) {
-          $(this.$targetTable).DataTable().destroy();
+        if ($.fn.DataTable.isDataTable(this.$target)) {
+          $(this.$target).DataTable().destroy();
           return false;
         }
 
-        $(this.$targetTable).DataTable({
+        $(this.$target).DataTable({
           paging: this.state.length > 10 ? true : false,
           pageLength: 10,
           lengthChange: true,
@@ -138,12 +154,11 @@
           columns: this.columnsConfig,
           data: this.state,
           paging: this.state.length > 5 ? true : false,
-          pageLength: 5,
-          // initComplete: () => this.isFirst && this.setEvent()
-          // drawCallback: () => this.isFirst && this.setEvent
+          pageLength: 5
         });
       }
 
+      this.renderTableFrame();
       this.render();
     }
   </script>
