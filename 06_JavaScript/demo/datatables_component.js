@@ -58,10 +58,12 @@ function CustomTable({
 
   // 테이블을 그리는 함수 config가 변화 될때마다 바뀌어야 함
   this.renderFrame = () => {
+    let isDestory = false;
     if (this.$target.childElementCount) {
       // 해당 부분이 기존 datatables라면 먼저 destroy
       if ($.fn.DataTable.isDataTable(this.$target)) {
         $(this.$target).DataTable().destroy();
+        isDestory = true
       }
       this.$target.innerHTML = '';
     }
@@ -80,7 +82,7 @@ function CustomTable({
     this.renderDataTable(destroy = true);
   }
 
-  this.renderDataTable = (destroy = false) => {
+  this.renderDataTable = (destroy = !isDestory) => {
     if (destroy) {
       $(this.$target).DataTable().destroy();
     }
