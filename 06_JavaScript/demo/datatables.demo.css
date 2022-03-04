@@ -1,0 +1,32 @@
+.tc {
+  text-align: center !important;
+}
+.tl {
+  text-align: left !important;
+}
+.tr {
+  text-align: right !important;
+}
+
+.input-group {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+  margin-right: 10px;
+}
+.input-group-addon {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  color: #555;
+  text-align: center;
+  background-color: #EEE;
+  border-radius: 0px 3px 3px 0px;
+  border: 1px solid #AAA
+}
+
+.dataTables_filter input {
+  height: 31px !important;
+  border-radius: 3px 0px 0px 3px !important;
+}
