@@ -12,19 +12,23 @@ function CustomTable({
     throw new Error('Create table using new operator.');
   }
 
-  const $target = document.querySelector(`#${targetId}`);
-  $target.style.width = '100%';
+  this.$target = document.querySelector(`#${targetId}`);
+  this.$target.style.width = '100%';
 
   this.state = [];
   this.isFirst = true;
 
-  this.setKeyColums = nextKeyColumns => {
+  this.setKeyColums = async nextKeyColumns => {
     if (
       (keyColums.map(item => item.title).join('#_#') !== nextKeyColumns.map(item => item.title).join('#_#'))
       || (keyColums.map(item => item.title).sort().join('#_#') !== nextKeyColumns.map(item => item.title).sort().join('#_#'))
     ) {
-      console.log('키가 바뀜');
+      let d = await demoAsyncFunc({
+        test: 'test'
+      }, 3);
+      console.log(d)
     }
+    console.log('tttet')
 
     keyColums = nextKeyColumns;
 
@@ -38,32 +42,31 @@ function CustomTable({
     this.renderFrame();
   }
 
-
   this.setState = nextState => {
     this.state = nextState;
 
-    this.render(destroy = true);
+    this.renderDataTable(destroy = true);
   }
 
   this.setDrawCallbackEvent = () => {
-    $target.addEventListener('click', drawCallback?.clickEvent);
+    this.$target.addEventListener('click', drawCallback?.clickEvent);
   }
 
   this.setInitCompleteEvent = () => {
-    $target.addEventListener('click', initComplete?.clickEvent);
+    this.$target.addEventListener('click', initComplete?.clickEvent);
   }
 
   // 테이블을 그리는 함수 config가 변화 될때마다 바뀌어야 함
-  this.renderFrame = async () => {
-    if ($target.childElementCount) {
+  this.renderFrame = () => {
+    if (this.$target.childElementCount) {
       // 해당 부분이 기존 datatables라면 먼저 destroy
-      if ($.fn.DataTable.isDataTable($target)) {
-        $($target).DataTable().destroy();
+      if ($.fn.DataTable.isDataTable(this.$target)) {
+        $(this.$target).DataTable().destroy();
       }
-      $target.innerHTML = '';
+      this.$target.innerHTML = '';
     }
 
-    $target.insertAdjacentHTML(
+    this.$target.insertAdjacentHTML(
       'afterbegin',
       `<thead>
         <tr>
@@ -79,10 +82,10 @@ function CustomTable({
 
   this.renderDataTable = (destroy = false) => {
     if (destroy) {
-      $($target).DataTable().destroy();
+      $(this.$target).DataTable().destroy();
     }
 
-    $($target).DataTable({
+    $(this.$target).DataTable({
       dom: etcConfig?.dom || 'Bfltip',
       paging: this.state.length > 10 ? true : false,
       pageLength: 10,

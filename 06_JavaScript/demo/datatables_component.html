@@ -25,7 +25,8 @@
   <script>
     window.onload = () => {
 
-      let keyColumns = [{
+      let keyColumns = [
+        {
           title: '컬럼1',
           data: 'col1',
           className: 'tl',
@@ -50,7 +51,7 @@
           title: '지표1(가격)',
           data: 'indi1',
           className: 'tr',
-          width: 100,
+          width: 10,
           render: (data, type, row) => `${makeToLimitDigitsString(data)} 원`
         },
         {
@@ -86,13 +87,11 @@
             data: 'col1',
             className: 'tl',
             orderable: false,
-            width: 100
           },
           {
             title: '컬럼6',
             data: 'col3',
             className: 'tl',
-            width: 100
           }
         ]);
 
@@ -102,19 +101,18 @@
               title: '지표2',
               data: 'indi2',
               className: 'tr',
-              width: 100,
               render: (data, type, row) => makeToLimitDigitsString(data)
             },
             {
               title: '지표1(가격)',
               data: 'indi1',
               className: 'tr',
-              width: 100,
+              width: '50%',
               render: (data, type, row) => `${makeToLimitDigitsString(data)} 원`
             }
           ]);
-        }, 3_000);
-      }, 3_000);
+        }, 2_000);
+      }, 2_000);
     }
   </script>
 </body>
