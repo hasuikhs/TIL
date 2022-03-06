@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css" />
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+  <script type="text/javascript" src="datatables_component.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+  <link rel="stylesheet" href="datatables.demo.css" />
+
+</head>
+
+<body>
+
+  <table id="table"></table>
+
+  <script>
+    window.onload = () => {
+
+      let keyColumns = [
+        {
+          title: '컬럼1',
+          data: 'col1',
+          className: 'tl',
+          width: 100
+        },
+        {
+          title: '컬럼2',
+          data: 'col2',
+          className: 'tl',
+          width: 100
+        },
+        {
+          title: '컬럼3',
+          data: 'col3',
+          className: 'tl',
+          width: 100
+        }
+      ];
+
+      let indicatorColums = [
+        {
+          title: '지표1(가격)',
+          data: 'indi1',
+          className: 'tr',
+          width: 10,
+          render: (data, type, row) => `${makeToLimitDigitsString(data)} 원`
+        },
+        {
+          title: '지표2',
+          data: 'indi2',
+          className: 'tr',
+          width: 100,
+          render: (data, type, row) => makeToLimitDigitsString(data)
+        }
+      ];
+
+      const table = new CustomTable({
+        targetId: 'table',
+        keyColums: keyColumns,
+        indicatorColumns: indicatorColums,
+        requestOption: {
+          func: demoAsyncFunc,
+          url: '/test'
+        },
+        drawCallback: {
+          clickEvent: () => {
+            let tgt = event.target;
+
+            console.log(tgt);
+          }
+        }
+      });
+
+      setTimeout(() => {
+        table.setKeyColums([
+          {
+            title: '컬럼4',
+            data: 'col1',
+            className: 'tl',
+            orderable: false,
+          },
+          {
+            title: '컬럼6',
+            data: 'col3',
+            className: 'tl',
+          }
+        ]);
+
+        setTimeout(() => {
+          table.setIndicatorColumns([
+            {
+              title: '지표2',
+              data: 'indi2',
+              className: 'tr',
+              render: (data, type, row) => makeToLimitDigitsString(data)
+            },
+            {
+              title: '지표1(가격)',
+              data: 'indi1',
+              className: 'tr',
+              width: '50%',
+              render: (data, type, row) => `${makeToLimitDigitsString(data)} 원`
+            }
+          ]);
+        }, 2_000);
+      }, 2_000);
+    }
+  </script>
+</body>
+
+</html>
