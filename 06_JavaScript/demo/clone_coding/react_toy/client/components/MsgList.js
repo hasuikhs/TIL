@@ -4,8 +4,6 @@ import MsgItem from './MsgItem';
 import MsgInput from './MsgInput';
 import fetcher from '../fetcher';
 
-const UserIds = ['roy', 'jay'];
-
 const MsgList = () => {
   const { query: { userId = '' } } = useRouter([]);
   const [msgs, setMsgs] = useState([]);
@@ -22,26 +20,22 @@ const MsgList = () => {
     if (!newMsg) throw Error('Update error');
     setMsgs(msgs => {
       const targetIndex = msgs.findIndex(msg => msg.id === id);
-
       if (targetIndex < 0) return msgs;
-
       const newMsgs = [...msgs];
-
       newMsgs.splice(targetIndex, 1, newMsg);
-
       return newMsgs;
-    })
+    });
     doneEdit();
   }
 
   const onDelete = async id => {
-    const receviedId = await fetcher('delete', `/messages/${id}`, { params: { userId }});
+    const receivedId = await fetcher('delete', `/messages/${id}`, { params: { userId }});
     setMsgs(msgs => {
-      const targetIndex = msgs.findIndex(msg => msg.id === receviedId + '')
-      if (targetIndex < 0) return msgs
-      const newMsgs = [...msgs]
-      newMsgs.splice(targetIndex, 1)
-      return newMsgs
+      const targetIndex = msgs.findIndex(msg => msg.id + '' === receivedId + '')
+      if (targetIndex < 0) return msgs;
+      const newMsgs = [...msgs];
+      newMsgs.splice(targetIndex, 1);
+      return newMsgs;
     });
   }
 

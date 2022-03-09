@@ -20,7 +20,7 @@ const messagesRoute = [
     handler: ({ params: { id }}, res) => {
       try {
         const msgs = getMsgs();
-        const msg = msgs.find(m => parseInt(m.id) === parseInt(id));
+        const msg = msgs.find(m => m.id === id);
         if (!msg) throw Error('not found');
         res.send(msg);
       } catch (err) {
@@ -47,10 +47,10 @@ const messagesRoute = [
   { // UPDATE MESSAGE
     method: 'put',
     route: '/messages/:id',
-    handler: ({ body, param: { id }}, res) => {
+    handler: ({ body, params: { id }}, res) => {
       try {
         const msgs = getMsgs();
-        const targetIndex = msgs.findIndex(msg => msgs.id === id);
+        const targetIndex = msgs.findIndex(msg => msg.id === id);
         if (targetIndex < 0) throw '메시지가 없습니다.';
         if (msgs[targetIndex].userId !== body.userId) throw '사용자가 다릅니다.';
         
@@ -66,7 +66,7 @@ const messagesRoute = [
   { // DELETE MESSAGE
     method: 'delete',
     route: '/messages/:id',
-    handler: ({ param: { id }, query: { userId }}, res) => {
+    handler: ({ params: { id }, query: { userId } }, res) => {
       try {
         const msgs = getMsgs();
         const targetIndex = msgs.findIndex(msg => msg.id === id);
