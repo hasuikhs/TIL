@@ -10,7 +10,8 @@ const messagesRoute = [
     route: '/messages',
     handler: (req, res) => {
       const msgs = getMsgs();
-      res.send(msgs);
+      const fromIndex = msgs.findIndex(msg => msg.id === cursor) + 1;
+      res.send(msgs.slice(fromIndex, fromIndex + 15));
     }
   },
   {

@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import MsgItem from './MsgItem';
 import MsgInput from './MsgInput';
 import fetcher from '../fetcher';
+import useInfiniteScroll from '../hooks/useInfiniteScroll';
 
 const MsgList = () => {
   const { query: { userId = '' } } = useRouter([]);
   const [msgs, setMsgs] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [hasNext, setHasNext] = useState(true);
+  const fetchMoreEl = useRef(null);
+  const intersecting = useInfiniteScroll(fetchMoreEl);
 
   const onCreate = async text => {
     const newMsg = await fetcher('post', '/messages', { text, userId });
@@ -29,7 +33,7 @@ const MsgList = () => {
   }
 
   const onDelete = async id => {
-    const receivedId = await fetcher('delete', `/messages/${id}`, { params: { userId }});
+    const receivedId = await fetcher('delete', `/messages/${id}`, { params: { userId } });
     setMsgs(msgs => {
       const targetIndex = msgs.findIndex(msg => msg.id + '' === receivedId + '')
       if (targetIndex < 0) return msgs;
@@ -42,11 +46,17 @@ const MsgList = () => {
   const doneEdit = () => setEditingId(null);
 
   const getMessages = async () => {
-    const msgs = await fetcher('get', '/messages');
-    setMsgs(msgs);
+    const newMsgs = await fetcher('get', '/messages', { params: { cursor: msgs[msgs.length - 1]?.id || '' } });
+    if (newMsgs.length === 0) {
+      setHasNext(false);
+      return;
+    }
+    setMsgs(msgs => [...msgs, ...newMsgs]);
   };
   // useEffect 내부에서는 별도로 async를 쓰지 않도록 함
-  useEffect(() => getMessages(), []);
+  useEffect(() =>{
+    if (intersecting && hasNext) getMessages();
+  }, [ intersecting ]);
 
   return (
     <>
@@ -64,6 +74,7 @@ const MsgList = () => {
           />
         ))}
       </ul>
+      <div reg={fetchMoreEl} />
     </>
   );
 }
