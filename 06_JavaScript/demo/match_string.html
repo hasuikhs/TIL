@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .b { font-weight: bold; color: red; }
+  </style>
+</head>
+<body>
+  <ul id="ul-tag">
+  </ul>
+  <script>
+    window.onload = () => {
+      const values = ['TypeScript', 'JavaScript', 'Java', 'Python', 'testscript2'];
+
+      let tgt = document.querySelector('#ul-tag');
+
+      tgt.insertAdjacentHTML(
+        'beforeend',
+        `
+          ${values.map(item => `
+            <li>${applyBoldStyle(item, 'Script', true)}</li>
+            `).join('')}
+        `
+      );
+
+      function applyBoldStyle(text, keyword, ignorecase = false) {
+        let regexp = new RegExp(keyword, ignorecase ? 'gi' : 'g');
+        let result = text;
+
+        if ( text.search(regexp) > -1 ) {
+          let startIndex = text.search(regexp);
+          let endIndex = startIndex + keyword.length;
+
+          result = `${text.slice(0, startIndex)}<span class="b">${text.slice(startIndex, endIndex)}</span>${text.slice(endIndex)}`
+        }
+
+        return result;
+      }
+    }
+  </script>
+</body>
+</html>
