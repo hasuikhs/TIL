@@ -7,6 +7,7 @@
   <title>Document</title>
   <style>
     .b { font-weight: bold; color: red; }
+    .highlight { background-color: yellow; }
   </style>
 </head>
 <body>
@@ -21,11 +22,13 @@
       tgt.insertAdjacentHTML(
         'beforeend',
         `
-          ${values.map(item => `
-            <li>${applyBoldStyle(item, 'Script', true)}</li>
+          ${values.map((item, index) => `
+            <li ${index == 0 ? 'class="highlight"': ''}>${applyBoldStyle(item, 'Script', true)}</li>
             `).join('')}
         `
       );
+
+      setEvent();
 
       function applyBoldStyle(text, keyword, ignorecase = false) {
         let regexp = new RegExp(keyword, ignorecase ? 'gi' : 'g');
@@ -39,6 +42,36 @@
         }
 
         return result;
+      }
+
+      function setEvent() {
+        let ul = document.querySelector('#ul-tag');
+
+        document.addEventListener('keydown', event => {
+          let maxCnt = ul.childElementCount - 1;
+
+          let tgts = ul.querySelectorAll('li');
+
+          let tgtIdx = [...tgts].findIndex(item => item.className == 'highlight');
+          let tgtEl = tgts[tgtIdx];
+
+          if (event.keyCode == 38) { // up key
+            let prevTgtIdx = tgtIdx - 1;
+
+            if (prevTgtIdx < 0) prevTgtIdx = maxCnt;
+            tgtEl.className = '';
+            tgts[prevTgtIdx].className = 'highlight';
+          }
+
+          if (event.keyCode == 40) { // down key
+            let nextTgtIdx = tgtIdx + 1;
+
+            if (nextTgtIdx > maxCnt) nextTgtIdx = 0;
+            tgtEl.className = '';
+            tgts[nextTgtIdx].className = 'highlight';
+          }
+
+        });
       }
     }
   </script>
