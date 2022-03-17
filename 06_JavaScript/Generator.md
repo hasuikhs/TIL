@@ -144,3 +144,35 @@
 
 - **Generator Composition을 사용하면 중간 결과 저장 용도의 추가 메모리가 필요하지 않음**
 
+## 4. demo
+
+```javascript
+function Test() {
+  
+  this.test = 'test';
+  
+  this.init = () => {
+    console.log('init');
+  }
+  
+  this.render = () => {
+    console.log('render');
+  }
+
+  this.test = function* test() {
+    yield this.init();
+    yield this.render();
+  }
+  
+  this.gen = this.test();
+  this.gen.next();
+}
+
+const te = new Test();
+
+setTimeout(() => {
+  te.gen.next();
+}, 1_000);
+```
+
+- 처음과 두번째에만 실행되는 함수
