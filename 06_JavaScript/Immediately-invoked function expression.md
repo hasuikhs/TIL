@@ -1,6 +1,8 @@
-# Immediately-invoked function 
+# Immediately-invoked function expression
 
 - 즉시실행함수(Immediately-invoked function Expression: IIFE)
+
+- 이름 그대로 정의되자 마자 즉시 실행되는 함수
 
 - 기본형
 
@@ -27,7 +29,7 @@
   console.log('b:', b); // Uncaught ReferenceError: b is not defined
   ```
 
-- 보편적으로 전역 스코프를 오염 방지를위해 사용
+- 보편적으로 **전역 스코프를 오염 방지**를위해 사용
 
   - 글로벌 scope에 정의된 것은 코드 어느 부분에서든 접근 가능
   - 외부에 공유되면 안되는 속성, 함수 / 변수명 중복 등의 경우에 발생할 문제를 방지
@@ -45,6 +47,8 @@
   ```
 
 - 사용상 가장 큰 목적은 **데이터 보호와 코드 모듈화**
+
+  - IIFE 내부에서 정의된 변수는 외부 scope에서 접근 불가능
 
 - **즉시실행함수는 런타임 시에 즉시 호출되며 한번 실행 후에는 다시 호출 불가능**
 
