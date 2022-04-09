@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="./custom_field.js"></script>
+  <link href="./custom_field.css" rel="stylesheet">
+</head>
+<body>
+  <div id="custom-menu" class="col-lg-3">
+
+    <!-- custom field -->
+    <div class="col-lg-12 pd0">
+      <div class="panel panel-default">
+        <div class="panel-wrapper collapse in">
+          <div class="panel-body filter-box pd20">
+
+            <div class="col-lg-12 pd10 mb10 font-gray"><span class="ico_red"></span>활성화 된 소팅의 순서를 변경할 수 있습니다.</div>
+
+            <!-- dimension field title -->
+            <div class="col-lg-6 pd10">
+              <h4 class="b"><i class="fa fa-circle font12 r-dim mr5"></i>분석 차원</h4>
+            </div>
+            <!-- /dimension field title -->
+
+            <!-- dimension field main -->
+            <div class="col-lg-6 pd5">
+              <div class="panel">
+                <div class="panel-wrapper">
+                  <div class="panel-body pd0">
+                    <!-- cs field -->
+                    <div class="col-lg-12 cs-field-wrapper pd0">
+
+                      <div class="col-lg-12 cs-field cs-field-main">
+                        <ul id="custom-dimension-main">
+                          <li class="cs-field-box__empty col-md-12"><span>여기에 드래그하세요.</span></li>
+                        </ul>
+                      </div>
+
+                      <div class="col-lg-12 cs-field cs-field-sub">
+                        <div class="mt10 mb10 font-gray">ㄱ-ㅎ</div>
+                        <ul id="custom-dimension-sub">
+                          <li class="cs-field-box__dim col-md-12" value="adgroup"><span>광고그룹</span><i class="mdi mdi-close cs-field-close-btn"></i></li>
+                          <li class="cs-field-box__dim col-md-12" value="ad_provider"><span>광고매체사</span><i class="mdi mdi-close cs-field-close-btn"></i></li>
+                          <li class="cs-field-box__dim col-md-12" value="ad_program"><span>광고상품</span><i class="mdi mdi-close cs-field-close-btn"></i></li>
+                          <li class="cs-field-box__dim col-md-12" value="ad_platform"><span>광고플랫폼</span><i class="mdi mdi-close cs-field-close-btn"></i></li>
+                          <li class="cs-field-box__dim col-md-12" value="stat_date"><span>일자</span><i class="mdi mdi-close cs-field-close-btn"></i></li>
+                          <li class="cs-field-box__dim col-md-12" value="campaign"><span>캠페인</span><i class="mdi mdi-close cs-field-close-btn"></i></li>
+                          <li class="cs-field-box__dim col-md-12" value="keyword"><span>키워드/소재</span><i class="mdi mdi-close cs-field-close-btn"></i></li>
+                        </ul>
+                      </div>
+
+                    </div>
+                    <!-- /cs field -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /dimension field main -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <script>
+    // dimension field
+    this.dimensionCustomFieldLeft = new CustomField({
+          targetId: 'custom-dimension-sub',
+          group: {
+            name: 'dimension'
+          }
+        });
+        this.dimensionCustomFieldRight = new CustomField({
+          targetId: 'custom-dimension-main',
+          group: {
+            name: 'dimension'
+          },
+          customEvent: {
+            handler: data => console.log(data)
+          }
+        });
+  </script>
+</body>
+</html>

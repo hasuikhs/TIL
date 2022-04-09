@@ -1,0 +1,41 @@
+/* custom report */
+#custom-table .last-dim { border-right: 1px solid #676767; }
+#custom-table th.th-dim { background: #E6F2F7; }
+#custom-table th.th-met { background: #ECF3E7; }
+
+.cs-field-sub ul, .cs-field-main ul { margin-left: 0px !important; }
+.cs-field li { display: inline; border: 1px solid #EAEAEA;  margin: 5px 5px; padding: 7px !important; border-radius: 5px; cursor: grab; background: #FFFFFF; }
+.cs-field li:active { cursor: grabbing; }
+
+.cs-field { padding: 10px 15px; }
+.cs-field span { font-weight: bold; }
+.cs-field i { font-size: 10px; float: right; cursor: pointer; }
+.cs-field .ghost { opacity: .5; border: 1px solid black; }
+
+.cs-field-sub li, .cs-field-main li { margin: 5px 0; }
+.cs-field-main li { margin-left: 12px; }
+
+.cs-field-sub { padding-left: 15px; border-right: transparent; }
+.cs-field-sub .cs-field-close-btn { display: none; }
+
+.cs-field-main { padding-left: 15px; background: #F7FAFC; }
+.cs-field-main .cs-field-close-btn { display: block; }
+
+li.cs-field-box__empty { background: transparent; border: 1px dashed #8D9AA4; pointer-events: none; }
+
+.cs-field-box__dim { border-left: 5px solid #41B3F9 !important; margin: 5px 0; }
+.cs-field-box__met { border-left: 5px solid #4ED8BA !important; }
+
+.cs-field-box__dim, .cs-field-box__met, .cs-field-box__empty { margin-left: 0 !important; }
+
+#custom-dimension-main .cs-field-box__dim { border: 1px solid #8ACFFD; }
+#custom-metric-main .cs-field-box__met { border: 1px solid #99E2D4; }
+
+#custom-dimension-main, #custom-metric-main { min-height: 130px !important; }
+#custom-dimension-sub, #custom-metric-sub { min-height: 130px !important; }
+
+.form-control.label-h { height: auto !important; }
+
+.r-dim { color: #41B3F9; }
+.r-met { color: #4ED8BA; }
+/* /custom report */
