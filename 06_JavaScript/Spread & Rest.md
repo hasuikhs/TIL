@@ -39,6 +39,7 @@
 ## 2. Rest
 
 - rest는 spread와 비슷하지만 역할이 다름
+
 - rest는 객체, 배열, 그리고 함수의 파라미터에서 사용 가능
 
 - **객체**
@@ -66,4 +67,41 @@
   console.log(rest);	// [2, 3, 4, 5]
   ```
 
+
+## 3. 함수에서
+
+- **함수(rest)**
+
+  - 함수의 파라미터가 몇개가 될지 모르는 상황에서 rest는 매우 유용
+
+  ```javascript
+  function test(...rest) {
+      return rest;
+  }
   
+  console.log(test(1, 2, 3, 4, 5));
+  ```
+
+  - **함수에서 받아온 파라미터들을 배열로 만들어줌**
+
+- **함수(spread)**
+
+  ```javascript
+  function test(...rest) {
+    return rest;
+  }
+  
+  let arr = [1, 2, 3, 4, 5];
+  
+  console.log(test(arr));  // [[1, 2, 3, 4, 5]]
+  ```
+
+  ```javascript
+  function test(...rest) {
+    return rest;
+  }
+  
+  let arr = [1, 2, 3, 4, 5];
+  
+  console.log(test(...arr));  // [1, 2, 3, 4, 5]
+  ```
