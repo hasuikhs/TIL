@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./css/carousel.css" />
+  </head>
+  <body>
+    <div id="slider">
+      <div class="slider__item"><img src="/imgs/img1.jpg" /></div>
+      <div class="slider__item"><img src="/imgs/img2.jpg" /></div>
+      <div class="slider__item"><img src="/imgs/img3.jpg" /></div>
+    </div>
+  </body>
+  <script>
+    window.onload = () => {
+      const slider = new Slider();
+    }
+
+    function Slider() {
+      if (!new.target) {
+        throw new Error('Create using new operator.');
+      }
+
+      const SHOWING_CLASS = "showing";
+      const firstSlide = document.querySelector('.slider__item:first-child');
+      
+      this.setEvent = () => {
+        setInterval(this.init, 3_000);
+      }
+      
+      this.init = () => {
+        const currentSlide = document.querySelector(`.slider__item.${SHOWING_CLASS}`);
+
+        if (currentSlide) {
+          currentSlide.classList.remove(SHOWING_CLASS);
+          const nextSlide = currentSlide.nextElementSibling;
+          if (nextSlide) {
+            nextSlide.classList.add(SHOWING_CLASS);
+          } else {
+            firstSlide.classList.add(SHOWING_CLASS);
+          }
+        } else {
+          firstSlide.classList.add(SHOWING_CLASS);
+        }
+      }
+
+      this.setEvent();
+    }
+
+  </script>
+</html>
