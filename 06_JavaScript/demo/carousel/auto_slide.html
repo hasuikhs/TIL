@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/carousel.css" />
   </head>
   <body>
+    <p>asdf</p>
     <div id="slider">
       <div class="slider__item"><img src="/imgs/img1.jpg" /></div>
       <div class="slider__item"><img src="/imgs/img2.jpg" /></div>
@@ -17,19 +18,20 @@
   </body>
   <script>
     window.onload = () => {
-      const slider = new Slider();
+      const slider = new Slider(3);
     }
 
-    function Slider() {
+    function Slider(sec) {
       if (!new.target) {
         throw new Error('Create using new operator.');
       }
 
       const SHOWING_CLASS = "showing";
       const firstSlide = document.querySelector('.slider__item:first-child');
-      
+      firstSlide.classList.add(SHOWING_CLASS);
+
       this.setEvent = () => {
-        setInterval(this.init, 3_000);
+        setInterval(this.init, sec * 1_000);
       }
       
       this.init = () => {

@@ -1,13 +1,15 @@
+#slider {
+  position: relative;
+}
+
 #slider img {
   width: 300px;
 }
 
 .slider {
-  width: 300px;
   position: relative;
 }
 .slider__item {
-  width: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +19,6 @@
   z-index: 0;
   opacity: 0;
   transition: all 1s ease;
-  transform: scale(0.9)
 }
 .showing {
   opacity: 1;
