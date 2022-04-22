@@ -229,6 +229,40 @@ const reduce = (f, acc, iter) => {
 }
 ```
 
+- 새로운 배열 만들어서 반환
+
+  ```javascript
+  const oddEven = arr.reduce((result, cur) => {
+      result.push(cur % 2 ? '홀' : '짝');
+      return result;
+  }, []);
+  
+  console.log(oddEven);	// ['홀', '짝', '홀', '짝']
+  ```
+
+- 그룹핑하여 key: value로 반환
+
+  ```javascript
+  let arr = [
+    { class: 1, name: 'one' },
+    { class: 1, name: 'two' },
+  
+    { class: 2, name: 'three' }
+  ];
+  
+  let cls = arr.reduce((result, cur) => {
+    if (cur.class in result) {
+      result[cur.class]++;
+    } else {
+      result[cur.class] = 1;
+    }
+  
+    return result;
+  }, {});
+  
+  console.log(cls);	// { '1': 2, '2': 1 }
+  ```
+
 ### 3.7 `reduceRight()`
 
 - `reduce()`와 같은 방식으로 실행되며, 배열의 마지막 요소부터 줄이기 시작
