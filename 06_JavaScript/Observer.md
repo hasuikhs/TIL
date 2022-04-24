@@ -1,10 +1,20 @@
-## MutationObserver
+# Observer
+
+- JavaScript에서는 지정된 DOM 객체들을 관찰하면서, 발생하는 어떤 변화에 대응해 특정 동작 수행 가능한 내장 객체를 지원
+- JavaScript에서 지원하는 Observer는 5가지가 존재
+  - MutationObserver
+  - IntersectionObserver
+  - PerformanceObserver
+  - ReportingObserver
+  - ResizeObserver
+
+## 1. MutationObserver
 
 - DOM의 변화를 감지하고 변화가 감지될 때 콜백함수를 발생시키는 JavaScript 내장 객체
 - 단, 지나친 남용은 옵저버 간의 연쇄 작용을 심화시켜 디버깅을 매우 힘들게 할 수 있음
 - IE 11 부터 지원
 
-### 1. 생성자 - `MutationObserver()`
+### 1.1 생성자 - `MutationObserver()`
 
 - DOM의 변화를 감시하는 인스턴스 생성
 
@@ -14,9 +24,9 @@ new MutationObserver(
 );
 ```
 
-### 2. 메서드
+### 1.2 메서드
 
-#### 2.1 `observe()` 
+#### 1.2.1 `observe()` 
 
 - 특정 노드에서 DOM의 변화를 알려주는 메서드
 
@@ -39,7 +49,7 @@ void observe(
   | characterDataOldValue | true/false |       대상 노드의 데이터 변경 전의 내용도 기록에 남김        |
   |    attributeFilter    | true/false | 모든 속성 변화를 관찰할 필요가 없는 경우 네임 슾이스 없이 속성 로컬 이름의 배열로 설정 |
 
-#### 2.2 `disconnect()`
+#### 1.2.2 `disconnect()`
 
 - DOM 변경 알림을 받는 것을 정지
 
@@ -47,7 +57,7 @@ void observe(
 void disconnect();
 ```
 
-#### 2.3 `takeRecords()`
+#### 1.2.3 `takeRecords()`
 
 - 해당 MutationObserver 인스턴스의 큐를 비우고 값을 반환
 
@@ -55,7 +65,7 @@ void disconnect();
 Array takeRecords();
 ```
 
-#### 2.4 `MutationRecords`
+#### 1.2.4 `MutationRecords`
 
 ```javascript
 MutationRecodrds = {
@@ -74,7 +84,7 @@ MutationRecodrds = {
 - childList 타입에서는 addedNodes를 이용해서 자식이 추가되는지 확인 가능
   - 하지만 일부 라이브러리에서는 제대로 작동하지 않는 경우가 존재하므로 직접 해당 태그를 query로 선택해서 처리하기를 추천함
 
-### 3. 사용
+### 1.3 사용
 
 ```javascript
 // 1. 감시할 대상 선정
@@ -108,5 +118,10 @@ observer.observe(target, config);
 observer.disconnect();
 ```
 
+## 2. IntersectionObserver
 
-
+- 이미지의 동적 로딩이나 광고 배너 노출 측정 등을 효율적으로 수행 가능 (lazy loading)
+- 등록한 요소가 현재 유저가 바라보는 웹 페이지에서 보이는 영역에 등장하거나 사라지는 경우 감지 가능
+  - 기존에는 이 동작을 `scroll` 이벤트를 사용해서 감지하거나 관련 동작 구현했지만, 이는 부하가 심하게 걸리는 원인 중 하나
+  - `scroll`은 유저의 스크롤에 의해 계속 반복적으로 발생하는 이벤트로 매번 새롭게 처리 동작이 재수행 되어야 했기 때문\
+- `IntersectionObserver`를 사용하면 `scroll` 이벤트를 사용해서 구현하는 방식보다 **더 간단하고, 성능적으로 유리**
