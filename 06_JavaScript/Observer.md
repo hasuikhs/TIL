@@ -129,3 +129,17 @@ observer.disconnect();
       - 브라우저가 웹 페이지의 일부 또는 전체를 다시 그려야하는 경우 발생
       - 생성된 DOM 노드의 레이아웃 변경 시 영향받는 모든 노드의 수치를 다시 계산하여 재생성하는 작업
 - `IntersectionObserver`를 사용하면 `scroll` 이벤트를 사용해서 구현하는 방식보다 **더 간단하고, 성능적으로 유리**
+- 사용하는 경우
+  - 페이지가 스크롤됨에 따라 이미지나 컨텐츠를 로드하고 싶은 **레이지 로딩(Lazy Loading)**
+  - 사용자가 스크롤하는 것에 따라 컨텐츠가 로드되고 렌더링 되는 **무한 스크롤(Infinite Scroll)**
+  - 광고 수익을 계산하기 위해서 광고의 가시성 여부 판단
+  - 사용자가 보고 있는 것에 따라 작업이나 애니메이션을 수행할지의 여부 결정
+
+### 2.1 생성자 - `IntersectionObserver()`
+
+```javascript
+new IntersectionObserver(callback, options);
+```
+
+### 2.2 메서드
+
