@@ -88,33 +88,33 @@ MutationRecodrds = {
 
 ```javascript
 // 1. 감시할 대상 선정
-var target = document.getElementById('some-id');
+const target = document.querySelector('#some-id');
 
 // 2. 감지할 DOM의 변화 옵션 설정
-var config = {
-    attributes: true,
-    childList: true,
-    characterData: true
+const config = {
+  attributes: true,
+  childList: true,
+  characterData: true
 };
 
-// 변경이 감지되었을 때 실행할 Callback 함수
+// 3. 변경이 감지되었을 때 실행할 Callback 함수
 const callback = (mutationsList, observer) => {
-    for(let mutation of mutationsList) {
-        if (mutation.type === 'childList') {
-            // code
-        } else if (mutaion.type === 'attributes') {
-            // code
-        }
+  for(let mutation of mutationsList) {
+    if (mutation.type === 'childList') {
+      // code
+    } else if (mutaion.type === 'attributes') {
+      // code
     }
-}
+  }
+};
 
-// 3. MutationObserver 인스턴스 생성
+// 4. MutationObserver 인스턴스 생성
 const observer = new MutationObserver(callback);
 
-// 4. 실행
+// 5. 실행
 observer.observe(target, config);
 
-// 5. 중단
+// 6. 중단
 observer.disconnect();
 ```
 
@@ -138,8 +138,60 @@ observer.disconnect();
 ### 2.1 생성자 - `IntersectionObserver()`
 
 ```javascript
-new IntersectionObserver(callback, options);
+new IntersectionObserver(callback[, options]);
 ```
 
+- `callback`
+  - `entries`
+    - IntersectionObserverEntry 객체의 리스트, 배열 형식으로 반환
+  - `observer`
+    - 콜백함수가 호출되는 IntersectionObserver
+- `options`
+  - `root`
+    - 기본값은 `null`로 브라우저의 ViewPort
+    - 교차 영역의 기준이 될 `root` 요소, `observe`의 대상으로 등록할 요소는 반드시 `root`의 하위 요소여야 함
+  - `rootMargin`
+    - 기본값은 `0px, 0px, 0px, 0px`
+    - `root` 범위를 확장하거나 축소 가능
+  - `threshold`
+    - 기본값은 0.0
+    - `target`과 `root`의 교차가 얼마나 일어나야 `callback`을 호출할지 표시
+    - 0.0 (`target`이 `root` 영역에 진입하는 시점)과 1.0 (`target` 전체가 `root`와 교체되는 시점) 사이의 숫자로 표시
+
 ### 2.2 메서드
+
+### 2.3 사용
+
+```javascript
+// 1. 감시할 대상들 선정
+const targets = document.querySelectorAll('.some');
+
+// 2. 옵션 설정
+const options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.5
+};
+
+// 3. callback 함수
+const callback = (entries, observer) => {
+	entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // ViewPort에 보여지는 타겟에서 실행될 코드
+      // 이미지같이 한번에 보여진 후에 고정된다면 옵저버를 종료
+      // observer.unobserve(entry.target);
+    } else {
+      // ViewPort에서 안보일때 타겟에서 실행될 코드
+    }
+  });
+};
+
+// 4. IntersectionObserver 인스턴스 생성
+const observer = new IntersectionObserver(callback, options);
+
+// 5. target 들 관찰
+targets.forEach(item => observer.observe(item));
+```
+
+
 
