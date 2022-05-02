@@ -144,6 +144,14 @@ new IntersectionObserver(callback[, options]);
 - `callback`
   - `entries`
     - IntersectionObserverEntry 객체의 리스트, 배열 형식으로 반환
+    - properties
+      - `boundingClientRect`: 대상의 사각형 정보
+      - `intersectionRect`: 대상의 교차한 영역 정보
+      - `intersectionRatio`: 대상의 교차한 영역 비율 (0.0 ~ 1.0)
+      - `isIntersecting`: 대상의 교차 상태 boolean
+      - `rootBounds`: 지정한 루트 요소의 사각형 정보
+      - `target`: 관찰 대상 요소
+      - `time`: 변경이 발생한 시간 정보
   - `observer`
     - 콜백함수가 호출되는 IntersectionObserver
 - `options`
@@ -155,10 +163,18 @@ new IntersectionObserver(callback[, options]);
     - `root` 범위를 확장하거나 축소 가능
   - `threshold`
     - 기본값은 0.0
+    - array로 값을 지정 가능 (`[0, 0.3, 1]`  세 경우 모두 실행됨)
     - `target`과 `root`의 교차가 얼마나 일어나야 `callback`을 호출할지 표시
     - 0.0 (`target`이 `root` 영역에 진입하는 시점)과 1.0 (`target` 전체가 `root`와 교체되는 시점) 사이의 숫자로 표시
 
 ### 2.2 메서드
+
+- `observe()`
+  - 대상 관찰 시작
+- `unobserve()`
+  - 대상 관찰 중지
+- `disconnect()`
+  - `IntersectionObserver` 인스턴스가 관찰하는 모든 요소의 관찰 중지
 
 ### 2.3 사용
 
