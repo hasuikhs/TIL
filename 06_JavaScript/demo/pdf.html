@@ -8,15 +8,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.7/pdfobject.min.js" integrity="sha512-g16L6hyoieygYYZrtuzScNFXrrbJo/lj9+1AYsw+0CYYYZ6lx5J3x9Yyzsm+D37/7jMIGh0fDqdvyYkNWbuYuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-  <!-- <embed id="test" src="/Event.pdf" type="application/pdf" width="100%"/>
+  <embed id="test" src="/Event.pdf" type="application/pdf" width="100%"/>
   <script>
     document.querySelector('#test').setAttribute('height', `${window.outerHeight}px`)
-  </script> -->
-  <div id="pdf"></div>
-  <script>
-    PDFObject.embed('/Event.pdf', '#pdf', {
-      height: `${window.outerHeight}px`
-    });
   </script>
+  <!-- <div id="pdf"></div>
+  <script>
+    PDFObject.embed('/Event.pdf');
+  </script> -->
 </body>
 </html>

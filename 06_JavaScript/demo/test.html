@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .copy-btn {
+      background-color: #EAEAEA;
+      border-color: transparent;
+      border-radius: 5px;
+      cursor: pointer;
+      /* transition: all 1.5s; */
+    }
+    .copy-btn:hover {
+      color: red;
+    }
+    /* .copy-btn:active {
+      color: red;
+    } */
+  </style>
+</head>
+<body>
+  <button class="copy-btn" type="button">COPY</button>
+  <script>
+    document.querySelector('.copy-btn').addEventListener('click', event => {
+      let tgt = event.currentTarget;
+      tgt.innerText = 'COPIED!';
+      setTimeout(() => {
+        tgt.innerText = 'COPY';
+      }, 1500);
+    })
+  </script>
+</body>
+</html>
