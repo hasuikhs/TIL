@@ -31,10 +31,10 @@
     window.onload = () => {
       const app = new App();
 
-      setTimeout(() => {
-        app.setState();
+      // setTimeout(() => {
+      //   app.setState();
 
-      }, 5_000);
+      // }, 5_000);
     }
     function App() {
       if (!new.target) {
@@ -110,7 +110,25 @@
       }
 
       this.setEvent = () => {
-        this.$target.addEventListener('click', () => console.log('clicked'))
+        this.$target.addEventListener('click', ({target}) => {
+          if (target.closest('.select-checkbox')) {
+            let targetTr = target.closest('tr');
+
+            if (!targetTr.nextElementSibling.classList.contains('new-tr')) {
+              let newTrHtml = `
+                <tr class="new-tr">
+                  <td>test</td>
+                </tr>
+                `;
+  
+              targetTr.insertAdjacentHTML('afterend', newTrHtml);
+            } else {
+              targetTr.nextElementSibling.remove();
+            }
+
+
+          }
+        });
       }
       
       
