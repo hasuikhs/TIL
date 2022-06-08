@@ -32,13 +32,74 @@
   - 뿐만 아니라 각 파일은 서로의 스코프를 침범하지 않아야 하지만 잘 못 작성할 경우 변수 충돌 위험성도 존재
   - 그래서 코드의 유지 보수가 쉽도록 코드를 모듈로 나누어 관리하는 모듈 시스템이 필요해짐
   - 이런 한계를 극복하려 여러 가지 도구를 활용하는데 그 도구 가운데 하나가 **Webpack**
-
 - **Webpack**은 JavaScript로 만든 프로그램을 배포하기 좋은 형태로 묶어주는 도구
-
 - ESM(ES6 모듈)과 commonJS를 모두 지원
+
+### 2.1 설치
+
+```bash
+$ npm i -D webpack webpack-cli
+```
+
+### 2.2 `webpack.config.js`
+
+```javascript
+const path = require('path');
+
+module.exports = {
+    mode: 'development',
+    entry: {
+        main: './src/app.js'
+    },
+    output: {
+        filename: '[name].js',
+        path: path.resolve('./dist')
+    }
+}
+```
+
+- `webpack.config.js`는 모던 JS 파일이 아니라서, import를 쓸 수 없음
+
+- `package.json` 의 script에 build 명령어로 webpack을 추가 `npm run build`를 실행 output에 설정된 이름으로 결과물 생성
+
+  ```bash
+  $ npm run build
+  
+  # 또는
+  
+  $ webpack
+  ```
 
 - Webpack은 주요 네 가지 개념으로 정리 가능
 
-  - 엔트리, 아웃풋, 로더, 플러그인
+  - **엔트리(Entry)**
+
+    ```javascript
+    // 시작점이 src/app.js
+    entry: {
+        main: './src/app.js'
+    }
+    ```
+
+    - Webpack에서 모든 것은 모듈, JS, CSS, img 등 모든 것을 JS 모듈로 로딩해서 사용
+    - Js가 로딩하는 모듈이 많아질수록 모듈간의 의존성은 증가
+    - 의존성 그래프의 시작점을 Webpack에서는 엔트리라고 함
+    - 엔트리를 통해서 필요한 모듈을 로딩하고 하나의 파일로 묶음
+
+  - **아웃풋(Output)**
+
+    ```javascript
+    // dist 폴더의 [name].js 파일로 결과를 저장
+    output: {
+        filename: '[name].js',
+        path: path.resolve('./dist')
+    }
+    ```
+
+    - 엔트리에서 설정한 JS 파일을 시작으로 의존되어 있는 모든 모듈을 하나로 묶고 결과물은 output에 기록
+
+  - 로더
+
+  - 플러그인
 
   
