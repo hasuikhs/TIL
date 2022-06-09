@@ -100,6 +100,25 @@ module.exports = {
 
   - 로더
 
+    ```javascript
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: 'css-loader'
+            },
+            {
+                test: /\.jsx?$/,
+                loader
+            }
+        ]
+    }
+    ```
+  
+    - Webpack이 웹 애플리케이션을 해석할 때 JS 파일이 아닌 것들을 변환 가능하도록 도움
+    - 파일을 다른 언어에서 JS로 변환하거나 인라인 이미지를 데이터 URL로 로드 가능
+    - JS 모듈에서 직접 CSS 파일을 import 가능해짐
+  
   - 플러그인
-
+  
   
