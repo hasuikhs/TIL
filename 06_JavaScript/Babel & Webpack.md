@@ -98,18 +98,24 @@ module.exports = {
 
     - 엔트리에서 설정한 JS 파일을 시작으로 의존되어 있는 모든 모듈을 하나로 묶고 결과물은 output에 기록
 
-  - 로더
+  - **로더(Loader)**
 
+    ```bash
+    # css 모듈을 파싱하는 과정에는 적절한 로더가 필요
+    $ npm i -D css-loader
+    
+    # css-loader로 처리하면 JS 코드로만 적용될 뿐 DOM에는 적용되지 않으므로 style-loader를 사용하여 적용시킴
+    # 따라서, style-loader를 이용하면 JS로 변경된 스타일시트를 동적으로 DOM에 추가 가능
+    $ npm i -D style-loader
+    ```
+  
     ```javascript
+    // 로더는 오른쪽에서 왼쪽 순(또는 아래에서 위쪽)으로 적용됨
     module: {
         rules: [
             {
                 test: /\.css$/,
-                use: 'css-loader'
-            },
-            {
-                test: /\.jsx?$/,
-                loader
+                use: ['style-loader', 'css-loader']
             }
         ]
     }
