@@ -47,7 +47,7 @@ $ npm i -D webpack webpack-cli
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
+    mode: 'development',	// 운영 환경에서는 production
     entry: {
         main: './src/app.js'
     },
@@ -107,6 +107,9 @@ module.exports = {
     # css-loader로 처리하면 JS 코드로만 적용될 뿐 DOM에는 적용되지 않으므로 style-loader를 사용하여 적용시킴
     # 따라서, style-loader를 이용하면 JS로 변경된 스타일시트를 동적으로 DOM에 추가 가능
     $ npm i -D style-loader
+    
+    # 모던 JS 적용
+    $ npm i -D babel-loader @babel/core @babel/preset-env
     ```
   
     ```javascript
@@ -116,6 +119,16 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /=.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
             }
         ]
     }
@@ -125,6 +138,48 @@ module.exports = {
     - 파일을 다른 언어에서 JS로 변환하거나 인라인 이미지를 데이터 URL로 로드 가능
     - JS 모듈에서 직접 CSS 파일을 import 가능해짐
   
-  - 플러그인
+  - **플러그인(Plugin)**
+  
+    - Webpack의 기본적인 동작에 추가적인 기능을 제공하는 속성
+  
+    - Loader는 파일을 해석하고 변환하는 과정에 관여하고, 플러그인은 해당 결과물의 형태를 바꾸는 역할을 함
+  
+    - 플러그인은 클래스 형태로 정의하고 apply라는 메서드를 정의하며, event hook을 tap안에 지정
+  
+      ```javascript
+      // ConsoleLogOnBuildWebpackPlugin.js
+      const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
+      
+      class ConsoleLogOnBuildWebpackPlugin {
+        apply(compiler) {
+          compiler.hooks.run.tap(pluginName, (compilation) => {
+            console.log('The webpack build process is starting!');
+          });
+        }
+      }
+      
+      module.exports = ConsoleLogOnBuildWebpackPlugin;
+      ```
+  
+    - 플러그인 사용은 `webpack.config.js`의 plugins 배열에 생성자 함수로 생성한 객체 인스턴스 포함
+  
+      ```javascript
+      ...
+      const ConsoleLogOnBuildWebpackPlugin = require('./ConsoleLogOnBuildWebpackPlugin');
+      const webpack = require('webpack');
+      
+      module.exports = {
+          ...
+          plugins: [
+              new ConsoleLogOnBuildWebpackPlugin(),
+              new webpack.BannerPlugin({
+                  banner: () => `빌드 날짜: ${ new Date().toLocaleString() }`
+              })
+          ]
+      }
+      ```
+  
+      
+  
   
   
