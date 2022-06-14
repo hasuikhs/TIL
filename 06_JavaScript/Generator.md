@@ -3,9 +3,11 @@
 - Generator Function은 사용자의 요구에 따라 다른 시간 간격으로 여러 값을 반환 가능
 - 내부 상태 관리가 가능한 함수
 - 단 한 번의 실행으로 함수의 끝까지 실행이 완료되는 일반 함수와는 달리, 사용자의 요구에 따라 (`yield`와 `next()`를 통해) 일시적으로 정지될 수 있고, 다시 시작 될 수 있음
+  - Generator가 있기 전에는 일시 정지 가능한 유일한 방법은 alert, confirm, prompt를 사용하는 것
+    - 하지만, 사용자가 시스템 대화 상자에 응답하지 않으면 프로세스를 이어갈 수 없었음
+
 - Generator와 Iterable객체를 함께 사용하면 손쉽게 데이터 스트림을 만들 수 있음
   - Generator는 Iterator이자 Iterable을 생성하는 함수
-
 - Generator Function의 반환으로는 Generator가 반환됨
 
 ## 1. Generator Function
