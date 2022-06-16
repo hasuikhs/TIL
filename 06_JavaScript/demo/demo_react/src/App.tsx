@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.min.css';
 import { Button, DatePicker } from 'antd'
 import moment, { Moment } from 'moment';
@@ -8,6 +8,11 @@ function App() {
   const { RangePicker } = DatePicker;
   const dateFormat = 'YYYY-MM-DD';
   const [dateRange, setDateRange] = useState([moment(), moment()]);
+  const [isChaged, setIsChanged] = useState(false);
+
+  useEffect(() => {
+    console.log(isChaged);
+  }, [isChaged]);
 
   return (
     <>
@@ -19,6 +24,8 @@ function App() {
           let psDate = moment(e?.[0]);
           let peDate = moment(e?.[1]);
 
+          setIsChanged(true);
+
           setDateRange([psDate, peDate]);
         }}
       />
@@ -28,6 +35,9 @@ function App() {
         onClick={e => {
           console.log('psDate', dateRange[0].format(dateFormat));
           console.log('peDate', dateRange[1].format(dateFormat));
+
+          setIsChanged(false);
+          setDateRange([moment(), moment()])
           // console.log(rangePicker.current.value)
         }}
         >
