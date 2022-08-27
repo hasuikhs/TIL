@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      display: flex;
+      /* flex-wrap: wrap; */
+      flex-flow: row wrap;
+      justify-content: center;
+      width: 1080px;
+      margin: auto;
+    }
+    .item {
+      width: 200px;
+      height: 260px;
+      background-color: black;
+      border-radius: 10px;
+      color: white;
+      font-weight: 700;
+      font-size: 40px;
+      margin: 10px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .item:hover {
+      cursor: pointer;
+    }
+
+    .item.flipped {
+      background-color: #EAEAEA;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="item">one</div>
+    <div class="item">two</div>
+    <div class="item">three</div>
+    <div class="item">four</div>
+    <div class="item">five</div>
+    <div class="item">six</div>
+    <div class="item">seven</div>
+    <div class="item">eight</div>
+    <div class="item">nine</div>
+    <div class="item">ten</div>
+  </div>
+  <script>
+    window.onload = () => {
+      const container = document.querySelector('.container');
+
+      container.addEventListener('click', ({ target }) => {
+        if (target.closest('.item')) {
+
+          console.log(target)
+          
+          if (target.classList.contains('flipped')) {
+            target.classList.remove('flipped');
+          } else {
+            target.classList.add('flipped');
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
