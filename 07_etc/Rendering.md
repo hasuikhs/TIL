@@ -33,7 +33,6 @@
   - SEO에 불리함
 ## 2. SSR(Server Side Rendering)
 - Server에서 화면을 그려서 클라이언트에 제공하는 방식
-- 모든 MPA가 SSR이지만 모든 SSR이 MPA는 아님(Next.js)
 - **장점**
   - 초기 로딩 속도가 CSR보다 상대적으로 빠름
   - SEO에 유리함
@@ -51,3 +50,6 @@
 ## 4. ISR(Incremental Static Regeneration)
 - 빌드 시점에 페이지를 렌더링 한 후, 설정한 시간 마다 페이지를 새로 렌더링
 - SSG와 비슷하지만 일정 시간마다 페이지를 업데이트한다는데 차이가 존재
+## 5. Isomorphic app, Universal Rendering
+- 초기 렌더링은 SSR을 사용하고, 이후 렌더링은 CSR을 사용하는 앱이나 렌더링
+- 서버와 클라이언트가 같은 코드를 사용하기에 예상치 못한 에러 발생 가능하지만, 초기 로딩 속도 보완 / SEO 개선 / CSR의 장점을 가짐
