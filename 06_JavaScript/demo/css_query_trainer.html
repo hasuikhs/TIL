@@ -6,6 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .correct-element {
+      color: green;
+      font-weight: bold;
+    }
+
+  </style>
 </head>
 
 <body>
@@ -30,8 +37,7 @@
       if (event.keyCode == 13) {
         let $answerEle = document.querySelector(event.target.value);
         if ($answerEle == $correctAnswerEle) {
-          $answerEle.style.color      = 'green';
-          $answerEle.style.fontWeight = 'bold';
+          $answerEle.classList.add('correct-element');
           
           $notyEle.innerText   = '정답';
           $notyEle.style.color = 'green';
@@ -39,6 +45,8 @@
         } else {
           $notyEle.innerText   = '오답';
           $notyEle.style.color = 'red';
+
+          document.querySelectorAll('div').forEach(item => item.classList.contains('correct-element') && item.classList.remove('correct-element'));
         }
       }
     })
