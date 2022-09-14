@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <pre id="target"></pre>
+
+  <script>
+
+    const target = document.querySelector('#target');
+
+    let testTag = '<div><ul><li>1</li><li>2</li></ul><div>';
+
+    target.innerText = transform(testTag);
+
+    function transform(string) {
+      const tagRegex = /<([a-zA-z\/\s="]+)>/;
+      // const endTagRegex = /\<\/([a-zA-Z]+|)\>|\<input\s+[a-z="]+\>/;
+      const indent = '  '; // 2 space
+
+      let newString = '';
+
+      let len = string.length;
+      let curIdx = 0;
+
+      while (curIdx < len) {
+        curIdx = string.search(tagRegex);
+
+        
+      }
+
+      return newString;
+    }
+
+
+  </script>
+</body>
+</html>
