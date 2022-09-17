@@ -1,15 +1,29 @@
-function getInterDate(start, end) {
-  const startTime = getLinuxTime(start);
-  const endTime = getLinuxTime(end);
+/**
+ * 
+ * @param {string} start 
+ * @param {string} end 
+ * @param {string} delimeter 
+ * @returns date (string[])
+ */
+function getInterDate(start, end, delimeter = '') {
+  const startTime = getLinuxTime(start.replaceAll(delimeter, ''));
+  const endTime = getLinuxTime(end.replaceAll(delimeter, ''));
 
   const dayMiliis = 24 * 60 * 60 * 1_000;
 
   const returnDate = [];
 
-  for (let i = startTime; i <= endTime; i+=dayMiliis) {
-    const curDate = transLinuxTimeToDate(i);
+  for (let linuxTime = startTime; linuxTime <= endTime; linuxTime += dayMiliis) {
+    const curDate = transLinuxTimeToDate(linuxTime, delimeter);
+    let day = '';
 
-    if (Number(curDate.slice(6)) === 1) {
+    if (delimeter === '') {
+      day = curDate.slice(6);
+    } else {
+      day = curDate.split(delimeter)[2];
+    }
+
+    if (Number(day) === 1) {
       returnDate.pop();
     } else {
       returnDate.push(curDate);
@@ -20,6 +34,11 @@ function getInterDate(start, end) {
   return returnDate;
 }
 
+/**
+ * 
+ * @param {number} date 
+ * @returns linuxTime (number)
+ */
 function getLinuxTime(date) {
 
   let year = Number(date.slice(0, 4));
@@ -39,7 +58,13 @@ function getLinuxTime(date) {
   return tgtDate.getTime();
 }
 
-function transLinuxTimeToDate(linuxTime) {
+/**
+ * 
+ * @param {number} linuxTime 
+ * @param {string} delimeter 
+ * @returns formatted date (string)
+ */
+function transLinuxTimeToDate(linuxTime, delimeter = '') {
   let date = new Date(linuxTime);
 
   let year = date.getFullYear();
@@ -54,5 +79,8 @@ function transLinuxTimeToDate(linuxTime) {
     day = `0${ day }`;
   }
 
-  return `${ year }${ month }${ day }`;
+  return [year, month, day].join(delimeter);
 }
+
+// test
+console.log(getInterDate('2021-01-01', '2021-04-04', '-'));
