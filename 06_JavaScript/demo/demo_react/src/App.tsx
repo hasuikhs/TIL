@@ -3,6 +3,8 @@ import 'antd/dist/antd.min.css';
 import { Button, DatePicker } from 'antd'
 import moment, { Moment } from 'moment';
 
+import Parent from './components/ref/Parent';
+
 function App() {
 
   const { RangePicker } = DatePicker;
@@ -43,6 +45,7 @@ function App() {
         >
           INIT
         </Button>
+        <Parent />
     </>
   );
 }
