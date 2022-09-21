@@ -1,24 +1,39 @@
-import { forwardRef } from 'react';
+import { forwardRef, LegacyRef } from 'react';
 
 interface Props {
   title: string;
   setTitle: Function;
 }
 
-type Ref = HTMLInputElement;
+type Ref = LegacyRef<HTMLInputElement>;
 
-const Children = forwardRef<Ref, Props>((props, ref) => {
+// arrow function style
+// const Children = forwardRef<Ref, Props>(({ title, setTitle }, ref) => {
+//   return (
+//     <>
+//       <input
+//         ref={ ref }
+//         type="text"
+//         value={ title }
+//         onChange={ (e: any) => setTitle(e.target.value) }
+//       />
+//       <p>result: { title } </p>
+//     </>
+//   )
+// });
+
+function Children({ title, setTitle }: Props, ref: Ref) {
   return (
     <>
       <input
         ref={ ref }
         type="text"
-        value={ props.title }
-        onChange={ (e: any) => props.setTitle(e.target.value) }
+        value={ title }
+        onChange={ (e: any) => setTitle(e.target.value) }
       />
-      <p>result: { props.title } </p>
+      <p>result: { title } </p>
     </>
   )
-});
+}
 
-export default Children;
+export default forwardRef(Children);

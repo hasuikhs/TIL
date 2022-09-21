@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import Children from "./Children";
+import Children from './Children';
 
 function Parent() {
 
@@ -7,7 +7,7 @@ function Parent() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    console.log(inputRef.current?.value)
+    inputRef.current?.focus();
   }, [title])
 
   return (
