@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .flex-container {
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 600px) {
+      .flex-container {
+        flex-direction: row;
+      }
+      .flex-item {
+        flex: 1;
+      }
+    }
+      /*
+        flex: 한 라인을 전부 차지
+        inline-flex: 각 내용물 만큼의 라인 차지
+      */
+      /*
+        flex-wrap - 줄넘김 처리 설정
+        nowrap(default): 줄넘김 안함
+        wrap: 줄넘김 처리함
+        wrap-reverse: 줄넘김 처리를 위로 함
+      */
+      /*
+        flex-flow - flex-direction과 flex-wrap을 한번에 설정
+      */
+    .flex-item {
+      border: 1px solid black;
+
+    }
+  </style>
+</head>
+<body>
+  <div class="flex-container">
+    <div class="flex-item">AAAAAAA</div>
+    <div class="flex-item">BBB</div>
+    <div class="flex-item">CCCCCC</div>
+  </div>
+</body>
+</html>
