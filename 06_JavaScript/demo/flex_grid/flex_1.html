@@ -9,13 +9,25 @@
     .flex-container {
       display: flex;
       flex-direction: column;
+      height: 500px;
+      align-items: center;
+      background-color: #EAEAEA;
     }
+    .flex-item {
+      /* flex: 1; */
+      flex-grow: 1;
+      border: 1px solid black;
+
+    }
+
     @media (min-width: 600px) {
       .flex-container {
         flex-direction: row;
       }
       .flex-item {
         flex: 1;
+        flex-basis: 10px;
+        width: 10px
       }
     }
       /*
@@ -31,10 +43,10 @@
       /*
         flex-flow - flex-direction과 flex-wrap을 한번에 설정
       */
-    .flex-item {
-      border: 1px solid black;
-
-    }
+      /*
+        justify-content : 정렬(메인) 축을 기준으로 정렬
+        align-items: justify에 수직 정렬
+      */
   </style>
 </head>
 <body>

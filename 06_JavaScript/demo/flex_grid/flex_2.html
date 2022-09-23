@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .flex-container {
+      display: flex;
+      background-color: #EAEAEA;
+    }
+    /*
+      flex-basis: 기본 아이템들의 크기
+      flex-grow: flex-basis를 제외한 여백 부분을 flex-grow에 지정된 숫자의 비율 즉, 여백의 비율
+      flex-shrink: flex-grow와 쌍을 이루는 속성 flex-basis 값보다 작아질 수 있는지 결정 (default: 1 작아질 수 있음)
+
+      flex: 위 세개를 한 번에 쓰는 축약형
+    */
+    .flex-item {
+      flex: 1 auto;
+    }
+    .flex-item:nth-child(1) {
+      /* flex: 1 ; */
+      width: 20%;
+    }
+    .flex-item:nth-child(2) {
+      /* flex: 3; */
+      width: 60%;
+    }
+    .flex-item:nth-child(3) {
+      /* flex: 1; */
+      width: 20%;
+    }
+
+    .flex-item p {
+      /* white-space: nowrap; */
+    }
+
+  </style>
+</head>
+<body>
+  <div class="flex-container">
+    <div class="flex-item"><p>asldalsdrlasdflasldflasd lasdfkjasdlkfaslkdflk asdflkasdfalkdfaldsf lasudkfalsdfu</p></div>
+    <div class="flex-item">BBB</div>
+    <div class="flex-item">CCCCCC</div>
+  </div>
+</body>
+</html>
