@@ -1,0 +1,34 @@
+body {
+  margin: 0px;
+}
+ul {
+  list-style: none;
+  padding-left: 0px;
+  margin: 0px;
+}
+/* menu */
+.menu {
+  display: flex;
+}
+.menu-item {
+  background: gold;
+  /* flex-grow: 1; */
+  width: 25%;
+  transition: 0.5s;
+}
+.menu-item:hover {
+  background: red;
+  /* flex-grow: 1.5; */
+  width: 35%;
+}
+.menu-link {
+  display: block;
+  padding: 1em;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+}
+.menu-link:hover {
+  color: white;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .flex-container {
+      display: flex;
+      height: 100vh;
+      background-color: #EAEAEA;
+      align-items: center;
+    }
+    .flex-item {
+      background-color: #CCC;
+      border: 1px solid black;
+    }
+    .flex-item:nth-child(2) {
+      align-self: flex-start;
+      /* aling-self가 align-items보다 우선 순위가 높음 */
+    }
+  </style>
+</head>
+<body>
+  <div class="flex-container">
+    <div class="flex-item">AAAAAAA</div>
+    <div class="flex-item">BBB</div>
+    <div class="flex-item">CCCCC</div>
+  </div>
+</body>
+</html>
