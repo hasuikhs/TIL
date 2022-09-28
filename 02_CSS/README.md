@@ -70,18 +70,38 @@ h1 {
 * `%`
   * 기본글꼴의 크기에 대하여 상대적인 값을 가짐
 * `em`
-  * 상속의 영향을 받아 크기가 바뀜
+  * 상속(상위 요소)의 영향을 받아 크기가 바뀜
+  ```css
+    /* html > body > .message 일 경우 */
+    html {
+      font-size: 10px;
+    }
+    body {
+      font-size: 2em; /* 상위 html의 사이즈의 2배인 20px */
+    }
+    .message {
+      font-size: 2em; /* 상위 body의 사이즈의 2배인 40px */
+    }
+  ```
 * `pt`
   * 일반 문서(워드 등)에서 많이 사용하는 단위
 * `rem`
   * 최상위 요소 기준으로 크기가 바뀜
   * HTML 페이지의 기본 폰트 크기는 16px
-* `color`값 바꾸기
-  * [이름으로 색상 사용하기](https://www.w3.org/TR/css-color-3/) 
-  * [상세한 색상으로 커스터마이징](https://htmlcolorcodes.com)
-  * #00000
-  * white
-  * rgb, rgba(255, 255, 255, 0)
+  ```css
+    /* html > body > .message 일 경우 */
+    html {
+      font-size: 10px;
+    }
+    body {
+      font-size: 2rem; /* 최상위 html의 사이즈의 2배인 20px */
+    }
+    .message {
+      font-size: 2rem; /* 최상위 html의 사이즈의 2배인 20px */
+    }
+  ```
+* `vh`, `vw`
+  * 뷰포트의 높이값과 넓이값 현재 뷰포트의 (1/100 단위)
 
 #### 1.3.3 선택자
 
@@ -92,7 +112,7 @@ h1 {
   * 아이디 선택자 : `#blue { color: blue; }`
 
 - **선택자 우선순위**
-  1. `!important` : 정말 필요할 떄만 쓰자. 남용하면 코드가 파국으로 치닫는다.
+  1. `!important` : 정말 필요할 때만 쓰자. 남용하면 코드가 파국으로 치닫는다.
   2. Inline style 속성 : 필요할 때만 쓰자. 남용하면 유지보수 매우 힘들다. (css 파일로만 유지보수할 수 없음! HTML 코드를 봐야함)
   3. 아이디 선택자
   4. 클래스 선택자
@@ -143,7 +163,7 @@ h1 {
   * 항상 새로운 라인에서 시작
   * 화면 크기 전체의 가로폭 차지 (width: 100%)
 * inline
-  * 
+  * 하위 요소에 맞게 가로폭 차지
 
 ### 2.3 Background
 
