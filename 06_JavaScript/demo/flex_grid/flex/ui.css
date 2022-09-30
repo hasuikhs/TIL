@@ -15,7 +15,7 @@ ul {
   background: gold;
   /* flex-grow: 1; */
   width: 25%;
-  transition: 0.5s;
+  transition: 0.3s;
 }
 .menu-item:hover {
   background: red;
