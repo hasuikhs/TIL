@@ -1,8 +1,17 @@
+/*
+  box-sizing 옵션들
+  border-box : 내용 영역의 width와 height는 padding과 border를 포함한 범위가 됨
+  content-box : width와 height의 범위는 내용 영역에 한정
+*/
 html, body, ul, li, figure {
   padding: 0;
   margin: 0;
   font-size: 100%;
   box-sizing: border-box;
+}
+div, span, article, section, header, footer, aside, p, ul, li, fieldset, legend, label, a, nav, form {
+	box-sizing: border-box;
+	/* content-box */
 }
 ul {
   list-style: none;
