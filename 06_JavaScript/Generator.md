@@ -13,12 +13,18 @@
 ## 1. Generator Function
 
 - Generator를 만들려면 특별한 문법 구조 `function*`이 필요
+  - 화살표 함수로는 정의할 수 없음
 
   ```javascript
   function* generatorFunction() {
       yield 1;
       yield 2;
       return 3;
+  }
+
+  // error
+  const gen = ()* => {
+
   }
   ```
 
