@@ -1,7 +1,26 @@
 # Rendering
 > - **TTV(Time To View)**: 사용자가 페이지를 볼 수 있는 시점
 > - **TTI(Time To Interact)**: 사용자가 인터렉션할 수 있는 시점
-## 0. MPA vs SPA
+## 0. Basic
+### 0.1 Browser rendering process
+#### 0.1.1 기본 동작 과정
+- HTML, CSS 파일을 파싱하여, DOM(Document Object Model), CSSOM(CSS Object Model) Tree 구축 (**Parsing**)
+  - HTML 파싱 중 `<link>`, `<style>` 태그를 만나도 일반적인 CSS 자체로는 DOM 구조에 영향이 없어 HTML 파싱은 block 되지 않음
+  - DOM Tree 생성 중 CSS 파일이 있으면 다운로드 요청만 해놓고 DOM Tree 구성 진행
+  - 하지만, `<script>` JavaScript는 DOM 구조에 영향을 줄 수 있기 때문에 `defer`, `async` 옵션을 쓰지 않았다면 파싱을 멈추고 다운로드 후 실행까지 진행
+  - JavaScript에서 특정 DOM 요소의 style 요청 가능한데 CSS가 아직 다운로드되지 않은 경우를 대비해 CSS 파일을 받기 전까지 HTML 파싱이 중단될 수 있음
+- 두 Tree를 결합하여 Render Tree 생성(**Style**)
+  - 브라우저 화면에 렌더링되는 노드만으로 구성(`display: none` 같은 경우는 제외)
+- Render Tree에서 각 노드의 위치와 크기를 계산(**Layout, Reflow**)
+  - 뷰포트 내에서 각 노드들의 정확한 위치와 크기를 계산해 배치
+  - **Reflow**
+    - Reflow가 되는 상황은 
+- Render Tree의 각 노드를 화면 상의 실제 픽셀로 변환(**Paint**)
+  - 픽셀로 변환된 결과는 하나의 layer가 아닌 여러 개의 layer로 관리
+  - 스타일이 복잡할수록 Paint 시간 증가
+- Paint 단계에서 생성된 layer를 합성하여 실제 화면에 나타냄(**Composite**)
+
+### 0.2 MPA vs SPA
 - **MPA(Multi Page Application)**
   - 말 그대로 여러 개의 Page로 구성된 application이며 전통적인 개발 방식
   - 기본적으로 SSR을 따르며 새로운 **페이지를 요청할 때마다** 서버에서 정적 리소스(HTML, CSS, JS)가 받아짐
