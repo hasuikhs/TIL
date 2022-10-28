@@ -14,10 +14,48 @@
 - Render Tree에서 각 노드의 위치와 크기를 계산(**Layout, Reflow**)
   - 뷰포트 내에서 각 노드들의 정확한 위치와 크기를 계산해 배치
   - **Reflow**
+    - 대상 속성
+      <table>
+        <tr>
+          <td>position</td><td>width</td><td>height</td><td>left</td><td>top</td><td>right</td><td>bottom</td>
+        </tr>
+        <tr>
+          <td>margin</td><td>padding</td><td>border</td><td>border-width</td><td>clear</td><td>display</td><td>float</td>
+        </tr>
+        <tr>
+          <td>font-family</td><td>font-size</td><td>font-weight</td><td>line-height</td><td>min-height</td><td>overflow</td><td>text-align</td>
+        </tr>
+        <tr>
+          <td>vertical-align</td><td>white-space</td><td>...</td><td></td><td></td><td></td><td></td>
+        </tr>
+      </table>
     - Reflow는 해당 요소와 자식요소 부모/조상 요소까지 진행하므로 심각한 성능 저하를 유발 가능
-- Render Tree의 각 노드를 화면 상의 실제 픽셀로 변환(**Paint**)
+    - **최적화 방법**
+      - Reflow 속성 사용 줄이기
+      - 클래스 변화에 따른 스타일 변경시, 최대한 DOM 구조상 끝단에 위치한 노드에 줌
+      - 인라인 스타일을 최대한 배제
+      - 가능하다면 Reflow보다 Repaint만 발생하는 속성 사용(transform, opacity 등)
+      - 애니메이션이 들어간 코드는 `position`을 `fixed`, `absolute`로 지정하여 전체 노드에서 분리
+      - 퀄리티와 퍼포먼스 사이에서 타협
+      - 테이블 레이아웃 `<table>`을 피하라
+        - 테이블은 점진적 렌더링이 아닌 내부 콘텐츠가 모두 로딩된 후에 그려짐
+      - CSS 하위 선택자 줄이기
+        - 하위 선택자가 많아지면 CSSOM Tree의 깊이가 깊어지고 Render Tree를 만드는데 시간 증가
+- Render Tree의 각 노드를 화면 상의 실제 픽셀로 변환(**Paint, Repaint**)
   - 픽셀로 변환된 결과는 하나의 layer가 아닌 여러 개의 layer로 관리
   - 스타일이 복잡할수록 Paint 시간 증가
+  - 대상 속성
+    <table>
+      <tr>
+        <td>backgrond</td><td>background-image</td><td>background-position</td><td>background-repeat</td><td>bachground-size</td><td>border-radius</td><td>border-style</td>
+      </tr>
+      <tr>
+        <td>box-shadow</td><td>color</td><td>line-style</td><td>outline</td><td>outline-style</td><td>outline-width</td><td>text-decoration</td>
+      </tr>
+      <tr>
+        <td>visibility</td><td>...</td><td></td><td></td><td></td><td></td><td></td>
+      </tr>
+    </table>
 - Paint 단계에서 생성된 layer를 합성하여 실제 화면에 나타냄(**Composite**)
 
 ### 0.2 MPA vs SPA
