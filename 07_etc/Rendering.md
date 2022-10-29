@@ -4,6 +4,7 @@
 ## 0. Basic
 ### 0.1 Browser rendering process
 #### 0.1.1 기본 동작 과정
+![rendering](./img.assets/rendering.png)
 - HTML, CSS 파일을 파싱하여, DOM(Document Object Model), CSSOM(CSS Object Model) Tree 구축 (**Parsing**)
   - HTML 파싱 중 `<link>`, `<style>` 태그를 만나도 일반적인 CSS 자체로는 DOM 구조에 영향이 없어 HTML 파싱은 block 되지 않음
   - DOM Tree 생성 중 CSS 파일이 있으면 다운로드 요청만 해놓고 DOM Tree 구성 진행
@@ -11,6 +12,7 @@
   - JavaScript에서 특정 DOM 요소의 style 요청 가능한데 CSS가 아직 다운로드되지 않은 경우를 대비해 CSS 파일을 받기 전까지 HTML 파싱이 중단될 수 있음
 - 두 Tree를 결합하여 Render Tree 생성(**Style**)
   - 브라우저 화면에 렌더링되는 노드만으로 구성(`display: none` 같은 경우는 제외)
+  - **React**에서는 `index.html`과 `App.js`를 가지고 Render Tree 구성
 - Render Tree에서 각 노드의 위치와 크기를 계산(**Layout, Reflow**)
   - 뷰포트 내에서 각 노드들의 정확한 위치와 크기를 계산해 배치
   - **Reflow**
@@ -41,7 +43,7 @@
         - 테이블은 점진적 렌더링이 아닌 내부 콘텐츠가 모두 로딩된 후에 그려짐
       - CSS 하위 선택자 줄이기
         - 하위 선택자가 많아지면 CSSOM Tree의 깊이가 깊어지고 Render Tree를 만드는데 시간 증가
-- Render Tree의 각 노드를 화면 상의 실제 픽셀로 변환(**Paint, Repaint**)
+- Render Tree의 각 노드를 화면 상의 실제 픽셀로 변환(**Paint, Repaint, Rendering**)
   - 픽셀로 변환된 결과는 하나의 layer가 아닌 여러 개의 layer로 관리
   - 스타일이 복잡할수록 Paint 시간 증가
   - 대상 속성
@@ -57,7 +59,18 @@
       </tr>
     </table>
 - Paint 단계에서 생성된 layer를 합성하여 실제 화면에 나타냄(**Composite**)
-
+#### 0.1.2 in React
+- 기존 DOM 조작시 Render Tree 재생성, Layout, Paint 과정이 반복됨
+- **SPA(Single Page Application)에서는 DOM 조작이 많이 발생하므로 전체적인 프로세스를 비효율적이게 함**
+- **Virtual DOM**
+  - DOM을 추상화한 객체를 메모리에 만드는 **가상의 DOM**
+  - 실제 DOM이 아니기에 변경이 있어도 실제 DOM에는 영향이 없음
+  - React는 리렌더링이 필요한 부분에서 실제 DOM이 아닌 Virtual DOM에 알림
+  - 기존의 DOM과 비교하여 변경된 부분만 DOM에 알림
+- Virtual DOM은 연산이 끝나면 그 최종적인 변화를 실제 DOM에 던져줌
+  - **모든 변화를 감지하여 딱 한번의 연산이 일어남**
+  - Layout 계산과 Rerendering 규모는 커지지만 연산의 횟수를 줄임
+- 다만, React는 DOM 보다 항상 빠르지는 않지만, 유지보수 가능한 앱을 만드는 것을 도와주고, **대부분의 경우에 충분히 빠름**
 ### 0.2 MPA vs SPA
 - **MPA(Multi Page Application)**
   - 말 그대로 여러 개의 Page로 구성된 application이며 전통적인 개발 방식
