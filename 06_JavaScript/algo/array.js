@@ -31,3 +31,22 @@ console.log(getMaxSum([
   [19, 27, 29, 37, 27],
   [19, 13, 30, 13, 19]
 ]));
+
+/**
+ * 주어진 배열의 점수를 등수 배열로 변환
+ * @param {*} A 배열
+ */
+function getRankArr(A) {
+  let answer = Array.from({length: A.length}, () => 1);
+
+  for (let i = 0, len = A.length; i < len; i++) {
+    let rank = 1;
+    for (let j = 0; j < len; j++) {
+      if (A[j] > A[i]) answer[i]++;
+    }
+  }
+
+  return answer;
+}
+
+console.log(getRankArr([87, 89, 92, 100, 76])); 
