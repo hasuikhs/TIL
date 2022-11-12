@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer</title>
+  </head>
+  <body>
+    <div id="timer">
+      <input id="minutes" type="number" min="0" value="0" />
+      <label for="minutes">분</label>
+
+      <input id="seconds" type="number" min="0" value="0" />
+      <label for="seconds">초</label>
+
+      <button type="button" id="btnStart">시작</button>
+      <button type="button" id="btnPause">재개/일시정지</button>
+      <button type="button" id="btnStop">정지</button>
+
+      <h1 id="screen">00:00</h1>
+    </div>
+  </body>
+  <script>
+    window.onload = () => {
+      const timer = new Timer();
+    };
+
+    function Timer() {
+      if (!new.target) {
+        throw new Error(`error`);
+      }
+
+      this.$target = document.querySelector("#timer");
+      this.$minutes = this.$target.querySelector("#minutes");
+      this.$seconds = this.$target.querySelector("#seconds");
+
+      this.$btnStart = this.$target.querySelector("#btnStart");
+      this.$btnPause = this.$target.querySelector("#btnPause");
+      this.$btnStop = this.$target.querySelector("#btnStop");
+
+      this.$screen = this.$target.querySelector("#screen");
+
+      this.originMinutes = 0;
+      this.originSeconds = 0;
+
+      this.minutes = 0;
+      this.seconds = 0;
+
+      this.pause = true;
+
+      this.setTime = (originMinutes, originSeconds) => {
+        let minutes = 0, seconds = 0;
+
+        if (originSeconds >= 60) {
+          minutes = parseInt(originSeconds / 60) + originMinutes;
+          seconds = originSeconds % 60;
+        } else {
+          minutes = originMinutes * 1;
+          seconds = originSeconds * 1;
+        }
+
+        this.originMinutes = minutes;
+        this.originSeconds = seconds;
+
+        this.$minutes.value = minutes;
+        this.$seconds.value = seconds;
+      };
+
+      this.setScreen = (minutes, seconds) => {
+        return this.$screen.innerText = `${ minutes < 10 ? `0${ minutes }` : minutes }:${ seconds< 10 ? `0${ seconds }` : seconds }`;
+      }
+
+      this.start = () => {
+        this.setTime(
+          this.$target.querySelector("#minutes").value * 1,
+          this.$target.querySelector("#seconds").value * 1
+        );
+
+        this.setScreen(this.originMinutes, this.originSeconds);
+
+        this.minutes = this.originMinutes;
+        this.seconds = this.originSeconds;
+
+        // 중복 실행 방지
+        if (!this.pause) return;
+
+        this.pause = false;
+
+        const countDown = setInterval(() => {
+          if (this.pause || (this.minutes === 0 && this.seconds === 0)) {
+            clearInterval(countDown);
+          } else {
+            this.seconds--;
+
+            if (this.minutes > 0 && this.seconds < 0) {
+              this.minutes--;
+              this.seconds = 59;
+            }
+
+            this.setScreen(this.minutes, this.seconds);
+          }
+        }, 1_000);
+      };
+
+      this.stop = () => {
+        this.pause = true;
+
+        this.setTime(0, 0);
+        this.setScreen(0, 0);
+      };
+
+      this.pause = () => {
+        this.pause = !this.pause;
+
+        if (!this.pause) {
+          const countDown = setInterval(() => {
+            if (this.pause || (this.minutes === 0 && this.seconds === 0)) {
+              clearInterval(countDown);
+            } else {
+              this.seconds--;
+
+              if (this.minutes > 0 && this.seconds < 0) {
+                this.minutes--;
+                this.seconds = 59;
+              }
+
+              this.setScreen(this.minutes, this.seconds);
+            }
+          }, 1_000);
+        }
+      };
+
+      this.setEvent = () => {
+        this.$btnStart.addEventListener('click', this.start);
+        this.$btnPause.addEventListener('click', this.pause);
+        this.$btnStop.addEventListener('click', this.stop);
+      };
+
+      this.render = () => {
+        this.setEvent();
+      };
+
+      this.render();
+    }
+  </script>
+</html>
