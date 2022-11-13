@@ -106,6 +106,9 @@
       this.stop = () => {
         this.pause = true;
 
+        this.originMinutes = 0;
+        this.originSeconds = 0;
+
         this.setTime(0, 0);
         this.setScreen(0, 0);
       };
