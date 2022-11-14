@@ -41,11 +41,8 @@
 
       this.$screen = this.$target.querySelector("#screen");
 
-      this.originMinutes = 0;
-      this.originSeconds = 0;
-
-      this.minutes = 0;
-      this.seconds = 0;
+      this.originMinutes = 0, this.originSeconds = 0;
+      this.minutes = 0, this.seconds = 0;
 
       this.pause = true;
 
@@ -88,7 +85,8 @@
         this.pause = false;
 
         const countDown = setInterval(() => {
-          if (this.pause || (this.minutes === 0 && this.seconds === 0)) {
+          if (this.pause) return;
+          if ( (this.minutes === 0 && this.seconds === 0)) {
             clearInterval(countDown);
           } else {
             this.seconds--;
@@ -115,23 +113,6 @@
 
       this.pause = () => {
         this.pause = !this.pause;
-
-        if (!this.pause) {
-          const countDown = setInterval(() => {
-            if (this.pause || (this.minutes === 0 && this.seconds === 0)) {
-              clearInterval(countDown);
-            } else {
-              this.seconds--;
-
-              if (this.minutes > 0 && this.seconds < 0) {
-                this.minutes--;
-                this.seconds = 59;
-              }
-
-              this.setScreen(this.minutes, this.seconds);
-            }
-          }, 1_000);
-        }
       };
 
       this.setEvent = () => {
@@ -140,11 +121,7 @@
         this.$btnStop.addEventListener('click', this.stop);
       };
 
-      this.render = () => {
-        this.setEvent();
-      };
-
-      this.render();
+      this.setEvent();
     }
   </script>
 </html>
