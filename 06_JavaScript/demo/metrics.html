@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>METRICS</title>
+  </head>
+  <body style="margin: 0; background-color: black;">
+    <canvas width="800" height="800" id="canvas"></canvas>
+
+    <script>
+      const canvas = document.querySelector('#canvas');
+      const ctx = canvas.getContext('2d');
+
+      let cw = window.innerWidth;
+      let ch = window.innerHeight;
+
+      let charArr = [
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+        'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'w', 'x', 'y',
+        'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '가',
+        '나', '다', '라', '마', '바', '사', '아', '자', '차', '카',
+        '타', '파', '하'
+      ];
+
+      let maxCharCount = 200;
+      let fallingCharArr = [];
+      let fontSize = 14;
+      let maxColumns = cw / fontSize;
+
+      canvas.width = cw;
+      canvas.height = ch;
+
+      let frames = 0;
+
+      class FallingChar {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+        }
+
+        draw(ctx) {
+          this.value = charArr[Math.floor(Math.random() * (charArr.length - 1))].toUpperCase();
+          this.speed = Math.random() * fontSize * 3 / 4 + fontSize * 3 / 4;
+
+          ctx.fillStyle = 'rgba(0, 255, 0)';
+          ctx.font = fontSize + 'px san-serif';
+          ctx.fillText(this.value, this.x, this.y);
+
+          this.y += this.speed;
+
+          if (this.y > ch) {
+            this.y = Math.random() * ch / 2 - 50;
+            this.x = Math.floor(Math.random() * maxColumns) * fontSize;
+            this.speed = (- Math.random() * fontSize * 3) / 4 + (fontSize * 3) / 4;
+          }
+        }
+      }
+
+      let update = () => {
+        if (fallingCharArr.length < maxCharCount) {
+          let fallingChar = new FallingChar(Math.floor(Math.random() * maxColumns) * fontSize, Math.random() * ch / 2 - 50);
+          fallingCharArr.push(fallingChar);
+        }
+
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, cw, ch);
+
+        for (let i = 0; i < fallingCharArr.length && frames % 2 == 0; i++) {
+          fallingCharArr[i].draw(ctx);
+        }
+
+        requestAnimationFrame(update);
+        frames++;
+      };
+
+      update();
+    </script>
+  </body>
+</html>
