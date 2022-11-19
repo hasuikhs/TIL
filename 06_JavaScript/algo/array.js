@@ -49,4 +49,43 @@ function getRankArr(A) {
   return answer;
 }
 
-console.log(getRankArr([87, 89, 92, 100, 76])); 
+console.log(getRankArr([87, 89, 92, 100, 76]));
+
+/**
+ * 4방향만 보는 봉우리
+ * @param {*}
+ */
+function getMntTop(A) {
+  let answer = 0;
+  let dx = [-1, 0 , 1, 0];
+  let dy = [0, 1, 0, -1];
+
+  for (let i = 0, len = A.length; i < len; i++) {
+    for (let j = 0; j < len; j++ ) {
+      let flag = true;
+
+      // 4방향 보기
+      for (let k = 0; k < 4; k++) {
+        let nx = i + dx[k];
+        let ny = j + dy[k];
+
+        if (nx >= 0 && nx < len && ny >= 0 && ny < len && A[nx][ny] >= A[i][j]) {
+          flag = false;
+          break;
+        }
+      }
+
+      if (flag) answer++;
+    }
+  }
+
+  return answer;
+}
+
+console.log(getMntTop([
+  [5, 3, 7, 2, 3],
+  [3, 7, 1, 6, 1],
+  [7, 2, 5, 3, 4],
+  [4, 3, 6, 4, 1],
+  [8, 7, 3, 5, 2]
+]));
