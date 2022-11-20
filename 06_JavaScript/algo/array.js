@@ -40,7 +40,6 @@ function getRankArr(A) {
   let answer = Array.from({length: A.length}, () => 1);
 
   for (let i = 0, len = A.length; i < len; i++) {
-    let rank = 1;
     for (let j = 0; j < len; j++) {
       if (A[j] > A[i]) answer[i]++;
     }
