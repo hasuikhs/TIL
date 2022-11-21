@@ -28,7 +28,7 @@ console.log(getOnlyNumbers('targe02444'));
 function getDistance(str, c) {
   let answer = [];
   const arr = str.split(c);
-å
+
   for (let i = 0, len = arr.length; i < len; i++) {
     const x = arr[i];
 

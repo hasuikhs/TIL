@@ -9,3 +9,15 @@ function getGCD(a, b) {
 function getLCD(a, b) {
   return a * b / getGCD(a, b);
 }
+
+// 팩토리얼
+function factorial(n) {
+  let result = 1n;
+
+  for (let i = 2n; i <= n; i++) result *= i;
+
+  return result;
+  // return n === 1 ? 1 : n * factorial(n - 1);
+}
+
+console.log(factorial(25))
