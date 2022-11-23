@@ -29,6 +29,23 @@ function chkFiniteDecimal(a, b) {
   // return answer;
 }
 
-console.log(chkFiniteDecimal(7, 20));
-console.log(chkFiniteDecimal(11, 22));
-console.log(chkFiniteDecimal(12, 21));
+// 문자열 밀어서 A와 B가 같아지는 밀기 횟수, 안된다면 -1 반환
+function chkSameStr(A, B) {
+  A = A.split('');
+  B = B.split('');
+
+  let answer = 0;
+  while (A.join('') !== B.join('')) {
+    A.unshift(A.pop());
+    answer++;
+
+    if (answer === A.length) {
+      answer = -1;
+      break;
+    }
+  }
+
+  return answer;
+
+  // return (B + B).indexOf(A);
+}
