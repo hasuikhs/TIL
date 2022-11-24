@@ -49,3 +49,17 @@ function chkSameStr(A, B) {
 
   // return (B + B).indexOf(A);
 }
+
+// 문자열 수식 배열이 들어왔을 때 해당 값이 올바른지 확인
+function calStr(quiz) {
+  return quiz.map(v => {
+    let s = v.split('=');
+
+    return eval(s[0]) === s[1] * 1 ? 'O' : 'X';
+  });
+}
+
+// 주어진 숫자 배열과 주어진 숫자와 가까운 순서대로 정렬 같다면 큰 숫자 먼저
+function strangeSort(numlist, n) {
+  return numlist.sort((a, b) => Math.abs(a - n) - Math.abs(b - n) || b - a);
+}
