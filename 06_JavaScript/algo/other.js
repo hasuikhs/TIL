@@ -63,3 +63,52 @@ function calStr(quiz) {
 function strangeSort(numlist, n) {
   return numlist.sort((a, b) => Math.abs(a - n) - Math.abs(b - n) || b - a);
 }
+
+// 지뢰 안전지대
+// 1(지뢰) 기준으로 8방향이 위험지대
+function getSafetyZoneCnt(board) {
+  const len = board[0].length;
+  let answer = 0;
+  let dc = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 0], [0, 1], [1, -1], [1, 0], [1, 1]];
+
+  for (let i = 0; i < len; i++) {
+      for (let j = 0; j < len; j++) {
+          let safety = true;
+
+          for (let x of dc) {
+              const dy = i + x[0];
+              const dx = j + x[1];
+              
+              if (dy >= 0 && dy <= len - 1 && dx >= 0 && dx <= len - 1) {
+                  if (board[dy][dx] === 1) {
+                      safety = false;
+                      break;
+                  }
+              }
+          }
+
+          if (safety) answer++;
+      }
+  }
+
+  return answer;
+}
+
+// 점을 잇는 선들이 평행한지 확인
+function isParallel(dots) {
+  let tmpArr = [];
+
+  for (let i = 0, len = dots.length; i < len; i++) {
+      for (let j = i + 1; j < len; j++) {
+          let gradient = Math.abs(dots[i][1] - dots[j][1]) / Math.abs(dots[i][0] - dots[j][0]);
+
+          if (i === 0) {
+              tmpArr.push(gradient);
+          } else {
+              if (tmpArr.includes(gradient)) return 1;
+          }
+      }
+  }
+
+  return 0;
+}
