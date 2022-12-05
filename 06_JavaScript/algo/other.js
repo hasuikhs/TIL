@@ -112,3 +112,34 @@ function isParallel(dots) {
 
   return 0;
 }
+
+/**
+ * 현재 좌표에서 command (ex. GRGRGRB)가 입력되면 최종 위치를 반환
+ * @param {*} command 
+ * @returns 현재 좌표
+ */
+function getLocation(command) {
+  let curLocation = [0, 0];
+  let curRad = 90;
+
+  const rad = { 'L': -90, 'R': 90 };
+  const direction = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+
+  for (let x of command) {
+    if (x === 'L' || x === 'R') {
+      curRad += rad[x];
+
+      if (curRad < 0) {
+        curRad = 270;
+      } else if (curRad === 360) {ß
+        curRad = 0;
+      }
+    } else {
+      let d = direction[x === 'G' ? curRad / 90 : (curRad / 90 + 2) % 4];
+
+      curLocation = [curLocation[0] + d[0], curLocation[1] + d[1]];
+    }
+  }
+
+  return curLocation;
+}
