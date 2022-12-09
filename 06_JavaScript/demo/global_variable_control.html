@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="main">
+
+  </div>
+  
+  <script>
+    window.onload = () => {
+
+      const main = new Main();
+    }
+
+    function Main() {
+      if (!new.target) {
+        return new Error('use new operator');
+      }
+
+      this.$target = document.querySelector('#main');
+
+      this.globalState = {
+        count: 0
+      }; // initial value
+
+      this.proxy = new Proxy(this.globalState, {
+        get(target, key, receiver) {
+          if (key === 'count') {
+            console.log('get')
+            return target.count;
+          }
+        },
+        set(target, key, value) {
+          if (key === 'count') {
+            console.log('set')
+            target.count = value;
+          }
+        }
+      });
+
+      this.$display = new Display({ target: this.$target, globalState: this.proxy });
+      this.$plusBtn = new PlusButton({ target: this.$target, globalState: this.proxy });
+    }
+
+    function Display({ target, globalState }) {
+      if (!new.target) {
+        return new Error('use new operator');
+      }
+
+      this.$target = undefined;
+
+      this.setState = nextState => {
+        this.$target.innerText = nextState;
+      }
+
+      this.render = () => {
+        this.$target = document.createElement('div');
+        this.$target.innerText = globalState.count;
+
+        target.insertAdjacentElement(
+          'afterbegin',
+          this.$target
+        );
+      }
+
+      this.render();
+    }
+
+    function PlusButton({ target, globalState }) {
+      if (!new.target) {
+        return new Error('use new operator');
+      }
+
+      this.$target = undefined;
+
+      this.setEvent = () => {
+        this.$target.addEventListener('click', () => {
+          globalState.count++
+        });
+      }
+
+      this.render = () => {
+        this.$target = document.createElement('button');
+        this.$target.innerText = 'PLUS';
+
+        target.insertAdjacentElement(
+          'beforeend',
+          this.$target
+        );
+
+        this.setEvent();
+      }
+
+      this.render();
+    }
+  </script>
+</body>
+</html>
