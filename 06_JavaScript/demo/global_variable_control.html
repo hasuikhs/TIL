@@ -29,44 +29,53 @@
         count: 0
       }; // initial value
 
+      this.$display = new Display({ target: this.$target });
+
       this.proxy = new Proxy(this.globalState, {
-        get(target, key, receiver) {
-          if (key === 'count') {
-            console.log('get')
-            return target.count;
-          }
+        get: (target, key, receiver) => {
+          return Reflect.get(target, key, receiver);
         },
-        set(target, key, value) {
-          if (key === 'count') {
-            console.log('set')
-            target.count = value;
-          }
+        set: (target, key, value, receiver) => {
+          target[key] = value;
+
+          this.$display.setState(value);
+          return Reflect.set(target, key, value, receiver);
+        },
+        apply(target, thisArgs, args) {
+          console.log('apply')
         }
       });
-
-      this.$display = new Display({ target: this.$target, globalState: this.proxy });
+      
       this.$plusBtn = new PlusButton({ target: this.$target, globalState: this.proxy });
     }
 
-    function Display({ target, globalState }) {
+    function Display({ target }) {
       if (!new.target) {
         return new Error('use new operator');
       }
 
       this.$target = undefined;
 
+      this.state = 0;
+
       this.setState = nextState => {
-        this.$target.innerText = nextState;
+        this.state = nextState;
+
+        this.render();
       }
 
       this.render = () => {
-        this.$target = document.createElement('div');
-        this.$target.innerText = globalState.count;
-
-        target.insertAdjacentElement(
-          'afterbegin',
-          this.$target
-        );
+        if (!this.$target) {
+          this.$target = document.createElement('div');
+          this.$target.innerText = this.state;
+  
+          target.insertAdjacentElement(
+            'afterbegin',
+            this.$target
+          );
+        } else {
+          this.$target.innerText = this.state;
+        }
       }
 
       this.render();
@@ -81,7 +90,7 @@
 
       this.setEvent = () => {
         this.$target.addEventListener('click', () => {
-          globalState.count++
+          globalState.count++;
         });
       }
 
