@@ -40,13 +40,11 @@
 
           this.$display.setState(value);
           return Reflect.set(target, key, value, receiver);
-        },
-        apply(target, thisArgs, args) {
-          console.log('apply')
         }
       });
-      
-      this.$plusBtn = new PlusButton({ target: this.$target, globalState: this.proxy });
+
+      this.$plusBtn = new Button({ target: this.$target, globalState: this.proxy });
+      this.$minusBtn = new Button({ target: this.$target, globalState: this.proxy, isMinus: true })
     }
 
     function Display({ target }) {
@@ -81,7 +79,7 @@
       this.render();
     }
 
-    function PlusButton({ target, globalState }) {
+    function Button({ target, globalState, isMinus = false }) {
       if (!new.target) {
         return new Error('use new operator');
       }
@@ -90,13 +88,17 @@
 
       this.setEvent = () => {
         this.$target.addEventListener('click', () => {
-          globalState.count++;
+          if (isMinus) {
+            globalState.count--;
+          } else {
+            globalState.count++;
+          }
         });
       }
 
       this.render = () => {
         this.$target = document.createElement('button');
-        this.$target.innerText = 'PLUS';
+        this.$target.innerText = !isMinus ? 'PLUS' : 'MINUS';
 
         target.insertAdjacentElement(
           'beforeend',
