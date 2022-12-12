@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <div id="main">
+
+  </div>
+
+  <script>
+    window.onload = () => {
+      const app = new App();
+    }
+
+    function App() {
+      if (!new.target) {
+        return new Error('use new operator');
+      }
+
+      this.$target = document.querySelector('#main');
+
+      this.globalState = {};
+
+      this.subscribe = (key, observer) => {
+        return this.globalState[key]._observers.add(observer);
+      }
+
+      this._notify = key => {
+        this.globalState[key]._observers.forEach((observer) => observer());
+      }
+
+      this.initState = ({ key, defaultValue }) => {
+        if (key in this.globalState) throw new Error('already key');
+
+        this.globalState[key] = {
+          _state: defaultValue,
+          _observers: new Set()
+        };
+
+        return key;
+      }
+
+      this.getState = key => {
+        if (!(key in this.globalState)) throw new Error('not exist key');
+        return this.globalState[key]._state;
+      }
+
+      this.setState = key => nextState => {
+        if (!(key in this.globalState)) throw new Error('not exist key');
+        this.globalState[key]._state = nextState;
+        this._notify(key);
+      }
+
+      this.init = () => {
+        this.countState = this.initState({key: 'count', defaultValue: 0 });
+
+        this.$display = new Display({
+          target: this.$target,
+          subscribe: this.subscribe,
+          countState: this.countState,
+          getState: this.getState
+        });
+      }
+
+      this.init();
+    }
+
+    function Display({ target, subscribe, countState, getState }) {
+      if (!new.target) {
+        return new Error('use new operator');
+      }
+
+      this.$target = undefined;
+
+      this.state = getState(countState);
+
+      this.init = () => {
+        subscribe(countState, this.setState.bind(getState(countState)));
+
+        this.render();
+      }
+
+      this.setState = nextState => {
+        this.state = nextState;
+
+        this.render();
+      }
+
+      this.render = () => {
+        if (!this.$target) {
+          this.$target = document.createElement('div');
+          this.$target.innerText = this.state;
+
+          target.insertAdjacentElement(
+            'afterbegin',
+            this.$target
+          );
+        } else {
+          this.$target.innerText = this.state;
+        }
+      }
+
+      this.init();
+      // this.render();
+    }
+
+    function Button({ target }) {
+      if (!new.target) {
+        return new Error('use new operator');
+      }
+
+      this.$target = undefined;
+
+      this.setEvent = () => {
+        this.$target.addEventListener('click', () => {
+
+        });
+      }
+
+      this.render = () => {
+        this.$target = document.createElement('button');
+        this.$target.innerText = 'PLUS';
+
+        target.insertAdjacentElement(
+          'beforeend',
+          this.$target
+        );
+
+        this.setEvent();
+      }
+
+      this.render();
+    }
+  </script>
+</body>
+</html>
