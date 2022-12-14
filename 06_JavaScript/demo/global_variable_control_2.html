@@ -50,7 +50,7 @@
         return this.globalState[key]._state;
       }
 
-      this.setState = key => nextState => {
+      this.setState = (key, nextState) => {
         if (!(key in this.globalState)) throw new Error('not exist key');
         this.globalState[key]._state = nextState;
         this._notify(key);
@@ -65,6 +65,13 @@
           countState: this.countState,
           getState: this.getState
         });
+
+        this.$button = new Button({
+          target: this.$target,
+          countState: this.countState,
+          setState: this.setState,
+          getState: this.getState
+        })
       }
 
       this.init();
@@ -80,13 +87,13 @@
       this.state = getState(countState);
 
       this.init = () => {
-        subscribe(countState, this.setState.bind(getState(countState)));
+        subscribe(countState, this.setState);
 
         this.render();
       }
 
-      this.setState = nextState => {
-        this.state = nextState;
+      this.setState = () => {
+        this.state = getState(countState);
 
         this.render();
       }
@@ -106,19 +113,20 @@
       }
 
       this.init();
-      // this.render();
     }
 
-    function Button({ target }) {
+    function Button({ target, countState, setState, getState }) {
       if (!new.target) {
         return new Error('use new operator');
       }
 
       this.$target = undefined;
 
+      this.state = getState(countState);
+
       this.setEvent = () => {
         this.$target.addEventListener('click', () => {
-
+          setState(countState, ++this.state);
         });
       }
 
