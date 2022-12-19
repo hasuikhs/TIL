@@ -8,8 +8,14 @@
 - JavaScript 자체는 싱글 스레드(Single Thread)이나, 브라우저나 Node.js에서는 여러 개의 스레드가 사용됨
 - Web APIs
   - DOM, AJAX, Timer 등 브라우저에서 제공하는 API
-- Callback Queue
-  - 콜백 함수들이 대기하는 곳(FIFO)
+- Callback Queue(Event Queue, Task Queue)
+  - 콜백 함수들이 대기하는 곳
+    - 실제로 Queue가 아닌 Set으로 구현되어 있고, 대기하는 테스크 중 실행 가능한 테스크를 뽑아내기 위한 구조로 되어있음
+  - 마이크로테스크 큐(Microtask Queue, Event Queue)
+    - 마이크로테스크 큐가 메크로테스크 큐 보다 **우선순위가 높음**
+    - `process`, `Promise`, `Object.observer`, `MutationObserver`
+  - 메크로테스크 큐(Macrotask Queue, Job Queue)
+    - `setTimeout`, `setImterval`, `setImmediate`, I/O, UI 렌더링
 - Event Loop
   - 콜 스택이 비워질떄마다 콜백 큐에 대기 중인 콜백 함수가 있다면, 콜백 함수를 콜 스택에 넘겨줌
   - 런타임에서 JavaScript 엔진과 상호 연동하기 위해 사용하는 장치가 Event Loop
@@ -27,8 +33,11 @@
   - 스택이 할당된 공간보다 많은 공간을 차지하면 **Stack Overflow** 에러가 발생
 
 ## 3. 이벤트 루프(Event Loop)
+- JavaScript 엔진의 **동시성 제어**를 위한 요소
+- JavaScript 엔진에서 제공되는 것이 아닌 브라우저나 Node.js 런타임에서 지원
 - 싱글 스레드의 한계를 보완하기 위해 비동기 콜백(Asynchronous Callback)을 이용
 - 비동기 콜백에는 Web APIs, Promise, setTimeout, 이벤트리스너 등이 있음
 - JavaScript 코드 실행 중에 이벤트를 만나면 이벤트가 Callback Queue에 차례로 쌓임
-- 이벤트 루프는 콜 스택이 비어있는지 확인 후, Callback Queue에 있는 이벤트를 콜 스택에 넘기는데 이 한 번의 작업을 틱(tick)이라 함
+- 이벤트 루프는 **콜 스택이 비어있는지 확인 후, 이 Callback Queue에 있는 이벤트를 콜 스택에 넘기**는데 이 한 번의 작업을 틱(tick)이라 함
+  - 큐의 첫 번째 테스크를 가져오는 것이 아닌, 테스크 큐에서 실행 가능한(runnable) 첫 번째 테스크를 가져옴
 - 이벤트 루프는 이 작업을 반복
