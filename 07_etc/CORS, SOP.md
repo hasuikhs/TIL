@@ -6,7 +6,7 @@
 
 - Cross-Origin Resource Sharing(교차 출처 리소스 공유)
 
-  - 출처는 `Protocol`, `Host`, `Port` 까지 모두 합친 것
+  - 출처(Origin)는 `Protocol`, `Host`, `Port` 까지 모두 합친 것
   - 하지만 포트가 있더라도 이 케이스에 대한 명확한 정의가 표준으로 정해진 것은 아니기에 경우에 따라 다름
 
 - 브라우저 간의 데이터를 주고 받는 과정에서, **도메인 이름이 서로 다른 사이트 간에 API 요청을 할 때, 공유를 설정하지 않았을시 발생하는 에러**
@@ -21,17 +21,23 @@
   location.origin
   ```
 
+- 과정
+  - 클라이언트에서 HTTP 요청의 헤더 origin에 값을 담아 서버에 전달
+  - 서버 응답시 응답 헤더에 `Access-Control-Allow-Origin`을 담아 클라이언트로 전달
+  - 클라이언트에서 보냈던 요청의 origin과 서버가 보내준 `Access-Control-Allow-Origin` 비교
+
 ### 1.2 해결 방법
 
 #### 1.2.1 서버 측
 
-- HTTP 응답헤더 `Access-Control-Allow-Origin: *` or `Access-Control-Allow-Origin: <허용 도메인>` 설정
-- `Access-Control-Allow-Origin: *` 은 모든 보안에서 해제되므로 추천되지 않음
+- HTTP 응답헤더 `Access-Control-Allow-Origin: <허용 도메인>` 설정
+  - `Access-Control-Allow-Origin: *` 은 모든 보안에서 해제되므로 추천되지 않음
 - 반드시 `Access-Control-Allow-Origin: <허용 도메인>` 을 사용하자
 
 #### 1.2.2 클라이언트 측
 
 - 리소스 요청하는 서버 사이에 **프록시 서버**를 하나 두고 요청, 응답 주고 받기
+- 크롬 브라우저 설정에 SOP 정책을 비활성화 가능하지만 이는 추천되지 않는 방법
 
 ## 2. SOP
 
