@@ -23,7 +23,7 @@
         localStorage.setItem('saveData', JSON.stringify(storageData1));
 
         setTimeout(() => {
-            var storageData2 = JSon.parse(localStorage.getItem('saveData'));
+            var storageData2 = JSON.parse(localStorage.getItem('saveData'));
 
             if (storageData2['expireTime'] != dateFormat(new Date())) {
                 localStorage.removeItem('saveData');
