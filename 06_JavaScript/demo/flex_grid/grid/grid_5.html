@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="ui.css">
+  <style>
+    .grid-container {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 3fr 1fr;
+      grid-template-areas: 
+          'header header header'
+          'sidebar-a main sidebar-b'
+          'footer footer footer'
+    }
+    .header { grid-area: header; }
+    .sidebar-a { grid-area: sidebar-a; }
+    .sidebar-b { grid-area: sidebar-b; }
+    .main { grid-area: main; }
+    .footer { grid-area: footer; }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="header grid-item">Header</div>
+    <div class="sidebar-a grid-item">Sidebar A</div>
+    <div class="sidebar-b grid-item">Sidebar B</div>
+    <div class="main grid-item">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas vel veniam minima, sit obcaecati beatae nihil dolor asperiores. At, magni itaque. Dicta accusantium, nihil voluptatem minus repellendus maiores culpa neque, quibusdam doloribus quis quaerat unde tenetur blanditiis voluptatibus reprehenderit sit totam iste dignissimos explicabo enim? Reiciendis adipisci consectetur dolorum iste assumenda molestiae enim, veniam, quas temporibus laudantium quibusdam cum ipsum quaerat dolorem harum vel architecto eius voluptatum. Totam non ipsam obcaecati nam architecto facilis, excepturi illum similique, incidunt sit eligendi delectus soluta magnam fuga? Non dolores esse reprehenderit incidunt. Provident, animi aspernatur fuga officiis enim ipsam ab porro voluptates cupiditate aperiam nihil voluptate dolor ipsa nesciunt tempora! Necessitatibus voluptatem mollitia voluptatum veniam commodi! Deleniti molestias nihil cupiditate vel omnis error. Provident cupiditate fugit ipsa quod odio ipsam illum vitae quo nihil doloremque, libero atque eos sit tenetur explicabo delectus nisi. Fugiat nisi id porro atque temporibus. Vel labore asperiores culpa, quo magnam molestias repellendus officia fugiat, quis unde, iste ea nostrum sequi quam magni reiciendis? Nihil deleniti explicabo culpa corporis at itaque quia natus harum quibusdam accusamus, excepturi ipsum beatae quae vitae, deserunt facilis similique rem voluptas? Odio, temporibus veritatis praesentium soluta, nemo ut unde iusto aliquid cupiditate porro expedita?
+    </div>
+    <div class="footer grid-item">Footer</div>
+  </div>
+</body>
+</html>

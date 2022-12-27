@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="ui.css">
+  <style>
+    .grid-container {
+      display: grid;
+      /* auto-fill, auto-fit */
+      /* auto-fill을 이용하고, 최소값을 200px로 주면 미디어쿼리 없이 반으영 개발이 가능 */
+      /* auto-fitd을 이용하면 컨테이너에 요소가 부족하더라도 컨테이너를 꽉 채움 */
+      grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+      gap: 10px; /* 각 요소의 간격 크로스 브라우징을 위해 grid-gap을 같이 써주기도 함 */
+      /*
+        row-gap: 10px;
+        column-gap: 10px;
+      */
+    }
+    .grid-item {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="grid-item">A</div>
+    <div class="grid-item">B</div>
+    <div class="grid-item">C</div>
+    <div class="grid-item">D</div>
+    <div class="grid-item">E</div>
+    <div class="grid-item">F</div>
+    <div class="grid-item">G</div>
+    <div class="grid-item">H</div>
+    <div class="grid-item">I</div>
+  </div>
+</body>
+</html>
