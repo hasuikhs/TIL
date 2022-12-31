@@ -59,7 +59,7 @@ void disconnect();
 
 #### 1.2.3 `takeRecords()`
 
-- 해당 MutationObserver 인스턴스의 큐를 비우고 값을 반환
+- 해당 `MutationObserver` 인스턴스의 큐를 비우고 값을 반환
 
 ```javascript
 Array takeRecords();
@@ -153,7 +153,7 @@ new IntersectionObserver(callback[, options]);
       - `target`: 관찰 대상 요소
       - `time`: 변경이 발생한 시간 정보
   - `observer`
-    - 콜백함수가 호출되는 IntersectionObserver
+    - 콜백함수가 호출되는 `IntersectionObserver`
 - `options`
   - `root`
     - 기본값은 `null`로 브라우저의 ViewPort
@@ -209,5 +209,53 @@ const observer = new IntersectionObserver(callback, options);
 targets.forEach(item => observer.observe(item));
 ```
 
+## 3. ResizeObserver
+- 특정 DOM의 크기 변화 감지 가능
 
+### 3.1 생성자
+```javascript
+new ResizeObserver(callback);
+```
+- `callback`
+  - `entries`
+    - 현재 변화를 감지 중인 요소 리스트
+    - 각 요소 객체 properties
+      - `contentBoxSize`
+        - 요소의 테두리 상자 크기 (content)
+      - `borderBoxSize`
+        - 요소의 테두리 상자 크기 객체 (content + padding + border)
+      - `contentRect`
+        - `contentBoxSize` + `borderBoxSize`
+      - `devicePixelContentBoxSize`
+        - 요소의 테두리 상자 크기 객체
+      - `target`
+        - 대상 요소
+  - `observer`
+    - 콜백함수가 호출되는 `ResizeObserver`
 
+### 3.2 메서드
+- `observe()`
+  - 대상 관찰 시작
+- `unobserve()`
+  - 대상 관찰 중지
+- `disconnect()`
+  - `ResizeObserver` 인스턴스가 관찰하는 모든 요소의 관찰 중지
+
+### 3.3 사용
+```html
+<textarea id="ta"></textarea>
+
+<script>
+  window.onload = () => {
+    const $target = document.querySelector('#ta');
+
+    const ro = new ResizeObserver((entries, observer) => {
+      entries.forEach(entry => {
+        console.log(entry)
+      });
+    });
+
+     ro.observe($target)
+  }
+</script>
+```
