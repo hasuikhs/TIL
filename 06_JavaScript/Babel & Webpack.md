@@ -25,6 +25,25 @@
   - 출력(Printing)
     - 변경된 결과물을 출력
 
+```javascript
+// babel.config.js
+module.exports = {
+  presets: [
+    ['@babel/preset-env', {
+      targets: {
+        chrome: '58',
+        ie: '11'
+      },
+      // 폴리필 사용 방식 지정
+      useBuiltIns: 'usage',
+      // 폴리필 버전 지정
+      corejs: {
+        version: 3
+      }
+    }]
+  ]
+};
+```
 ## 2. Webpack
 
 - JavaScript 코드가 많아지면서, 하나의 파일로 관리하는데 한계가 있음
@@ -106,7 +125,7 @@ module.exports = {
     - 엔트리에서 설정한 JS 파일을 시작으로 의존되어 있는 모든 모듈을 하나로 묶고 결과물은 output에 기록
 
   - **로더(Loader)**
-    - JS 파일이 아닌 애플리케이션의 요소들을 번들링할 때 사용
+    - JS 파일이 아닌 애플리케이션의 정적인 요소들을 번들링할 때 사용
     - 여러 타입의 파일을 처리하고, 애플리케이션에서 사용하게 변환하고, 의존성 그래프에 추가
 
     ```bash
@@ -151,7 +170,9 @@ module.exports = {
   
     - Webpack의 기본적인 동작에 추가(확장)적인 기능을 제공하는 속성
     - Loader는 파일을 해석하고 변환하는 과정에 관여하고, 플러그인은 해당 결과물의 형태를 바꾸는 역할을 함
-    - 플러그인은 클래스 형태로 정의하고 apply라는 메서드를 정의하며, event hook을 tap안에 지정
+    - 플러그인은 클래스 형태로 정의하고 `apply`라는 메서드를 정의하며, event hook을 `tap`안에 지정
+      - `apply` 메서드는 플러그인을 설치할 때 Webpack 컴파일러에 의해 딱 한 번 호출
+    - 로더는 모든 파일에 대해서 검증을 거쳐 파일 단위로 실행되지만, **플러그인은 모든 번들링 작업이 끝나고 난 뒤 한 번만 실행**
   
       ```javascript
       // ConsoleLogOnBuildWebpackPlugin.js
@@ -168,7 +189,7 @@ module.exports = {
       module.exports = ConsoleLogOnBuildWebpackPlugin;
       ```
   
-    - 플러그인 사용은 `webpack.config.js`의 plugins 배열에 생성자 함수로 생성한 객체 인스턴스 포함
+    - 플러그인 사용은 `webpack.config.js`의 plugins **배열**에 생성자 함수로 생성한 객체 인스턴스 포함
   
       ```javascript
       ...
@@ -183,5 +204,55 @@ module.exports = {
                   banner: () => `빌드 날짜: ${ new Date().toLocaleString() }`
               })
           ]
+      }
+      ```
+
+  - **optimization**
+    - Webpack 최적화 옵션
+    ```javascript
+    module.exports = {
+      ...
+      optimization: {
+        ...
+      }
+    }
+    ```
+    - `splitChunks`
+      - 중복되는 요소를 하나의 chunk로 분리해주어, 중복되는 요소를 줄여 번들 사이즈 최적화 가능
+      - Webpack 4부터 지원
+      ```javascript
+      module.exports = {
+        ...
+        optimization: {
+          splitChunks: {
+            // all: 권장, 모든 코드의 중복 요소 확인하여 분리
+            // initial: 기본
+            // async: 비동기 호출 요소 분리
+            chunks: 'all | initial | async'
+          }
+        }
+      }
+      ```
+    - `minimize` & `minimizer`
+      - 번들 파일 압축 `minify`
+      ```javascript
+      const TerserPlugin = require('terser-webpack-plugin');
+
+      module.exports = {
+        ...
+        optimization: {
+          // 기본값 true
+          minimize: true,
+          minimizer: [
+            new TerserPlugin({
+              terserOptions: {
+                compress: {
+                  // 이 옵션은 컴파일시에 console.log를 모두 없애줌
+                  drop_console: true
+                }
+              }
+            })
+          ]
+        }
       }
       ```
