@@ -171,10 +171,6 @@
 
 #####  1.4.1.2 대상
 
-- ~~**var 변수 선언**과 **함수 선언문**에서만 발생~~
-  - ~~**`var` 변수/함수의 선언만** 위로 끌어 올려지며 할당은 끌어 올려지지 않음~~
-  - ~~`let`/`const` 변수 선언과 함수표현식에서는 호이스팅 발생하지 않음~~
-
 - 변수와 함수의 **선언부**(`var`, `let`, `const`, `function`, `class`)에 발생
   - `var`는 `undefined`로 초기화되자만 `let`/`const`/`class`는 `uninitialized`로 초기화
     - `let`/`const`/`class` 값은 실제 할당이 이루어진 지점에 도달해야 할당, **실제 할당 지점 이전에는 변수에 접근 불가능**
@@ -187,8 +183,8 @@
       console.log(a); // 'undefined'
       a = 5;
       ```
-- ~~JavaScript에서 **Class 또한 함수의 일종이지만 호이스팅이 되지 않음**~~
-- 호이스팅은 되지만 다만 
+- `function`은 식 자체가 통째로 끌어올려짐
+- `class`는 호이스팅은 되지만 다만 `uninitialized` 상태이므로 `ReferenceError` 발생
 
   ```javascript
   const test1 = new Test1();
