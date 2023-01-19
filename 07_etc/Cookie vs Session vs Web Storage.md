@@ -129,6 +129,7 @@
 - 데이터를 명시적으로 지우지 않는 이상 영구적 보관 가능
 - 도메인마다 별도로 Local Storage 생성
 - Windows 전역 객체의 Local Storage 컬렉션을 통해 저장과 조회
+- 서버로 localhost로 실행하는 것이 아닌 일반 html 파일을 개별적으로 실행하였을때도 같은 파일 시스템을 공유한다면 파일명이 달라도 데이터가 공유됨
 
 ### 3.4 Session Storage
 
