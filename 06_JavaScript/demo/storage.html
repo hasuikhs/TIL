@@ -11,24 +11,32 @@
 <body>
     <div id="date"></div>
     <script>
-        var date = document.querySelector('#date');
-        var saveStr = 'before';
-        date.innerHTML = 'DATE: ' + dateFormat(new Date(2021, 7, 14));
-
-        var storageData1 = {
-            'saveDate': saveStr,
-            'expireTime': dateFormat(new Date(2021, 7, 14))
+        window.onstorage = () => {
+            console.log('스토리지')
         }
 
-        localStorage.setItem('saveData', JSON.stringify(storageData1));
-
-        setTimeout(() => {
-            var storageData2 = JSON.parse(localStorage.getItem('saveData'));
-
-            if (storageData2['expireTime'] != dateFormat(new Date())) {
-                localStorage.removeItem('saveData');
+        window.onload = () => {
+            var date = document.querySelector('#date');
+            var saveStr = 'before';
+            date.innerHTML = 'DATE: ' + dateFormat(new Date(2021, 7, 14));
+    
+            var storageData1 = {
+                'saveDate': saveStr,
+                'expireTime': dateFormat(new Date(2021, 7, 14))
             }
-        }, 5000);
+    
+            localStorage.setItem('saveData', JSON.stringify(storageData1));
+    
+            setTimeout(() => {
+                var storageData2 = JSON.parse(localStorage.getItem('saveData'));
+    
+                if (storageData2['expireTime'] != dateFormat(new Date())) {
+                    localStorage.removeItem('saveData');
+                }
+            }, 5000);
+
+        }
+
 
 
         function dateFormat(date) {
