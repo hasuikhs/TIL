@@ -3,6 +3,8 @@
 ## 1. Prototype 기반 언어?
 
 - JavaScript 는 **Prototype 기반 언어**라고 불림
+  - JavaScript에서 원시 타입(Primitive Type, `number`, `string`, `boolean`, `undefined`, `null`, `symbol`)을 제외하면 모두 객체 타입
+  - 객체가 만들어지기 위해서 사용된 원형의 프로토타입 객체를 이용하여 객체를 생성
 
 - **프로토타입 객체(Prototype Object)**
 
@@ -37,7 +39,13 @@
   Person.prototype.isPrototypeOf(person1); // true
   Object.prototype.isPrototypeOf(person1); // true
   ```
-
+- **사용하는 이유?**
+  - 생성자 함수(new)를 통해 인스턴스가 생성되면 객체 내의 property와 method가 매번 새롭게 생성되어 메모리가 낭비
+    - prototype 사용 시 부모 객체 생성 시 한 번만 생성되어 메모리 절약 가능
+  - 생성자 함수 내에 property와 method를 수정하기 위해서는 함수 밖에서 수정
+    - prototype 사용 시 외부에서도 수정 가능
+  - 특정 property를 부모 객체만 소유 가능
+    - 자식은 property를 갖고 있지 않지만, 부모가 갖고 있는 prototype의 property를 사용 가능
 
 ## 2. 기본 객체 프로토타입
 
