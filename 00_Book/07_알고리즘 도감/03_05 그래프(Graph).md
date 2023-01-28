@@ -10,13 +10,9 @@
 
 - 목표가 시작점에 가까이 있으면 탐색이 빨리 종료
 
-  ![image-20200220134337531](C:\Users\Bizspring\AppData\Roaming\Typora\typora-user-images\image-20200220134337531.png)
-
 ## 2. 깊이 우선 탐색(DFS, Depth First Search)
 
 - 정점을 탐색할 때 하나의 길을 끝까지 따라가서 탐색하는 방식
-
-  ![image-20200220134518613](C:\Users\Bizspring\AppData\Roaming\Typora\typora-user-images\image-20200220134518613.png)
 
 ## 3. 벨먼-포드(Bellman-Ford) 알고리즘
 
@@ -30,8 +26,6 @@
 
   - 1라운드에 각 간선을 1회씩 조사하므로 1라운드에 **_O_(_m_)**
   - 각 정점에서 계산되므로 전체 시간은 **_O_(_nm_)**
-
-  ![image-20200220161226620](C:\Users\Bizspring\AppData\Roaming\Typora\typora-user-images\image-20200220161226620.png)
 
 ## 4. 다익스트라(Dijkstra) 알고리즘
 
