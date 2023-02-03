@@ -1,5 +1,6 @@
 # SEO
 - SEO(Search Engine Optimization, 검색 엔진 최적화)
+- 개발자 도구의 lighthouse에서 seo에 대한 점수 확인 가능
 - 사이트 내 **콘텐츠 정보를 검색엔진이 잘 이해할 수 있도록 정리**하는 작업
   - 검색엔진이 웹사이트나 웹페이지에 대한 웹사이트 **트래픽의 품질과 양을 개선**하는 과정
   - 검색엔진이 자료를 수집하고 순위를 매기는 방식에 맞게 웹 페이지를 구성해서 **검색 결과의 상위에 노출**되게 함
@@ -11,3 +12,27 @@
   2. **오프 페이지 SEO**
       - 웹 사이트 외부에서 검색 엔진 최적화를 위해 하는 일련의 작업
       - 관련성, 신뢰성 및 권한이 포함되고, 사이트로 향하는 백링크가 주된 작업
+- **SEO에 영향을 주는 요인들**
+  1. robots.txt
+  2. 고유하고 정확한 페이지 제목 만들기
+     ```html
+     <head>
+        <title>정확한 페이지 제목</title>
+      </head>
+     ```
+       - `<title>` 요소에 페이지 내용과 관련 없거나 매우 긴 텍스트 사용 지양
+       - 각 페이지에 고유한 `<title>` 만들기
+  3. descriptrion 메타 테그
+      ```html
+      <head>
+        <meta
+          name="description"
+          content="사이트에 대한 설명"
+        />
+      </head>
+      ```
+        - 각 페이지마다 고유한 설명 사용
+  4. Semantic Markup
+  5. site map
+  6. 반응형으로 모바일 대응
+  7. 기타 [구글 SEO 기본 가이드 확인](https://developers.google.com/search/docs/fundamentals/seo-starter-guide?hl=ko)

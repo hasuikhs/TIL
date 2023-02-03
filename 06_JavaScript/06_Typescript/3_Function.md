@@ -69,10 +69,10 @@ function myFunction(arg1: string, arg?: number): void{};
 let add = function(a, b) {return a + b};
 ```
 
-#### 3.2.1 일등 함수(First-class Function)
+#### 3.2.1 일급 함수(First-class Function)
 
-- JavaScript와 TypeScript는 일등 함수 기능이 있으므로 함수형 프로그래밍 언어
-- 일등 함수란 함수와 변수를 구분하지 않음
+- JavaScript와 TypeScript는 일급 함수 기능이 있으므로 함수형 프로그래밍 언어
+- 일급 함수란 함수와 변수를 구분하지 않음
 
 ```typescript
 // 변수 f에 a + b 의 함수 표현식을 저장
