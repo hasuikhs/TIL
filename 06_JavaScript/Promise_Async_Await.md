@@ -86,6 +86,41 @@ Promise.all([promise1, promise2, promise3]).then((values) => {
 // Array [3, 42, "foo"]
 ```
 
+```javascript
+// Promise.all 구현
+function PromiseAll(args) {
+  return new Promise((resolve, reject) => {
+    let count = args.length;
+    let result = [];
+
+    args.forEach((ps, index) => {
+      Promise.resolve(ps)
+        .then(value => {
+          result[index] = value;
+          count--;
+          !count && resolve(result);
+        })
+        .catch(reject);
+    });
+  });
+}
+
+PromiseAll([
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(1);
+    }, 2000);
+  }),
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(2);
+    }, 500);
+  }),
+]).then((value) => {
+  console.log(value);
+});
+```
+
 ## 2. Async, Await
 
 > `async`와 `await`는 JavaScript의 비동기 처리 패턴 중 가장 최근에 나온 문법이다. 기존의 비동기 처리 방식인 callback 함수와 `Promise`의 단점을 보완하고 개발자가 읽기 좋은 코드를 작성 가능케 함
