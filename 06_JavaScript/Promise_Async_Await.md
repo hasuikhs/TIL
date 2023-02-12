@@ -71,7 +71,7 @@ promise.then(function(a) {
 
 - 순회 가능한 객체에 주어진 모든 Promise가 이행한 후,  혹은 Promise가 주어지지 않았을 때 이행하는 Promise 반환
 - 주어진 Promise 중 하나가 거부하는 경우, 첫 번째로 거절한 프로미스의 이유를 사용해 자신도 거부
-- **즉, 모든 Promise가 이행될 때까지 기다렸다가 그 결과값을 담은 배열을 반환**
+- **즉, 모든 Promise가 이행될 때까지 기다렸다가 그 결과값을 담은 배열을 반환하거나, 처음으로 거부되는 때에 종료**
 
 ```javascript
 const promise1 = Promise.resolve(3);
@@ -116,6 +116,61 @@ PromiseAll([
       resolve(2);
     }, 500);
   }),
+]).then((value) => {
+  console.log(value); // [1, 2]
+});
+```
+
+### 1.5 Promise.allSettled()
+
+- `Promise.all()` 과 같은 역할을 함
+- 하지만 하나가 실패하더라도 모든 promise들의 결과를 받을 수 있음
+  - status 값에 따라 처리해야 함
+
+```javascript
+Promise.allSettled([
+  Promise.resolve(3),
+  new Promise((resolve, reject) => {
+    setTimeout(reject, 100, 'foo');
+  })
+]).then(results => {
+  results.forEach(result => console.log(result));
+});
+
+// 결과
+// Object { status: "fulfilled", value: 3 }
+// Object { status: "rejected", reason: "foo" }
+```
+
+```javascript
+// Promise.allSetteld 구현
+function PromiseAllSettled(args) {
+  return new Promise((resolve, reject) => {
+    let count = args.length;
+    let result = [];
+
+    args.forEach((ps, index) => {
+      Promise.resolve(ps)
+        .then(value => {
+          result[index] = { status: "fullfilled", value };
+          count--;
+        })
+        .catch(e => {
+          result[index] = { status: "rejected", reason: e };
+          count--;
+        })
+        .finally(() => !count && resolve(result));
+    });
+  });
+}
+
+PromiseAllSettled([
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(1);
+    }, 2000);
+  }),
+  Promise.reject(2),
 ]).then((value) => {
   console.log(value);
 });
