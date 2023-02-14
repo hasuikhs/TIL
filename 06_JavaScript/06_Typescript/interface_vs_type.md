@@ -33,6 +33,16 @@
   const john: Student ={ num: 1, name: 'john' };
   ```
 - interfaces는 `extends`를 사용하여 interface 또는 class를 상속 가능
+  ```typescript
+  interface Student {
+    id: number;
+    name: string;
+    address?: string;
+  }
+  interface Person extends Student {
+    sex: string;
+  }
+  ```
 ## 2. type alias
 - 타입으로 사용 가능하다는 점에서 interface와 유사
   ```typescript
