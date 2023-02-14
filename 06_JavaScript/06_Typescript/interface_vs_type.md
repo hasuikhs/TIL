@@ -75,3 +75,44 @@
   // 튜플은 길이와 타입이 고정된 배열
   type Tuple = [string, boolean];
   ```
+
+## 3. 차이점
+### 3.1 Union 타입
+- type alias
+  - 변수 자체에 타입을 지정할 것이라면 유용
+  ```typescript
+  type Type = 'front' | 'back' | 'devops';
+  const type: Type = 'front';
+  ```
+- interface
+  - interface는 key값 필요하기에 객체 형태 데이터 속성에 사용
+  ```typescript
+  interface Developer {
+    type: 'front' | 'back' | 'devops';
+  }
+  const front: Developer = { type: 'front };
+  ```
+### 3.2 선언 병합(Declaration Merging)
+- type alias
+  - type을 중복하여 작성 불가능
+  ```typescript
+  type Test = {
+    score: number
+  }
+
+  type Test = {
+    title: string
+  }
+  // Duplicate identifier 'Test'
+  ```
+- interface
+  - type을 중복하여 작성 가능하고 확장성에 유리
+  ```typescript
+  interface Test {
+    score: number
+  }
+  interface Test {
+    title: string;
+  }
+  const test: Test = { title: 'math', score: 100 };
+  ```
