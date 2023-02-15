@@ -97,8 +97,7 @@ function PromiseAll(args) {
       Promise.resolve(ps)
         .then(value => {
           result[index] = value;
-          count--;
-          !count && resolve(result);
+          !--count && resolve(result);
         })
         .catch(reject);
     });
