@@ -2,6 +2,7 @@
 
 ## 1. interface
 - interface는 변수의 타입으로 사용 가능
+- interface는 객체에만 사용 가능
 - interface를 타입으로 선언한 변수는 해당 interface를 준수해야 함
   ```typescript
   interface Student {
@@ -115,4 +116,31 @@
     title: string;
   }
   const test: Test = { title: 'math', score: 100 };
+  ```
+### 3.3 확장 방법
+- type alias
+  - `&`로 확장
+  ```typescript
+  type Student = {
+    id: number;
+    name: string;
+    address?: string;
+  }
+
+  type Person = Student & {
+    sex: string;
+  }
+  ```
+- interface
+  - `extends`로 확장
+  ```typescript
+  interface Student {
+    id: number;
+    name: string;
+    address?: string;
+  }
+
+  interface Person extends Student {
+    sex: string;
+  }
   ```
