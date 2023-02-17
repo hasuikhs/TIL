@@ -16,6 +16,27 @@
     - `process`, `Promise`, `Object.observer`, `MutationObserver`
   - 메크로테스크 큐(Macrotask Queue, Job Queue)
     - `setTimeout`, `setImterval`, `setImmediate`, I/O, UI 렌더링
+  ```javascript
+  console.log('start');
+
+  setTimeout(() => {
+    console.log('setTimeout - macrotask')
+  }, 0);
+
+  Promise.resolve()
+    .then(() => console.log('promise 1 - microtask'))
+    .then(() => console.log('promise 2 - microtask'));
+
+  console.log('end');
+
+  /*
+  start
+  end
+  promise 1 - microtask
+  promise 2 - microtask
+  setTimeout - macrotask
+  */
+  ```
 - Event Loop
   - 콜 스택이 비워질떄마다 콜백 큐에 대기 중인 콜백 함수가 있다면, 콜백 함수를 콜 스택에 넘겨줌
   - 런타임에서 JavaScript 엔진과 상호 연동하기 위해 사용하는 장치가 Event Loop
