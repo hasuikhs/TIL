@@ -31,5 +31,3 @@
   | <center>`.`</center>         | 현재 노드를 선택                                             |
   | <center>`..`</center>        | 현재 노드의 부모 노드를 선택                                 |
   | <center>`@`</center>         | 속성 노드를 선택                                             |
-
-  

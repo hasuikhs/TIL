@@ -2,7 +2,7 @@
 
 ## 1. Forward
 
-![image-20200406223308514](Forward vs Redirect.assets/image-20200406223308514.png)
+![image-20200406223308514](Forward_vs_Redirect.assets/image-20200406223308514.png)
 
 - Web Container 차원에서의 페이지 이동만 존재
 - 실제 웹 브라우저는 다른 페이지로 이동했음을 모름
@@ -13,7 +13,7 @@
 
 ## 2. Redirect
 
-![image-20200406223525299](Forward vs Redirect.assets/image-20200406223525299.png)
+![image-20200406223525299](Forward_vs_Redirect.assets/image-20200406223525299.png)
 
 - Web Container는 redirect 명령이 들어오면 웹 브라우저에게 다른 페이지로 이동 명령 내림
 - 웹 브라우저는 URL을 지시된 주소로 바꾸고 그 주소로 이동
