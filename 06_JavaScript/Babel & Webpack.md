@@ -92,7 +92,7 @@ module.exports = {
   
   # 또는
   
-  $ webpack
+  $ webpack --config webpack.config.js
   ```
 
 - Webpack은 주요 네 가지 개념으로 정리 가능
