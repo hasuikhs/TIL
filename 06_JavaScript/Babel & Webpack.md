@@ -53,6 +53,9 @@ module.exports = {
   - 이런 한계를 극복하려 여러 가지 도구를 활용하는데 그 도구 가운데 하나가 **Webpack**
 - **Webpack**은 JavaScript로 만든 프로그램을 배포하기 좋은 형태로 묶어주는 도구
 - ESM(ES6 모듈)과 commonJS를 모두 지원
+- 버전별 노드 버전
+  - Webpack 4: Node.js 5 이상
+  - Webpack 5: Node.js 10.13.0 (LTS) 이상
 
 ### 2.1 설치
 
@@ -209,6 +212,7 @@ module.exports = {
 
   - **optimization**
     - Webpack 최적화 옵션
+    - Webpack 4부터 지원
     ```javascript
     module.exports = {
       ...
@@ -219,7 +223,6 @@ module.exports = {
     ```
     - `splitChunks`
       - 중복되는 요소를 하나의 chunk로 분리해주어, 중복되는 요소를 줄여 번들 사이즈 최적화 가능
-      - Webpack 4부터 지원
       ```javascript
       module.exports = {
         ...
