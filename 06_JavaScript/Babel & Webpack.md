@@ -14,7 +14,8 @@
 - Babel만을 사용한다고 최신 함수를 사용할 수 있는건 아님
   - **pollyfill**을 추가하여 프로그램이 처음에 시작될 때 지원하지 않는 **기능**(Promise, Map, Set 등)들을 추가
   - 즉, Babel은 컴파일시 실행되고 pollyfill은 런타임에 실행
-
+- babel의 모듈들은 7버전부터 `@babel`로 시작
+  - webpack 3, 4에서도 babel 버전은 상관 없음
 - **바벨 빌드 순서**
   - 파싱(Parsing)
     - 코드를 읽고 추상 구문 트리(Abstract Syntax Tree: AST)로 변환하는 단계
@@ -212,7 +213,7 @@ module.exports = {
 
   - **optimization**
     - Webpack 최적화 옵션
-    - Webpack 4부터 지원
+      - Webpack 4부터 지원
     ```javascript
     module.exports = {
       ...
