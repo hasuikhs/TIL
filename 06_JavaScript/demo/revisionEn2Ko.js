@@ -1,18 +1,14 @@
 const EN_KO_QWERTY_MAP = {
+  'Q': 'ㅃ', 'W': 'ㅉ', 'E': 'ㄸ', 'R': 'ㄲ', 'T': 'ㅆ',
   'q': 'ㅂ', 'w': 'ㅈ', 'e': 'ㄷ', 'r': 'ㄱ', 't': 'ㅅ',
   'a': 'ㅁ', 's': 'ㄴ', 'd': 'ㅇ', 'f': 'ㄹ', 'g': 'ㅎ',
   'z': 'ㅋ', 'x': 'ㅌ', 'c': 'ㅊ', 'v': 'ㅍ'
 };
-const SHIFT_EN_KO_QWERTY_MAP = {
-  'Q': 'ㅃ', 'W': 'ㅉ', 'E': 'ㄸ', 'R': 'ㄲ', 'T': 'ㅆ'
-};
+const ALL_CONSONANT =   'ㄱㄲㄳㄴㄵㄶㄷㄸㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅃㅄㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'
+const INIT_CONSONANT =  'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+const FINAL_CONSONANT = 'ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ';
 
-const INIT_COSONANT = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
-const FINAL_CONSONANT = ['', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
-
-const KO_VOWEL = [
-  'ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'
-]; // 12623 ~ 12643
+const KO_VOWEL = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'; // 12623 ~ 12643
 
 const FIRST_CONSONANT = 'ㄱ';
 const FIRST_VOWEL = KO_VOWEL[0];
@@ -21,33 +17,34 @@ const FIRST_KOREAN_CHAR = '가';
 const FIRST_CONSONANT_CODE = FIRST_CONSONANT.charCodeAt();
 const FIRST_VOWEL_CODE = FIRST_VOWEL.charCodeAt();
 
+function getConsonantCorrection(charCode) {
+  if (!isNaN(charCode)) {
+    charCode = String.fromCharCode(charCode);
+  }
+
+  if (INIT_CONSONANT.indexOf(charCode) === -1) {
+    throw new Error('incorrect consonant character.');
+  }
+
+  return ALL_CONSONANT.indexOf(charCode) - INIT_CONSONANT.indexOf(charCode);
+}
+
 function transform(value, test) {
   if (value.length >= 2) {
     const firstChar = value[0];
-    const firstKoChar = SHIFT_EN_KO_QWERTY_MAP[firstChar] || EN_KO_QWERTY_MAP[firstChar.toLowerCase()] || null;
-    
+    const firstKoChar =  EN_KO_QWERTY_MAP[firstChar] || EN_KO_QWERTY_MAP[firstChar.toLowerCase()] || null;
+
     if (firstKoChar) {
       const firstCharCode = firstKoChar.charCodeAt();
       const vowel = value[1];
 
-      let revision = 0;
-      let gap = firstCharCode - FIRST_CONSONANT_CODE;
-
-      if (gap > 19) {
-        revision = 11
-      } else if (gap > 15) {
-        revision = 10;
-      } else if (gap > 3) {
-        revision = 3;
-      } else if (gap > 2) {
-        revision = 1;
-      }
+      let revision = getConsonantCorrection(firstKoChar)
 
       if (KO_VOWEL.indexOf(vowel) > -1) {
         const init = firstCharCode - FIRST_CONSONANT_CODE - revision;
         const middle = vowel.charCodeAt() - FIRST_VOWEL_CODE;
 
-        const combineCode = FIRST_KOREAN_CHAR.charCodeAt() + (init * KO_VOWEL.length * FINAL_CONSONANT.length) + (middle * FINAL_CONSONANT.length);
+        const combineCode = FIRST_KOREAN_CHAR.charCodeAt() + (init * KO_VOWEL.length * 28) + (middle * 28);
 
         value = String.fromCharCode(combineCode);
       }
