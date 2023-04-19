@@ -24,12 +24,19 @@
     <script>
       const target = document.querySelector("#target");
 
-      target.addEventListener("click", ({ target, currentTarget }) => {
-        const input = document.createElement("input");
-        input.className = "input-text";
+      target.addEventListener(
+        "click",
+        ({ target, currentTarget }) => {
+          const input = document.createElement("input");
+          input.className = "input-text";
+          input.lang = "ko";
 
-        target.appendChild(input);
-      });
+          target.appendChild(input);
+        },
+        {
+          once: true,
+        }
+      );
     </script>
   </body>
 </html>

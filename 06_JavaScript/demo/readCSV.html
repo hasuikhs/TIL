@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <label for="csv-file">파일 업로드</label><br />
+    <input type="file" id="csv-file" accept=".csv" />
+
+    <script>
+      function handleFileSelect(evt) {
+        const files = evt.target.files;
+
+        // CSV 파일만 읽어올 수 있도록 타입 체크
+        if (!files[0].type.match("text/csv")) {
+          alert("CSV 파일만 선택해주세요!");
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          var csvData = e.target.result;
+          processData(csvData);
+        };
+
+        reader.readAsText(files[0]);
+      }
+
+      function processData(csvData) {
+        // CSV 파일 파싱
+        var lines = csvData.split("\n");
+
+        var result = [];
+
+        // CSV 파일 각 라인 파싱
+        for (var i = 1; i < lines.length; i++) {
+          var line = lines[i].trim();
+
+          if (line.length === 0) {
+            continue; // 빈 라인은 건너뜀
+          }
+
+          var fields = line.split(",");
+
+          result.push(fields);
+        }
+
+        // 처리 결과 출력
+        console.log(result);
+      }
+
+      document
+        .getElementById("csv-file")
+        .addEventListener("change", handleFileSelect, false);
+    </script>
+  </body>
+</html>
