@@ -96,3 +96,7 @@
 - Main 안의 코드에서 개발한 함수가 실행되는 것을 확인할 수 있음
   - 해당 함수가 병목(bottleneck) 현상이 일어나는 것을 확인한다면 해당 코드를 최적화해야 함
 
+### 1.3 Memory
+- 메모리 누수와 관련해서는 Memory 탭을 사용
+- Heap snapshot을 체크하고 take 실행
+- 측정된 결과에는 JavaScript Heap 영역에 있는 객체들을 모두 포함
