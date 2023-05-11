@@ -40,10 +40,22 @@ function hello(address, job) {
   ```
 
   - `apply`는 함수에 필요한 파라미터들을 배열에 담아 전달
+  - 인자를 배열로 전달해야하는 경우에 더 효율적
+    - 인자의 개수가 가변적이거나 인자를 동적으로 생성하는 경우 유용
+
+  ```javascript
+  function foo(a, b, c) {
+    return a + b + c;
+  }
+
+  const arr = [1, 2, 3];
+  const result = foo.apply(null, arr); // result = 6
+  ```
 
 ## 2. bind()
 
 - `bind`가 `call`, `apply`와 다른 점은 함수를 호출하지 않고, 새로운 함수를 리턴 해줌
+- 즉, 원본 함수를 수정하지 않고도 새로운 함수를 만들어 사용 가능
 
 - **`bind`**
 
@@ -54,5 +66,3 @@ function hello(address, job) {
   
   introduce(); // Hello, my name is Tom, I live in seoul and my job is developer
   ```
-
-  
