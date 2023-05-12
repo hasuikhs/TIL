@@ -21,7 +21,7 @@ console.log(num);	// 5
 ## 2. Call By Reference
 
 - 실제 **원본 데이터가 존재하는 주소를 가리키는 주소값을 인자로 넘겨** 매개변수로 전달
-- JavaScript에서 객체형(Object, Array, function 등)에 해당
+- JavaScript에서 객체형(Object, Array, function 등)에 해당되며 이를 참조 변수(reference variable)이라 불림
 
 ```javascript
 let pushElement = (arr, num) => {
@@ -60,6 +60,7 @@ console.log(obj1); // { a: 5, b: 8 }
 
 ## 3. Call By Sharing
 
+- 값에 대한 복사가 이루어지는 것처럼 보이지마, 사실 참조 타입에서 메모리의 주소를 전달하는 것과 유사한 방식
 - Call By Value와 Call By Reference 의 특징을 종합하여 Call By Sharing이라고 함(이도 저도 아닌...)
 - Python, Java, Ruby, JavaScript가 이에 해당
 - 인자로 전달되는 **변수가 원시값일 경우에는 Call By Value로 평가되고, 아니라면 메모리 주소만 전달**
