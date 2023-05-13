@@ -18,6 +18,33 @@ increaseNum(num);	// 6
 console.log(num);	// 5
 ```
 
+- call by value는 복사된 값을 인자로 넘길때 유효하지만, 인자로 넘기지 않을경우 closure를 통해 유효하지 않음
+
+  ```javascript
+  let num = 1;
+
+  function fun() {
+    num += 1;
+  }
+
+  console.log(num); // 1
+  fun();
+  console.log(num); // 2
+  ```
+
+  ```javascript
+  let num = 1;
+  
+  function fun(num) {
+    num += 1;
+    return num;
+  }
+
+  console.log(num); // 1
+  fun();
+  console.log(num); // 1
+  ```
+
 ## 2. Call By Reference
 
 - 실제 **원본 데이터가 존재하는 주소를 가리키는 주소값을 인자로 넘겨** 매개변수로 전달
