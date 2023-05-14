@@ -94,6 +94,23 @@
   console.log(copiedObj);	// {no1: {no2: 100}}
   ```
 
+- JSON 객체를 이용하는 방법도 존재
+  - 단, 이 방법은 내부에 함수가 존재하면 문제가 발생 가능
+  - 이는 `JSON.stringify()` 함수가 함수를 serialize하지 않기 때문
+  - 함수가 있는 객체를 serialize하려고 하면, 함수는 undefined로 반환
+  - 그렇기 때문에 함수가 있는 객체를 deep copy하려면 lodash 라이브러리의 `cloneDeep()` 함수를 사용하거나 직접 재귀적으로 복사하는 방식으로 구현해야 함
+  
+  ```javascript
+  const originalObj = { a: 1, b: { c: 2 } };
+  const deepCopyObj = JSON.parse(JSON.stringify(originalObj));
+
+  deepCopyObj.b.c = 3;
+
+  console.log(originalObj); // { a: 1, b: { c: 2 } }
+  console.log(deepCopyObj); // { a: 1, b: { c: 3 } }
+  ```
+
+
 ## 2. Shallow-Copy
 
 - 원래 값과 복사된 값이 같은 참조를 가리키고 있는 복사
@@ -101,3 +118,16 @@
 - 객체에 변수를 저장하면, 실제 값을 저장하는 것이 아니라 객체의 참조를 저장
 
 - 복사가 이루어지면 서로 다른 변수에 할당되지만,  서로 같은 메모리의 참조를 바라보게 되어 영향을 줄 수 있음
+
+- shallow copy를 구현하는 방법으로는 위에 언급되었다 시피
+  - `Object.assign()` 메소드나 전개 연산자(`...`)를 사용 가능
+
+  ```javascript
+  const originalObj = { a: 1, b: { c: 2 } };
+  const shallowCopyObj = Object.assign({}, originalObj);
+
+  shallowCopyObj.b.c = 3;
+
+  console.log(originalObj); // { a: 1, b: { c: 3 } }
+  console.log(shallowCopyObj); // { a: 1, b: { c: 3 } }
+  ```
