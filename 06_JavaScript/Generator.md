@@ -1,8 +1,11 @@
 # Generator
 
 - Generator Function은 사용자의 요구에 따라 다른 시간 간격으로 여러 값을 반환 가능
+  - 실행을 일시 중단하고 재개 가능한 함수
 - 내부 상태 관리가 가능한 함수
 - 단 한 번의 실행으로 함수의 끝까지 실행이 완료되는 일반 함수와는 달리, 사용자의 요구에 따라 (`yield`와 `next()`를 통해) 일시적으로 정지될 수 있고, 다시 시작 될 수 있음
+  - 함수 내부에서 `yield` 키워드를 사용하면 실행을 일시 중단하고 해당 값을 반환
+    - 호출될 때 함수의 실행을 시작하며, 값을 반환하거나 `yield` 키워드를 만날 때까지 실행을 계속함
   - Generator가 있기 전에는 일시 정지 가능한 유일한 방법은 alert, confirm, prompt를 사용하는 것
     - 하지만, 사용자가 시스템 대화 상자에 응답하지 않으면 프로세스를 이어갈 수 없었음
 
@@ -10,6 +13,63 @@
   - Generator는 Iterator이자 Iterable을 생성하는 함수
 - Generator Function의 반환으로는 Generator가 반환됨
 
+- 사용예
+  - 비동기처리
+    - AJAX 요청을 보내고 결과를 반환하는 함수를 작성할 때 generator를 사용하여 비동기성 처리가능
+  - 대용량 데이터 처리
+    - 대용량 데이터를 처리할 때는 한 번에 모든 데이터를 가져오는 것이 아닌, 필요할때마다 일부씩 가져오는 것이 효율적
+  - 무한한 데이터 집합 생성
+    - 무한한 데이터 집합을 생성해야 할ㄷ 때 generator 사용 가능
+    - 자연수나 피보나치 수열과 같은 무한한 수열을 생성하는 것이 가능
+    ```javascript
+    function* generateNaturalNumbers() {
+    let number = 1;
+
+    while (true) {
+      yield number;
+      number++;
+    }
+  }
+
+  const numbers = generateNaturalNumbers();
+
+  for (let i = 0; i < 10; i++) {
+    console.log(numbers.next().value);
+  }
+  // 출력 결과: 1 2 3 4 5 6 7 8 9 10
+    ```
+  - 코드의 간결성
+    - generator를 사용하면 코드의 가독성이 높아지며, 코드를 더 쉽게 유지보수 가능
+    ```javascript
+    // generator로 무한 홀수 만들기
+    function* generateOddNumbers() {
+      let n = 1;
+      while (true) {
+        yield n;
+        n += 2;
+      }
+    }
+
+    const oddNumbers = generateOddNumbers();
+
+    for (let i = 0; i < 10; i++) {
+      console.log(oddNumbers.next().value);
+    }
+
+    // 일반적인 함수
+    function getOddNumber(n) {
+      return 2 * n + 1;
+    }
+
+    for (let i = 0; i < 10; i++) {
+      console.log(getOddNumber(i));
+    }
+    ```
+    - generator 함수는 실행 흐름을 일시 중단하고 재개 가능하지만, 일반 함수는 계산을 한번에 수행
+      - 필요한 만큼의 값을 가져오고, 나머지 계산은 중단된 상태에서 유지
+    - generator는 필요한 만큼의 데이터만 생성하고 반환하므로 **메모리 사용이 효율적**
+    - generator 함수는 반복 가능한 객체(Iterable)를 반환하므로 `for ...of` 루프나 `Array.from()` 등과 같은 **반복 구문과 함께 사용하기 간편**
+      - **일반적인 함수를 사용하는 방식은 유한한 데이터 집합이나 특정 계산에 대해서는 더 간단하고 직관적**
 ## 1. Generator Function
 
 - Generator를 만들려면 특별한 문법 구조 `function*`이 필요
@@ -154,33 +214,61 @@
 
 ## 4. demo
 
-```javascript
-function Test() {
-  
-  this.test = 'test';
-  
-  this.init = () => {
-    console.log('init');
-  }
-  
-  this.render = () => {
-    console.log('render');
-  }
-
-  this.test = function* test() {
-    yield this.init();
-    yield this.render();
-  }
-  
-  this.gen = this.test();
-  this.gen.next();
-}
-
-const te = new Test();
-
-setTimeout(() => {
-  te.gen.next();
-}, 1_000);
-```
-
 - 처음과 두번째에만 실행되는 함수
+
+  ```javascript
+  function Test() {
+
+    this.test = 'test';
+
+    this.init = () => {
+      console.log('init');
+    }
+
+    this.render = () => {
+      console.log('render');
+    }
+
+    this.test = function* test() {
+      yield this.init();
+      yield this.render();
+    }
+
+    this.gen = this.test();
+    this.gen.next();
+  }
+
+  const te = new Test();
+
+  setTimeout(() => {
+    te.gen.next();
+  }, 1_000);
+  ```
+
+- `Promise`를 이용해서 비동기 처리를 하는 예시
+
+  ```javascript
+  function* asyncFunction() {
+    try {
+      const result = yield new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('Async result');
+        }, 1_000);
+      });
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const generator = asyncFunction();
+  const promise = generator.next().value;
+  promise.then(
+    (result) => {
+      generator.next(result);
+    },
+    (error) => {
+      generator.throw(error);
+    }
+  )
+  ```
