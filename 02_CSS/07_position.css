@@ -1,9 +1,15 @@
-div{
+div {
     width: 100px;
     height: 100px;
     background-color: lightblue;
-    margin-top: 15px;
+    /* margin-top: 15px; */
     text-align: center;
+    position: relative;
+}
+
+
+.relative {
+    position: relative;
 }
 
 .parent {
@@ -11,5 +17,8 @@ div{
 }
 
 .absolute {
+    background-color: red;
     position:absolute;
+    top: 0px;
+    left: 10px;
 }

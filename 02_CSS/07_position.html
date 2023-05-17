@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <link rel="stylesheet" href="07_position.css">
-</head>
-<body>
+    <link rel="stylesheet" href="07_position.css" />
+  </head>
+  <body>
     <h2>1. Static (기본위치-좌상단부터 쌓임)</h2>
     <div>static</div>
     <div>static</div>
-    
+
     <h2>2. Absolute : 모든 부모가 static인 경우</h2>
     <!-- 부모가 static일 경우, absolute1은 body를 기준으로 위치한다. -->
     <div class="parent">
-        <div class="absolute">absolute1</div>
+      <div class="absolute">absolute1</div>
     </div>
 
     <h2>3. Absolute2 : 부모 중에 static이 아닌 것이 있는 경우</h2>
     <div class="parent relative">
-        relative
-        <div class="absolute">absolute2</div>
+      relative
+      <div class="absolute">absolute2</div>
     </div>
-</body>
+
+    <br />
+    <h2>
+      4. Absolute3 : 부모는 relative, 본인은 static, 자손이 absolute인 경우
+    </h2>
+    <div class="parent">
+      parent
+      <div>
+        self
+        <div class="absolute">absolute3</div>
+      </div>
+    </div>
+  </body>
 </html>
