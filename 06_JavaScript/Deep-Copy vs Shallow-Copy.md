@@ -123,6 +123,7 @@
   - `Object.assign()` 메소드나 전개 연산자(`...`)를 사용 가능
 
   ```javascript
+  // ex1
   const originalObj = { a: 1, b: { c: 2 } };
   const shallowCopyObj = Object.assign({}, originalObj);
 
@@ -130,4 +131,21 @@
 
   console.log(originalObj); // { a: 1, b: { c: 3 } }
   console.log(shallowCopyObj); // { a: 1, b: { c: 3 } }
+  ```
+
+  ```javascript
+  // ex2
+  const person = {
+    name: 'John',
+    age: 30,
+    hobbies: ['reading', 'painting']
+  };
+
+  const copiedPerson = Object.assign({}, person);
+
+  person.name = 'Jane';
+  person.hobbies.push('swimming');
+
+  console.log(person); // { name: "Jane", age: 30, hobbies: ["reading", "painting", "swimming"] }
+  console.log(copiedPerson); // { name: "John", age: 30, hobbies: ["reading", "painting", "swimming"] }
   ```
