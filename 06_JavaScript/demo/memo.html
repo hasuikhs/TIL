@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memo</title>
+    <style>
+      .section {
+        display: flex;
+        padding: 10px;
+        justify-content: space-between;
+      }
+      .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        min-width: 200px;
+        height: inherit;
+        border-right: 1px solid black;
+        margin-right: 10px;
+      }
+      p {
+        word-break: break-word;
+      }
+      .memo {
+        font-style: italic;
+        font-weight: 600;
+        background-color: #f9f9c8;
+      }
+      .modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -140px;
+        margin-top: -50px;
+        display: flex;
+        opacity: 0;
+        justify-content: space-between;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid black;
+        width: 300px;
+        height: 100px;
+        background-color: white;
+        box-shadow: 5px 5px 5px #D6D6D6;
+        transition: ease 0.3s;
+      }
+      .memo-input {
+        width: 200px;
+        height: 93px;
+        resize: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>MEMO TEST</h1>
+
+    <div key="FIELD_OF_THE_INVENTION" id="FIELD_OF_THE_INVENTION">
+      <p>
+        <strong>【Paragraph 1】</strong>
+      </p>
+      <div key="P-0003" id="P-0003">
+        <p>
+          <strong>【0001】</strong>
+        </p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab asperiores, ullam architecto omnis voluptatum dolor quia, est, saepe earum fugiat consectetur dicta autem corporis nemo delectus totam. Doloremque voluptate molestiae laboriosam possimus sed? Excepturi veritatis, blanditiis ea ratione obcaecati magnam earum magni temporibus officiis error porro incidunt ipsum quae repudiandae expedita fugiat itaque delectus. Ad quisquam provident odio. Quo iste, in explicabo, nulla tempore animi quasi ducimus numquam sint et perferendis ratione accusamus mollitia debitis earum voluptates. Cumque officiis expedita consequuntur libero labore, assumenda, explicabo dicta, maiores hic earum illum modi voluptate consequatur rerum ducimus voluptatum doloribus accusantium animi saepe!
+        <mark
+          data-markjs="true"
+          id="-1204461845-1-1"
+          name="-1204461845-1"
+          class="mark--1204461845 palette-fac76c"
+          >organic</mark
+        >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, sapiente.
+      </div>
+    </div>
+
+    <div key="FIELD_OF_THE_INVENTION" id="FIELD_OF_THE_INVENTION_2">
+      <p>
+        <strong>【Paragraph 2】</strong>
+      </p>
+      <div key="P-0003" id="P-0003">
+        <p>
+          <strong>【0002】</strong>
+        </p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur est nemo officiis, qui nam amet enim consequuntur itaque voluptate facilis, blanditiis numquam. Magni, veritatis aperiam a modi labore esse nisi libero cupiditate possimus, tenetur hic corrupti nemo voluptas distinctio deleniti cum quos dolores sapiente temporibus, expedita molestias deserunt consequatur maiores! Excepturi inventore quia illum ipsam corrupti sint suscipit id molestias accusamus rem voluptatum, libero illo dolor fuga exercitationem nam, minima minus assumenda dolores. Aliquam corporis odio illo id ex molestias a tempore explicabo ad, libero sequi fugit ipsa magnam incidunt veritatis nesciunt atque at non eum iusto? Laudantium, molestias eius!
+        <mark
+          data-markjs="true"
+          id="-1204461845-1-1"
+          name="-1204461845-1"
+          class="mark--1204461845 palette-fac76c"
+          >organic</mark
+        >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam distinctio modi suscipit quibusdam repellendus, culpa ab dicta ut numquam explicabo?
+      </div>
+    </div>
+
+    <div id="memo-modal" class="modal">
+      <textarea class="memo-input" placeholder="메모를 입력해주세요." maxlength="100"></textarea>
+      <button class="save-btn" type="button">저장</button>
+      <button class="cancel-btn" type="button">취소</button>
+    </div>
+
+    <script>
+      window.onload = () => {
+        document.addEventListener('mouseup', ({ target }) => {
+          const selection = window.getSelection();
+
+          console.log(selection.anchorNode.parentNode)
+
+          const text = selection.toString();
+          let selectedText = getSelectedText();
+
+          if (!isMemoEnabled(target)) {
+            alert('메모가 이미 존재합니다.');
+            return window.getSelection().removeAllRanges();
+          }
+
+          const parentTarget = target.closest('div[id]');
+          if (selectedText) {
+            // console.log('Selected text: ' + selectedText);
+            highlightSelectedText(parentTarget);
+          }
+        });
+
+        // 모달 저장 버튼
+        document.querySelector('#memo-modal > button.save-btn').addEventListener('click', () => {
+          const value = document.querySelector('#memo-modal > textarea.memo-input').value;
+
+          const data = {
+            documentId: 'test',
+          }
+
+          // sessionStorage.setItem('saveData', JSON.stringify(data));
+
+          hideModal();
+        });
+
+        // 모달 취소 버튼
+        document.querySelector('#memo-modal > button.cancel-btn').addEventListener('click', () => {
+          hideModal();
+        });
+      };
+
+      // 모달 숨기기
+      function hideModal() {
+        const target = document.querySelector('#memo-modal');
+
+        target.style.opacity = 0;
+        target.querySelector('textarea.memo-input').value = '';
+      }
+
+      // 모달 열기
+      function openModal() {
+        const target = document.querySelector('#memo-modal');
+
+        target.style.opacity = 1;
+        target.querySelector('textarea.memo-input').focus();
+      }
+
+      function getSelectedText() {
+        return window.getSelection().toString() || '';
+      }
+
+      function highlightSelectedText(target) {
+        const selection = window.getSelection();
+
+        if (selection.rangeCount > 0) {
+          let range = selection.getRangeAt(0);
+
+          console.log(document.querySelector('#memo-modal'))
+          if (document.querySelector('#memo-modal').style.opacity === 1) {
+            selection.removeAllRanges();
+            return alert('이미 메모가 진행중!')
+          }
+
+          let preSelectionRange = range.cloneRange();
+          preSelectionRange.selectNodeContents(target);
+          preSelectionRange.setEnd(range.startContainer, range.startOffset);
+
+          range.start = preSelectionRange.toString().length;
+          range.end = range.start + range.toString().length;
+
+          // console.log(range.toString())
+
+          // 선택된 텍스트를 굵게 표시하기 위해 span 태그로 감싸기
+          let span = document.createElement('span');
+          span.className = 'memo';
+          span.appendChild(range.extractContents());
+          range.insertNode(span);
+
+          // 선택 해제
+          selection.removeAllRanges();
+
+          openModal();
+        }
+      }
+
+      function isMemoEnabled(element) {
+        let has = true;
+        let message = '';
+
+        if (element.classList.contains('memo')) {
+          has = false;
+        }
+
+        const selection = window.getSelection();
+
+        if (
+          selection.anchorNode.parentNode.closest('p') !==
+          selection.focusNode.parentNode.closest('p')
+        ) {
+          has = false;
+        }
+
+        if (has && selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+
+          let textNodes = getTextNodesWithinRange(range);
+
+          // console.log(textNodes)
+
+          for (let i = 0; i < textNodes.length; i++) {
+            const node = textNodes[i];
+            if (
+              node.parentNode.classList &&
+              node.parentNode.classList.contains('memo')
+            ) {
+              has = false;
+              break;
+            }
+          }
+        }
+
+        return has;
+      }
+
+      function getTextNodesWithinRange(range) {
+        const textNodes = [];
+        const treeWalker = document.createTreeWalker(
+          range.commonAncestorContainer,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+
+        let currentNode;
+        while ((currentNode = treeWalker.nextNode())) {
+          if (range.intersectsNode(currentNode)) {
+            textNodes.push(currentNode);
+          }
+        }
+
+        return textNodes;
+      }
+
+
+
+      /*
+       * 현재 제한 사항
+       * 1. 메모가 중복 될 수 없음
+       * 2. 메모가 현재 문단을 벗어 날 수 없음
+       */
+    </script>
+  </body>
+</html>
