@@ -34,8 +34,9 @@
         top: 50%;
         left: 50%;
         margin-left: -140px;
-        margin-top: -50px;
         display: flex;
+        margin-top: -50px;
+        visibility: hidden;
         opacity: 0;
         justify-content: space-between;
         padding: 10px;
@@ -105,76 +106,80 @@
 
     <script>
       window.onload = () => {
+        // 1. 메모 드래그 관련
         document.addEventListener('mouseup', ({ target }) => {
           const selection = window.getSelection();
+          const selectedText = selection.toString().trim();
+          if (!selectedText) {
+            return;
+          }
 
-          console.log(selection.anchorNode.parentNode)
-
-          const text = selection.toString();
-          let selectedText = getSelectedText();
-
-          if (!isMemoEnabled(target)) {
-            alert('메모가 이미 존재합니다.');
-            return window.getSelection().removeAllRanges();
+          const { has, message } = getMemoEnableObject(target, selection)
+          if (!has) {
+            alert(message);
+            return selection.removeAllRanges();
           }
 
           const parentTarget = target.closest('div[id]');
           if (selectedText) {
-            // console.log('Selected text: ' + selectedText);
-            highlightSelectedText(parentTarget);
+            highlightSelectedText(parentTarget, selection);
           }
         });
 
-        // 모달 저장 버튼
-        document.querySelector('#memo-modal > button.save-btn').addEventListener('click', () => {
-          const value = document.querySelector('#memo-modal > textarea.memo-input').value;
+        // 2. 모달 관련
+        const modalSaveBtn = document.querySelector('#memo-modal > button.save-btn');
+        const modalCancelBtn = document.querySelector('#memo-modal > button.cancel-btn');
+
+        // 2.1 모달 저장 버튼
+        modalSaveBtn.addEventListener('click', () => {
+          const memoText = document.querySelector('#memo-modal > textarea.memo-input').value;
 
           const data = {
             documentId: 'test',
-          }
+            memoText
+          };
 
           // sessionStorage.setItem('saveData', JSON.stringify(data));
 
           hideModal();
         });
 
-        // 모달 취소 버튼
-        document.querySelector('#memo-modal > button.cancel-btn').addEventListener('click', () => {
+        // 2.2 모달 취소 버튼
+        modalCancelBtn.addEventListener('click', () => {
           hideModal();
         });
       };
 
-      // 모달 숨기기
+      // -----------------------------------------------------------------------------------------------------
+
+      /*
+       * function 모달 숨기기
+      */
       function hideModal() {
-        const target = document.querySelector('#memo-modal');
+        const modal = document.querySelector('#memo-modal');
 
-        target.style.opacity = 0;
-        target.querySelector('textarea.memo-input').value = '';
+        modal.style.opacity = 0;
+        modal.style.visibility = 'hidden';
+        modal.querySelector('textarea.memo-input').value = '';
       }
 
-      // 모달 열기
+      /*
+       * function 모달 열기
+      */
       function openModal() {
-        const target = document.querySelector('#memo-modal');
+        const modal = document.querySelector('#memo-modal');
 
-        target.style.opacity = 1;
-        target.querySelector('textarea.memo-input').focus();
+        modal.style.opacity = 1;
+        modal.style.visibility = 'visible';
+        modal.querySelector('textarea.memo-input').focus();
       }
 
-      function getSelectedText() {
-        return window.getSelection().toString() || '';
-      }
+      // -----------------------------------------------------------------------------------------------------
 
-      function highlightSelectedText(target) {
-        const selection = window.getSelection();
+      function highlightSelectedText(target, selection) {
 
         if (selection.rangeCount > 0) {
           let range = selection.getRangeAt(0);
-
-          console.log(document.querySelector('#memo-modal'))
-          if (document.querySelector('#memo-modal').style.opacity === 1) {
-            selection.removeAllRanges();
-            return alert('이미 메모가 진행중!')
-          }
 
           let preSelectionRange = range.cloneRange();
           preSelectionRange.selectNodeContents(target);
@@ -198,29 +203,32 @@
         }
       }
 
-      function isMemoEnabled(element) {
+      function getMemoEnableObject(element, selection) {
         let has = true;
         let message = '';
 
-        if (element.classList.contains('memo')) {
+        if (document.querySelector('#memo-modal').style.opacity === '1') {
           has = false;
+          message = '이미 메모가 진행 중';
         }
 
-        const selection = window.getSelection();
+        if (element.classList.contains('memo')) {
+          has = false;
+          message = '이미 메모가 존재';
+        }
 
         if (
           selection.anchorNode.parentNode.closest('p') !==
           selection.focusNode.parentNode.closest('p')
         ) {
           has = false;
+          message = '메모는 한 문단 안에서만 가능';
         }
 
         if (has && selection.rangeCount > 0) {
           const range = selection.getRangeAt(0);
 
           let textNodes = getTextNodesWithinRange(range);
-
-          // console.log(textNodes)
 
           for (let i = 0; i < textNodes.length; i++) {
             const node = textNodes[i];
@@ -229,12 +237,13 @@
               node.parentNode.classList.contains('memo')
             ) {
               has = false;
+              message = '메모는 중복 적용 불가능';
               break;
             }
           }
         }
 
-        return has;
+        return { has, message };
       }
 
       function getTextNodesWithinRange(range) {
@@ -255,8 +264,6 @@
 
         return textNodes;
       }
-
-
 
       /*
        * 현재 제한 사항
