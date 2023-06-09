@@ -45,7 +45,7 @@
         width: 300px;
         height: 100px;
         background-color: white;
-        box-shadow: 5px 5px 5px #D6D6D6;
+        box-shadow: 5px 5px 5px #d6d6d6;
         transition: ease 0.3s;
       }
       .memo-input {
@@ -66,7 +66,18 @@
         <p>
           <strong>【0001】</strong>
         </p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab asperiores, ullam architecto omnis voluptatum dolor quia, est, saepe earum fugiat consectetur dicta autem corporis nemo delectus totam. Doloremque voluptate molestiae laboriosam possimus sed? Excepturi veritatis, blanditiis ea ratione obcaecati magnam earum magni temporibus officiis error porro incidunt ipsum quae repudiandae expedita fugiat itaque delectus. Ad quisquam provident odio. Quo iste, in explicabo, nulla tempore animi quasi ducimus numquam sint et perferendis ratione accusamus mollitia debitis earum voluptates. Cumque officiis expedita consequuntur libero labore, assumenda, explicabo dicta, maiores hic earum illum modi voluptate consequatur rerum ducimus voluptatum doloribus accusantium animi saepe!
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab asperiores,
+        ullam architecto omnis voluptatum dolor quia, est, saepe earum fugiat
+        consectetur dicta autem corporis nemo delectus totam. Doloremque
+        voluptate molestiae laboriosam possimus sed? Excepturi veritatis,
+        blanditiis ea ratione obcaecati magnam earum magni temporibus officiis
+        error porro incidunt ipsum quae repudiandae expedita fugiat itaque
+        delectus. Ad quisquam provident odio. Quo iste, in explicabo, nulla
+        tempore animi quasi ducimus numquam sint et perferendis ratione
+        accusamus mollitia debitis earum voluptates. Cumque officiis expedita
+        consequuntur libero labore, assumenda, explicabo dicta, maiores hic
+        earum illum modi voluptate consequatur rerum ducimus voluptatum
+        doloribus accusantium animi saepe!
         <mark
           data-markjs="true"
           id="-1204461845-1-1"
@@ -74,7 +85,8 @@
           class="mark--1204461845 palette-fac76c"
           >organic</mark
         >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, sapiente.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt,
+        sapiente.
       </div>
     </div>
 
@@ -82,11 +94,21 @@
       <p>
         <strong>【Paragraph 2】</strong>
       </p>
-      <div key="P-0003" id="P-0003">
+      <div key="P-0004" id="P-0004">
         <p>
           <strong>【0002】</strong>
         </p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur est nemo officiis, qui nam amet enim consequuntur itaque voluptate facilis, blanditiis numquam. Magni, veritatis aperiam a modi labore esse nisi libero cupiditate possimus, tenetur hic corrupti nemo voluptas distinctio deleniti cum quos dolores sapiente temporibus, expedita molestias deserunt consequatur maiores! Excepturi inventore quia illum ipsam corrupti sint suscipit id molestias accusamus rem voluptatum, libero illo dolor fuga exercitationem nam, minima minus assumenda dolores. Aliquam corporis odio illo id ex molestias a tempore explicabo ad, libero sequi fugit ipsa magnam incidunt veritatis nesciunt atque at non eum iusto? Laudantium, molestias eius!
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur est
+        nemo officiis, qui nam amet enim consequuntur itaque voluptate facilis,
+        blanditiis numquam. Magni, veritatis aperiam a modi labore esse nisi
+        libero cupiditate possimus, tenetur hic corrupti nemo voluptas
+        distinctio deleniti cum quos dolores sapiente temporibus, expedita
+        molestias deserunt consequatur maiores! Excepturi inventore quia illum
+        ipsam corrupti sint suscipit id molestias accusamus rem voluptatum,
+        libero illo dolor fuga exercitationem nam, minima minus assumenda
+        dolores. Aliquam corporis odio illo id ex molestias a tempore explicabo
+        ad, libero sequi fugit ipsa magnam incidunt veritatis nesciunt atque at
+        non eum iusto? Laudantium, molestias eius!
         <mark
           data-markjs="true"
           id="-1204461845-1-1"
@@ -94,49 +116,81 @@
           class="mark--1204461845 palette-fac76c"
           >organic</mark
         >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam distinctio modi suscipit quibusdam repellendus, culpa ab dicta ut numquam explicabo?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+        distinctio modi suscipit quibusdam repellendus, culpa ab dicta ut
+        numquam explicabo?
       </div>
     </div>
 
     <div id="memo-modal" class="modal">
-      <textarea class="memo-input" placeholder="메모를 입력해주세요." maxlength="100"></textarea>
+      <textarea
+        class="memo-input"
+        placeholder="메모를 입력해주세요."
+        maxlength="100"
+      ></textarea>
       <button class="save-btn" type="button">저장</button>
       <button class="cancel-btn" type="button">취소</button>
     </div>
 
     <script>
       window.onload = () => {
+        const sessionData = JSON.parse(sessionStorage.getItem("data"));
+        console.log(sessionData);
+
+        if (sessionData) {
+          const target = document.getElementById(sessionData.target);
+
+          const targetText = target.textContent.slice(
+            sessionData.start,
+            sessionData.end
+          );
+
+          target.innerHTML = target.textContent.replace(
+            targetText,
+            `<span class="memo">${targetText}</span>`
+          );
+          console.log(target.textContent);
+          // span.innerHTML = target.textContent.replace(target.textContent.slice(sessionData.start, sessionData.end))
+          // const range = new Range();
+        }
+
         // 1. 메모 드래그 관련
-        document.addEventListener('mouseup', ({ target }) => {
+        document.addEventListener("mouseup", ({ target }) => {
           const selection = window.getSelection();
           const selectedText = selection.toString().trim();
           if (!selectedText) {
             return;
           }
 
-          const { has, message } = getMemoEnableObject(target, selection)
+          const { has, message } = getMemoEnableObject(target, selection);
           if (!has) {
             alert(message);
             return selection.removeAllRanges();
           }
 
-          const parentTarget = target.closest('div[id]');
+          const parentTarget = target.closest("div[id]");
           if (selectedText) {
             highlightSelectedText(parentTarget, selection);
           }
         });
 
         // 2. 모달 관련
-        const modalSaveBtn = document.querySelector('#memo-modal > button.save-btn');
-        const modalCancelBtn = document.querySelector('#memo-modal > button.cancel-btn');
+        const modalSaveBtn = document.querySelector(
+          "#memo-modal > button.save-btn"
+        );
+        const modalCancelBtn = document.querySelector(
+          "#memo-modal > button.cancel-btn"
+        );
 
         // 2.1 모달 저장 버튼
-        modalSaveBtn.addEventListener('click', () => {
-          const memoText = document.querySelector('#memo-modal > textarea.memo-input').value;
+        modalSaveBtn.addEventListener("click", () => {
+          const memoText = document.querySelector(
+            "#memo-modal > textarea.memo-input"
+          ).value;
 
           const data = {
-            documentId: 'test',
-            memoText
+            documentId: "test",
+            memoText,
           };
 
           // sessionStorage.setItem('saveData', JSON.stringify(data));
@@ -145,7 +199,7 @@
         });
 
         // 2.2 모달 취소 버튼
-        modalCancelBtn.addEventListener('click', () => {
+        modalCancelBtn.addEventListener("click", () => {
           hideModal();
         });
       };
@@ -154,30 +208,29 @@
 
       /*
        * function 모달 숨기기
-      */
+       */
       function hideModal() {
-        const modal = document.querySelector('#memo-modal');
+        const modal = document.querySelector("#memo-modal");
 
         modal.style.opacity = 0;
-        modal.style.visibility = 'hidden';
-        modal.querySelector('textarea.memo-input').value = '';
+        modal.style.visibility = "hidden";
+        modal.querySelector("textarea.memo-input").value = "";
       }
 
       /*
        * function 모달 열기
-      */
+       */
       function openModal() {
-        const modal = document.querySelector('#memo-modal');
+        const modal = document.querySelector("#memo-modal");
 
         modal.style.opacity = 1;
-        modal.style.visibility = 'visible';
-        modal.querySelector('textarea.memo-input').focus();
+        modal.style.visibility = "visible";
+        modal.querySelector("textarea.memo-input").focus();
       }
 
       // -----------------------------------------------------------------------------------------------------
 
       function highlightSelectedText(target, selection) {
-
         if (selection.rangeCount > 0) {
           let range = selection.getRangeAt(0);
 
@@ -191,13 +244,22 @@
           // console.log(range.toString())
 
           // 선택된 텍스트를 굵게 표시하기 위해 span 태그로 감싸기
-          let span = document.createElement('span');
-          span.className = 'memo';
+          let span = document.createElement("span");
+          span.className = "memo";
           span.appendChild(range.extractContents());
           range.insertNode(span);
 
           // 선택 해제
           selection.removeAllRanges();
+
+          console.log(range);
+          const memo = {
+            target: target.id,
+            start: range.start,
+            end: range.end,
+          };
+
+          sessionStorage.setItem("data", JSON.stringify(memo));
 
           openModal();
         }
@@ -205,24 +267,24 @@
 
       function getMemoEnableObject(element, selection) {
         let has = true;
-        let message = '';
+        let message = "";
 
-        if (document.querySelector('#memo-modal').style.opacity === '1') {
+        if (document.querySelector("#memo-modal").style.opacity === "1") {
           has = false;
-          message = '이미 메모가 진행 중';
+          message = "이미 메모가 진행 중";
         }
 
-        if (element.classList.contains('memo')) {
+        if (element.classList.contains("memo")) {
           has = false;
-          message = '이미 메모가 존재';
+          message = "이미 메모가 존재";
         }
 
         if (
-          selection.anchorNode.parentNode.closest('p') !==
-          selection.focusNode.parentNode.closest('p')
+          selection.anchorNode.parentNode.closest("p") !==
+          selection.focusNode.parentNode.closest("p")
         ) {
           has = false;
-          message = '메모는 한 문단 안에서만 가능';
+          message = "메모는 한 문단 안에서만 가능";
         }
 
         if (has && selection.rangeCount > 0) {
@@ -234,10 +296,10 @@
             const node = textNodes[i];
             if (
               node.parentNode.classList &&
-              node.parentNode.classList.contains('memo')
+              node.parentNode.classList.contains("memo")
             ) {
               has = false;
-              message = '메모는 중복 적용 불가능';
+              message = "메모는 중복 적용 불가능";
               break;
             }
           }
