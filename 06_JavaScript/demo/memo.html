@@ -135,24 +135,57 @@
     <script>
       window.onload = () => {
         const sessionData = JSON.parse(sessionStorage.getItem("data"));
-        console.log(sessionData);
 
-        if (sessionData) {
-          const target = document.getElementById(sessionData.target);
+        if (sessionData && sessionData.length) {
+          sessionData.sort((a, b) => {
+            if (a.target < b.target) return -1;
+            if (a.target > b.target) return 1;
+            if (a.start > b.start) return -1;
+            if (a.start < b.start) return 1;
+            return 0;
+          });
 
-          const targetText = target.textContent.slice(
-            sessionData.start,
-            sessionData.end
-          );
+          const groupData = groupedData(sessionData);
 
-          target.innerHTML = target.textContent.replace(
-            targetText,
-            `<span class="memo">${targetText}</span>`
-          );
-          console.log(target.textContent);
-          // span.innerHTML = target.textContent.replace(target.textContent.slice(sessionData.start, sessionData.end))
-          // const range = new Range();
+          for (const target in groupData) {
+            if (groupData.hasOwnProperty(target)) {
+              const items = groupData[target];
+
+              const element = document.getElementById(target);
+              let elementText = element.textContent;
+
+              for (let i = 0, len = items.length; i < len; i++) {
+                const item = items[i];
+                const { start, end } = item;
+
+                const itemText = elementText.slice(start, end);
+                console.log(itemText);
+                elementText = elementText.replace(
+                  itemText,
+                  `<span class="memo">${itemText}</span>`
+                );
+              }
+
+              element.innerHTML = elementText;
+            }
+          }
         }
+        // if (sessionData) {
+        //   const target = document.getElementById(sessionData.target);
+
+        //   const targetText = target.textContent.slice(
+        //     sessionData.start,
+        //     sessionData.end
+        //   );
+
+        //   target.innerHTML = target.textContent.replace(
+        //     targetText,
+        //     `<span class="memo">${targetText}</span>`
+        //   );
+
+        //   // span.innerHTML = target.textContent.replace(target.textContent.slice(sessionData.start, sessionData.end))
+        //   // const range = new Range();
+        // }
 
         // 1. 메모 드래그 관련
         document.addEventListener("mouseup", ({ target }) => {
@@ -230,6 +263,23 @@
 
       // -----------------------------------------------------------------------------------------------------
 
+      function groupedData(data) {
+        const result = {};
+
+        for (let i = 0, len = data.length; i < len; i++) {
+          const item = data[i];
+          const { target } = item;
+
+          if (!result[target]) {
+            result[target] = [];
+          }
+
+          result[target].push(item);
+        }
+
+        return result;
+      }
+
       function highlightSelectedText(target, selection) {
         if (selection.rangeCount > 0) {
           let range = selection.getRangeAt(0);
@@ -259,7 +309,9 @@
             end: range.end,
           };
 
-          sessionStorage.setItem("data", JSON.stringify(memo));
+          const memos = JSON.parse(sessionStorage.getItem("data")) || [];
+          memos.push(memo);
+          sessionStorage.setItem("data", JSON.stringify(memos));
 
           openModal();
         }
@@ -331,6 +383,7 @@
        * 현재 제한 사항
        * 1. 메모가 중복 될 수 없음
        * 2. 메모가 현재 문단을 벗어 날 수 없음
+       * 3. 메모는 두글자 이상
        */
     </script>
   </body>
