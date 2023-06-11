@@ -136,6 +136,27 @@
       window.onload = () => {
         const sessionData = JSON.parse(sessionStorage.getItem("data"));
 
+        const target = document.querySelector("#P-0003");
+        const walker = document.createTreeWalker(
+          target,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+
+        const textNodes = [];
+
+        let currentNode;
+        while ((currentNode = walker.nextNode())) {
+          if (currentNode.textContent.trim()) {
+            textNodes.push(currentNode);
+          }
+        }
+
+        console.log(textNodes);
+
+        return;
+
         if (sessionData && sessionData.length) {
           sessionData.sort((a, b) => {
             if (a.target < b.target) return -1;
@@ -158,34 +179,79 @@
                 const item = items[i];
                 const { start, end } = item;
 
-                const itemText = elementText.slice(start, end);
-                console.log(itemText);
-                elementText = elementText.replace(
-                  itemText,
-                  `<span class="memo">${itemText}</span>`
-                );
+                // selectRangeByCharCount(element, end - start);
+
+                // const range = new Range();
+                // const range = document.createRange();
+
+                // range.setStart(element.firstChild, 2);
+                // range.setEnd(element.firstChild, 3);
+
+                // window.getSelection().removeAllRanges();
+                // window.getSelection().addRange(range);
+
+                // const itemText = elementText.slice(start, end);
+                // console.log(itemText);
+                // elementText = elementText.replace(
+                //   itemText,
+                //   `<span class="memo">${itemText}</span>`
+                // );
               }
 
-              element.innerHTML = elementText;
+              // element.innerHTML = elementText;
             }
           }
         }
-        // if (sessionData) {
-        //   const target = document.getElementById(sessionData.target);
 
-        //   const targetText = target.textContent.slice(
-        //     sessionData.start,
-        //     sessionData.end
-        //   );
+        function getTextNodes(element) {
+          const textNodes = [];
+          const treeWalker = document.createTreeWalker(
+            element,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+          );
 
-        //   target.innerHTML = target.textContent.replace(
-        //     targetText,
-        //     `<span class="memo">${targetText}</span>`
-        //   );
+          let currentNode;
+          while ((currentNode = treeWalker.nextNode())) {
+            textNodes.push(currentNode);
+          }
 
-        //   // span.innerHTML = target.textContent.replace(target.textContent.slice(sessionData.start, sessionData.end))
-        //   // const range = new Range();
-        // }
+          return textNodes;
+        }
+
+        function selectRangeByCharCount(element, charCount) {
+          const textNodes = getTextNodes(element);
+          let count = 0;
+          let startNode;
+          let startOffset;
+          let endNode;
+          let endOffset;
+
+          for (const node of textNodes) {
+            const nodeLength = node.textContent.length;
+            if (count + nodeLength >= charCount) {
+              startNode = node;
+              startOffset = charCount - count;
+              endNode = node;
+              endOffset = startOffset;
+              break;
+            }
+            count += nodeLength;
+          }
+
+          if (startNode && endNode) {
+            const range = document.createRange();
+            range.setStart(startNode, startOffset);
+            range.setEnd(endNode, endOffset);
+
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+        }
+
+        // -----------------------------------------------------------------------------------------------------
 
         // 1. 메모 드래그 관련
         document.addEventListener("mouseup", ({ target }) => {
@@ -283,7 +349,8 @@
       function highlightSelectedText(target, selection) {
         if (selection.rangeCount > 0) {
           let range = selection.getRangeAt(0);
-
+          console.log(range.commonAncestorContainer);
+          console.log(target);
           let preSelectionRange = range.cloneRange();
           preSelectionRange.selectNodeContents(target);
           preSelectionRange.setEnd(range.startContainer, range.startOffset);

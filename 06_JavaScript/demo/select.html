@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>텍스트 선택 예시</title>
+    <script>
+      function selectRangeByCharCount(
+        containerId,
+        startCharCount,
+        endCharCount
+      ) {
+        var container = document.getElementById(containerId);
+        var selection = window.getSelection();
+
+        function traverseNode(node, charCount) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            var nodeLength = node.textContent.length;
+            var end = charCount + nodeLength;
+
+            if (startCharCount >= charCount && startCharCount < end) {
+              var range = document.createRange();
+              console.log(range);
+              range.setStart(node, startCharCount - charCount);
+
+              if (endCharCount <= end) {
+                range.setEnd(node, endCharCount - charCount);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                return true; // 텍스트 선택 완료
+              } else {
+                selection.removeAllRanges();
+                selection.addRange(range);
+                // 다음 텍스트 노드로 이동하기 위해 남은 오프셋 계산
+                startCharCount = end;
+              }
+            }
+            charCount = end;
+          } else {
+            for (var i = 0; i < node.childNodes.length; i++) {
+              var found = traverseNode(node.childNodes[i], charCount);
+              if (found) return true; // 텍스트 선택 완료
+            }
+          }
+          return false; // 텍스트 선택 실패
+        }
+
+        traverseNode(container, 0);
+      }
+
+      function selectText() {
+        // 텍스트를 포함하는 요소의 ID
+        var containerId = "myContainer";
+
+        // 텍스트의 시작과 끝 문자 수
+        var startCharCount = 10;
+        var endCharCount = 20;
+
+        // 텍스트 선택
+        selectRangeByCharCount(containerId, startCharCount, endCharCount);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="myContainer">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas
+      aliquet consectetur.
+    </div>
+    <button onclick="selectText()">텍스트 선택</button>
+  </body>
+</html>
