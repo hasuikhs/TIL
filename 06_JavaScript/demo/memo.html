@@ -148,7 +148,7 @@
 
         let currentNode;
         while ((currentNode = walker.nextNode())) {
-          if (currentNode.textContent.trim()) {
+          if (currentNode.textContent.replace(/^\s*$/g, "").length) {
             textNodes.push(currentNode);
           }
         }
