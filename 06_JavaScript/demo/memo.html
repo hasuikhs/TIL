@@ -26,8 +26,11 @@
       }
       .memo {
         font-style: italic;
-        font-weight: 600;
-        background-color: #f9f9c8;
+        background-color: #f8ca8f;
+      }
+      .memo:hover {
+        text-decoration: underline;
+        cursor: pointer;
       }
       .modal {
         position: absolute;
@@ -43,415 +46,375 @@
         border-radius: 5px;
         border: 1px solid black;
         width: 300px;
-        height: 100px;
+        height: 120px;
         background-color: white;
-        box-shadow: 5px 5px 5px #d6d6d6;
-        transition: ease 0.3s;
+        box-shadow: 5px 5px 5px #D6D6D6;
+        transition: ease 0.5s;
       }
       .memo-input {
+        padding: 5px;
         width: 200px;
-        height: 93px;
         resize: none;
+      }
+      .memo-ing {
+        background-color: #f9f9c8;
+      }
+      .memo-update {
+        background-color: #9cdef8;
+      }
+      .text-notice {
+        position: absolute;
+        top: 107px;
+        left: 158px;
+        pointer-events: none;
+        width: 60px;
+        text-align: right;
+        opacity: 0.6;
       }
     </style>
   </head>
   <body>
     <h1>MEMO TEST</h1>
 
-    <div key="FIELD_OF_THE_INVENTION" id="FIELD_OF_THE_INVENTION">
-      <p>
-        <strong>【Paragraph 1】</strong>
-      </p>
-      <div key="P-0003" id="P-0003">
+    <div id="container">
+      <div key="FIELD_OF_THE_INVENTION" id="FIELD_OF_THE_INVENTION">
         <p>
-          <strong>【0001】</strong>
+          <strong>【Paragraph 1】</strong>
         </p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab asperiores,
-        ullam architecto omnis voluptatum dolor quia, est, saepe earum fugiat
-        consectetur dicta autem corporis nemo delectus totam. Doloremque
-        voluptate molestiae laboriosam possimus sed? Excepturi veritatis,
-        blanditiis ea ratione obcaecati magnam earum magni temporibus officiis
-        error porro incidunt ipsum quae repudiandae expedita fugiat itaque
-        delectus. Ad quisquam provident odio. Quo iste, in explicabo, nulla
-        tempore animi quasi ducimus numquam sint et perferendis ratione
-        accusamus mollitia debitis earum voluptates. Cumque officiis expedita
-        consequuntur libero labore, assumenda, explicabo dicta, maiores hic
-        earum illum modi voluptate consequatur rerum ducimus voluptatum
-        doloribus accusantium animi saepe!
-        <mark
-          data-markjs="true"
-          id="-1204461845-1-1"
-          name="-1204461845-1"
-          class="mark--1204461845 palette-fac76c"
-          >organic</mark
-        >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt,
-        sapiente.
+        <div key="P-0003" id="P-0003">
+          <p>
+            <strong>【0001】</strong>
+          </p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab asperiores, ullam architecto omnis voluptatum dolor quia, est, saepe earum fugiat consectetur dicta autem corporis nemo delectus totam. Doloremque voluptate molestiae laboriosam possimus sed? Excepturi veritatis, blanditiis ea ratione obcaecati magnam earum magni temporibus officiis error porro incidunt ipsum quae repudiandae expedita fugiat itaque delectus. Ad quisquam provident odio. Quo iste, in explicabo, nulla tempore animi quasi ducimus numquam sint et perferendis ratione accusamus mollitia debitis earum voluptates. Cumque officiis expedita consequuntur libero labore, assumenda, explicabo dicta, maiores hic earum illum modi voluptate consequatur rerum ducimus voluptatum doloribus accusantium animi saepe!
+          <mark
+            data-markjs="true"
+            id="-1204461845-1-1"
+            name="-1204461845-1"
+            class="mark--1204461845 palette-fac76c"
+            >organic</mark
+          >
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, sapiente.
+        </div>
       </div>
-    </div>
 
-    <div key="FIELD_OF_THE_INVENTION" id="FIELD_OF_THE_INVENTION_2">
-      <p>
-        <strong>【Paragraph 2】</strong>
-      </p>
-      <div key="P-0004" id="P-0004">
+      <div key="FIELD_OF_THE_INVENTION" id="FIELD_OF_THE_INVENTION_2">
         <p>
-          <strong>【0002】</strong>
+          <strong>【Paragraph 2】</strong>
         </p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur est
-        nemo officiis, qui nam amet enim consequuntur itaque voluptate facilis,
-        blanditiis numquam. Magni, veritatis aperiam a modi labore esse nisi
-        libero cupiditate possimus, tenetur hic corrupti nemo voluptas
-        distinctio deleniti cum quos dolores sapiente temporibus, expedita
-        molestias deserunt consequatur maiores! Excepturi inventore quia illum
-        ipsam corrupti sint suscipit id molestias accusamus rem voluptatum,
-        libero illo dolor fuga exercitationem nam, minima minus assumenda
-        dolores. Aliquam corporis odio illo id ex molestias a tempore explicabo
-        ad, libero sequi fugit ipsa magnam incidunt veritatis nesciunt atque at
-        non eum iusto? Laudantium, molestias eius!
-        <mark
-          data-markjs="true"
-          id="-1204461845-1-1"
-          name="-1204461845-1"
-          class="mark--1204461845 palette-fac76c"
-          >organic</mark
-        >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
-        distinctio modi suscipit quibusdam repellendus, culpa ab dicta ut
-        numquam explicabo?
+        <div key="P-0004" id="P-0004">
+          <p>
+            <strong>【0002】</strong>
+          </p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur est nemo officiis, qui nam amet enim consequuntur itaque voluptate facilis, blanditiis numquam. Magni, veritatis aperiam a modi labore esse nisi libero cupiditate possimus, tenetur hic corrupti nemo voluptas distinctio deleniti cum quos dolores sapiente temporibus, expedita molestias deserunt consequatur maiores! Excepturi inventore quia illum ipsam corrupti sint suscipit id molestias accusamus rem voluptatum, libero illo dolor fuga exercitationem nam, minima minus assumenda dolores. Aliquam corporis odio illo id ex molestias a tempore explicabo ad, libero sequi fugit ipsa magnam incidunt veritatis nesciunt atque at non eum iusto? Laudantium, molestias eius!
+          <mark
+            data-markjs="true"
+            id="-1204461845-1-1"
+            name="-1204461845-1"
+            class="mark--1204461845 palette-fac76c"
+            >organic</mark
+          >
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam distinctio modi suscipit quibusdam repellendus, culpa ab dicta ut numquam explicabo?
+        </div>
       </div>
     </div>
+    
 
     <div id="memo-modal" class="modal">
-      <textarea
-        class="memo-input"
-        placeholder="메모를 입력해주세요."
-        maxlength="100"
-      ></textarea>
+      <textarea class="memo-input" placeholder="메모를 입력해주세요." maxlength="100"></textarea>
+      <div class="text-notice">0/100</div>
       <button class="save-btn" type="button">저장</button>
       <button class="cancel-btn" type="button">취소</button>
     </div>
 
     <script>
+      /*
+       * 현재 제한 사항
+       * 1. 메모가 중복 될 수 없음
+       * 2. 메모가 현재 문단을 벗어 날 수 없음
+       * 3. 드래그한 대상은 2글자 이상일때만 메모 제공
+       */
       window.onload = () => {
-        const sessionData = JSON.parse(sessionStorage.getItem("data"));
+        const memo = new Memo({ documentId: 'test', containerId: 'container' });
+      }
 
-        const target = document.querySelector("#P-0003");
-        const walker = document.createTreeWalker(
-          target,
-          NodeFilter.SHOW_TEXT,
-          null,
-          false
-        );
-
-        const textNodes = [];
-
-        let currentNode;
-        while ((currentNode = walker.nextNode())) {
-          if (currentNode.textContent.replace(/^\s*$/g, "").length) {
-            textNodes.push(currentNode);
-          }
+      function Memo({ documentId, containerId }) {
+        if (!new.target) {
+          throw new Error('Create object using new operator.');
         }
 
-        console.log(textNodes);
+        this.documentId = documentId || '';
 
-        return;
+        this.storage = JSON.parse(sessionStorage.getItem('data')) || [];
 
-        if (sessionData && sessionData.length) {
-          sessionData.sort((a, b) => {
-            if (a.target < b.target) return -1;
-            if (a.target > b.target) return 1;
-            if (a.start > b.start) return -1;
-            if (a.start < b.start) return 1;
-            return 0;
-          });
+        this.target = null;
+        this.parentTarget = null;
 
-          const groupData = groupedData(sessionData);
+        this.selection = null;
+        this.range = null;
+        this.selectedText = null;
+        this.originHtml = null;
 
-          for (const target in groupData) {
-            if (groupData.hasOwnProperty(target)) {
-              const items = groupData[target];
+        this.modal = document.querySelector('#memo-modal');
+        this.modalTextarea = this.modal.querySelector('textarea.memo-input');
+        this.modalSaveBtn = this.modal.querySelector('button.save-btn');
+        this.modalCancelBtn = this.modal.querySelector('button.cancel-btn');
+        this.modalNotice = this.modal.querySelector('div.text-notice');
 
-              const element = document.getElementById(target);
-              let elementText = element.textContent;
+        this.groupedData = data => {
+          const result = {};
 
-              for (let i = 0, len = items.length; i < len; i++) {
-                const item = items[i];
-                const { start, end } = item;
+          for (let i = 0, len = data.length; i < len; i++) {
+            const item = data[i];
+            const { parentId } = item;
 
-                // selectRangeByCharCount(element, end - start);
+            if (!result[parentId]) {
+              result[parentId] = [];
+            }
 
-                // const range = new Range();
-                // const range = document.createRange();
+            result[parentId].push(item);
+          }
 
-                // range.setStart(element.firstChild, 2);
-                // range.setEnd(element.firstChild, 3);
+          return result;
+        }
 
-                // window.getSelection().removeAllRanges();
-                // window.getSelection().addRange(range);
+        this.loadStorage = () => {
+          if (this.storage) {
+            this.storage.sort((a, b) => {
+              if (a.parentId < b.parentId) return -1;
+              if (a.parentId > b.parentId) return 1;
+              if (a.start > b.start) return -1;
+              if (a.start < b.start) return 1;
+              return 0;
+            });
+            const groupData = this.groupedData(this.storage);
 
-                // const itemText = elementText.slice(start, end);
-                // console.log(itemText);
-                // elementText = elementText.replace(
-                //   itemText,
-                //   `<span class="memo">${itemText}</span>`
-                // );
+            for (const groupId in groupData) {
+              if (groupData.hasOwnProperty(groupId)) {
+                const items = groupData[groupId];
+                const element = document.getElementById(groupId);
+                const treeWalker = document.createTreeWalker(
+                  element,
+                  NodeFilter.SHOW_TEXT,
+                  null,
+                  false
+                );
+
+                const textNodes = [];
+                let currentNode;
+                while(currentNode = treeWalker.nextNode()) {
+                  if (currentNode.textContent.replace(/^\s*$/g, '').length) {
+                    textNodes.push(currentNode);
+                  }
+                }
+
+                console.log(textNodes);
+
+                for (let i = 0, len = items.length; i < len; i++) {
+                  const item = items[i];
+                  const { start, end } = item;
+
+                  console.log(start, end)
+                }
+
+                
               }
-
-              // element.innerHTML = elementText;
             }
           }
         }
 
-        function getTextNodes(element) {
+        this.verifyMemo = () => {
+          let has = true;
+          let message = '';
+
+          if (document.querySelector('.memo-ing')) {
+            has = false;
+            message = '이미 메모 작성 중';
+          }
+
+          if (this.target.classList.contains('memo')) {
+            has = false;
+            message = '이미 메모가 존재';
+          }
+
+          const startNode = this.selection.anchorNode.parentNode.closest('li') || this.selection.anchorNode.parentNode.closest('p') || this.selection.anchorNode.parentNode.closest('div');
+          const endNode = this.selection.focusNode.parentNode.closest('li') ||this.selection.focusNode.parentNode.closest('p') || this.selection.focusNode.parentNode.closest('div');
+
+          if (startNode !== endNode) {
+            has = false;
+            message = '메모는 한 문단 안에서만 가능';
+          }
+
+          if (has && this.selection.rangeCount > 0) {
+            const range = this.selection.getRangeAt(0);
+            const textNodes = this.getTextNodesWithinRange(range);
+
+            for (let i = 0, len = textNodes.length; i < len; i++) {
+              const node = textNodes[i];
+
+              if (node.parentNode && parentNode.classList.contains('memo')) {
+                has = false;
+                message = '기존 메모와 겹쳐서는 안 됨';
+                break;
+              }
+            }
+          }
+
+          return { has, message };
+        }
+
+        this.getTextNodesWithinRange = range => {
           const textNodes = [];
           const treeWalker = document.createTreeWalker(
-            element,
+            range.commonAncestorContainer,
             NodeFilter.SHOW_TEXT,
             null,
             false
           );
 
           let currentNode;
-          while ((currentNode = treeWalker.nextNode())) {
-            textNodes.push(currentNode);
+          while (currentNode = treeWalker.nextNode()) {
+            if (range.intersectsNode(currentNode)) {
+              textNodes.push(currentNode);
+            }
           }
 
           return textNodes;
         }
 
-        function selectRangeByCharCount(element, charCount) {
-          const textNodes = getTextNodes(element);
-          let count = 0;
-          let startNode;
-          let startOffset;
-          let endNode;
-          let endOffset;
+        this.highlightSelectedTextAndOpenModal = () => {
+          if (this.selection.rangeCount > 0) {
+            this.range = this.selection.getRangeAt(0);
+            const preSelectionRange = this.range.cloneRange();
 
-          for (const node of textNodes) {
-            const nodeLength = node.textContent.length;
-            if (count + nodeLength >= charCount) {
-              startNode = node;
-              startOffset = charCount - count;
-              endNode = node;
-              endOffset = startOffset;
-              break;
+            preSelectionRange.selectNodeContents(this.target);
+            preSelectionRange.setEnd(this.range.startContainer, this.range.startOffset);
+
+            const serializer = new XMLSerializer();
+            this.originHtml = serializer.serializeToString(this.range.cloneContents());
+
+            this.range.start = preSelectionRange.toString().length;
+            this.range.end = this.range.start + this.range.toString().length;
+            
+            // 선택된 텍스트 하이라이트
+            const span = document.createElement('span');
+            span.classList.add('memo');
+            span.classList.add('memo-ing');
+            span.appendChild(this.range.extractContents());
+            this.range.insertNode(span);
+
+            // 타겟 변경
+            this.target = span;
+            // 선택 해제
+            this.selection.removeAllRanges();
+
+            this.openModal();
+          }
+        }
+
+        this.openModal = () => {
+          this.modal.style.opacity = 1;
+          this.modal.style.visibility = 'visible';
+          this.modal.style.pointerEvents = 'auto';
+          this.modalTextarea.focus();
+        }
+
+        this.hideModal = () => {
+          this.modal.style.opacity = 0;
+          this.modal.visibility = 'hidden';
+          this.modal.style.pointerEvents = 'none';
+          this.modalTextarea.value = '';
+          this.modalNotice.innerText = '0/100';
+        }
+
+        this.setEvent = () => {
+          this.setEventSaveButton();
+          this.setEventCancelButton();
+          this.setEventTextarea();
+        }
+
+        this.setEventTextarea = () => {
+          this.modalTextarea.addEventListener('keyup', () => {
+            this.modalNotice.innerText = `${ this.modalTextarea.value.length || 0 }/100`;
+          });
+        }
+
+        this.setEventSaveButton = () => {
+          this.modalSaveBtn.addEventListener('click', () => {
+            const memoText = this.modalTextarea.value;
+
+            if (memoText.trim().length === 0) {
+              return alert('메모 입력되지 않음');
             }
-            count += nodeLength;
-          }
 
-          if (startNode && endNode) {
-            const range = document.createRange();
-            range.setStart(startNode, startOffset);
-            range.setEnd(endNode, endOffset);
+            if (this.target) {
+              const data = {
+                documentId: this.documentId,
+                parentId: this.parentTarget.id,
+                targetText: this.selectedText,
+                start: this.range.start,
+                end: this.range.end,
+                memoText
+              };
 
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-          }
-        }
+              this.target.classList.remove('memo-ing');
 
-        // -----------------------------------------------------------------------------------------------------
+              this.storage.push(data);
 
-        // 1. 메모 드래그 관련
-        document.addEventListener("mouseup", ({ target }) => {
-          const selection = window.getSelection();
-          const selectedText = selection.toString().trim();
-          if (!selectedText) {
-            return;
-          }
-
-          const { has, message } = getMemoEnableObject(target, selection);
-          if (!has) {
-            alert(message);
-            return selection.removeAllRanges();
-          }
-
-          const parentTarget = target.closest("div[id]");
-          if (selectedText) {
-            highlightSelectedText(parentTarget, selection);
-          }
-        });
-
-        // 2. 모달 관련
-        const modalSaveBtn = document.querySelector(
-          "#memo-modal > button.save-btn"
-        );
-        const modalCancelBtn = document.querySelector(
-          "#memo-modal > button.cancel-btn"
-        );
-
-        // 2.1 모달 저장 버튼
-        modalSaveBtn.addEventListener("click", () => {
-          const memoText = document.querySelector(
-            "#memo-modal > textarea.memo-input"
-          ).value;
-
-          const data = {
-            documentId: "test",
-            memoText,
-          };
-
-          // sessionStorage.setItem('saveData', JSON.stringify(data));
-
-          hideModal();
-        });
-
-        // 2.2 모달 취소 버튼
-        modalCancelBtn.addEventListener("click", () => {
-          hideModal();
-        });
-      };
-
-      // -----------------------------------------------------------------------------------------------------
-
-      /*
-       * function 모달 숨기기
-       */
-      function hideModal() {
-        const modal = document.querySelector("#memo-modal");
-
-        modal.style.opacity = 0;
-        modal.style.visibility = "hidden";
-        modal.querySelector("textarea.memo-input").value = "";
-      }
-
-      /*
-       * function 모달 열기
-       */
-      function openModal() {
-        const modal = document.querySelector("#memo-modal");
-
-        modal.style.opacity = 1;
-        modal.style.visibility = "visible";
-        modal.querySelector("textarea.memo-input").focus();
-      }
-
-      // -----------------------------------------------------------------------------------------------------
-
-      function groupedData(data) {
-        const result = {};
-
-        for (let i = 0, len = data.length; i < len; i++) {
-          const item = data[i];
-          const { target } = item;
-
-          if (!result[target]) {
-            result[target] = [];
-          }
-
-          result[target].push(item);
-        }
-
-        return result;
-      }
-
-      function highlightSelectedText(target, selection) {
-        if (selection.rangeCount > 0) {
-          let range = selection.getRangeAt(0);
-          console.log(range.commonAncestorContainer);
-          console.log(target);
-          let preSelectionRange = range.cloneRange();
-          preSelectionRange.selectNodeContents(target);
-          preSelectionRange.setEnd(range.startContainer, range.startOffset);
-
-          range.start = preSelectionRange.toString().length;
-          range.end = range.start + range.toString().length;
-
-          // console.log(range.toString())
-
-          // 선택된 텍스트를 굵게 표시하기 위해 span 태그로 감싸기
-          let span = document.createElement("span");
-          span.className = "memo";
-          span.appendChild(range.extractContents());
-          range.insertNode(span);
-
-          // 선택 해제
-          selection.removeAllRanges();
-
-          console.log(range);
-          const memo = {
-            target: target.id,
-            start: range.start,
-            end: range.end,
-          };
-
-          const memos = JSON.parse(sessionStorage.getItem("data")) || [];
-          memos.push(memo);
-          sessionStorage.setItem("data", JSON.stringify(memos));
-
-          openModal();
-        }
-      }
-
-      function getMemoEnableObject(element, selection) {
-        let has = true;
-        let message = "";
-
-        if (document.querySelector("#memo-modal").style.opacity === "1") {
-          has = false;
-          message = "이미 메모가 진행 중";
-        }
-
-        if (element.classList.contains("memo")) {
-          has = false;
-          message = "이미 메모가 존재";
-        }
-
-        if (
-          selection.anchorNode.parentNode.closest("p") !==
-          selection.focusNode.parentNode.closest("p")
-        ) {
-          has = false;
-          message = "메모는 한 문단 안에서만 가능";
-        }
-
-        if (has && selection.rangeCount > 0) {
-          const range = selection.getRangeAt(0);
-
-          let textNodes = getTextNodesWithinRange(range);
-
-          for (let i = 0; i < textNodes.length; i++) {
-            const node = textNodes[i];
-            if (
-              node.parentNode.classList &&
-              node.parentNode.classList.contains("memo")
-            ) {
-              has = false;
-              message = "메모는 중복 적용 불가능";
-              break;
+              sessionStorage.setItem('data', JSON.stringify(this.storage));
             }
-          }
+
+            this.hideModal();
+          });
         }
 
-        return { has, message };
-      }
+        this.setEventCancelButton = () => {
+          this.modalCancelBtn.addEventListener('click', () => {
+            const isUpdate = this.target.classList.contains('.memo-update');
 
-      function getTextNodesWithinRange(range) {
-        const textNodes = [];
-        const treeWalker = document.createTreeWalker(
-          range.commonAncestorContainer,
-          NodeFilter.SHOW_TEXT,
-          null,
-          false
-        );
+            if (isUpdate) {
+              this.target.classList.remove('.memo-update');
+            } else if (this.target) {
+              const targetHtml = this.target.outerHTML;
 
-        let currentNode;
-        while ((currentNode = treeWalker.nextNode())) {
-          if (range.intersectsNode(currentNode)) {
-            textNodes.push(currentNode);
-          }
+              // 취소시 현재 하이라이트 태그 지우기
+              this.parentTarget.outerHTML = this.parentTarget.outerHTML.replace(targetHtml, this.originHtml);
+            }
+
+            this.hideModal();
+          });
         }
 
-        return textNodes;
-      }
+        this.init = () => {
+          this.loadStorage();
 
-      /*
-       * 현재 제한 사항
-       * 1. 메모가 중복 될 수 없음
-       * 2. 메모가 현재 문단을 벗어 날 수 없음
-       * 3. 메모는 두글자 이상
-       */
+          document.getElementById(containerId).addEventListener('mouseup', ({ target }) => {
+            this.selection = window.getSelection();
+            this.selectedText = this.selection.toString();
+
+            this.target = target;
+            this.parentTarget = this.target.closest('div[id]');
+
+            if (!this.selectedText.trim() || this.selectedText.trim().length < 2) {
+              return;
+            }
+
+            const { has, message } = this.verifyMemo();
+
+            if (!has) {
+              alert(message);
+              return this.selection.removeAllRanges();
+            }
+
+            if (this.selectedText) {
+              this.highlightSelectedTextAndOpenModal();
+            }
+          });
+
+          this.setEvent();
+        }
+
+        this.init();
+      }
     </script>
   </body>
 </html>
