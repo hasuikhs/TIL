@@ -49,7 +49,7 @@
         width: 300px;
         height: 120px;
         background-color: white;
-        box-shadow: 5px 5px 5px #D6D6D6;
+        box-shadow: 5px 5px 5px #d6d6d6;
         transition: ease 0.5s;
       }
       .memo-input {
@@ -101,7 +101,19 @@
           <p>
             <strong>【0001】</strong>
           </p>
-          Lorem ipsum dolor <span class="memo">sit</span> amet consectetur adipisicing elit. Ab asperiores, ullam architecto omnis voluptatum dolor quia, est, saepe earum fugiat consectetur dicta autem corporis nemo delectus totam. Doloremque voluptate molestiae laboriosam possimus sed? Excepturi veritatis, blanditiis ea ratione obcaecati magnam earum magni temporibus officiis error porro incidunt ipsum quae repudiandae expedita fugiat itaque delectus. Ad quisquam provident odio. Quo iste, in explicabo, nulla tempore animi quasi ducimus numquam sint et perferendis ratione accusamus mollitia debitis earum voluptates. Cumque officiis expedita consequuntur libero labore, assumenda, explicabo dicta, maiores hic earum illum modi voluptate consequatur rerum ducimus voluptatum doloribus accusantium animi saepe!
+          Lorem ipsum dolor <span class="memo">sit</span> amet consectetur
+          adipisicing elit. Ab asperiores, ullam architecto omnis voluptatum
+          dolor quia, est, saepe earum fugiat consectetur dicta autem corporis
+          nemo delectus totam. Doloremque voluptate molestiae laboriosam
+          possimus sed? Excepturi veritatis, blanditiis ea ratione obcaecati
+          magnam earum magni temporibus officiis error porro incidunt ipsum quae
+          repudiandae expedita fugiat itaque delectus. Ad quisquam provident
+          odio. Quo iste, in explicabo, nulla tempore animi quasi ducimus
+          numquam sint et perferendis ratione accusamus mollitia debitis earum
+          voluptates. Cumque officiis expedita consequuntur libero labore,
+          assumenda, explicabo dicta, maiores hic earum illum modi voluptate
+          consequatur rerum ducimus voluptatum doloribus accusantium animi
+          saepe!
           <mark
             data-markjs="true"
             id="-1204461845-1-1"
@@ -109,7 +121,8 @@
             class="mark--1204461845 palette-fac76c"
             >organic</mark
           >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, sapiente.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt,
+          sapiente.
         </div>
       </div>
 
@@ -121,7 +134,17 @@
           <p>
             <strong>【0002】</strong>
           </p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur est nemo officiis, qui nam amet enim consequuntur itaque voluptate facilis, blanditiis numquam. Magni, veritatis aperiam a modi labore esse nisi libero cupiditate possimus, tenetur hic corrupti nemo voluptas distinctio deleniti cum quos dolores sapiente temporibus, expedita molestias deserunt consequatur maiores! Excepturi inventore quia illum ipsam corrupti sint suscipit id molestias accusamus rem voluptatum, libero illo dolor fuga exercitationem nam, minima minus assumenda dolores. Aliquam corporis odio illo id ex molestias a tempore explicabo ad, libero sequi fugit ipsa magnam incidunt veritatis nesciunt atque at non eum iusto? Laudantium, molestias eius!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur est
+          nemo officiis, qui nam amet enim consequuntur itaque voluptate
+          facilis, blanditiis numquam. Magni, veritatis aperiam a modi labore
+          esse nisi libero cupiditate possimus, tenetur hic corrupti nemo
+          voluptas distinctio deleniti cum quos dolores sapiente temporibus,
+          expedita molestias deserunt consequatur maiores! Excepturi inventore
+          quia illum ipsam corrupti sint suscipit id molestias accusamus rem
+          voluptatum, libero illo dolor fuga exercitationem nam, minima minus
+          assumenda dolores. Aliquam corporis odio illo id ex molestias a
+          tempore explicabo ad, libero sequi fugit ipsa magnam incidunt
+          veritatis nesciunt atque at non eum iusto? Laudantium, molestias eius!
           <mark
             data-markjs="true"
             id="-1204461845-1-1"
@@ -129,14 +152,19 @@
             class="mark--1204461845 palette-fac76c"
             >organic</mark
           >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam distinctio modi suscipit quibusdam repellendus, culpa ab dicta ut numquam explicabo?
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+          distinctio modi suscipit quibusdam repellendus, culpa ab dicta ut
+          numquam explicabo?
         </div>
       </div>
     </div>
-    
 
     <div id="memo-modal" class="modal">
-      <textarea class="memo-input" placeholder="메모를 입력해주세요." maxlength="100"></textarea>
+      <textarea
+        class="memo-input"
+        placeholder="메모를 입력해주세요."
+        maxlength="100"
+      ></textarea>
       <div class="text-notice">0/100</div>
       <button class="save-btn" type="button">저장</button>
       <button class="cancel-btn" type="button">취소</button>
@@ -154,21 +182,21 @@
        * 3. 드래그한 대상은 2글자 이상일때만 메모 제공
        */
       window.onload = () => {
-        const memo = new Memo({ documentId: 'test', containerId: 'container' });
-      }
+        const memo = new Memo({ documentId: "test", containerId: "container" });
+      };
 
       function Memo({ documentId, containerId }) {
         if (!new.target) {
-          throw new Error('Create object using new operator.');
+          throw new Error("Create object using new operator.");
         }
 
         const COMMON_REGEX = /\s{2,}/g;
 
-        this.documentId = documentId || '';
+        this.documentId = documentId || "";
 
         this.container = document.getElementById(containerId);
 
-        this.storage = JSON.parse(sessionStorage.getItem('data')) || [];
+        this.storage = JSON.parse(sessionStorage.getItem("data")) || [];
 
         this.target = null;
         this.parentTarget = null;
@@ -178,17 +206,16 @@
         this.selectedText = null;
         this.originHtml = null;
 
-        this.modal = document.getElementById('memo-modal');
-        this.modalTextarea = this.modal.querySelector('textarea.memo-input');
-        this.modalSaveBtn = this.modal.querySelector('button.save-btn');
-        this.modalCancelBtn = this.modal.querySelector('button.cancel-btn');
-        this.modalNotice = this.modal.querySelector('div.text-notice');
+        this.modal = document.getElementById("memo-modal");
+        this.modalTextarea = this.modal.querySelector("textarea.memo-input");
+        this.modalSaveBtn = this.modal.querySelector("button.save-btn");
+        this.modalCancelBtn = this.modal.querySelector("button.cancel-btn");
+        this.modalNotice = this.modal.querySelector("div.text-notice");
 
-        this.mousePopup = document.getElementById('memo-popup');
+        this.mousePopup = document.getElementById("memo-popup");
         this.isMousePopupOver = false;
 
-
-        this.groupedData = data => {
+        this.groupedData = (data) => {
           const result = {};
 
           for (let i = 0, len = data.length; i < len; i++) {
@@ -203,10 +230,10 @@
           }
 
           return result;
-        }
+        };
 
         this.highlightStorageMemo = (element, start, end) => {
-          if (end < start) throw new Error('Incorrect data');
+          if (end < start) throw new Error("Incorrect data");
 
           const treeWalker = document.createTreeWalker(
             element,
@@ -218,8 +245,8 @@
           let desiredLength = end - start;
 
           let currentNode;
-          while (currentNode = treeWalker.nextNode()) {
-            let nodeText = currentNode.nodeValue.replace(COMMON_REGEX, '');
+          while ((currentNode = treeWalker.nextNode())) {
+            let nodeText = currentNode.nodeValue.replace(COMMON_REGEX, "");
             const nodeTextLength = nodeText.length;
 
             if (!nodeText) continue;
@@ -238,22 +265,25 @@
                 const beforeTextNode = document.createTextNode(beforeText);
                 const afterTextNode = document.createTextNode(afterText);
 
-                const targetTextNode = document.createElement('span');
-                targetTextNode.className = 'memo';
+                const targetTextNode = document.createElement("span");
+                targetTextNode.className = "memo";
                 targetTextNode.textContent = targetText;
 
                 parentNode.replaceChild(afterTextNode, currentNode);
                 parentNode.insertBefore(targetTextNode, afterTextNode);
                 parentNode.insertBefore(beforeTextNode, targetTextNode);
 
+                end = afterText.length;
+
+                this.highlightStorageMemo(element, 0, end);
+
                 break;
               }
-
             } else {
               break;
             }
           }
-        }
+        };
 
         this.loadStorageAndHighlight = () => {
           if (this.storage && this.storage.length) {
@@ -276,34 +306,40 @@
                   const item = items[i];
                   const { start, end, targetText } = item;
 
-                  console.log(start, end, targetText)
+                  console.log(start, end, targetText);
                   this.highlightStorageMemo(element, start, end);
                 }
               }
             }
           }
-        }
+        };
 
         this.verifyMemo = (selection, range) => {
           let possible = true;
-          let message = '';
+          let message = "";
 
-          if (document.querySelector('.memo-ing')) {
+          if (document.querySelector(".memo-ing")) {
             possible = false;
-            message = '이미 메모 작성 중';
+            message = "이미 메모 작성 중";
           }
 
-          if (this.target.classList.contains('memo')) {
+          if (this.target.classList.contains("memo")) {
             possible = false;
-            message = '이미 메모가 존재';
+            message = "이미 메모가 존재";
           }
 
-          const startNode = selection.anchorNode.parentNode.closest('li') || selection.anchorNode.parentNode.closest('p') || selection.anchorNode.parentNode.closest('div');
-          const endNode = selection.focusNode.parentNode.closest('li') || selection.focusNode.parentNode.closest('p') || selection.focusNode.parentNode.closest('div');
+          const startNode =
+            selection.anchorNode.parentNode.closest("li") ||
+            selection.anchorNode.parentNode.closest("p") ||
+            selection.anchorNode.parentNode.closest("div");
+          const endNode =
+            selection.focusNode.parentNode.closest("li") ||
+            selection.focusNode.parentNode.closest("p") ||
+            selection.focusNode.parentNode.closest("div");
 
           if (startNode !== endNode) {
             possible = false;
-            message = '메모는 한 문단 안에서만 가능';
+            message = "메모는 한 문단 안에서만 가능";
           }
 
           if (possible && range) {
@@ -312,18 +348,18 @@
             for (let i = 0, len = textNodes.length; i < len; i++) {
               const node = textNodes[i];
 
-              if (node.parentNode.classList.contains('memo')) {
+              if (node.parentNode.classList.contains("memo")) {
                 possible = false;
-                message = '기존 메모와 겹쳐서는 안 됨';
+                message = "기존 메모와 겹쳐서는 안 됨";
                 break;
               }
             }
           }
 
           return { possible, message };
-        }
+        };
 
-        this.getTextNodesWithinRange = range => {
+        this.getTextNodesWithinRange = (range) => {
           const textNodes = [];
           const treeWalker = document.createTreeWalker(
             range.commonAncestorContainer,
@@ -333,14 +369,14 @@
           );
 
           let currentNode;
-          while (currentNode = treeWalker.nextNode()) {
+          while ((currentNode = treeWalker.nextNode())) {
             if (range.intersectsNode(currentNode)) {
               textNodes.push(currentNode);
             }
           }
 
           return textNodes;
-        }
+        };
 
         this.highlightSelectedTextAndOpenModal = () => {
           this.selection = window.getSelection();
@@ -352,18 +388,25 @@
             const preSelectionRange = this.range.cloneRange();
 
             preSelectionRange.selectNodeContents(this.target);
-            preSelectionRange.setEnd(this.range.startContainer, this.range.startOffset);
+            preSelectionRange.setEnd(
+              this.range.startContainer,
+              this.range.startOffset
+            );
 
             const serializer = new XMLSerializer();
-            this.originHtml = serializer.serializeToString(this.range.cloneContents());
+            this.originHtml = serializer.serializeToString(
+              this.range.cloneContents()
+            );
 
-            this.range.start = preSelectionRange.toString().replace(COMMON_REGEX, '').length;
+            this.range.start = preSelectionRange
+              .toString()
+              .replace(COMMON_REGEX, "").length;
             this.range.end = this.range.start + this.range.toString().length;
-            
+
             // 선택된 텍스트 하이라이트
-            const span = document.createElement('span');
-            span.classList.add('memo');
-            span.classList.add('memo-ing');
+            const span = document.createElement("span");
+            span.classList.add("memo");
+            span.classList.add("memo-ing");
             span.appendChild(this.range.extractContents());
             this.range.insertNode(span);
 
@@ -374,45 +417,47 @@
 
             this.openModal();
           }
-        }
+        };
 
         this.openModal = () => {
           this.modal.style.opacity = 1;
-          this.modal.style.visibility = 'visible';
-          this.modal.style.pointerEvents = 'auto';
+          this.modal.style.visibility = "visible";
+          this.modal.style.pointerEvents = "auto";
           this.modalTextarea.focus();
-        }
+        };
 
         this.hideModal = () => {
           this.modal.style.opacity = 0;
-          this.modal.visibility = 'hidden';
-          this.modal.style.pointerEvents = 'none';
-          this.modalTextarea.value = '';
-          this.modalNotice.innerText = '0/100';
-        }
+          this.modal.visibility = "hidden";
+          this.modal.style.pointerEvents = "none";
+          this.modalTextarea.value = "";
+          this.modalNotice.innerText = "0/100";
+        };
 
         this.setEvent = () => {
           this.setEventSaveButton();
           this.setEventCancelButton();
           this.setEventTextarea();
           this.setEventMousePopup();
-        }
+        };
 
         this.setEventTextarea = () => {
-          this.modalTextarea.addEventListener('keyup', () => {
-            this.modalNotice.innerText = `${ this.modalTextarea.value.length || 0 }/100`;
+          this.modalTextarea.addEventListener("keyup", () => {
+            this.modalNotice.innerText = `${
+              this.modalTextarea.value.length || 0
+            }/100`;
           });
-        }
+        };
 
         this.setEventSaveButton = () => {
-          this.modalSaveBtn.addEventListener('click', () => {
+          this.modalSaveBtn.addEventListener("click", () => {
             const memoText = this.modalTextarea.value;
 
             if (memoText.trim().length === 0) {
-              return alert('메모 입력되지 않음');
+              return alert("메모 입력되지 않음");
             }
 
-            console.log(this.range)
+            console.log(this.range);
             if (this.target) {
               const data = {
                 documentId: this.documentId,
@@ -420,70 +465,73 @@
                 targetText: this.selectedText,
                 start: this.range.start,
                 end: this.range.end,
-                memoText
+                memoText,
               };
 
-              this.target.classList.remove('memo-ing');
+              this.target.classList.remove("memo-ing");
 
               this.storage.push(data);
 
-              sessionStorage.setItem('data', JSON.stringify(this.storage));
+              sessionStorage.setItem("data", JSON.stringify(this.storage));
             }
 
             this.hideModal();
           });
-        }
+        };
 
         this.setEventCancelButton = () => {
-          this.modalCancelBtn.addEventListener('click', () => {
-            const isUpdate = this.target.classList.contains('.memo-update');
+          this.modalCancelBtn.addEventListener("click", () => {
+            const isUpdate = this.target.classList.contains(".memo-update");
 
             if (isUpdate) {
-              this.target.classList.remove('.memo-update');
+              this.target.classList.remove(".memo-update");
             } else if (this.target) {
               const targetHtml = this.target.outerHTML;
 
               // 취소시 현재 하이라이트 태그 지우기
-              this.parentTarget.outerHTML = this.parentTarget.outerHTML.replace(targetHtml, this.originHtml);
+              this.parentTarget.outerHTML = this.parentTarget.outerHTML.replace(
+                targetHtml,
+                this.originHtml
+              );
             }
 
             this.hideModal();
           });
-        }
+        };
 
         this.setEventMousePopup = () => {
-          this.mousePopup.addEventListener('mouseover', event => {
+          this.mousePopup.addEventListener("mouseover", (event) => {
             this.isMousePopupOver = true;
           });
 
-          this.mousePopup.addEventListener('mouseout', event => {
+          this.mousePopup.addEventListener("mouseout", (event) => {
             this.isMousePopupOver = false;
           });
 
-          this.mousePopup.addEventListener('click', event => {
-            this.mousePopup.style.display = 'none';
-            
+          this.mousePopup.addEventListener("click", (event) => {
+            this.mousePopup.style.display = "none";
+
             this.highlightSelectedTextAndOpenModal();
           });
 
-          document.addEventListener('mousedown', event => {
+          document.addEventListener("mousedown", (event) => {
             if (!this.isMousePopupOver) {
-              this.mousePopup.style.display = 'none';
+              this.mousePopup.style.display = "none";
             }
           });
-        }
+        };
 
         this.init = () => {
           this.loadStorageAndHighlight();
 
-          this.container.addEventListener('mouseup', event => {
+          this.container.addEventListener("mouseup", (event) => {
             const selection = window.getSelection();
             const selectedText = selection.toString();
 
             const range = selection.getRangeAt(0);
-            
+
             this.target = event.target;
-            this.parentTarget = this.target.closest('div[id]');
+            this.parentTarget = this.target.closest("div[id]");
 
             if (!selectedText.trim() || selectedText.trim().length < 2) {
               return;
@@ -492,15 +540,17 @@
             const { possible, message } = this.verifyMemo(selection, range);
 
             if (possible) {
-              this.mousePopup.style.display = 'block';
-              this.mousePopup.style.position = 'absolute';
-              this.mousePopup.style.left = `${ event.x - (window.innerWidth > event.x + 40 ? 0 : 40)}px`
-              this.mousePopup.style.top = `${ event.y }px`;
+              this.mousePopup.style.display = "block";
+              this.mousePopup.style.position = "absolute";
+              this.mousePopup.style.left = `${
+                event.x - (window.innerWidth > event.x + 40 ? 0 : 40)
+              }px`;
+              this.mousePopup.style.top = `${event.y}px`;
             }
           });
 
           this.setEvent();
-        }
+        };
 
         this.init();
       }
