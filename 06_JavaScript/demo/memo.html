@@ -275,41 +275,21 @@
               // 시작점이 현재 텍스트 노드의 길이보다 큰 경우, 시작점과 종료점을 조정합니다.
               start -= nodeTextLength;
               end -= nodeTextLength;
-            } else if (end > nodeTextLength) {
-              // 시작점은 현재 텍스트 노드의 길이보다 작지만 종료점이 현재 텍스트 노드의 길이보다 큰 경우, 일부 텍스트만 감싸고 다음 텍스트 노드로 이동합니다.
+            } else {
               let parentNode = currentNode.parentNode;
-
               const beforeText = nodeText.substring(0, start);
-              const targetText = nodeText.substring(start);
-              const afterTextNode = document.createTextNode('');
-
-              const targetTextNode = document.createElement('span');
-              targetTextNode.className = 'memo';
-              targetTextNode.textContent = targetText;
-
-              parentNode.replaceChild(targetTextNode, currentNode);
-              parentNode.insertBefore(afterTextNode, targetTextNode);
-              parentNode.insertBefore(
-                document.createTextNode(beforeText),
-                targetTextNode
+              const targetText = nodeText.substring(
+                start,
+                Math.min(end, nodeTextLength)
+              );
+              const afterText = nodeText.substring(
+                Math.min(end, nodeTextLength)
               );
 
-              // 다음 텍스트 노드로 이동하기 위해 종료점을 0으로 설정합니다.
-              end = 0;
-
-              break;
-            } else {
-              // 시작점과 종료점이 모두 현재 텍스트 노드 내부에 있는 경우, 해당 텍스트를 span 태그로 감싸고 종료합니다.
-              let parentNode = currentNode.parentNode;
-
-              const beforeText = nodeText.substring(0, start);
-              const targetText = nodeText.substring(start, end);
-              const afterText = nodeText.substring(end);
-
               const beforeTextNode = document.createTextNode(beforeText);
+              const targetTextNode = document.createElement('span');
               const afterTextNode = document.createTextNode(afterText);
 
-              const targetTextNode = document.createElement('span');
               targetTextNode.className = 'memo';
               targetTextNode.textContent = targetText;
 
@@ -317,7 +297,12 @@
               parentNode.insertBefore(targetTextNode, afterTextNode);
               parentNode.insertBefore(beforeTextNode, targetTextNode);
 
-              break;
+              start = 0;
+              end -= targetText.length;
+
+              if (end <= 0) {
+                break;
+              }
             }
           }
           // let currLength = 0;
