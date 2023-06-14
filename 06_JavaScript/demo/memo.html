@@ -101,19 +101,19 @@
           <p>
             <strong>【0001】</strong>
           </p>
-          Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Ab asperiores, ullam architecto omnis voluptatum
-          dolor quia, est, saepe earum fugiat consectetur dicta autem corporis
-          nemo delectus totam. Doloremque voluptate molestiae laboriosam
-          possimus sed? Excepturi veritatis, blanditiis ea ratione obcaecati
-          magnam earum magni temporibus officiis error porro incidunt ipsum quae
-          repudiandae expedita fugiat itaque <span class="memo">memo test</span> delectus. Ad quisquam provident
-          odio. Quo iste, in explicabo, nulla tempore animi quasi ducimus
-          numquam sint et perferendis ratione accusamus mollitia debitis earum
-          voluptates. Cumque officiis expedita consequuntur libero labore,
-          assumenda, explicabo dicta, maiores hic earum illum modi voluptate
-          consequatur rerum ducimus voluptatum doloribus accusantium animi
-          saepe!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
+          asperiores, ullam architecto omnis voluptatum dolor quia, est, saepe
+          earum fugiat consectetur dicta autem corporis nemo delectus totam.
+          Doloremque voluptate molestiae laboriosam possimus sed? Excepturi
+          veritatis, blanditiis ea ratione obcaecati magnam earum magni
+          temporibus officiis error porro incidunt ipsum quae repudiandae
+          expedita fugiat itaque <span class="memo">memo test</span> delectus.
+          Ad quisquam provident odio. Quo iste, in explicabo, nulla tempore
+          animi quasi ducimus numquam sint et perferendis ratione accusamus
+          mollitia debitis earum voluptates. Cumque officiis expedita
+          consequuntur libero labore, assumenda, explicabo dicta, maiores hic
+          earum illum modi voluptate consequatur rerum ducimus voluptatum
+          doloribus accusantium animi saepe!
           <mark
             data-markjs="true"
             id="-1204461845-1-1"
@@ -161,7 +161,11 @@
         </p>
         <div num="0003">
           <div>【0003】</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione ipsam placeat sapiente consequatur repudiandae, numquam similique, ad vel tempore dolorem eaque explicabo id temporibus voluptatibus quis harum ea saepe perferendis nulla corrupti? Iste fuga excepturi voluptate recusandae molestias, dolores numquam.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione ipsam
+          placeat sapiente consequatur repudiandae, numquam similique, ad vel
+          tempore dolorem eaque explicabo id temporibus voluptatibus quis harum
+          ea saepe perferendis nulla corrupti? Iste fuga excepturi voluptate
+          recusandae molestias, dolores numquam.
         </div>
       </div>
     </div>
@@ -198,36 +202,36 @@
         }
 
         const COMMON_REGEX = /\s{2,}/g;
-        const MEMO_CLASSNAME        = 'memo';
-        const MEMO_ING_CLASSNAME    = 'memo-ing';
-        const MEMO_UPDATE_CLASSNAME = 'memo-update'
+        const MEMO_CLASSNAME = 'memo';
+        const MEMO_ING_CLASSNAME = 'memo-ing';
+        const MEMO_UPDATE_CLASSNAME = 'memo-update';
 
         this.isDragging = false;
 
         this.documentId = documentId || '';
-        this.container  = document.getElementById(containerId);
+        this.container = document.getElementById(containerId);
 
-        this.storage    = JSON.parse(sessionStorage.getItem('data')) || [];
+        this.storage = JSON.parse(sessionStorage.getItem('data')) || [];
 
-        this.target       = null;
+        this.target = null;
         this.parentTarget = null;
 
-        this.selection    = null;
-        this.range        = null;
+        this.selection = null;
+        this.range = null;
         this.selectedText = null;
-        this.originHtml   = null;
+        this.originHtml = null;
 
-        this.modal          = document.getElementById('memo-modal');
-        this.modalTextarea  = this.modal.querySelector('textarea.memo-input');
-        this.modalSaveBtn   = this.modal.querySelector('button.save-btn');
+        this.modal = document.getElementById('memo-modal');
+        this.modalTextarea = this.modal.querySelector('textarea.memo-input');
+        this.modalSaveBtn = this.modal.querySelector('button.save-btn');
         this.modalCancelBtn = this.modal.querySelector('button.cancel-btn');
-        this.modalNotice    = this.modal.querySelector('div.text-notice');
+        this.modalNotice = this.modal.querySelector('div.text-notice');
 
-        this.mousePopup   = document.getElementById('memo-popup');
+        this.mousePopup = document.getElementById('memo-popup');
         this.isPopupHover = false;
 
         this.tmpStart = 0;
-        this.tmpEnd   = 0;
+        this.tmpEnd = 0;
 
         this.groupedData = (data) => {
           const result = {};
@@ -246,13 +250,11 @@
           return result;
         };
 
-        this.removeHighlightElement = () => {
-
-        }
+        this.removeHighlightElement = () => {};
 
         this.addHighlightElement = (element, start, end, classNames = []) => {
           if (end < start) throw new Error('Incorrect data');
-          console.log(start, end)
+          console.log(start, end);
 
           const treeWalker = document.createTreeWalker(
             element,
@@ -260,90 +262,147 @@
             null,
             false
           );
-          let currLength = 0;
+          let desiredLength = end - start;
 
           let currentNode;
-          let flag = false;
-          while (currentNode = treeWalker.nextNode()) {
-            console.log(currentNode)
-            const nodeText       = currentNode.nodeValue;
+          while ((currentNode = treeWalker.nextNode())) {
+            let nodeText = currentNode.nodeValue.replace(COMMON_REGEX, '');
             const nodeTextLength = nodeText.length;
-            console.log(start, end)
 
             if (!nodeText) continue;
 
-            // if (end - start > 0) {
-            //   if (start > nodeText.length) {
-            //     start -= nodeText.length;
-            //     end   -= nodeText.length;
+            if (start >= nodeTextLength) {
+              // 시작점이 현재 텍스트 노드의 길이보다 큰 경우, 시작점과 종료점을 조정합니다.
+              start -= nodeTextLength;
+              end -= nodeTextLength;
+            } else if (end > nodeTextLength) {
+              // 시작점은 현재 텍스트 노드의 길이보다 작지만 종료점이 현재 텍스트 노드의 길이보다 큰 경우, 일부 텍스트만 감싸고 다음 텍스트 노드로 이동합니다.
+              let parentNode = currentNode.parentNode;
 
-            //     console.log(start, end)
-            //   } else {
-            //     console.log('왜 안와요')
-            //     const parentNode = currentNode.parentNode;
+              const beforeText = nodeText.substring(0, start);
+              const targetText = nodeText.substring(start);
+              const afterTextNode = document.createTextNode('');
 
-            //     const beforeText = !flag ? nodeText.substring(0, start) : nodeText.substring(0, 0);
-            //     const targetText = nodeText.substring(start, end);
-            //     const afterText  = nodeText.substring(end);
+              const targetTextNode = document.createElement('span');
+              targetTextNode.className = 'memo';
+              targetTextNode.textContent = targetText;
 
-            //     start -= targetText.length;
-            //     end   -= targetText.length;
+              parentNode.replaceChild(targetTextNode, currentNode);
+              parentNode.insertBefore(afterTextNode, targetTextNode);
+              parentNode.insertBefore(
+                document.createTextNode(beforeText),
+                targetTextNode
+              );
 
-            //     console.log(beforeText, beforeText.length);
-            //     console.log(targetText, targetText.length);
-            //     console.log(afterText, afterText.length);
+              // 다음 텍스트 노드로 이동하기 위해 종료점을 0으로 설정합니다.
+              end = 0;
 
-            //     flag = true;
-            //   }
+              break;
+            } else {
+              // 시작점과 종료점이 모두 현재 텍스트 노드 내부에 있는 경우, 해당 텍스트를 span 태그로 감싸고 종료합니다.
+              let parentNode = currentNode.parentNode;
 
-            //   // const beforeTextNode =
+              const beforeText = nodeText.substring(0, start);
+              const targetText = nodeText.substring(start, end);
+              const afterText = nodeText.substring(end);
 
-            //   // if (start > nodeText.length) {
-            //   //   start -= nodeText.length;
-            //   //   end   -= nodeText.length;
-            //   // } else {
-            //   //   let parentNode = currentNode.parentNode;
-            //   //   console.log(parentNode)
+              const beforeTextNode = document.createTextNode(beforeText);
+              const afterTextNode = document.createTextNode(afterText);
 
-            //   //   const beforeText = nodeText.substring(0, start);
-            //   //   const targetText = nodeText.substring(start, end);
-            //   //   const afterText  = nodeText.substring(end);
+              const targetTextNode = document.createElement('span');
+              targetTextNode.className = 'memo';
+              targetTextNode.textContent = targetText;
 
-            //   //   console.log(beforeText)
-            //   //   console.log(targetText.length)
-            //   //   console.log(afterText.length)
+              parentNode.replaceChild(afterTextNode, currentNode);
+              parentNode.insertBefore(targetTextNode, afterTextNode);
+              parentNode.insertBefore(beforeTextNode, targetTextNode);
 
-            //   //   const beforeTextNode = document.createTextNode(beforeText);
-            //   //   const afterTextNode  = document.createTextNode(afterText);
-
-            //   //   const targetTextNode = document.createElement('span');
-            //   //   targetTextNode.textContent = targetText;
-
-            //   //   classNames.forEach(className => targetTextNode.classList.add(className));
-                
-
-            //   //   parentNode.replaceChild(afterTextNode, currentNode);
-            //   //   parentNode.insertBefore(targetTextNode, afterTextNode);
-            //   //   parentNode.insertBefore(beforeTextNode, targetTextNode);
-
-            //   //   // if (parentNode === this.parentTarget) {
-            //   //   //   this.addHighlightElement(element, start + targetText.length, end, classNames);
-            //   //   // } else {
-            //   //   //   this.addHighlightElement(element, 0, end, classNames);
-            //   //   // }
-
-            //   //   // end -= targetText.length;
-
-            //   //   // console.log(parentNode === this.parentTarget)
-
-            //   //   // this.addHighlightElement(element, 0, end, classNames);
-
-            //   //   break;
-            //   // }
-            // } else {
-            //   break;
-            // }
+              break;
+            }
           }
+          // let currLength = 0;
+
+          // let currentNode;
+          // let flag = false;
+          // while (currentNode = treeWalker.nextNode()) {
+          //   console.log(currentNode)
+          //   const nodeText       = currentNode.nodeValue;
+          //   const nodeTextLength = nodeText.length;
+          //   console.log(start, end)
+
+          //   if (!nodeText) continue;
+
+          //   // if (end - start > 0) {
+          //   //   if (start > nodeText.length) {
+          //   //     start -= nodeText.length;
+          //   //     end   -= nodeText.length;
+
+          //   //     console.log(start, end)
+          //   //   } else {
+          //   //     console.log('왜 안와요')
+          //   //     const parentNode = currentNode.parentNode;
+
+          //   //     const beforeText = !flag ? nodeText.substring(0, start) : nodeText.substring(0, 0);
+          //   //     const targetText = nodeText.substring(start, end);
+          //   //     const afterText  = nodeText.substring(end);
+
+          //   //     start -= targetText.length;
+          //   //     end   -= targetText.length;
+
+          //   //     console.log(beforeText, beforeText.length);
+          //   //     console.log(targetText, targetText.length);
+          //   //     console.log(afterText, afterText.length);
+
+          //   //     flag = true;
+          //   //   }
+
+          //   //   // const beforeTextNode =
+
+          //   //   // if (start > nodeText.length) {
+          //   //   //   start -= nodeText.length;
+          //   //   //   end   -= nodeText.length;
+          //   //   // } else {
+          //   //   //   let parentNode = currentNode.parentNode;
+          //   //   //   console.log(parentNode)
+
+          //   //   //   const beforeText = nodeText.substring(0, start);
+          //   //   //   const targetText = nodeText.substring(start, end);
+          //   //   //   const afterText  = nodeText.substring(end);
+
+          //   //   //   console.log(beforeText)
+          //   //   //   console.log(targetText.length)
+          //   //   //   console.log(afterText.length)
+
+          //   //   //   const beforeTextNode = document.createTextNode(beforeText);
+          //   //   //   const afterTextNode  = document.createTextNode(afterText);
+
+          //   //   //   const targetTextNode = document.createElement('span');
+          //   //   //   targetTextNode.textContent = targetText;
+
+          //   //   //   classNames.forEach(className => targetTextNode.classList.add(className));
+
+          //   //   //   parentNode.replaceChild(afterTextNode, currentNode);
+          //   //   //   parentNode.insertBefore(targetTextNode, afterTextNode);
+          //   //   //   parentNode.insertBefore(beforeTextNode, targetTextNode);
+
+          //   //   //   // if (parentNode === this.parentTarget) {
+          //   //   //   //   this.addHighlightElement(element, start + targetText.length, end, classNames);
+          //   //   //   // } else {
+          //   //   //   //   this.addHighlightElement(element, 0, end, classNames);
+          //   //   //   // }
+
+          //   //   //   // end -= targetText.length;
+
+          //   //   //   // console.log(parentNode === this.parentTarget)
+
+          //   //   //   // this.addHighlightElement(element, 0, end, classNames);
+
+          //   //   //   break;
+          //   //   // }
+          //   // } else {
+          //   //   break;
+          //   // }
+          // }
         };
 
         this.loadStorageAndHighlight = () => {
@@ -360,21 +419,23 @@
 
             for (const groupSelector in groupData) {
               if (groupData[groupSelector]) {
-                const items   = groupData[groupSelector];
+                const items = groupData[groupSelector];
                 const element = document.querySelector(groupSelector);
 
                 for (let i = 0, itemLen = items.length; i < itemLen; i++) {
                   const item = items[i];
                   const { start, end, targetText } = item;
 
-                  this.addHighlightElement(element, start, end, [ MEMO_CLASSNAME ]);
+                  this.addHighlightElement(element, start, end, [
+                    MEMO_CLASSNAME,
+                  ]);
                 }
               }
             }
           }
         };
 
-        this.getTextNodesWithinRange = range => {
+        this.getTextNodesWithinRange = (range) => {
           const textNodes = [];
           const treeWalker = document.createTreeWalker(
             range.commonAncestorContainer,
@@ -384,7 +445,7 @@
           );
 
           let currentNode;
-          while (currentNode = treeWalker.nextNode()) {
+          while ((currentNode = treeWalker.nextNode())) {
             if (range.intersectsNode(currentNode)) {
               textNodes.push(currentNode);
             }
@@ -395,37 +456,48 @@
 
         this.isPossibleMemo = (selection, range) => {
           let possible = true;
-          let message  = '';
+          let message = '';
 
           const needCharCount = 2;
           const selectionText = selection.toString().trim();
 
           if (!selectionText || selectionText.length < needCharCount) {
             possible = false;
-            message  = `Requires least ${ needCharCount } characters`;
+            message = `Requires least ${needCharCount} characters`;
           }
 
-          if (possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
+          if (
+            possible &&
+            document.getElementsByClassName(MEMO_ING_CLASSNAME).length
+          ) {
             possible = false;
-            message  = 'Already writing memo';
+            message = 'Already writing memo';
           }
 
           if (possible) {
-            if (range.commonAncestorContainer.parentNode.classList.contains(MEMO_CLASSNAME)) {
+            if (
+              range.commonAncestorContainer.parentNode.classList.contains(
+                MEMO_CLASSNAME
+              )
+            ) {
               possible = false;
-              message  = 'Memo already exists';
+              message = 'Memo already exists';
             }
           }
 
           if (possible) {
             const parentTagList = ['li', 'p', 'div'];
 
-            const startNode = selection.anchorNode.parentNode.closest(parentTagList.join(','));
-            const endNode   = selection.focusNode.parentNode.closest(parentTagList.join(','));
+            const startNode = selection.anchorNode.parentNode.closest(
+              parentTagList.join(',')
+            );
+            const endNode = selection.focusNode.parentNode.closest(
+              parentTagList.join(',')
+            );
 
             if (startNode !== endNode) {
               possible = false;
-              message  = 'Only available in the same paragraph';
+              message = 'Only available in the same paragraph';
             }
           }
 
@@ -437,7 +509,7 @@
 
               if (textNode.parentNode.classList.contains(MEMO_CLASSNAME)) {
                 possible = false;
-                message  = 'Memo cannot overlap each other';
+                message = 'Memo cannot overlap each other';
                 break;
               }
             }
@@ -447,9 +519,9 @@
         };
 
         this.highlightSelectedTextAndOpenModal = () => {
-          this.selection    = window.getSelection();
+          this.selection = window.getSelection();
           this.selectedText = this.selection.toString();
-          this.range        = this.selection.getRangeAt(0);
+          this.range = this.selection.getRangeAt(0);
 
           if (this.range) {
             const preSelectionRange = this.range.cloneRange();
@@ -463,7 +535,12 @@
             this.range.start = preSelectionRange.toString().length;
             this.range.end = this.range.start + this.range.toString().length;
 
-            this.addHighlightElement(this.parentTarget, this.range.start, this.range.end, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
+            this.addHighlightElement(
+              this.parentTarget,
+              this.range.start,
+              this.range.end,
+              [MEMO_CLASSNAME, MEMO_ING_CLASSNAME]
+            );
 
             // 선택된 텍스트 하이라이트
             // const span = document.createElement('span');
@@ -485,10 +562,14 @@
           this.modal.style.opacity = 1;
           this.modal.style.visibility = 'visible';
           this.modal.style.pointerEvents = 'auto';
-          this.modal.style.left = `${ event.x - (window.innerWidth > event.x + 300 ? 0 : 180) }px`;
-          this.modal.style.top  = `${ event.y - (window.innerHeight > event.y + 100 ? 0 : 200) }px`
+          this.modal.style.left = `${
+            event.x - (window.innerWidth > event.x + 300 ? 0 : 180)
+          }px`;
+          this.modal.style.top = `${
+            event.y - (window.innerHeight > event.y + 100 ? 0 : 200)
+          }px`;
 
-          setTimeout(() => this.modalTextarea.focus(), 50) ;
+          setTimeout(() => this.modalTextarea.focus(), 50);
         };
 
         this.hideModal = () => {
@@ -509,11 +590,13 @@
         };
 
         this.setEventTextarea = () => {
-          this.modalTextarea.addEventListener('keydown', event => {
+          this.modalTextarea.addEventListener('keydown', (event) => {
             if (event.keyCode === 13) event.preventDefault();
           });
           this.modalTextarea.addEventListener('keyup', () => {
-            this.modalNotice.innerText = `${ this.modalTextarea.value.length || 0 }/100`;
+            this.modalNotice.innerText = `${
+              this.modalTextarea.value.length || 0
+            }/100`;
           });
         };
 
@@ -549,7 +632,9 @@
 
         this.setEventCancelButton = () => {
           this.modalCancelBtn.addEventListener('click', () => {
-            const isUpdate = this.target.classList.contains(MEMO_UPDATE_CLASSNAME);
+            const isUpdate = this.target.classList.contains(
+              MEMO_UPDATE_CLASSNAME
+            );
 
             // if (isUpdate) {
             //   this.target.classList.remove(MEMO_UPDATE_CLASSNAME);
@@ -568,15 +653,23 @@
         };
 
         this.openMousePopup = (x, y) => {
-          this.mousePopup.style.display  = 'block';
+          this.mousePopup.style.display = 'block';
           this.mousePopup.style.position = 'absolute';
-          this.mousePopup.style.left     = `${ x - (window.innerWidth > x + 40 ? 0 : 40) }px`;
-          this.mousePopup.style.top      = `${ y }px`;
-        }
+          this.mousePopup.style.left = `${
+            x - (window.innerWidth > x + 40 ? 0 : 40)
+          }px`;
+          this.mousePopup.style.top = `${y}px`;
+        };
 
         this.setEventMousePopup = () => {
-          this.mousePopup.addEventListener('mouseover', () => this.isPopupHover = true);
-          this.mousePopup.addEventListener('mouseout', () => this.isPopupHover = false);
+          this.mousePopup.addEventListener(
+            'mouseover',
+            () => (this.isPopupHover = true)
+          );
+          this.mousePopup.addEventListener(
+            'mouseout',
+            () => (this.isPopupHover = false)
+          );
 
           this.mousePopup.addEventListener('click', () => {
             this.mousePopup.style.display = 'none';
@@ -591,7 +684,7 @@
           });
         };
 
-        this.getSelectorPath = element => {
+        this.getSelectorPath = (element) => {
           if (!(element instanceof Element)) return;
 
           let path = [];
@@ -600,9 +693,14 @@
             if (element.id) {
               selector += '#' + element.id;
             } else {
-              let sibling = element, nth = 1;
-              while (sibling.nodeType === Node.ELEMENT_NODE && (sibling = sibling.previousSibling) && nth++) {
-                selector += `:nth-child(${ nth })`;
+              let sibling = element,
+                nth = 1;
+              while (
+                sibling.nodeType === Node.ELEMENT_NODE &&
+                (sibling = sibling.previousSibling) &&
+                nth++
+              ) {
+                selector += `:nth-child(${nth})`;
               }
             }
             path.unshift(selector);
@@ -611,27 +709,33 @@
           }
 
           return path.join(' > ');
-        }
+        };
 
         this.init = () => {
           this.loadStorageAndHighlight();
 
-          this.container.addEventListener('mousedown', () => this.isDragging = false);
-          this.container.addEventListener('mousemove', () => this.isDragging = true);
+          this.container.addEventListener(
+            'mousedown',
+            () => (this.isDragging = false)
+          );
+          this.container.addEventListener(
+            'mousemove',
+            () => (this.isDragging = true)
+          );
 
-          this.container.addEventListener('mouseup', event => {
+          this.container.addEventListener('mouseup', (event) => {
             if (!this.isDragging) return;
 
             const selection = window.getSelection();
-            const range     = selection.getRangeAt(0);
+            const range = selection.getRangeAt(0);
 
             const { possible, message } = this.isPossibleMemo(selection, range);
 
             if (!possible) {
               console.error(message);
             } else {
-              console.log('evet', event.target)
-              this.target       = event.target;
+              console.log('evet', event.target);
+              this.target = event.target;
               this.parentTarget = this.target.closest('div');
 
               this.openMousePopup(event.x, event.y);
