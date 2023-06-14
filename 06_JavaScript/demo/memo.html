@@ -265,79 +265,84 @@
           let currentNode;
           let flag = false;
           while (currentNode = treeWalker.nextNode()) {
+            console.log(currentNode)
             const nodeText       = currentNode.nodeValue;
             const nodeTextLength = nodeText.length;
+            console.log(start, end)
 
             if (!nodeText) continue;
 
-            if (end - start > 0) {
-              if (start > nodeText.length) {
-                start -= nodeText.length;
-                end   -= nodeText.length;
-              } else {
-                const parentNode = currentNode.parentNode;
+            // if (end - start > 0) {
+            //   if (start > nodeText.length) {
+            //     start -= nodeText.length;
+            //     end   -= nodeText.length;
 
-                const beforeText = !flag ? nodeText.substring(0, start) : nodeText.substring(0, 0);
-                const targetText = nodeText.substring(start, end);
-                const afterText  = nodeText.substring(end);
+            //     console.log(start, end)
+            //   } else {
+            //     console.log('왜 안와요')
+            //     const parentNode = currentNode.parentNode;
 
-                start -= targetText.length;
-                end   -= targetText.length;
+            //     const beforeText = !flag ? nodeText.substring(0, start) : nodeText.substring(0, 0);
+            //     const targetText = nodeText.substring(start, end);
+            //     const afterText  = nodeText.substring(end);
 
-                console.log(beforeText, beforeText.length);
-                console.log(targetText, targetText.length);
-                console.log(afterText, afterText.length);
+            //     start -= targetText.length;
+            //     end   -= targetText.length;
 
-                flag = true;
-              }
+            //     console.log(beforeText, beforeText.length);
+            //     console.log(targetText, targetText.length);
+            //     console.log(afterText, afterText.length);
 
-              // const beforeTextNode =
+            //     flag = true;
+            //   }
 
-              // if (start > nodeText.length) {
-              //   start -= nodeText.length;
-              //   end   -= nodeText.length;
-              // } else {
-              //   let parentNode = currentNode.parentNode;
-              //   console.log(parentNode)
+            //   // const beforeTextNode =
 
-              //   const beforeText = nodeText.substring(0, start);
-              //   const targetText = nodeText.substring(start, end);
-              //   const afterText  = nodeText.substring(end);
+            //   // if (start > nodeText.length) {
+            //   //   start -= nodeText.length;
+            //   //   end   -= nodeText.length;
+            //   // } else {
+            //   //   let parentNode = currentNode.parentNode;
+            //   //   console.log(parentNode)
 
-              //   console.log(beforeText)
-              //   console.log(targetText.length)
-              //   console.log(afterText.length)
+            //   //   const beforeText = nodeText.substring(0, start);
+            //   //   const targetText = nodeText.substring(start, end);
+            //   //   const afterText  = nodeText.substring(end);
 
-              //   const beforeTextNode = document.createTextNode(beforeText);
-              //   const afterTextNode  = document.createTextNode(afterText);
+            //   //   console.log(beforeText)
+            //   //   console.log(targetText.length)
+            //   //   console.log(afterText.length)
 
-              //   const targetTextNode = document.createElement('span');
-              //   targetTextNode.textContent = targetText;
+            //   //   const beforeTextNode = document.createTextNode(beforeText);
+            //   //   const afterTextNode  = document.createTextNode(afterText);
 
-              //   classNames.forEach(className => targetTextNode.classList.add(className));
+            //   //   const targetTextNode = document.createElement('span');
+            //   //   targetTextNode.textContent = targetText;
+
+            //   //   classNames.forEach(className => targetTextNode.classList.add(className));
                 
 
-              //   parentNode.replaceChild(afterTextNode, currentNode);
-              //   parentNode.insertBefore(targetTextNode, afterTextNode);
-              //   parentNode.insertBefore(beforeTextNode, targetTextNode);
+            //   //   parentNode.replaceChild(afterTextNode, currentNode);
+            //   //   parentNode.insertBefore(targetTextNode, afterTextNode);
+            //   //   parentNode.insertBefore(beforeTextNode, targetTextNode);
 
-              //   // if (parentNode === this.parentTarget) {
-              //   //   this.addHighlightElement(element, start + targetText.length, end, classNames);
-              //   // } else {
-              //   //   this.addHighlightElement(element, 0, end, classNames);
-              //   // }
+            //   //   // if (parentNode === this.parentTarget) {
+            //   //   //   this.addHighlightElement(element, start + targetText.length, end, classNames);
+            //   //   // } else {
+            //   //   //   this.addHighlightElement(element, 0, end, classNames);
+            //   //   // }
 
-              //   // end -= targetText.length;
+            //   //   // end -= targetText.length;
 
-              //   // console.log(parentNode === this.parentTarget)
+            //   //   // console.log(parentNode === this.parentTarget)
 
-              //   // this.addHighlightElement(element, 0, end, classNames);
+            //   //   // this.addHighlightElement(element, 0, end, classNames);
 
-              //   break;
-              // }
-            } else {
-              break;
-            }
+            //   //   break;
+            //   // }
+            // } else {
+            //   break;
+            // }
           }
         };
 
@@ -458,7 +463,7 @@
             this.range.start = preSelectionRange.toString().length;
             this.range.end = this.range.start + this.range.toString().length;
 
-            this.addHighlightElement(this.target, this.range.start, this.range.end, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
+            this.addHighlightElement(this.parentTarget, this.range.start, this.range.end, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
 
             // 선택된 텍스트 하이라이트
             // const span = document.createElement('span');
