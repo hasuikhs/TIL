@@ -26,7 +26,6 @@
       }
       .memo {
         font-style: italic;
-        border-radius: 3px;
         background-color: #f8ca8f !important;
       }
       .memo:hover {
@@ -51,6 +50,7 @@
         background-color: white;
         box-shadow: 5px 5px 5px #d6d6d6;
         transition: ease 0.5s;
+        user-select: none;
       }
       .memo-input {
         padding: 5px;
@@ -79,6 +79,10 @@
         background-color: white;
         border: 1px solid #eaeaea;
         border-radius: 5px;
+        user-select: none;
+      }
+      #memo-popup > button {
+        user-select: none;
       }
       mark {
         background-color: aqua !important;
@@ -201,39 +205,36 @@
           throw new Error('Create object using new operator.');
         }
 
-        const COMMON_REGEX = /\s{2,}/g;
-        const MEMO_CLASSNAME = 'memo';
-        const MEMO_ING_CLASSNAME = 'memo-ing';
-        const MEMO_UPDATE_CLASSNAME = 'memo-update';
+        const COMMON_REGEX          = /\n {2,}/g;
+        const MEMO_CLASSNAME        = 'memo';
+        const MEMO_ING_CLASSNAME    = 'memo-ing';
 
         this.isDragging = false;
+        this.ingMemoKey = 0;
 
         this.documentId = documentId || '';
-        this.container = document.getElementById(containerId);
+        this.container  = document.getElementById(containerId);
 
         this.storage = JSON.parse(sessionStorage.getItem('data')) || [];
 
-        this.target = null;
+        this.target       = null;
         this.parentTarget = null;
 
-        this.selection = null;
-        this.range = null;
+        this.selection    = null;
+        this.range        = null;
         this.selectedText = null;
-        this.originHtml = null;
+        this.originHtml   = null;
 
-        this.modal = document.getElementById('memo-modal');
-        this.modalTextarea = this.modal.querySelector('textarea.memo-input');
-        this.modalSaveBtn = this.modal.querySelector('button.save-btn');
+        this.modal          = document.getElementById('memo-modal');
+        this.modalTextarea  = this.modal.querySelector('textarea.memo-input');
+        this.modalSaveBtn   = this.modal.querySelector('button.save-btn');
         this.modalCancelBtn = this.modal.querySelector('button.cancel-btn');
-        this.modalNotice = this.modal.querySelector('div.text-notice');
+        this.modalNotice    = this.modal.querySelector('div.text-notice');
 
-        this.mousePopup = document.getElementById('memo-popup');
+        this.mousePopup   = document.getElementById('memo-popup');
         this.isPopupHover = false;
 
-        this.tmpStart = 0;
-        this.tmpEnd = 0;
-
-        this.groupedData = (data) => {
+        this.groupedData = data => {
           const result = {};
 
           for (let i = 0, len = data.length; i < len; i++) {
@@ -250,144 +251,70 @@
           return result;
         };
 
-        this.removeHighlightElement = () => {};
+        this.TextByRegex = text => text.replace(COMMON_REGEX, ' ');
 
-        this.addHighlightElement = (element, start, end, classNames = []) => {
-          if (end < start) throw new Error('Incorrect data');
-          console.log(start, end);
+        this.createTreeWalker = element => document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
 
-          const treeWalker = document.createTreeWalker(
-            element,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-          );
-          let desiredLength = end - start;
-
+        this.removeHighlightElement = (element, memoKey) => {
+          let treeWalker = this.createTreeWalker(element);
           let currentNode;
-          while ((currentNode = treeWalker.nextNode())) {
-            let nodeText = currentNode.nodeValue.replace(COMMON_REGEX, '');
+          while (currentNode = treeWalker.nextNode()) {
+            const parentNode = currentNode.parentNode;
+            const nodeText   = currentNode.nodeValue;
+
+            if (parentNode.getAttribute('memo-key') === memoKey) {
+              const targetTextNode = document.createTextNode(nodeText);
+              const previousNodeParent = treeWalker.previousNode().parentNode;
+
+              previousNodeParent.replaceChild(targetTextNode, parentNode)
+            }
+          }
+        };
+
+        this.addHighlightElement = (element, start, end, memoKey, classNames = []) => {
+          if (end < start) throw new Error('Incorrect data');
+
+          let treeWalker = this.createTreeWalker(element);
+          let currentNode;
+          while (currentNode = treeWalker.nextNode()) {
+            const nodeText       = this.TextByRegex(currentNode.nodeValue);
             const nodeTextLength = nodeText.length;
 
             if (!nodeText) continue;
 
             if (start >= nodeTextLength) {
-              // 시작점이 현재 텍스트 노드의 길이보다 큰 경우, 시작점과 종료점을 조정합니다.
               start -= nodeTextLength;
-              end -= nodeTextLength;
+              end   -= nodeTextLength;
             } else {
-              let parentNode = currentNode.parentNode;
+              const parentNode = currentNode.parentNode;
+
               const beforeText = nodeText.substring(0, start);
-              const targetText = nodeText.substring(
-                start,
-                Math.min(end, nodeTextLength)
-              );
-              const afterText = nodeText.substring(
-                Math.min(end, nodeTextLength)
-              );
+              const targetText = nodeText.substring(start, Math.min(end, nodeTextLength));
+              const afterText  = nodeText.substring(Math.min(end, nodeTextLength));
 
               const beforeTextNode = document.createTextNode(beforeText);
               const targetTextNode = document.createElement('span');
-              const afterTextNode = document.createTextNode(afterText);
+              const afterTextNode  = document.createTextNode(afterText);
 
-              targetTextNode.className = 'memo';
+              targetTextNode.setAttribute('memo-key', memoKey)
               targetTextNode.textContent = targetText;
+              for (const className of classNames) {
+                targetTextNode.classList.add(className);
+              }
 
               parentNode.replaceChild(afterTextNode, currentNode);
               parentNode.insertBefore(targetTextNode, afterTextNode);
               parentNode.insertBefore(beforeTextNode, targetTextNode);
 
               start = 0;
-              end -= targetText.length;
+              end  -= targetText.length + beforeText.length;
 
-              if (end <= 0) {
-                break;
-              }
+              if (end <= 0) break;
+
+              treeWalker = this.createTreeWalker(element);
+              treeWalker.currentNode = afterTextNode;
             }
           }
-          // let currLength = 0;
-
-          // let currentNode;
-          // let flag = false;
-          // while (currentNode = treeWalker.nextNode()) {
-          //   console.log(currentNode)
-          //   const nodeText       = currentNode.nodeValue;
-          //   const nodeTextLength = nodeText.length;
-          //   console.log(start, end)
-
-          //   if (!nodeText) continue;
-
-          //   // if (end - start > 0) {
-          //   //   if (start > nodeText.length) {
-          //   //     start -= nodeText.length;
-          //   //     end   -= nodeText.length;
-
-          //   //     console.log(start, end)
-          //   //   } else {
-          //   //     console.log('왜 안와요')
-          //   //     const parentNode = currentNode.parentNode;
-
-          //   //     const beforeText = !flag ? nodeText.substring(0, start) : nodeText.substring(0, 0);
-          //   //     const targetText = nodeText.substring(start, end);
-          //   //     const afterText  = nodeText.substring(end);
-
-          //   //     start -= targetText.length;
-          //   //     end   -= targetText.length;
-
-          //   //     console.log(beforeText, beforeText.length);
-          //   //     console.log(targetText, targetText.length);
-          //   //     console.log(afterText, afterText.length);
-
-          //   //     flag = true;
-          //   //   }
-
-          //   //   // const beforeTextNode =
-
-          //   //   // if (start > nodeText.length) {
-          //   //   //   start -= nodeText.length;
-          //   //   //   end   -= nodeText.length;
-          //   //   // } else {
-          //   //   //   let parentNode = currentNode.parentNode;
-          //   //   //   console.log(parentNode)
-
-          //   //   //   const beforeText = nodeText.substring(0, start);
-          //   //   //   const targetText = nodeText.substring(start, end);
-          //   //   //   const afterText  = nodeText.substring(end);
-
-          //   //   //   console.log(beforeText)
-          //   //   //   console.log(targetText.length)
-          //   //   //   console.log(afterText.length)
-
-          //   //   //   const beforeTextNode = document.createTextNode(beforeText);
-          //   //   //   const afterTextNode  = document.createTextNode(afterText);
-
-          //   //   //   const targetTextNode = document.createElement('span');
-          //   //   //   targetTextNode.textContent = targetText;
-
-          //   //   //   classNames.forEach(className => targetTextNode.classList.add(className));
-
-          //   //   //   parentNode.replaceChild(afterTextNode, currentNode);
-          //   //   //   parentNode.insertBefore(targetTextNode, afterTextNode);
-          //   //   //   parentNode.insertBefore(beforeTextNode, targetTextNode);
-
-          //   //   //   // if (parentNode === this.parentTarget) {
-          //   //   //   //   this.addHighlightElement(element, start + targetText.length, end, classNames);
-          //   //   //   // } else {
-          //   //   //   //   this.addHighlightElement(element, 0, end, classNames);
-          //   //   //   // }
-
-          //   //   //   // end -= targetText.length;
-
-          //   //   //   // console.log(parentNode === this.parentTarget)
-
-          //   //   //   // this.addHighlightElement(element, 0, end, classNames);
-
-          //   //   //   break;
-          //   //   // }
-          //   // } else {
-          //   //   break;
-          //   // }
-          // }
         };
 
         this.loadStorageAndHighlight = () => {
@@ -404,16 +331,14 @@
 
             for (const groupSelector in groupData) {
               if (groupData[groupSelector]) {
-                const items = groupData[groupSelector];
+                const items   = groupData[groupSelector];
                 const element = document.querySelector(groupSelector);
 
                 for (let i = 0, itemLen = items.length; i < itemLen; i++) {
                   const item = items[i];
-                  const { start, end, targetText } = item;
+                  const { start, end, targetText, memoKey } = item;
 
-                  this.addHighlightElement(element, start, end, [
-                    MEMO_CLASSNAME,
-                  ]);
+                  this.addHighlightElement(element, start, end, memoKey, [ MEMO_CLASSNAME ]);
                 }
               }
             }
@@ -422,15 +347,10 @@
 
         this.getTextNodesWithinRange = (range) => {
           const textNodes = [];
-          const treeWalker = document.createTreeWalker(
-            range.commonAncestorContainer,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-          );
+          const treeWalker = this.createTreeWalker(range.commonAncestorContainer);
 
           let currentNode;
-          while ((currentNode = treeWalker.nextNode())) {
+          while (currentNode = treeWalker.nextNode()) {
             if (range.intersectsNode(currentNode)) {
               textNodes.push(currentNode);
             }
@@ -441,48 +361,37 @@
 
         this.isPossibleMemo = (selection, range) => {
           let possible = true;
-          let message = '';
+          let message  = '';
 
           const needCharCount = 2;
           const selectionText = selection.toString().trim();
 
           if (!selectionText || selectionText.length < needCharCount) {
             possible = false;
-            message = `Requires least ${needCharCount} characters`;
+            message  = `Requires least ${needCharCount} characters`;
           }
 
-          if (
-            possible &&
-            document.getElementsByClassName(MEMO_ING_CLASSNAME).length
-          ) {
+          if ( possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
             possible = false;
-            message = 'Already writing memo';
+            message  = 'Already writing memo';
           }
 
           if (possible) {
-            if (
-              range.commonAncestorContainer.parentNode.classList.contains(
-                MEMO_CLASSNAME
-              )
-            ) {
+            if (range.commonAncestorContainer.parentNode.classList.contains(MEMO_CLASSNAME)) {
               possible = false;
-              message = 'Memo already exists';
+              message  = 'Memo already exists';
             }
           }
 
           if (possible) {
             const parentTagList = ['li', 'p', 'div'];
 
-            const startNode = selection.anchorNode.parentNode.closest(
-              parentTagList.join(',')
-            );
-            const endNode = selection.focusNode.parentNode.closest(
-              parentTagList.join(',')
-            );
+            const startNode = selection.anchorNode.parentNode.closest(parentTagList.join(','));
+            const endNode   = selection.focusNode.parentNode.closest(parentTagList.join(','));
 
             if (startNode !== endNode) {
               possible = false;
-              message = 'Only available in the same paragraph';
+              message  = 'Only available in the same paragraph';
             }
           }
 
@@ -494,7 +403,7 @@
 
               if (textNode.parentNode.classList.contains(MEMO_CLASSNAME)) {
                 possible = false;
-                message = 'Memo cannot overlap each other';
+                message  = 'Memo cannot overlap each other';
                 break;
               }
             }
@@ -504,39 +413,22 @@
         };
 
         this.highlightSelectedTextAndOpenModal = () => {
-          this.selection = window.getSelection();
+          this.selection    = window.getSelection();
           this.selectedText = this.selection.toString();
-          this.range = this.selection.getRangeAt(0);
+          this.range        = this.selection.getRangeAt(0);
 
           if (this.range) {
+            this.ingMemoKey = Math.floor(Math.random() * 10_000) + '';
             const preSelectionRange = this.range.cloneRange();
 
             preSelectionRange.selectNodeContents(this.parentTarget);
-            preSelectionRange.setEnd(
-              this.range.startContainer,
-              this.range.startOffset
-            );
+            preSelectionRange.setEnd(this.range.startContainer, this.range.startOffset);
 
-            this.range.start = preSelectionRange.toString().length;
-            this.range.end = this.range.start + this.range.toString().length;
+            this.range.start = this.TextByRegex(preSelectionRange.toString()).length;
+            this.range.end   = this.range.start + this.TextByRegex(this.range.toString()).length;
 
-            this.addHighlightElement(
-              this.parentTarget,
-              this.range.start,
-              this.range.end,
-              [MEMO_CLASSNAME, MEMO_ING_CLASSNAME]
-            );
+            this.addHighlightElement(this.parentTarget, this.range.start, this.range.end, this.ingMemoKey, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
 
-            // 선택된 텍스트 하이라이트
-            // const span = document.createElement('span');
-            // span.classList.add('memo');
-            // span.classList.add('memo-ing');
-            // span.appendChild(this.range.extractContents());
-            // this.range.insertNode(span);
-
-            // 타겟 변경
-            // this.target = span;
-            // 선택 해제
             this.selection.removeAllRanges();
 
             this.openModal();
@@ -544,27 +436,23 @@
         };
 
         this.openModal = () => {
-          this.modal.style.opacity = 1;
-          this.modal.style.visibility = 'visible';
+          this.modal.style.opacity       = 1;
+          this.modal.style.visibility    = 'visible';
           this.modal.style.pointerEvents = 'auto';
-          this.modal.style.left = `${
-            event.x - (window.innerWidth > event.x + 300 ? 0 : 180)
-          }px`;
-          this.modal.style.top = `${
-            event.y - (window.innerHeight > event.y + 100 ? 0 : 200)
-          }px`;
+          this.modal.style.left          = `${ event.x - (window.innerWidth > event.x + 300 ? 0 : 180) }px`;
+          this.modal.style.top           = `${ event.y - (window.innerHeight > event.y + 100 ? 0 : 200) }px`;
 
           setTimeout(() => this.modalTextarea.focus(), 50);
         };
 
         this.hideModal = () => {
-          this.modal.style.opacity = 0;
-          this.modal.visibility = 'hidden';
+          this.modal.style.opacity       = 0;
+          this.modal.visibility          = 'hidden';
           this.modal.style.pointerEvents = 'none';
-          this.modal.style.left = '50%';
-          this.modal.style.top = '50%';
-          this.modalTextarea.value = '';
-          this.modalNotice.innerText = '0/100';
+          this.modal.style.left          = '50%';
+          this.modal.style.top           = '50%';
+          this.modalTextarea.value       = '';
+          this.modalNotice.innerText     = '0/100';
         };
 
         this.setEvent = () => {
@@ -575,14 +463,8 @@
         };
 
         this.setEventTextarea = () => {
-          this.modalTextarea.addEventListener('keydown', (event) => {
-            if (event.keyCode === 13) event.preventDefault();
-          });
-          this.modalTextarea.addEventListener('keyup', () => {
-            this.modalNotice.innerText = `${
-              this.modalTextarea.value.length || 0
-            }/100`;
-          });
+          this.modalTextarea.addEventListener('keydown', (event) => event.keyCode === 13 && event.preventDefault());
+          this.modalTextarea.addEventListener('keyup', () => this.modalNotice.innerText = `${ this.modalTextarea.value.length || 0 }/100`);
         };
 
         this.setEventSaveButton = () => {
@@ -593,18 +475,21 @@
               return alert('메모 입력되지 않음');
             }
 
-            console.log(this.range);
             if (this.target) {
               const data = {
-                documentId: this.documentId,
-                parentSelector: this.parentTarget.id,
-                targetText: this.selectedText,
-                start: this.range.start,
-                end: this.range.end,
+                documentId    : this.documentId,
+                parentSelector: this.getSelectorPath(this.parentTarget),
+                targetText    : this.selectedText,
+                start         : this.range.start,
+                end           : this.range.end,
+                memoKey       : this.ingMemoKey,
                 memoText,
               };
 
-              this.target.classList.remove(MEMO_ING_CLASSNAME);
+              for (const ingTag of [ ...this.parentTarget.getElementsByClassName(MEMO_ING_CLASSNAME) ]) {
+                ingTag.classList.remove(MEMO_ING_CLASSNAME);
+              }
+
 
               this.storage.push(data);
 
@@ -617,44 +502,22 @@
 
         this.setEventCancelButton = () => {
           this.modalCancelBtn.addEventListener('click', () => {
-            const isUpdate = this.target.classList.contains(
-              MEMO_UPDATE_CLASSNAME
-            );
-
-            // if (isUpdate) {
-            //   this.target.classList.remove(MEMO_UPDATE_CLASSNAME);
-            // } else if (this.target) {
-            //   const targetHtml = this.target.outerHTML;
-
-            //   // 취소시 현재 하이라이트 태그 지우기
-            //   this.parentTarget.outerHTML = this.parentTarget.outerHTML.replace(
-            //     targetHtml,
-            //     this.originHtml
-            //   );
-            // }
+            this.removeHighlightElement(this.parentTarget, this.ingMemoKey);
 
             this.hideModal();
           });
         };
 
-        this.openMousePopup = (x, y) => {
-          this.mousePopup.style.display = 'block';
+        this.openMousePopup = () => {
+          this.mousePopup.style.display  = 'block';
           this.mousePopup.style.position = 'absolute';
-          this.mousePopup.style.left = `${
-            x - (window.innerWidth > x + 40 ? 0 : 40)
-          }px`;
-          this.mousePopup.style.top = `${y}px`;
+          this.mousePopup.style.left     = `${ event.x - (window.innerWidth > event.x + 40 ? 0 : 40) }px`;
+          this.mousePopup.style.top      = `${ event.y }px`;
         };
 
         this.setEventMousePopup = () => {
-          this.mousePopup.addEventListener(
-            'mouseover',
-            () => (this.isPopupHover = true)
-          );
-          this.mousePopup.addEventListener(
-            'mouseout',
-            () => (this.isPopupHover = false)
-          );
+          this.mousePopup.addEventListener('mouseover', () => this.isPopupHover = true);
+          this.mousePopup.addEventListener('mouseout', () => this.isPopupHover = false);
 
           this.mousePopup.addEventListener('click', () => {
             this.mousePopup.style.display = 'none';
@@ -669,26 +532,23 @@
           });
         };
 
-        this.getSelectorPath = (element) => {
+        this.getSelectorPath = element => {
           if (!(element instanceof Element)) return;
 
           let path = [];
           while (element.nodeType === Node.ELEMENT_NODE) {
             let selector = element.nodeName.toLowerCase();
+
             if (element.id) {
-              selector += '#' + element.id;
+              selector += `#${ element.id }`;
             } else {
-              let sibling = element,
-                nth = 1;
-              while (
-                sibling.nodeType === Node.ELEMENT_NODE &&
-                (sibling = sibling.previousSibling) &&
-                nth++
-              ) {
-                selector += `:nth-child(${nth})`;
+              let sibling = element, nth = 1;
+              while (sibling.nodeType === Node.ELEMENT_NODE && (sibling = sibling.previousSibling) && nth++) {
+                selector += `:nth-child(${ nth })`;
               }
             }
             path.unshift(selector);
+
             if (element.id) break;
             element = element.parentNode;
           }
@@ -699,31 +559,24 @@
         this.init = () => {
           this.loadStorageAndHighlight();
 
-          this.container.addEventListener(
-            'mousedown',
-            () => (this.isDragging = false)
-          );
-          this.container.addEventListener(
-            'mousemove',
-            () => (this.isDragging = true)
-          );
+          this.container.addEventListener('mousedown', () => this.isDragging = false);
+          this.container.addEventListener('mousemove', () => this.isDragging = true);
 
-          this.container.addEventListener('mouseup', (event) => {
+          this.container.addEventListener('mouseup', event => {
             if (!this.isDragging) return;
 
             const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
+            const range     = selection.getRangeAt(0);
 
             const { possible, message } = this.isPossibleMemo(selection, range);
 
             if (!possible) {
               console.error(message);
             } else {
-              console.log('evet', event.target);
-              this.target = event.target;
+              this.target       = event.target;
               this.parentTarget = this.target.closest('div');
 
-              this.openMousePopup(event.x, event.y);
+              this.openMousePopup();
             }
           });
 
