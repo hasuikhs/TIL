@@ -76,7 +76,7 @@
       #memo-popup {
         display: none;
         width: 45px;
-        /* height: 15px; */
+        position: absolute;
         background-color: white;
         border: 1px solid #eaeaea;
         border-radius: 5px;
@@ -487,16 +487,23 @@
           this.modal.style.display = 'block';
 
           let xAxis = event.pageX;
-          let yAxis = event.pageY;
+          let yAxis = event.pageY + window.pageYOffset;
 
-          if (xAxis - 180 < 0) {
-            xAxis = 180;
-          } else if (window.innerWidth < xAxis + 300) {
-            xAxis -= 180
+          const modalWidth = this.modal.offsetWidth;
+          const modalHeight = this.modal.offsetHeight;
+
+          if (xAxis - modalWidth < 0) {
+            xAxis = modalWidth / 2;
+          } else if (window.innerWidth < xAxis + modalWidth) {
+            xAxis = window.innerWidth - modalWidth;
           }
 
-          if (window.innerHeight < yAxis + 100) {
-            yAxis -= 100;
+          if (yAxis + modalHeight > window.innerHeight) {
+            if (yAxis - modalHeight > 0) {
+              yAxis -= modalHeight * 2;
+            } else {
+              yAxis = window.innerHeight - modalHeight;
+            }
           }
 
           this.modal.style.left = `${ xAxis }px`;
@@ -567,9 +574,20 @@
 
         this.openMousePopup = () => {
           this.mousePopup.style.display  = 'block';
-          this.mousePopup.style.position = 'absolute';
-          this.mousePopup.style.left     = `${ event.pageX - (window.innerWidth > event.pageX + 40 ? 0 : 40) }px`;
-          this.mousePopup.style.top      = `${ event.pageY }px`;
+
+          let xAxis = event.pageX;
+
+          const popupWidth  = this.mousePopup.offsetWidth;
+          const popupHeight = this.mousePopup.offsetHeight;
+
+          if (xAxis - popupWidth < 0) {
+            xAxis = popupWidth / 2;
+          } else if (window.innerWidth < xAxis + popupWidth) {
+            xAxis = window.innerWidth - popupWidth
+          }
+
+          this.mousePopup.style.left = `${ xAxis }px`;
+          this.mousePopup.style.top  = `${ event.pageY }px`;
         };
 
         this.setEventMousePopup = () => {
