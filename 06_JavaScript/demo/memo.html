@@ -32,16 +32,14 @@
         text-decoration: underline;
         cursor: pointer;
       }
+      .modal-wrapper {
+        display: none;
+      }
       .modal {
         position: absolute;
-        top: 50%;
-        left: 50%;
         margin-left: -140px;
-        display: flex;
+        display: none;
         margin-top: -50px;
-        visibility: hidden;
-        opacity: 0;
-        justify-content: space-between;
         padding: 10px;
         border-radius: 5px;
         border: 1px solid black;
@@ -49,8 +47,11 @@
         height: 120px;
         background-color: white;
         box-shadow: 5px 5px 5px #d6d6d6;
-        transition: ease 0.5s;
-        user-select: none;
+      }
+      .modal-content {
+        display: flex;
+        height: 100%;
+        justify-content: space-between;
       }
       .memo-input {
         padding: 5px;
@@ -90,6 +91,11 @@
       }
       mark > .memo {
         background-color: inherit;
+      }
+      em {
+        background-color: #d6d6d6;
+        font-style: normal;
+        padding: 0px 10px;
       }
     </style>
   </head>
@@ -171,18 +177,56 @@
           ea saepe perferendis nulla corrupti? Iste fuga excepturi voluptate
           recusandae molestias, dolores numquam.
         </div>
+        <div num="0004">
+          <div>【0004】</div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum, molestias. Delectus eum ipsa harum sint magnam minima quam in alias unde eaque quisquam expedita modi voluptas ipsam ipsum aliquam architecto veniam, explicabo reprehenderit recusandae molestiae tempore amet labore? Adipisci corrupti laboriosam nisi perferendis officia rem dolorem sed libero non. Hic, placeat! Maiores error natus cumque recusandae ad ea animi necessitatibus dolores. Odit facilis tempora, esse deleniti nemo, unde quis maxime architecto nobis earum itaque. Itaque, corporis aspernatur obcaecati vero nobis unde eveniet velit, magni saepe quidem iure aliquam porro vitae sint iste esse doloremque facilis tempora sapiente cum placeat eius. Laborum eos vero ullam, neque quisquam odit vel eaque. Repudiandae unde molestiae at, soluta, dignissimos blanditiis ab consequatur similique id ullam sit aut quasi nobis aperiam maxime beatae doloremque quaerat possimus maiores quisquam inventore! Consequuntur reprehenderit maxime voluptates quo recusandae impedit nam! Iusto, similique. Dolores sunt, magnam commodi reprehenderit architecto vitae ducimus voluptatum culpa pariatur quis ipsa? A eligendi cupiditate, possimus rem veritatis iste nisi numquam provident porro dolor temporibus molestias explicabo obcaecati impedit praesentium expedita, fugiat odio ut odit. Recusandae quaerat commodi, alias fugit id provident asperiores. Eligendi dolorum id veritatis reiciendis ipsam labore officiis similique nemo quis est!
+        </div>
+        <div key="P-0005" id="P-0005">
+          <p>
+            <strong>【0005】</strong>
+          </p>
+          <span class="symbol" symbol="1">1</span> Lorem.<br>
+          <img src="/test.png" height="200px"><br>
+          <span class="symbol" symbol="2">2</span> Lorem, ipsum<sub>subtest</sub>.<br>
+          <span class="symbol" symbol="3">3</span> Lorem, ipsum dolor.<br>
+          <span class="symbol" symbol="4">4</span> Lorem ipsum dolor sit.<br>
+          <span class="symbol" symbol="5">5</span> Lorem ipsum dolor sit <img src="/test.png" height="200px"> amet.<br>
+          <span class="symbol" symbol="6">6</span> Lorem ipsum dolor sit amet consectetur.<br>
+          <span class="symbol" symbol="7">7</span> Lorem ipsum dolor sit amet consectetur adipisicing.<br>
+          <span class="symbol" symbol="8">8</span> Lorem ipsum dolor, sit amet consectetur adipisicing elit.<br>
+          <span class="symbol" symbol="9">9</span> Lorem ipsum <em>IMAGE</em>dolor sit amet consectetur adipisicing elit. Voluptates!<br>
+          <span class="symbol" symbol="10">10</span> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab, ex!<br>
+          <span class="symbol" symbol="11">11</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat, similique fugiat.<br>
+          <span class="symbol" symbol="12">12</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores repudiandae quasi possimus.<br>
+          <span class="symbol" symbol="13">13</span> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit cupiditate obcaecati magni suscipit?<br>
+          <span class="symbol" symbol="14">14</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde incidunt doloremque ipsum numquam voluptatem.<br>
+          <span class="symbol" symbol="15">15</span> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic laudantium porro nisi. Harum, amet eum.<br>
+          <span class="symbol" symbol="16">16</span> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veritatis nam beatae, temporibus eligendi maxime alias itaque!<br>
+          <span class="symbol" symbol="17">17</span> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum laudantium asperiores error dicta adipisci? Iste, quam dignissimos!<br>
+          <span class="symbol" symbol="18">18</span> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis eligendi nulla voluptatibus id nisi earum a eum cum?<br>
+          <span class="symbol" symbol="19">19</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sit dolorum omnis atque expedita asperiores, velit quam quae aliquid!<br>
+          <span class="symbol" symbol="20">20</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque error impedit aliquid explicabo, iure ullam itaque in eligendi mollitia similique.<br>
+          <span class="symbol" symbol="21">21</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia deleniti reiciendis similique ipsam dolores. Corporis, vel! Non laudantium doloribus modi fugiat!<br>
+          <span class="symbol" symbol="22">22</span> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore perferendis laudantium, veritatis deleniti delectus ipsa placeat sequi omnis fuga, velit similique illum.<br>
+          <span class="symbol" symbol="23">23</span> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque nihil et voluptatem minima placeat, ducimus distinctio aperiam nemo sit est veniam. Possimus, nesciunt.<br>
+          <span class="symbol" symbol="24">24</span> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste architecto, dolores libero dolore, numquam, eos nemo reiciendis sint obcaecati fuga eveniet. Qui, facilis rerum.<br>
+          <span class="symbol" symbol="25">25</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente similique eligendi laborum doloribus in, eos voluptates voluptas saepe obcaecati ullam molestias accusamus, reprehenderit accusantium rerum!<br>
+          <span class="symbol" symbol="26">26</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis facilis vel perspiciatis iure porro voluptate quibusdam minus, fugiat assumenda blanditiis atque deleniti eligendi vitae possimus tempora.<br>
+          <span class="symbol" symbol="27">27</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum eaque, saepe suscipit assumenda dolore dolorum tempore cumque libero ipsum quibusdam delectus minima voluptatem vero possimus incidunt vitae!</div>
       </div>
     </div>
 
     <div id="memo-modal" class="modal">
-      <textarea
-        class="memo-input"
-        placeholder="메모를 입력해주세요."
-        maxlength="100"
-      ></textarea>
-      <div class="text-notice">0/100</div>
-      <button class="save-btn" type="button">저장</button>
-      <button class="cancel-btn" type="button">취소</button>
+      <div class="modal-content">
+        <textarea
+          class="memo-input"
+          placeholder="메모를 입력해주세요."
+          maxlength="100"
+        ></textarea>
+        <div class="text-notice">0/100</div>
+        <button class="save-btn" type="button">저장</button>
+        <button class="cancel-btn" type="button">취소</button>
+      </div>
     </div>
 
     <div id="memo-popup">
@@ -253,7 +297,7 @@
 
         this.TextByRegex = text => text.replace(COMMON_REGEX, ' ');
 
-        this.createTreeWalker = element => document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        this.createTreeWalker = (element, filter = NodeFilter.SHOW_TEXT) => document.createTreeWalker(element, filter);
 
         this.removeHighlightElement = (element, memoKey) => {
           let treeWalker = this.createTreeWalker(element);
@@ -345,18 +389,18 @@
           }
         };
 
-        this.getTextNodesWithinRange = (range) => {
-          const textNodes = [];
-          const treeWalker = this.createTreeWalker(range.commonAncestorContainer);
+        this.getNodesWithinRange = (range) => {
+          const nodes = [];
+          const treeWalker = this.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT);
 
           let currentNode;
           while (currentNode = treeWalker.nextNode()) {
             if (range.intersectsNode(currentNode)) {
-              textNodes.push(currentNode);
+              nodes.push(currentNode);
             }
           }
 
-          return textNodes;
+          return nodes;
         };
 
         this.isPossibleMemo = (selection, range) => {
@@ -396,15 +440,18 @@
           }
 
           if (possible) {
-            const textNodes = this.getTextNodesWithinRange(range);
+            const nodes = this.getNodesWithinRange(range);
 
-            for (let i = 0, len = textNodes.length; i < len; i++) {
-              const textNode = textNodes[i];
+            for (let i = 0, len = nodes.length; i < len; i++) {
+              const node = nodes[i];
 
-              if (textNode.parentNode.classList.contains(MEMO_CLASSNAME)) {
+              if (node.classList.contains(MEMO_CLASSNAME)) {
                 possible = false;
                 message  = 'Memo cannot overlap each other';
                 break;
+              } else if (node.nodeName === 'IMG' || (node.nodeName === 'EM' && node.textContent.trim() === 'IMAGE' )) {
+                possible = false;
+                message  = 'Memo not include img';
               }
             }
           }
@@ -436,23 +483,31 @@
         };
 
         this.openModal = () => {
-          this.modal.style.opacity       = 1;
-          this.modal.style.visibility    = 'visible';
-          this.modal.style.pointerEvents = 'auto';
-          this.modal.style.left          = `${ event.x - (window.innerWidth > event.x + 300 ? 0 : 180) }px`;
-          this.modal.style.top           = `${ event.y - (window.innerHeight > event.y + 100 ? 0 : 200) }px`;
+          this.modal.style.display = 'block';
 
-          setTimeout(() => this.modalTextarea.focus(), 50);
+          let xAxis = event.pageX;
+          let yAxis = event.pageY;
+
+          if (xAxis - 180 < 0) {
+            xAxis = 180;
+          } else if (window.innerWidth < xAxis + 300) {
+            xAxis -= 180
+          }
+
+          if (window.innerHeight < yAxis + 100) {
+            yAxis -= 100;
+          }
+
+          this.modal.style.left = `${ xAxis }px`;
+          this.modal.style.top  = `${ yAxis }px`;
+
+          this.modalTextarea.focus();
         };
 
         this.hideModal = () => {
-          this.modal.style.opacity       = 0;
-          this.modal.visibility          = 'hidden';
-          this.modal.style.pointerEvents = 'none';
-          this.modal.style.left          = '50%';
-          this.modal.style.top           = '50%';
-          this.modalTextarea.value       = '';
-          this.modalNotice.innerText     = '0/100';
+          this.modal.style.display   = 'none';
+          this.modalTextarea.value   = '';
+          this.modalNotice.innerText = '0/100';
         };
 
         this.setEvent = () => {
@@ -490,7 +545,6 @@
                 ingTag.classList.remove(MEMO_ING_CLASSNAME);
               }
 
-
               this.storage.push(data);
 
               sessionStorage.setItem('data', JSON.stringify(this.storage));
@@ -502,17 +556,19 @@
 
         this.setEventCancelButton = () => {
           this.modalCancelBtn.addEventListener('click', () => {
-            this.removeHighlightElement(this.parentTarget, this.ingMemoKey);
+            if (this.parentTarget) {
+              this.removeHighlightElement(this.parentTarget, this.ingMemoKey);
 
-            this.hideModal();
+              this.hideModal();
+            }
           });
         };
 
         this.openMousePopup = () => {
           this.mousePopup.style.display  = 'block';
           this.mousePopup.style.position = 'absolute';
-          this.mousePopup.style.left     = `${ event.x - (window.innerWidth > event.x + 40 ? 0 : 40) }px`;
-          this.mousePopup.style.top      = `${ event.y }px`;
+          this.mousePopup.style.left     = `${ event.pageX - (window.innerWidth > event.pageX + 40 ? 0 : 40) }px`;
+          this.mousePopup.style.top      = `${ event.pageY }px`;
         };
 
         this.setEventMousePopup = () => {
@@ -559,7 +615,10 @@
         this.init = () => {
           this.loadStorageAndHighlight();
 
-          this.container.addEventListener('mousedown', () => this.isDragging = false);
+          this.container.addEventListener('mousedown', () => {
+            this.isDragging = false;
+            this.modalCancelBtn.dispatchEvent(new Event('click'));
+          });
           this.container.addEventListener('mousemove', () => this.isDragging = true);
 
           this.container.addEventListener('mouseup', event => {
