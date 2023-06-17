@@ -28,7 +28,7 @@
         font-style: italic;
         background-color: #f8ca8f !important;
       }
-      .memo:hover {
+      .memo-hover {
         text-decoration: underline;
         cursor: pointer;
       }
@@ -523,10 +523,34 @@
           this.setEventCancelButton();
           this.setEventTextarea();
           this.setEventMousePopup();
+          this.setEventHighlightHover();
         };
 
+        this.setEventHighlightHover = () => {
+          this.container.addEventListener('mouseover', ({ target }) => {
+            const memoKey = target.getAttribute('memo-key');
+            const elements = [ ...this.container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
+
+            if (elements.length) {
+              for (const element of elements) {
+                element.classList.add('memo-hover');
+              }
+            }
+          });
+          this.container.addEventListener('mouseout', ({ target }) => {
+            const memoKey = target.getAttribute('memo-key');
+            const elements = [ ...this.container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
+
+            if (elements.length) {
+              for (const element of elements) {
+                element.classList.remove('memo-hover');
+              }
+            }
+          });
+        }
+
         this.setEventTextarea = () => {
-          this.modalTextarea.addEventListener('keydown', (event) => event.keyCode === 13 && event.preventDefault());
+          this.modalTextarea.addEventListener('keydown', event => event.keyCode === 13 && event.preventDefault());
           this.modalTextarea.addEventListener('keyup', () => this.modalNotice.innerText = `${ this.modalTextarea.value.length || 0 }/100`);
         };
 
