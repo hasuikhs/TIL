@@ -240,6 +240,7 @@
        * 2. 메모가 현재 문단을 벗어 날 수 없음
        * 3. 드래그한 대상은 2글자 이상일때만 메모 제공
        * 4. 메모에 이미지가 포함될 수 없음
+       * 5. 수정 시에 범위 변경 가능한지 여부에 따라 수정 범위 달라짐
        */
       window.onload = () => {
         const memo = new Memo({ documentId: 'test', containerId: 'container' });
