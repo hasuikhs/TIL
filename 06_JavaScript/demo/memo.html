@@ -32,6 +32,17 @@
         text-decoration: underline;
         cursor: pointer;
       }
+      #memo-view {
+        display: block;
+        background-color: #3aa7c6;
+        position: fixed;
+        height: 40px;
+        width: 300px;
+        padding: 5px;
+        color: white;
+        border-radius: 5px;
+        z-index: 90;
+      }
       .modal-wrapper {
         display: none;
       }
@@ -62,7 +73,7 @@
         background-color: #f9f9c8 !important;
       }
       .memo-update {
-        background-color: #9cdef8;
+        background-color: #9cdef8 !important;
       }
       .text-notice {
         position: absolute;
@@ -75,15 +86,29 @@
       }
       #memo-popup {
         display: none;
-        width: 45px;
         position: absolute;
+        max-width: 110px;
+        height: 24px;
         background-color: white;
         border: 1px solid #eaeaea;
         border-radius: 5px;
-        user-select: none;
+        padding: 4px;
+        z-index: 100;
       }
-      #memo-popup > button {
-        user-select: none;
+      #memo-popup button.add {
+        display: block;
+        color: blue;
+        font-weight: 600;
+      }
+      #memo-popup button.update {
+        display: none;
+        color: blue;
+        font-weight: 600;
+      }
+      #memo-popup button.remove {
+        display: none;
+        color: red;
+        font-weight: 600;
       }
       mark {
         background-color: aqua !important;
@@ -96,6 +121,7 @@
         background-color: #d6d6d6;
         font-style: normal;
         padding: 0px 10px;
+        cursor: crosshair;
       }
     </style>
   </head>
@@ -117,7 +143,7 @@
           Doloremque voluptate molestiae laboriosam possimus sed? Excepturi
           veritatis, blanditiis ea ratione obcaecati magnam earum magni
           temporibus officiis error porro incidunt ipsum quae repudiandae
-          expedita fugiat itaque <span class="memo">memo test</span> delectus.
+          expedita fugiat itaque delectus.
           Ad quisquam provident odio. Quo iste, in explicabo, nulla tempore
           animi quasi ducimus numquam sint et perferendis ratione accusamus
           mollitia debitis earum voluptates. Cumque officiis expedita
@@ -136,7 +162,7 @@
         </div>
       </div>
 
-      <div key="FIELD_OF_THE_INVENTION" id="FIELD_OF_THE_INVENTION_2">
+      <div key="FIELD_OF_THE_INVENTION_2" id="FIELD_OF_THE_INVENTION_2">
         <p>
           <strong>【Paragraph 2】</strong>
         </p>
@@ -212,7 +238,81 @@
           <span class="symbol" symbol="24">24</span> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste architecto, dolores libero dolore, numquam, eos nemo reiciendis sint obcaecati fuga eveniet. Qui, facilis rerum.<br>
           <span class="symbol" symbol="25">25</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente similique eligendi laborum doloribus in, eos voluptates voluptas saepe obcaecati ullam molestias accusamus, reprehenderit accusantium rerum!<br>
           <span class="symbol" symbol="26">26</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis facilis vel perspiciatis iure porro voluptate quibusdam minus, fugiat assumenda blanditiis atque deleniti eligendi vitae possimus tempora.<br>
-          <span class="symbol" symbol="27">27</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum eaque, saepe suscipit assumenda dolore dolorum tempore cumque libero ipsum quibusdam delectus minima voluptatem vero possimus incidunt vitae!</div>
+          <span class="symbol" symbol="27">27</span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum eaque, saepe suscipit assumenda dolore dolorum tempore cumque libero ipsum quibusdam delectus minima voluptatem vero possimus incidunt vitae!
+        </div>
+        <div key="P-0082" id="P-0082">
+          <div id="TABLE-US-00001-0000" type="TABLE" style="text-align: center;padding: 10px;width: calc(100%-20px);">
+            <table></table>
+            <table>
+              <colgroup>
+                <col style="width: 100.00%;">
+              </colgroup>
+              <thead>
+                <tr>
+                  <td nameend="1" namest="1" rowsep="1">
+                    <strong><span data-markjs="true" class="search-highlight">TABLE</span> 1</strong>
+                  </td>
+                </tr>
+              </thead>
+              <tbody valign="top">
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td align="center" nameend="1" namest="1" rowsep="1" colspan="1" style="text-align:left"></td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td style="text-align:left">Example Biosignal Data and Source</td>
+                </tr>
+              </tbody>
+            </table>
+            <table>
+              <colgroup>
+                <col style="width: 19.05%;">
+                <col style="width: 21.43%;">
+                <col style="width: 26.19%;">
+                <col style="width: 33.33%;">
+              </colgroup>
+              <tbody valign="top">
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <th style="text-align:left">Category</th>
+                  <th style="text-align:left">Type</th>
+                  <th style="text-align:left">Signal</th>
+                  <th style="text-align:left">Source</th>
+                </tr>
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td align="center" nameend="4" namest="1" rowsep="1" colspan="4" style="text-align:left"></td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td style="text-align:left">Sensor Data</td>
+                  <td style="text-align:left">Biomarker</td>
+                  <td style="text-align:left">Weight</td>
+                  <td style="text-align:left">Body Composition Scale</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td style="text-align:left"></td>
+                  <td style="text-align:left">Biomarker</td>
+                  <td style="text-align:left">Body fat %</td>
+                  <td style="text-align:left">Body Composition Scale</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td style="text-align:left"></td>
+                  <td style="text-align:left">Biomarker</td>
+                  <td style="text-align:left">Subcutaneous fat %</td>
+                  <td style="text-align:left">Body Composition Scale</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td style="text-align:left"></td>
+                  <td style="text-align:left">Biomarker</td>
+                  <td style="text-align:left">Visceral fat %</td>
+                  <td style="text-align:left">Body Composition Scale</td>
+                </tr>
+                <tr style="border-bottom: 1px solid rgb(203, 203, 203);">
+                  <td style="text-align:left"></td>
+                  <td style="text-align:left">Biomarker</td>
+                  <td style="text-align:left">Body water %</td>
+                  <td style="text-align:left">Body Composition Scale</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
       </div>
     </div>
 
@@ -230,9 +330,12 @@
     </div>
 
     <div id="memo-popup">
-      <button type="button">memo</button>
+      <button type="button" class="add">추가</button>
+      <button type="button" class="update">수정</button>
+      <button type="button" class="remove">삭제</button>
     </div>
 
+    <div id="memo-view"></div>
     <script>
       /*
        * 현재 제한 사항
@@ -254,9 +357,11 @@
         const COMMON_REGEX          = /\n {2,}/g;
         const MEMO_CLASSNAME        = 'memo';
         const MEMO_ING_CLASSNAME    = 'memo-ing';
+        const MEMO_UPDATE_CLASSNAME = 'memo-update';
 
-        this.isDragging = false;
-        this.ingMemoKey = 0;
+        this.isDragging    = false;
+        this.isUpdate      = false;
+        this.targetMemoKey = 0;
 
         this.documentId = documentId || '';
         this.container  = document.getElementById(containerId);
@@ -271,13 +376,18 @@
         this.selectedText = null;
         this.originHtml   = null;
 
+        this.memoView     = document.getElementById('memo-view');
+
         this.modal          = document.getElementById('memo-modal');
         this.modalTextarea  = this.modal.querySelector('textarea.memo-input');
         this.modalSaveBtn   = this.modal.querySelector('button.save-btn');
         this.modalCancelBtn = this.modal.querySelector('button.cancel-btn');
         this.modalNotice    = this.modal.querySelector('div.text-notice');
 
-        this.mousePopup   = document.getElementById('memo-popup');
+        this.mousePopup          = document.getElementById('memo-popup');
+        this.mousePopupAddBtn    = this.mousePopup.querySelector('button.add');
+        this.mousePopupUpdateBtn = this.mousePopup.querySelector('button.update');
+        this.mousePopupRemoveBtn = this.mousePopup.querySelector('button.remove');
         this.isPopupHover = false;
 
         this.groupedData = data => {
@@ -414,7 +524,7 @@
 
           if (!selectionText || selectionText.length < needCharCount) {
             possible = false;
-            message  = `Requires least ${needCharCount} characters`;
+            message  = `Requires least ${ needCharCount } characters`;
           }
 
           if ( possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
@@ -430,7 +540,7 @@
           }
 
           if (possible) {
-            const parentTagList = ['li', 'p', 'div'];
+            const parentTagList = [ 'li', 'p', 'div' ];
 
             const startNode = selection.anchorNode.parentNode.closest(parentTagList.join(','));
             const endNode   = selection.focusNode.parentNode.closest(parentTagList.join(','));
@@ -453,7 +563,10 @@
                 break;
               } else if (node.nodeName === 'IMG' || (node.nodeName === 'EM' && node.textContent.trim() === 'IMAGE' )) {
                 possible = false;
-                message  = 'Memo not include img';
+                message  = 'Memo cannot include img';
+              } else if (node.nodeName === 'TR' || node.nodeName === 'TD' || node.nodeName === 'TH') {
+                possible = false;
+                message  = 'Memo cannot use between table elements';
               }
             }
           }
@@ -467,7 +580,7 @@
           this.range        = this.selection.getRangeAt(0);
 
           if (this.range) {
-            this.ingMemoKey = Math.floor(Math.random() * 10_000) + '';
+            this.targetMemoKey = Math.floor(Math.random() * 10_000) + '';
             const preSelectionRange = this.range.cloneRange();
 
             preSelectionRange.selectNodeContents(this.parentTarget);
@@ -476,7 +589,7 @@
             this.range.start = this.TextByRegex(preSelectionRange.toString()).length;
             this.range.end   = this.range.start + this.TextByRegex(this.range.toString()).length;
 
-            this.addHighlightElement(this.parentTarget, this.range.start, this.range.end, this.ingMemoKey, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
+            this.addHighlightElement(this.parentTarget, this.range.start, this.range.end, this.targetMemoKey, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
 
             this.selection.removeAllRanges();
 
@@ -488,7 +601,7 @@
           this.modal.style.display = 'block';
 
           let xAxis = event.pageX;
-          let yAxis = event.pageY + window.pageYOffset;
+          let yAxis = event.pageY;
 
           const modalWidth = this.modal.offsetWidth;
           const modalHeight = this.modal.offsetHeight;
@@ -520,34 +633,84 @@
         };
 
         this.setEvent = () => {
-          this.setEventSaveButton();
-          this.setEventCancelButton();
-          this.setEventTextarea();
+          this.setEventModal();
           this.setEventMousePopup();
-          this.setEventHighlightHover();
+          this.setEventHighlight();
         };
+
+        this.showMouseBtnGroup = (groupName = 'ADD') => {
+          if (groupName === 'ADD') {
+            this.mousePopupAddBtn.style.display    = 'block';
+            this.mousePopupUpdateBtn.style.display = 'none';
+            this.mousePopupRemoveBtn.style.display = 'none';
+          } else {
+            this.mousePopupAddBtn.style.display    = 'none';
+            this.mousePopupUpdateBtn.style.display = 'inline-block';
+            this.mousePopupRemoveBtn.style.display = 'inline-block';
+          }
+        }
+
+        this.setEventHighlight = () => {
+          this.setEventHighlightMemo();
+          this.setEventHighlightHover();
+        }
+
+        this.setEventHighlightMemo = () => {
+          this.container.addEventListener('click', ({ target }) => {
+            if (target.classList.contains(MEMO_CLASSNAME) && !target.classList.contains(MEMO_ING_CLASSNAME) && !document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
+              this.target        = event.target;
+              this.parentTarget  = this.target.closest('div');
+              this.targetMemoKey = target.getAttribute('memo-key');
+              
+              this.showMouseBtnGroup('UPDATE');
+              this.openMousePopup();
+            }
+          });
+        }
+
+        this.getElementsSameKey = target => {
+          const memoKey      = target.getAttribute('memo-key');
+          this.targetMemoKey = memoKey;
+
+          return [ ...this.container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
+        }
 
         this.setEventHighlightHover = () => {
           this.container.addEventListener('mouseover', ({ target }) => {
-            const memoKey = target.getAttribute('memo-key');
-            const elements = [ ...this.container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
+            const elements = this.getElementsSameKey(target);
 
             if (elements.length) {
               for (const element of elements) {
                 element.classList.add('memo-hover');
               }
             }
+
+            const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
+
+            if (data) {
+              this.memoView.style.display = 'block';
+              this.memoView.style.left    = `${ event.pageX }px`;
+              this.memoView.style.top     = `${ event.clientY }px`;
+              this.memoView.innerText     = data.memoText;
+            }
           });
           this.container.addEventListener('mouseout', ({ target }) => {
-            const memoKey = target.getAttribute('memo-key');
-            const elements = [ ...this.container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
+            const elements = this.getElementsSameKey(target);
 
             if (elements.length) {
               for (const element of elements) {
                 element.classList.remove('memo-hover');
               }
             }
+
+            this.memoView.style.display = 'none';
           });
+        }
+
+        this.setEventModal = () => {
+          this.setEventTextarea();
+          this.setEventSaveButton();
+          this.setEventCancelButton();
         }
 
         this.setEventTextarea = () => {
@@ -560,25 +723,47 @@
             const memoText = this.modalTextarea.value;
 
             if (memoText.trim().length === 0) {
-              return alert('메모 입력되지 않음');
+              return window.alert('메모 입력되지 않음');
             }
 
             if (this.target) {
-              const data = {
-                documentId    : this.documentId,
-                parentSelector: this.getSelectorPath(this.parentTarget),
-                targetText    : this.selectedText,
-                start         : this.range.start,
-                end           : this.range.end,
-                memoKey       : this.ingMemoKey,
-                memoText,
-              };
-
               for (const ingTag of [ ...this.parentTarget.getElementsByClassName(MEMO_ING_CLASSNAME) ]) {
                 ingTag.classList.remove(MEMO_ING_CLASSNAME);
               }
 
-              this.storage.push(data);
+              if (this.isUpdate) {
+                let data = this.storage.find(item => item.memoKey === this.targetMemoKey);
+                data = {
+                  ...data,
+                  memoText
+                };
+
+                this.storage = this.storage.filter(item => item.memoKey !== this.targetMemoKey);
+                this.storage.push(data);
+
+                const elements = this.getElementsSameKey(this.target);
+
+                if (elements.length) {
+                  for (const element of elements) {
+                    element.classList.remove('memo-update');
+                  }
+                }
+
+                this.isUpdate = false;
+                window.alert('수정되었습니다.');
+              } else {
+                this.storage.push({
+                  documentId    : this.documentId,
+                  parentSelector: this.getSelectorPath(this.parentTarget),
+                  targetText    : this.selectedText,
+                  start         : this.range.start,
+                  end           : this.range.end,
+                  memoKey       : this.targetMemoKey,
+                  memoText,
+                });
+
+                window.alert('저장되었습니다.');
+              }
 
               sessionStorage.setItem('data', JSON.stringify(this.storage));
             }
@@ -586,11 +771,23 @@
             this.hideModal();
           });
         };
-
+        
         this.setEventCancelButton = () => {
           this.modalCancelBtn.addEventListener('click', () => {
             if (this.parentTarget) {
-              this.removeHighlightElement(this.parentTarget, this.ingMemoKey);
+              if (!this.isUpdate) {
+                this.removeHighlightElement(this.parentTarget, this.targetMemoKey);
+              } else {
+                const elements = this.getElementsSameKey(this.target);
+
+                if (elements.length) {
+                  for (const element of elements) {
+                    element.classList.remove('memo-update');
+                  }
+                }
+
+                this.isUpdate = false;
+              }
 
               this.hideModal();
             }
@@ -606,9 +803,9 @@
           const popupHeight = this.mousePopup.offsetHeight;
 
           if (xAxis - popupWidth < 0) {
-            xAxis = popupWidth / 2;
+            xAxis = popupWidth / 1.5;
           } else if (window.innerWidth < xAxis + popupWidth) {
-            xAxis = window.innerWidth - popupWidth
+            xAxis = window.innerWidth - popupWidth * 1.5
           }
 
           this.mousePopup.style.left = `${ xAxis }px`;
@@ -619,10 +816,42 @@
           this.mousePopup.addEventListener('mouseover', () => this.isPopupHover = true);
           this.mousePopup.addEventListener('mouseout', () => this.isPopupHover = false);
 
-          this.mousePopup.addEventListener('click', () => {
+          this.mousePopupAddBtn.addEventListener('click', () => {
             this.mousePopup.style.display = 'none';
 
             this.highlightSelectedTextAndOpenModal();
+          });
+
+          this.mousePopupUpdateBtn.addEventListener('click', () => {
+            this.mousePopup.style.display = 'none';
+
+            const elements = this.getElementsSameKey(this.target);
+
+            if (elements.length) {
+              for (const element of elements) {
+                element.classList.add('memo-update');
+              }
+            }
+
+            const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
+            
+            if (data) {
+              this.isUpdate = true;
+              this.modalTextarea.value = data.memoText;
+            }
+            
+            this.openModal();
+          });
+
+          this.mousePopupRemoveBtn.addEventListener('click', () => {
+            if (window.confirm('정말 삭제하시겠습니까?')) {
+              this.removeHighlightElement(this.parentTarget, this.targetMemoKey);
+
+              this.storage = this.storage.filter(item => item.memoKey !== this.targetMemoKey);
+              sessionStorage.setItem('data', JSON.stringify(this.storage));
+
+              this.mousePopup.style.display = 'none';
+            }
           });
 
           document.addEventListener('mousedown', () => {
@@ -638,15 +867,19 @@
           let path = [];
           while (element.nodeType === Node.ELEMENT_NODE) {
             let selector = element.nodeName.toLowerCase();
-
             if (element.id) {
               selector += `#${ element.id }`;
-            } else {
-              let sibling = element, nth = 1;
-              while (sibling.nodeType === Node.ELEMENT_NODE && (sibling = sibling.previousSibling) && nth++) {
-                selector += `:nth-child(${ nth })`;
-              }
+            } else if (element.getAttribute('num')) {
+              selector += `[num="${ element.getAttribute('num') }"]`
+            } else if (element.getAttribute('key')) {
+              selector += `[key="${ element.getAttribute('key') }"]`
             }
+            // else  {
+            //   let sibling = element, nth = 1;
+            //   while (sibling.nodeType === Node.ELEMENT_NODE && (sibling = sibling.previousSibling) && nth++) {
+            //     selector += `:nth-child(${ nth })`;
+            //   }
+            // }
             path.unshift(selector);
 
             if (element.id) break;
@@ -659,10 +892,7 @@
         this.init = () => {
           this.loadStorageAndHighlight();
 
-          this.container.addEventListener('mousedown', () => {
-            this.isDragging = false;
-            this.modalCancelBtn.dispatchEvent(new Event('click'));
-          });
+          this.container.addEventListener('mousedown', () => this.isDragging = false);
           this.container.addEventListener('mousemove', () => this.isDragging = true);
 
           this.container.addEventListener('mouseup', event => {
@@ -679,6 +909,7 @@
               this.target       = event.target;
               this.parentTarget = this.target.closest('div');
 
+              this.showMouseBtnGroup('ADD');
               this.openMousePopup();
             }
           });
