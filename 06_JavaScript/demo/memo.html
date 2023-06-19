@@ -33,7 +33,7 @@
         cursor: pointer;
       }
       #memo-view {
-        display: block;
+        display: none;
         background-color: #3aa7c6;
         position: fixed;
         height: 40px;
@@ -660,7 +660,9 @@
             if (target.classList.contains(MEMO_CLASSNAME) && !target.classList.contains(MEMO_ING_CLASSNAME) && !document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
               this.target        = event.target;
               this.parentTarget  = this.target.closest('div');
-              this.targetMemoKey = target.getAttribute('memo-key');
+              if (target.getAttribute('memo-key')) {
+                this.targetMemoKey = target.getAttribute('memo-key');
+              }
               
               this.showMouseBtnGroup('UPDATE');
               this.openMousePopup();
@@ -669,8 +671,10 @@
         }
 
         this.getElementsSameKey = target => {
-          const memoKey      = target.getAttribute('memo-key');
-          this.targetMemoKey = memoKey;
+          const memoKey = target.getAttribute('memo-key');
+          if (memoKey) {
+            this.targetMemoKey = memoKey;
+          }
 
           return [ ...this.container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
         }
@@ -683,15 +687,15 @@
               for (const element of elements) {
                 element.classList.add('memo-hover');
               }
-            }
 
-            const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
+              const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
 
-            if (data) {
-              this.memoView.style.display = 'block';
-              this.memoView.style.left    = `${ event.pageX }px`;
-              this.memoView.style.top     = `${ event.clientY }px`;
-              this.memoView.innerText     = data.memoText;
+              if (data) {
+                this.memoView.style.display = 'block';
+                this.memoView.style.left    = `${ event.pageX }px`;
+                this.memoView.style.top     = `${ event.clientY }px`;
+                this.memoView.innerText     = data.memoText;
+              }
             }
           });
           this.container.addEventListener('mouseout', ({ target }) => {
@@ -720,7 +724,7 @@
 
         this.setEventSaveButton = () => {
           this.modalSaveBtn.addEventListener('click', () => {
-            const memoText = this.modalTextarea.value;
+            const c = this.modalTextarea.value;
 
             if (memoText.trim().length === 0) {
               return window.alert('메모 입력되지 않음');
