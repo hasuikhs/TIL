@@ -528,7 +528,7 @@
             message  = `Requires least ${ needCharCount } characters`;
           }
 
-          if ( possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
+          if (possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
             possible = false;
             message  = 'Already writing memo';
           }
@@ -562,9 +562,9 @@
                 possible = false;
                 message  = 'Memo cannot overlap each other';
                 break;
-              } else if (node.nodeName === 'IMG' || (node.nodeName === 'EM' && node.textContent.trim() === 'IMAGE' )) {
+              } else if (node.nodeName === 'IMG' || node.nodeName === 'EM') {
                 possible = false;
-                message  = 'Memo cannot include img';
+                message  = 'Memo cannot include img or badge';
               } else if (node.nodeName === 'TR' || node.nodeName === 'TD' || node.nodeName === 'TH') {
                 possible = false;
                 message  = 'Memo cannot use between table elements';
