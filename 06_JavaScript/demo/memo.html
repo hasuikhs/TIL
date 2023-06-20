@@ -916,7 +916,6 @@
           this.container.addEventListener('mousemove', () => this.isDragging = true);
 
           this.container.addEventListener('mouseup', event => {
-            console.log(this.container, event.target)
             if (!this.isDragging) return;
 
             const selection = window.getSelection();
