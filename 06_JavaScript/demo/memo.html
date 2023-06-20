@@ -366,31 +366,30 @@
         this.targetMemoKey = 0;
 
         this.documentId = documentId || '';
-        this.container  = document.getElementById(containerId);
+        this.$container  = document.getElementById(containerId);
 
         this.storage = JSON.parse(sessionStorage.getItem('data')) || [];
 
-        this.target       = null;
-        this.parentTarget = null;
+        this.$target       = null;
+        this.$parentTarget = null;
 
         this.selection    = null;
         this.range        = null;
         this.selectedText = null;
-        this.originHtml   = null;
 
-        this.memoView     = document.getElementById('memo-view');
+        this.$memoView     = document.getElementById('memo-view');
 
-        this.modal          = document.getElementById('memo-modal');
-        this.modalTextarea  = this.modal.querySelector('textarea.memo-input');
-        this.modalSaveBtn   = this.modal.querySelector('button.save-btn');
-        this.modalCancelBtn = this.modal.querySelector('button.cancel-btn');
-        this.modalNotice    = this.modal.querySelector('div.text-notice');
-
-        this.mousePopup          = document.getElementById('memo-popup');
-        this.mousePopupAddBtn    = this.mousePopup.querySelector('button.add');
-        this.mousePopupUpdateBtn = this.mousePopup.querySelector('button.update');
-        this.mousePopupRemoveBtn = this.mousePopup.querySelector('button.remove');
-        this.isPopupHover        = false;
+        this.$modal          = document.getElementById('memo-modal');
+        this.$modalTextarea  = this.$modal.querySelector('textarea.memo-input');
+        this.$modalSaveBtn   = this.$modal.querySelector('button.save-btn');
+        this.$modalCancelBtn = this.$modal.querySelector('button.cancel-btn');
+        this.$modalNotice    = this.$modal.querySelector('div.text-notice');
+        
+        this.isPopupHover         = false;
+        this.$mousePopup          = document.getElementById('memo-popup');
+        this.$mousePopupAddBtn    = this.$mousePopup.querySelector('button.add');
+        this.$mousePopupUpdateBtn = this.$mousePopup.querySelector('button.update');
+        this.$mousePopupRemoveBtn = this.$mousePopup.querySelector('button.remove');
 
         this.groupedData = data => {
           const result = {};
@@ -581,13 +580,13 @@
             this.targetMemoKey = Math.floor(Math.random() * 10_000) + '';
             const preSelectionRange = this.range.cloneRange();
 
-            preSelectionRange.selectNodeContents(this.parentTarget);
+            preSelectionRange.selectNodeContents(this.$parentTarget);
             preSelectionRange.setEnd(this.range.startContainer, this.range.startOffset);
 
             this.range.start = this.TextByRegex(preSelectionRange.toString()).length;
             this.range.end   = this.range.start + this.TextByRegex(this.range.toString()).length;
 
-            this.addHighlightElement(this.parentTarget, this.range.start, this.range.end, this.targetMemoKey, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
+            this.addHighlightElement(this.$parentTarget, this.range.start, this.range.end, this.targetMemoKey, [ MEMO_CLASSNAME, MEMO_ING_CLASSNAME ]);
 
             this.selection.removeAllRanges();
 
@@ -596,13 +595,13 @@
         };
 
         this.openModal = () => {
-          this.modal.style.display = 'block';
+          this.$modal.style.display = 'block';
 
           let xAxis = event.pageX;
           let yAxis = event.pageY;
 
-          const modalWidth  = this.modal.offsetWidth;
-          const modalHeight = this.modal.offsetHeight;
+          const modalWidth  = this.$modal.offsetWidth;
+          const modalHeight = this.$modal.offsetHeight;
 
           if (xAxis - modalWidth < 0) {
             xAxis = modalWidth / 2;
@@ -618,16 +617,16 @@
             }
           }
 
-          this.modal.style.left = `${ xAxis }px`;
-          this.modal.style.top  = `${ yAxis }px`;
+          this.$modal.style.left = `${ xAxis }px`;
+          this.$modal.style.top  = `${ yAxis }px`;
 
-          this.modalTextarea.focus();
+          this.$modalTextarea.focus();
         };
 
         this.hideModal = () => {
-          this.modal.style.display   = 'none';
-          this.modalTextarea.value   = '';
-          this.modalNotice.innerText = '0/100';
+          this.$modal.style.display   = 'none';
+          this.$modalTextarea.value   = '';
+          this.$modalNotice.innerText = '0/100';
         };
 
         this.setEvent = () => {
@@ -638,13 +637,13 @@
 
         this.showMouseBtnGroup = (groupName = 'ADD') => {
           if (groupName === 'ADD') {
-            this.mousePopupAddBtn.style.display    = 'block';
-            this.mousePopupUpdateBtn.style.display = 'none';
-            this.mousePopupRemoveBtn.style.display = 'none';
+            this.$mousePopupAddBtn.style.display    = 'block';
+            this.$mousePopupUpdateBtn.style.display = 'none';
+            this.$mousePopupRemoveBtn.style.display = 'none';
           } else {
-            this.mousePopupAddBtn.style.display    = 'none';
-            this.mousePopupUpdateBtn.style.display = 'inline-block';
-            this.mousePopupRemoveBtn.style.display = 'inline-block';
+            this.$mousePopupAddBtn.style.display    = 'none';
+            this.$mousePopupUpdateBtn.style.display = 'inline-block';
+            this.$mousePopupRemoveBtn.style.display = 'inline-block';
           }
         }
 
@@ -654,10 +653,10 @@
         }
 
         this.setEventHighlightMemo = () => {
-          this.container.addEventListener('click', ({ target }) => {
+          this.$container.addEventListener('click', ({ target }) => {
             if (target.classList.contains(MEMO_CLASSNAME) && !target.classList.contains(MEMO_ING_CLASSNAME) && !document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
-              this.target        = event.target;
-              this.parentTarget  = this.target.closest('div');
+              this.$target        = event.target;
+              this.$parentTarget  = this.$target.closest('div');
               if (target.getAttribute('memo-key')) {
                 this.targetMemoKey = target.getAttribute('memo-key');
               }
@@ -674,11 +673,11 @@
             this.targetMemoKey = memoKey;
           }
 
-          return [ ...this.container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
+          return [ ...this.$container.querySelectorAll(`span[memo-key="${ memoKey }"]`) ];
         }
 
         this.setEventHighlightHover = () => {
-          this.container.addEventListener('mouseover', ({ target }) => {
+          this.$container.addEventListener('mouseover', ({ target }) => {
             const elements = this.getElementsSameKey(target);
 
             if (elements.length) {
@@ -689,13 +688,13 @@
               const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
 
               if (data) {
-                this.memoView.style.display = 'block';
+                this.$memoView.style.display = 'block';
 
                 let xAxis = event.x;
                 let yAxis = event.y;
 
-                const memoViewWidth  = this.memoView.offsetWidth;
-                const memoViewHeight = this.memoView.offsetHeight;
+                const memoViewWidth  = this.$memoView.offsetWidth;
+                const memoViewHeight = this.$memoView.offsetHeight;
 
                 if (xAxis - memoViewWidth < 0) {
                   xAxis = 10;
@@ -708,13 +707,13 @@
                   yAxis = memoViewHeight;
                 }
 
-                this.memoView.style.left = `${ xAxis }px`;
-                this.memoView.style.top  = `${ yAxis }px`;
-                this.memoView.innerText  = data.memoText;
+                this.$memoView.style.left = `${ xAxis }px`;
+                this.$memoView.style.top  = `${ yAxis }px`;
+                this.$memoView.innerText  = data.memoText;
               }
             }
           });
-          this.container.addEventListener('mouseout', ({ target }) => {
+          this.$container.addEventListener('mouseout', ({ target }) => {
             const elements = this.getElementsSameKey(target);
 
             if (elements.length) {
@@ -723,7 +722,7 @@
               }
             }
 
-            this.memoView.style.display = 'none';
+            this.$memoView.style.display = 'none';
           });
         }
 
@@ -734,20 +733,20 @@
         }
 
         this.setEventTextarea = () => {
-          this.modalTextarea.addEventListener('keydown', event => event.keyCode === 13 && event.preventDefault());
-          this.modalTextarea.addEventListener('keyup', () => this.modalNotice.innerText = `${ this.modalTextarea.value.length || 0 }/100`);
+          this.$modalTextarea.addEventListener('keydown', event => event.keyCode === 13 && event.preventDefault());
+          this.$modalTextarea.addEventListener('keyup', () => this.$modalNotice.innerText = `${ this.$modalTextarea.value.length || 0 }/100`);
         };
 
         this.setEventSaveButton = () => {
-          this.modalSaveBtn.addEventListener('click', () => {
-            const memoText = this.modalTextarea.value;
+          this.$modalSaveBtn.addEventListener('click', () => {
+            const memoText = this.$modalTextarea.value;
 
             if (memoText.trim().length === 0) {
               return window.alert('메모 입력되지 않음');
             }
 
-            if (this.target) {
-              for (const ingTag of [ ...this.parentTarget.getElementsByClassName(MEMO_ING_CLASSNAME) ]) {
+            if (this.$target) {
+              for (const ingTag of [ ...this.$parentTarget.getElementsByClassName(MEMO_ING_CLASSNAME) ]) {
                 ingTag.classList.remove(MEMO_ING_CLASSNAME);
               }
 
@@ -761,7 +760,7 @@
                 this.storage = this.storage.filter(item => item.memoKey !== this.targetMemoKey);
                 this.storage.push(data);
 
-                const elements = this.getElementsSameKey(this.target);
+                const elements = this.getElementsSameKey(this.$target);
 
                 if (elements.length) {
                   for (const element of elements) {
@@ -774,7 +773,7 @@
               } else {
                 this.storage.push({
                   documentId    : this.documentId,
-                  parentSelector: this.getSelectorPath(this.parentTarget),
+                  parentSelector: this.getSelectorPath(this.$parentTarget),
                   targetText    : this.selectedText,
                   start         : this.range.start,
                   end           : this.range.end,
@@ -793,12 +792,12 @@
         };
         
         this.setEventCancelButton = () => {
-          this.modalCancelBtn.addEventListener('click', () => {
-            if (this.parentTarget) {
+          this.$modalCancelBtn.addEventListener('click', () => {
+            if (this.$parentTarget) {
               if (!this.isUpdate) {
-                this.removeHighlightElement(this.parentTarget, this.targetMemoKey);
+                this.removeHighlightElement(this.$parentTarget, this.targetMemoKey);
               } else {
-                const elements = this.getElementsSameKey(this.target);
+                const elements = this.getElementsSameKey(this.$target);
 
                 if (elements.length) {
                   for (const element of elements) {
@@ -815,12 +814,12 @@
         };
 
         this.openMousePopup = () => {
-          this.mousePopup.style.display  = 'block';
+          this.$mousePopup.style.display  = 'block';
 
           let xAxis = event.pageX;
 
-          const popupWidth  = this.mousePopup.offsetWidth;
-          const popupHeight = this.mousePopup.offsetHeight;
+          const popupWidth  = this.$mousePopup.offsetWidth;
+          const popupHeight = this.$mousePopup.offsetHeight;
 
           if (xAxis - popupWidth < 0) {
             xAxis = popupWidth / 1.5;
@@ -828,24 +827,24 @@
             xAxis = window.innerWidth - popupWidth * 1.5
           }
 
-          this.mousePopup.style.left = `${ xAxis }px`;
-          this.mousePopup.style.top  = `${ event.pageY }px`;
+          this.$mousePopup.style.left = `${ xAxis }px`;
+          this.$mousePopup.style.top  = `${ event.pageY }px`;
         };
 
         this.setEventMousePopup = () => {
-          this.mousePopup.addEventListener('mouseover', () => this.isPopupHover = true);
-          this.mousePopup.addEventListener('mouseout', () => this.isPopupHover = false);
+          this.$mousePopup.addEventListener('mouseover', () => this.isPopupHover = true);
+          this.$mousePopup.addEventListener('mouseout', () => this.isPopupHover = false);
 
-          this.mousePopupAddBtn.addEventListener('click', () => {
-            this.mousePopup.style.display = 'none';
+          this.$mousePopupAddBtn.addEventListener('click', () => {
+            this.$mousePopup.style.display = 'none';
 
             this.highlightSelectedTextAndOpenModal();
           });
 
-          this.mousePopupUpdateBtn.addEventListener('click', () => {
-            this.mousePopup.style.display = 'none';
+          this.$mousePopupUpdateBtn.addEventListener('click', () => {
+            this.$mousePopup.style.display = 'none';
 
-            const elements = this.getElementsSameKey(this.target);
+            const elements = this.getElementsSameKey(this.$target);
 
             if (elements.length) {
               for (const element of elements) {
@@ -857,26 +856,26 @@
             
             if (data) {
               this.isUpdate = true;
-              this.modalTextarea.value = data.memoText;
+              this.$modalTextarea.value = data.memoText;
             }
             
             this.openModal();
           });
 
-          this.mousePopupRemoveBtn.addEventListener('click', () => {
+          this.$mousePopupRemoveBtn.addEventListener('click', () => {
             if (window.confirm('정말 삭제하시겠습니까?')) {
-              this.removeHighlightElement(this.parentTarget, this.targetMemoKey);
+              this.removeHighlightElement(this.$parentTarget, this.targetMemoKey);
 
               this.storage = this.storage.filter(item => item.memoKey !== this.targetMemoKey);
               sessionStorage.setItem('data', JSON.stringify(this.storage));
 
-              this.mousePopup.style.display = 'none';
+              this.$mousePopup.style.display = 'none';
             }
           });
 
           document.addEventListener('mousedown', () => {
             if (!this.isPopupHover) {
-              this.mousePopup.style.display = 'none';
+              this.$mousePopup.style.display = 'none';
             }
           });
         };
@@ -912,10 +911,10 @@
         this.init = () => {
           this.loadStorageAndHighlight();
 
-          this.container.addEventListener('mousedown', () => this.isDragging = false);
-          this.container.addEventListener('mousemove', () => this.isDragging = true);
+          this.$container.addEventListener('mousedown', () => this.isDragging = false);
+          this.$container.addEventListener('mousemove', () => this.isDragging = true);
 
-          this.container.addEventListener('mouseup', event => {
+          this.$container.addEventListener('mouseup', event => {
             if (!this.isDragging) return;
 
             const selection = window.getSelection();
@@ -926,8 +925,8 @@
             if (!possible) {
               console.error(message);
             } else {
-              this.target       = event.target;
-              this.parentTarget = this.target.closest('div');
+              this.$target       = event.target;
+              this.$parentTarget = this.$target.closest('div');
 
               this.selection    = selection;
               this.selectedText = this.selection.toString();
