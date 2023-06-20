@@ -34,14 +34,15 @@
       }
       #memo-view {
         display: none;
-        background-color: #3aa7c6;
+        background-color: #a3dff0;
         position: fixed;
         height: 40px;
         width: 300px;
-        padding: 5px;
+        padding: 3px 10px;
         color: white;
         border-radius: 5px;
         z-index: 90;
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
       }
       .modal-wrapper {
         display: none;
@@ -313,6 +314,7 @@
               </tbody>
             </table>
           </div>
+        </div>
       </div>
     </div>
 
@@ -388,7 +390,7 @@
         this.mousePopupAddBtn    = this.mousePopup.querySelector('button.add');
         this.mousePopupUpdateBtn = this.mousePopup.querySelector('button.update');
         this.mousePopupRemoveBtn = this.mousePopup.querySelector('button.remove');
-        this.isPopupHover = false;
+        this.isPopupHover        = false;
 
         this.groupedData = data => {
           const result = {};
@@ -575,10 +577,6 @@
         };
 
         this.highlightSelectedTextAndOpenModal = () => {
-          this.selection    = window.getSelection();
-          this.selectedText = this.selection.toString();
-          this.range        = this.selection.getRangeAt(0);
-
           if (this.range) {
             this.targetMemoKey = Math.floor(Math.random() * 10_000) + '';
             const preSelectionRange = this.range.cloneRange();
@@ -603,7 +601,7 @@
           let xAxis = event.pageX;
           let yAxis = event.pageY;
 
-          const modalWidth = this.modal.offsetWidth;
+          const modalWidth  = this.modal.offsetWidth;
           const modalHeight = this.modal.offsetHeight;
 
           if (xAxis - modalWidth < 0) {
@@ -692,9 +690,27 @@
 
               if (data) {
                 this.memoView.style.display = 'block';
-                this.memoView.style.left    = `${ event.pageX }px`;
-                this.memoView.style.top     = `${ event.clientY }px`;
-                this.memoView.innerText     = data.memoText;
+
+                let xAxis = event.x;
+                let yAxis = event.y;
+
+                const memoViewWidth  = this.memoView.offsetWidth;
+                const memoViewHeight = this.memoView.offsetHeight;
+
+                if (xAxis - memoViewWidth < 0) {
+                  xAxis = 10;
+                } else if (window.innerWidth < xAxis + memoViewWidth) {
+                  xAxis = window.innerWidth - memoViewWidth * 1.1;
+                }
+
+                yAxis -= memoViewHeight * 1.2;
+                if (yAxis < 0) {
+                  yAxis = memoViewHeight;
+                }
+
+                this.memoView.style.left = `${ xAxis }px`;
+                this.memoView.style.top  = `${ yAxis }px`;
+                this.memoView.innerText  = data.memoText;
               }
             }
           });
@@ -724,7 +740,7 @@
 
         this.setEventSaveButton = () => {
           this.modalSaveBtn.addEventListener('click', () => {
-            const c = this.modalTextarea.value;
+            const memoText = this.modalTextarea.value;
 
             if (memoText.trim().length === 0) {
               return window.alert('메모 입력되지 않음');
@@ -808,7 +824,7 @@
 
           if (xAxis - popupWidth < 0) {
             xAxis = popupWidth / 1.5;
-          } else if (window.innerWidth < xAxis + popupWidth) {
+          } else if (window.innerWidth < xAxis + popupWidth * 2) {
             xAxis = window.innerWidth - popupWidth * 1.5
           }
 
@@ -900,6 +916,7 @@
           this.container.addEventListener('mousemove', () => this.isDragging = true);
 
           this.container.addEventListener('mouseup', event => {
+            console.log(this.container, event.target)
             if (!this.isDragging) return;
 
             const selection = window.getSelection();
@@ -912,6 +929,10 @@
             } else {
               this.target       = event.target;
               this.parentTarget = this.target.closest('div');
+
+              this.selection    = selection;
+              this.selectedText = this.selection.toString();
+              this.range        = this.selection.getRangeAt(0);
 
               this.showMouseBtnGroup('ADD');
               this.openMousePopup();
