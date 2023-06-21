@@ -366,7 +366,7 @@
         this.targetMemoKey = 0;
 
         this.documentId = documentId || '';
-        this.$container  = document.getElementById(containerId);
+        this.$container = document.getElementById(containerId);
 
         this.storage = JSON.parse(sessionStorage.getItem('data')) || [];
 
@@ -377,14 +377,14 @@
         this.range        = null;
         this.selectedText = null;
 
-        this.$memoView     = document.getElementById('memo-view');
+        this.$memoView = document.getElementById('memo-view');
 
         this.$modal          = document.getElementById('memo-modal');
         this.$modalTextarea  = this.$modal.querySelector('textarea.memo-input');
         this.$modalSaveBtn   = this.$modal.querySelector('button.save-btn');
         this.$modalCancelBtn = this.$modal.querySelector('button.cancel-btn');
         this.$modalNotice    = this.$modal.querySelector('div.text-notice');
-        
+
         this.isPopupHover         = false;
         this.$mousePopup          = document.getElementById('memo-popup');
         this.$mousePopupAddBtn    = this.$mousePopup.querySelector('button.add');
@@ -660,7 +660,7 @@
               if (target.getAttribute('memo-key')) {
                 this.targetMemoKey = target.getAttribute('memo-key');
               }
-              
+
               this.showMouseBtnGroup('UPDATE');
               this.openMousePopup();
             }
@@ -790,7 +790,7 @@
             this.hideModal();
           });
         };
-        
+
         this.setEventCancelButton = () => {
           this.$modalCancelBtn.addEventListener('click', () => {
             if (this.$parentTarget) {
@@ -853,12 +853,12 @@
             }
 
             const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
-            
+
             if (data) {
               this.isUpdate = true;
               this.$modalTextarea.value = data.memoText;
             }
-            
+
             this.openModal();
           });
 
