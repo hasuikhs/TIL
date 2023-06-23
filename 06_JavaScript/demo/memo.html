@@ -447,9 +447,7 @@
 
               targetTextNode.setAttribute('memo-key', memoKey)
               targetTextNode.textContent = targetText;
-              for (const className of classNames) {
-                targetTextNode.classList.add(className);
-              }
+              targetTextNode.className = classNames.join(' ');
 
               parentNode.replaceChild(afterTextNode, currentNode);
               parentNode.insertBefore(targetTextNode, afterTextNode);
@@ -494,7 +492,7 @@
           }
         };
 
-        this.getNodesWithinRange = (range) => {
+        this.getNodesWithinRange = range => {
           const nodes = [];
           const treeWalker = this.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT);
 
