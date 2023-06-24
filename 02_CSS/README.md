@@ -39,6 +39,10 @@
     ```html
     <head>
         <link rel="stylesheet" href="name.css">
+        <!-- IE에만 적용하고 싶을시 단, 10버전 미만까지만 지원 -->
+        <!--[if IE]>
+        <link rel="stylesheet" href="ie-styles.css">
+        <![endif]-->
     </head>
     ```
 
