@@ -30,7 +30,16 @@
       setTimeout(() => {
         tgt.innerText = 'COPY';
       }, 1500);
-    })
+    });
+
+
+    // wheel 이벤트는 맥 트랙패드에서도 정상 작동
+    document.addEventListener('wheel', () => {
+      console.log('wheel');
+    });
+    document.addEventListener('scroll', () => {
+      console.log('scroll');
+    });
   </script>
 </body>
 </html>
