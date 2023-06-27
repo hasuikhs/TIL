@@ -7,9 +7,14 @@
     <style>
         body {
           background-color: white;
-          height: 1500px;
+          height: 3000px;
+        }
+        button {
+          position: absolute;
+          top: 1000px;
         }
         .modal {
+          display: none;
           position: absolute;
           z-index: 9999;
           left: 50%;
@@ -21,7 +26,6 @@
           overflow: auto;
           background-color: rgba(0, 0, 0, 0.4);
           box-shadow: 5px 5px 5px #bcbcbc;
-          display: flex;
           align-items: center;
           justify-content: center;
         }
@@ -36,10 +40,31 @@
     </style>
   </head>
   <body>
+    <button type="button" onclick="openModal()">open</button>
     <div class="modal">
       <div class="modal-content">
 
       </div>
     </div>
+    <script>
+      function openModal() {
+        const modal = document.querySelector('.modal');
+        if (modal.style.display === 'block') {
+          return modal.style.display = 'none';
+        }
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+        const centerY = scrollTop + viewportHeight / 2;
+
+        const modalHeight = modal.offsetHeight;
+
+        modal.style.top = (centerY - modalHeight / 2) + 'px';
+
+        modal.style.display = 'block';
+      }
+    </script>
   </body>
 </html>
