@@ -68,31 +68,6 @@
 
         modal.style.display = 'block';
       }
-
-      const modal = document.querySelector('.modal');
-      modal.addEventListener('wheel', event => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-
-        const modalTop = scrollTop + modal.getBoundingClientRect().top;
-        const modalBottom = modalTop + modal.getBoundingClientRect().height;
-
-        const scrolledBottom = scrollTop + viewportHeight;
-
-        if (scrollTop + 50 < modalTop) {
-          if (event.deltaY > 0) {
-            document.body.style.overflow = 'auto';
-          } else {
-            document.body.style.overflow = 'hidden';
-          }
-        } else if (scrolledBottom > modalBottom + 50) {
-          if (event.deltaY < 0) {
-            document.body.style.overflow = 'auto';
-          } else {
-            document.body.style.overflow = 'hidden';
-          }
-        }
-      });
     </script>
   </body>
 </html>
