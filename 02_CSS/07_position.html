@@ -35,5 +35,13 @@
         <div class="absolute">absolute3</div>
       </div>
     </div>
+    <!--
+      position이 fixed일 경우에는 scroll의 위치를 조심해야함
+      특히 네비게이션 바에서 fixed를 조심해야 함
+      맨 위에서는 fixed 속성이 없다가 생기는 경우가 있으므로
+      scroll 위치를 고려한 이벤트를 구성할때
+      fixed로 바뀌는 순간 해당 영역만큼의 높이가 빠질 수 있어
+      주의가 필요함
+    -->
   </body>
 </html>
