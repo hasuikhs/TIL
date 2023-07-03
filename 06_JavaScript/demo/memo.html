@@ -26,7 +26,7 @@
       }
       .memo {
         font-style: italic;
-        background-color: #f8ca8f !important;
+        background-color: #f8ca8f;
       }
       .memo-hover {
         text-decoration: underline;
@@ -74,7 +74,7 @@
         background-color: #f9f9c8 !important;
       }
       .memo-update {
-        background-color: #9cdef8 !important;
+        animation: update-effect 1s infinite;
       }
       .text-notice {
         position: absolute;
@@ -123,6 +123,11 @@
         font-style: normal;
         padding: 0px 10px;
         cursor: crosshair;
+      }
+      @keyframes update-effect {
+        50% {
+          background-color: #fddbae;
+        }
       }
     </style>
   </head>
