@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Memo</title>
     <style>
+      html {
+        min-width: 1200px;
+      }
       .section {
         display: flex;
         padding: 10px;
@@ -124,12 +127,94 @@
         padding: 0px 10px;
         cursor: crosshair;
       }
+      #memo-toggle {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 25px;
+        font-weight: 600;
+        color: white;
+        background-color: #39aac9;
+        width: 60px;
+        height: 60px;
+        right: 15px;
+        bottom: 15px;
+        border-radius: 50%;
+        transition: all ease 0.5s;
+      }
+      #memo-toggle:hover {
+        /* color: black; */
+        background-color: #636363;
+      }
+      #memo-main {
+        /* display: none; */
+        position: fixed;
+        width: 450px;
+        height: 600px;
+        right: 15px;
+        bottom: 90px;
+        border: 2px solid #EAEAEA;
+        border-radius: 20px;
+        background-color: white;
+        padding: 20px;
+      }
+      #memo-main-close {
+        position: absolute;
+        right: 13px;
+        top: 5px;
+        color: #6d6d6d;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      #memo-search {
+        display: flex;
+        width: 100%;
+        padding: 10px;
+      }
+      #memo-search input {
+        width: 100%;
+        max-width: 320px;
+        padding: 7px;
+        font-size: 15px;
+        margin-right: 2px;
+      }
+      #memo-search button {
+        width: 50px;
+      }
+      #memo-tool {
+        height: 50px;
+      }
+      #memo-content {
+        height: 100%;
+        max-height: 495px;
+        overflow-y: scroll;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        border-radius: 12px;
+        border: 1px solid #6c6c6c;
+      }
+      #memo-content::-webkit-scrollbar {
+        display: none;
+      }
+      .memo-content-item {
+        height: 100px;
+        background-color: #eaeaea;
+        margin: 10px 0px;
+        border-radius: 20px;
+      }
+      .memo-content-item:first-child, .memo-content-item:last-child {
+        margin: 0px;
+      }
       @keyframes update-effect {
         50% {
           background-color: #fddbae;
         }
       }
     </style>
+    
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
     <h1>MEMO TEST</h1>
@@ -315,6 +400,34 @@
       </div>
     </div>
 
+    <div id="memo-toggle">
+      <i class="fa-solid fa-note-sticky"></i>
+    </div>
+
+    <div id="memo-main">
+      <div id="memo-main-close">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <div id="memo-search">
+        <input type="text" placeholder="검색어 입력">
+        <button type="button">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+
+      <div id="memo-tool"></div>
+
+      <div id="memo-content">
+        <div class="memo-content-item"></div>
+        <div class="memo-content-item"></div>
+        <div class="memo-content-item"></div>
+        <div class="memo-content-item"></div>
+        <div class="memo-content-item"></div>
+        <div class="memo-content-item"></div>
+        <div class="memo-content-item"></div>
+      </div>
+    </div>
+
     <div id="memo-modal" class="modal">
       <div class="modal-content">
         <textarea
@@ -387,6 +500,10 @@
         this.$mousePopupAddBtn    = this.$mousePopup.querySelector('button.add');
         this.$mousePopupUpdateBtn = this.$mousePopup.querySelector('button.update');
         this.$mousePopupRemoveBtn = this.$mousePopup.querySelector('button.remove');
+
+        this.$memoToggle       = document.getElementById('memo-toggle');
+        this.$memoMain         = document.getElementById('memo-main');
+        this.$memoMainCloseBtn = document.getElementById('memo-main-close');
 
         this.groupedData = data => {
           const result = {};
@@ -628,6 +745,7 @@
           this.setEventModal();
           this.setEventMousePopup();
           this.setEventHighlight();
+          this.memoToggleEvent();
         };
 
         this.showMouseBtnGroup = (groupName = 'ADD') => {
@@ -902,6 +1020,20 @@
 
           return path.join(' > ');
         };
+
+        this.memoToggleEvent = () => {
+          this.$memoToggle.addEventListener('click', () => {
+            const display = this.$memoMain.style.display;
+            if (display === 'block') {
+              this.$memoMain.style.display = 'none';
+            } else {
+              this.$memoMain.style.display = 'block';
+            }
+          });
+          this.$memoMainCloseBtn.addEventListener('click', () => {
+            this.$memoMain.style.display = 'none';
+          });
+        }
 
         this.init = () => {
           this.loadStorageAndHighlight();
