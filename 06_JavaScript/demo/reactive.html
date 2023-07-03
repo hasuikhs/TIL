@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+          background-color: white;
+          height: 3000px;
+          /* --scroll-range: calc(1000px + (1500px - 1000px) / 2);
+          height: var(--scroll-range); */
+        }
+        button {
+          position: absolute;
+          top: 1000px;
+        }
+        .modal {
+          display: none;
+          position: absolute;
+          z-index: 9999;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -30%);
+          border-radius: 20px;
+          width: 900px;
+          height: 1200px;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.4);
+          box-shadow: 5px 5px 5px #bcbcbc;
+          align-items: center;
+          justify-content: center;
+        }
+        @media screen and (max-width: 1200px) {
+          .modal {
+            width: 80%;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 20px;
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <button type="button" onclick="openModal()">open</button>
+    <div class="modal">
+      <div class="modal-content">
+
+      </div>
+    </div>
+    <script>
+      function openModal() {
+        const modal = document.querySelector('.modal');
+        const body = document.querySelector('body');
+        if (modal.style.display === 'block') {
+          return modal.style.display = 'none';
+        }
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+        const centerY = scrollTop + viewportHeight / 2;
+
+        const modalHeight = modal.offsetHeight;
+
+        modal.style.top = (centerY - modalHeight / 2) + 'px';
+
+        modal.style.display = 'block';
+      }
+    </script>
+  </body>
+</html>
