@@ -970,6 +970,7 @@
             if (data) {
               this.isUpdate = true;
               this.$modalTextarea.value = data.memoText;
+              this.$modalNotice.innerText = `${ data.memoText.length || 0 }/100`
             }
 
             this.openModal();
