@@ -73,6 +73,17 @@ var chimp = {
   }
   ```
 
+- 단, `hasOwnProperty`, `propertyIsEnumerable`, `isPrototypeOf` 같은 `Object.prototype`을 직접 호출하지 않기
+  - 메소드명이 객체의 속성에 오버라이드 될 수 있음
+  ```javascript
+  // 일반
+  const obj = { test: 1 };
+  console.log(obj.hasOwnProperty('test'));
+
+  // 추천
+  console.log(Object.prototype.hasOwnProperty.call(obj, 'test'));
+  ```
+
 ## 3. 프로토타입 상속
 
 - 프로토타입 상속은 기본 프로토타입을 맞춤형 프로토타입으로 대체할 때 진가가 드러남
