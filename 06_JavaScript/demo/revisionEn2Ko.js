@@ -55,25 +55,3 @@ function transform(value, test) {
 }
 
 console.log(transform('Qㅏ', '빠'));
-
-function transform2(value) {
-  const KOREAN_INITIAL = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
-  const KOREAN_MEDIAL = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
-  const KOREAN_FINAL = ['', ...'ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ'];
-
-  let transformed = '';
-
-  for (let i = 0; i < value.length; i += 2) {
-    const initialIndex = KOREAN_INITIAL.indexOf(value[i]);
-    const medialIndex = KOREAN_MEDIAL.indexOf(value[i + 1]);
-    const finalIndex = KOREAN_FINAL.indexOf(value[i + 2]);
-
-    const syllableCode = 44032 + (initialIndex * 21 * 28) + (medialIndex * 28) + finalIndex;
-    transformed += String.fromCharCode(syllableCode);
-  }
-
-  return transformed;
-}
-
-console.log(transform2('Qㅏ', '빠'));
-
