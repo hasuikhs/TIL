@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/css/suneditor.min.css" rel="stylesheet">
+</head>
+<body>
+  <textarea id="sample" style="max-width: 300px;">Hi</textarea>
+  <button id="save">save</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/suneditor.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/suneditor@latest/src/lang/ko.js"></script>
+  <script>
+    const editor = SUNEDITOR.create((document.getElementById('sample') || 'sample'), {
+      colorList: [
+          ['#ccc', '#dedede', 'OrangeRed', 'Orange', 'RoyalBlue', 'SaddleBrown'],
+          ['SlateGray', 'BurlyWood', 'DeepPink', 'FireBrick', 'Gold', 'SeaGreen']
+      ],
+      buttonList: [
+        [ 'undo', 'redo', 'bold', 'underline', 'fontColor', 'hiliteColor', 'link' ]
+      ],
+      width: '100%',
+      maxWidth: '300px',
+      height: '100%',
+      minHeight: '200px',
+      maxHeight: '200px',
+      charCounterType: 'char',
+      maxCharCount: 200,
+      // mode: 'balloon',
+      shortcutsDisable: [ 'undo', 'redo', 'bold', 'underline' ],
+      // lang: SUNEDITOR_LANG['ko']
+    });
+
+    const $button = document.getElementById('save');
+    $button.addEventListener('click', () => {
+      const html = editor.getContents();
+
+      console.log(html);
+
+      const temp = document.createElement('span');
+      temp.innerHTML = html;
+
+      console.log(temp.textContent)
+
+    });
+  </script>
+</body>
+</html>
