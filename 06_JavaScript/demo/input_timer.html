@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #status {
+      height: 50px;
+    }
+  </style>
+</head>
+<body>
+  <textarea id="status"></textarea>
+
+  <script>
+    const inputTimer = new InputTimer({ targetId: 'status' });
+
+    function InputTimer({ targetId }) {
+      if (!new.target) {
+        throw new Error('error');
+      }
+
+      this.$target = document.getElementById(targetId);
+
+      this.originText = 
+      
+      this.isFocus = false;
+      this.waitSec = 0;
+
+      this.timer = undefined;
+      this.timerActive = false;
+
+      this.startTimer = () => {
+        if (!this.timerActive) {
+          console.log('timer start');
+
+          this.timerActive = true;
+          this.timer = setInterval(() => {
+            this.waitSec += 1;
+            console.log(this.waitSec)
+
+            if (this.waitSec === 3) {
+              this.waitSec = 0;
+              // 요청 api
+            }
+          }, 1_000);
+        }
+      }
+
+      this.endTimer = () => {
+        clearInterval(this.timer);
+        this.waitSec = 0;
+        this.timerActive = false;
+        // 요청 api
+
+        console.log('timer end');
+      }
+
+      this.setEvent = () => {
+        this.$target.addEventListener('focus', () => {
+          this.isFocus = true;
+          this.startTimer();
+        });
+        this.$target.addEventListener('blur', () => {
+          this.isFocus = false;
+          this.endTimer();
+        });
+        this.$target.addEventListener('keydown', () => {
+          this.waitSec = 0;
+        })
+      }
+
+      this.init = () => {
+        this.setEvent();
+      }
+
+      this.init();
+    }
+  </script>
+</body>
+</html>

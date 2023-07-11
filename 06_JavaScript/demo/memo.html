@@ -151,27 +151,33 @@
       #memo-main {
         /* display: none; */
         position: fixed;
-        width: 450px;
-        height: 600px;
-        right: 15px;
+        width: 400px;
+        height: 500px;
+        right: -50%;
         bottom: 90px;
         border: 2px solid #EAEAEA;
         border-radius: 20px;
         background-color: white;
-        padding: 20px;
+        transition:  all 0.7s ease-in-out;
+        /* padding: 0 20px 20px 20px; */
+      }
+      #memo-tool-bar {
+        background-color: #EAEAEA;
+        border-radius: 15px 15px 0px 0px;
+        padding: 5px;
       }
       #memo-main-close {
         position: absolute;
         right: 13px;
-        top: 5px;
+        top: 13px;
         color: #6d6d6d;
         font-weight: 600;
         cursor: pointer;
       }
       #memo-search {
         display: flex;
-        width: 100%;
-        padding: 10px;
+        width: 200px;
+        margin-left: 50px;
       }
       #memo-search input {
         width: 100%;
@@ -405,19 +411,21 @@
     </div>
 
     <div id="memo-main">
-      <div id="memo-main-close">
-        <i class="fa-solid fa-xmark"></i>
-      </div>
-      <div id="memo-search">
-        <input type="text" placeholder="검색어 입력">
-        <button type="button">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
+      <div id="memo-tool-bar">
+        <div id="memo-search">
+          <input type="text" placeholder="검색어 입력">
+          <button type="button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+
+
+        <div id="memo-main-close">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
       </div>
 
-      <div id="memo-tool"></div>
-
-      <div id="memo-content">
+      <!-- <div id="memo-content">
         <div class="memo-content-item"></div>
         <div class="memo-content-item"></div>
         <div class="memo-content-item"></div>
@@ -425,7 +433,7 @@
         <div class="memo-content-item"></div>
         <div class="memo-content-item"></div>
         <div class="memo-content-item"></div>
-      </div>
+      </div> -->
     </div>
 
     <div id="memo-modal" class="modal">
@@ -707,7 +715,7 @@
         };
 
         this.openModal = () => {
-          this.$modal.style.display = 'block';
+          this.$modal.style.bottom = '90px';
 
           let xAxis = event.pageX;
           let yAxis = event.pageY;
@@ -801,7 +809,7 @@
               const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
 
               if (data) {
-                this.$memoView.style.display = 'block';
+                this.$memoView.style.bottom = '90px';
 
                 let xAxis = event.x;
                 let yAxis = event.y;
@@ -1024,15 +1032,15 @@
 
         this.memoToggleEvent = () => {
           this.$memoToggle.addEventListener('click', () => {
-            const display = this.$memoMain.style.display;
-            if (display === 'block') {
-              this.$memoMain.style.display = 'none';
+            const right = this.$memoMain.style.right;
+            if (right === '15px') {
+              this.$memoMain.style.right = '-50%';
             } else {
-              this.$memoMain.style.display = 'block';
+              this.$memoMain.style.right = '15px';
             }
           });
           this.$memoMainCloseBtn.addEventListener('click', () => {
-            this.$memoMain.style.display = 'none';
+            this.$memoMain.style.right = '-50%';
           });
         }
 
