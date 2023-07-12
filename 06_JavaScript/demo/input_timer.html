@@ -6,24 +6,40 @@
   <title>Document</title>
   <style>
     #status {
-      height: 50px;
+      height: 100px;
+      resize: none;
+    }
+    #alarm {
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      border: 5px solid #eaf5fe;
+      border-top-color: blue;
+      animation: spinner 1s linear infinite;
+    }
+    @keyframes spinner {
+      to {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
 <body>
   <textarea id="status"></textarea>
+  <div id="alarm"></div>
 
   <script>
-    const inputTimer = new InputTimer({ targetId: 'status' });
+    const inputTimer = new InputTimer({ targetId: 'status', alarmId: 'alarm' });
 
-    function InputTimer({ targetId }) {
+    function InputTimer({ targetId, alarmId }) {
       if (!new.target) {
         throw new Error('error');
       }
 
       this.$target = document.getElementById(targetId);
+      this.$alarm  = document.getElementById(alarmId);
 
-      this.originText = 
+      this.changeText = '';
       
       this.isFocus = false;
       this.waitSec = 0;
@@ -31,28 +47,39 @@
       this.timer = undefined;
       this.timerActive = false;
 
-      this.startTimer = () => {
+      this.initTimer = () => {
+        this.changeText = this.$target.value;
+
         if (!this.timerActive) {
           console.log('timer start');
-
+          
           this.timerActive = true;
           this.timer = setInterval(() => {
             this.waitSec += 1;
             console.log(this.waitSec)
-
+            
             if (this.waitSec === 3) {
+              if (this.changeText !== this.$target.value) {
+                // 요청 api
+                console.log('save!');
+                this.$alarm.style.borderTopColor = 'green';
+                this.changeText = this.$target.value;
+              } else {
+                
+              }
               this.waitSec = 0;
-              // 요청 api
             }
           }, 1_000);
         }
       }
 
-      this.endTimer = () => {
+      this.finalTimer = () => {
         clearInterval(this.timer);
         this.waitSec = 0;
         this.timerActive = false;
         // 요청 api
+        console.log('save!');
+        this.$alarm.style.borderTopColor = 'green';
 
         console.log('timer end');
       }
@@ -60,15 +87,23 @@
       this.setEvent = () => {
         this.$target.addEventListener('focus', () => {
           this.isFocus = true;
-          this.startTimer();
+          this.initTimer();
         });
         this.$target.addEventListener('blur', () => {
           this.isFocus = false;
-          this.endTimer();
+          this.finalTimer();
         });
-        this.$target.addEventListener('keydown', () => {
+        this.$target.addEventListener('keydown', e => {
           this.waitSec = 0;
-        })
+
+          if (e.keyCode === 13 || e.keyCode === 27) {
+            // 요청 api
+            console.log('save!');
+            this.$alarm.style.borderTopColor = 'green';
+          } else {
+            this.$alarm.style.borderTopColor = '#eaeaea';
+          }
+        });
       }
 
       this.init = () => {
