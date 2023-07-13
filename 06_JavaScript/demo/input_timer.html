@@ -126,9 +126,11 @@
       modalBlur.classList.add('show')
       toast.classList.add('show');
       setTimeout(() => {
-        modalBlur.classList.remove('show');
         toast.classList.remove('show');
       }, 3000);
+      setTimeout(() => {
+        modalBlur.classList.remove('show');
+      }, 2500);
     });
 
     blurBtn.addEventListener('click', () => {
