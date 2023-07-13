@@ -22,11 +22,86 @@
         transform: rotate(360deg);
       }
     }
+    #modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 500px;
+      background-color: #EAEAEA;
+      box-shadow: 5px 5px 5px #d6d6d6;
+    }
+    #modal-content-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+      padding: 10px;
+      width: 260px;
+      height: 460px;
+      background-color: beige;
+    }
+    #toast-pop {
+      margin: 0px auto;
+    }
+    #modal-toast {
+      visibility: hidden;
+      min-width: 100px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 5px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      transform: translate(-50%);
+      opacity: 0.8;
+      font-size: 15px;
+    }
+    #modal-toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein {
+      from {bottom: 10px; opacity: 0;}
+      to {bottom:30px; opacity: 0.8;}
+    }
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 0.8;}
+      to {bottom: 10px; opacity: 0;}
+    }
   </style>
 </head>
 <body>
   <textarea id="status"></textarea>
   <div id="alarm"></div>
+
+  <div id="modal">
+    <div id="modal-content-wrapper">
+      <button id="toast-pop-btn" type="button">toast</button>
+
+    </div>
+    <div id="modal-toast">
+      토스트
+    </div>
+  </div>
+
+  <script>
+    const toastPopBtn = document.getElementById('toast-pop-btn');
+    const toast = document.getElementById('modal-toast');
+
+    toastPopBtn.addEventListener('click', () => {
+      toast.className = 'show';
+      setTimeout(() => {
+        console.log('?')
+        toast.className = '';
+      }, 3000);
+    });
+  </script>
 
   <script>
     const inputTimer = new InputTimer({ targetId: 'status', alarmId: 'alarm' });
@@ -58,14 +133,12 @@
             this.waitSec += 1;
             console.log(this.waitSec)
             
-            if (this.waitSec === 3) {
+            if (this.waitSec === 2) {
               if (this.changeText !== this.$target.value) {
                 // 요청 api
                 console.log('save!');
                 this.$alarm.style.borderTopColor = 'green';
                 this.changeText = this.$target.value;
-              } else {
-                
               }
               this.waitSec = 0;
             }
