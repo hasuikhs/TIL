@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
+    button {
+      width: 50px;
+      margin: 20px;
+    }
     #status {
       height: 100px;
       resize: none;
@@ -35,6 +39,7 @@
     #modal-content-wrapper {
       position: relative;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       margin: 10px;
@@ -74,6 +79,22 @@
       from {bottom: 30px; opacity: 0.8;}
       to {bottom: 10px; opacity: 0;}
     }
+    #modal-blur {
+      visibility: hidden;
+      position: fixed;
+      width: 300px;
+      height: 500px;
+      top: 0;
+      opacity: 0;
+      background:rgba(0,0,0,0.3);
+      backdrop-filter: blur(2px);
+      transition: all 0.5s ease;
+    }
+    #modal-blur.show {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -83,6 +104,10 @@
   <div id="modal">
     <div id="modal-content-wrapper">
       <button id="toast-pop-btn" type="button">toast</button>
+      <button id="blur-btn" type="button">blur</button>
+
+    </div>
+    <div id="modal-blur">
 
     </div>
     <div id="modal-toast">
@@ -94,11 +119,22 @@
     const toastPopBtn = document.getElementById('toast-pop-btn');
     const toast = document.getElementById('modal-toast');
 
+    const blurBtn = document.getElementById('blur-btn');
+    const modalBlur = document.getElementById('modal-blur');
+
     toastPopBtn.addEventListener('click', () => {
-      toast.className = 'show';
+      modalBlur.classList.add('show')
+      toast.classList.add('show');
       setTimeout(() => {
-        console.log('?')
-        toast.className = '';
+        modalBlur.classList.remove('show');
+        toast.classList.remove('show');
+      }, 3000);
+    });
+
+    blurBtn.addEventListener('click', () => {
+      modalBlur.classList.add('show');
+      setTimeout(() => {
+        modalBlur.classList.remove('show');
       }, 3000);
     });
   </script>
