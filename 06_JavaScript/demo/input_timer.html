@@ -11,6 +11,7 @@
     }
     #status {
       height: 100px;
+      width: 200px;
       resize: none;
     }
     #alarm {
@@ -131,10 +132,33 @@
         box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
       }
     }
+
+    #text-wrapper {
+      position: relative;
+      width: 200px;
+    }
+    #text-wrapper .stage {
+      display: none;
+      scale: 0.5;
+    }
+    #text-wrapper .stage.show {
+      display: block;
+    }
+    #text-wrapper #text {
+      position: absolute;
+      right: 5px;
+      bottom: 7px;
+    }
   </style>
 </head>
 <body>
-  <textarea id="status"></textarea>
+  <div id="text-wrapper">
+    <textarea id="status"></textarea>
+    <div id="text" class="stage">
+      <div class="dot-typing"></div>
+    </div>
+
+  </div>
   <div id="alarm"></div>
 
   <div id="modal">
@@ -160,6 +184,17 @@
 
     const blurBtn = document.getElementById('blur-btn');
     const modalBlur = document.getElementById('modal-blur');
+
+    const textarea = document.getElementById('status');
+    const typing = document.querySelector('#text-wrapper .stage');
+
+    textarea.addEventListener('focus', () => {
+      typing.classList.add('show');
+    });
+    textarea.addEventListener('blur', () => {
+      typing.classList.remove('show');
+    });
+
 
     toastPopBtn.addEventListener('click', () => {
       modalBlur.classList.add('show')
