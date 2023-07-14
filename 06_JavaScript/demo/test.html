@@ -19,10 +19,38 @@
     /* .copy-btn:active {
       color: red;
     } */
+    #test {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: #eaeaea;
+      right: 5px;
+      bottom: 5px;
+      transition: all 1s ease;
+    }
+    #test * {
+      display: none;
+    }
+    #test.max {
+      width: 500px;
+      height: 500px;
+
+    }
+    #test.max * {
+      animation-delay: 2s;
+    }
+    #test.block * {
+      display: block;
+    }
   </style>
 </head>
 <body>
   <button class="copy-btn" type="button">COPY</button>
+
+  <div id="test">
+    <button>tasdf</button>
+    <input type="text" placeholder="검색어">
+  </div>
   <script>
     document.querySelector('.copy-btn').addEventListener('click', event => {
       let tgt = event.currentTarget;
@@ -30,6 +58,19 @@
       setTimeout(() => {
         tgt.innerText = 'COPY';
       }, 1500);
+    });
+
+    document.querySelector('#test').addEventListener('click', event => {
+      const target = event.currentTarget;
+      if (target.classList.contains('max')) {
+        target.classList.remove('max');
+        target.classList.remove('block');
+      } else {
+        target.classList.add('max');
+        setTimeout(() => {
+          target.classList.add('block');
+        }, 800);
+      }
     });
   </script>
 </body>
