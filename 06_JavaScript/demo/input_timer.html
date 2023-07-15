@@ -153,7 +153,10 @@
 </head>
 <body>
   <div id="text-wrapper">
+    <div>1</div>
     <textarea id="status"></textarea>
+    <div>2</div>
+    <textarea id="input"></textarea>
     <div id="text" class="stage">
       <div class="dot-typing"></div>
     </div>
@@ -188,13 +191,14 @@
     const textarea = document.getElementById('status');
     const typing = document.querySelector('#text-wrapper .stage');
 
+    const input = document.getElementById('input');
+
     textarea.addEventListener('focus', () => {
       typing.classList.add('show');
     });
     textarea.addEventListener('blur', () => {
       typing.classList.remove('show');
     });
-
 
     toastPopBtn.addEventListener('click', () => {
       modalBlur.classList.add('show')
@@ -213,6 +217,17 @@
         modalBlur.classList.remove('show');
       }, 3000);
     });
+
+    let typingTimer;
+    input.addEventListener('input', () => {
+      console.log('asdf')
+      clearInterval(typingTimer);
+      typingTimer = setTimeout(doneTyping, 2000);
+    });
+
+    function doneTyping() {
+      console.log('입력이 멈춤');
+    }
   </script>
 
   <script>
