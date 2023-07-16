@@ -155,8 +155,6 @@
   <div id="text-wrapper">
     <div>1</div>
     <textarea id="status"></textarea>
-    <div>2</div>
-    <textarea id="input"></textarea>
     <div id="text" class="stage">
       <div class="dot-typing"></div>
     </div>
@@ -217,17 +215,6 @@
         modalBlur.classList.remove('show');
       }, 3000);
     });
-
-    let typingTimer;
-    input.addEventListener('input', () => {
-      console.log('asdf')
-      clearInterval(typingTimer);
-      typingTimer = setTimeout(doneTyping, 2000);
-    });
-
-    function doneTyping() {
-      console.log('입력이 멈춤');
-    }
   </script>
 
   <script>
@@ -242,64 +229,38 @@
       this.$alarm  = document.getElementById(alarmId);
 
       this.changeText = '';
-      
-      this.isFocus = false;
-      this.waitSec = 0;
 
       this.timer = undefined;
       this.timerActive = false;
 
+      this.request = () => {
+        console.log('save!');
+      }
+
       this.initTimer = () => {
         this.changeText = this.$target.value;
 
-        if (!this.timerActive) {
-          console.log('timer start');
-          
-          this.timerActive = true;
-          this.timer = setInterval(() => {
-            this.waitSec += 1;
-            console.log(this.waitSec)
-            
-            if (this.waitSec === 2) {
-              if (this.changeText !== this.$target.value) {
-                // 요청 api
-                console.log('save!');
-                this.$alarm.style.borderTopColor = 'green';
-                this.changeText = this.$target.value;
-              }
-              this.waitSec = 0;
-            }
-          }, 1_000);
-        }
+        clearTimeout(this.timer);
+        this.timer = setTimeout(this.request, 2_000);
       }
 
       this.finalTimer = () => {
-        clearInterval(this.timer);
-        this.waitSec = 0;
-        this.timerActive = false;
-        // 요청 api
-        console.log('save!');
-        this.$alarm.style.borderTopColor = 'green';
+        clearTimeout(this.timer);
 
-        console.log('timer end');
+        this.request();
+        this.$alarm.style.borderTopColor = 'green';
       }
 
       this.setEvent = () => {
-        this.$target.addEventListener('focus', () => {
-          this.isFocus = true;
+        this.$target.addEventListener('input', (e) => {
           this.initTimer();
         });
         this.$target.addEventListener('blur', () => {
-          this.isFocus = false;
           this.finalTimer();
         });
         this.$target.addEventListener('keydown', e => {
-          this.waitSec = 0;
-
           if (e.keyCode === 13 || e.keyCode === 27) {
-            // 요청 api
-            console.log('save!');
-            this.$alarm.style.borderTopColor = 'green';
+            this.finalTimer();
           } else {
             this.$alarm.style.borderTopColor = '#eaeaea';
           }
