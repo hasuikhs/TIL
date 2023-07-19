@@ -16,18 +16,54 @@
     .copy-btn:hover {
       color: red;
     }
-    /* .copy-btn:active {
-      color: red;
-    } */
+    .square {
+      margin: auto;
+      width: 80px;
+      height: 50px;
+      background-color: blue;
+      position: relative;
+      border-radius: 10px 0px 0px 10px;
+    }
+    .square::after {
+      position: absolute;
+      content: "";
+      width: 0;
+      height: 0;
+      border-top: 25px solid transparent;
+      border-left: 25px solid blue;
+      border-bottom: 25px solid transparent;
+      left: 80px;
+    }
+
+
+    #base {
+      background: pink;
+      display: inline-block;
+      height: 55px;
+      margin-left: 20px;
+      margin-top: 55px;
+      position: relative;
+      width: 100px;
+    }
+    #base:before {
+      border-bottom: 35px solid pink;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      content: "";
+      height: 0;
+      left: 0;
+      position: absolute;
+      top: -35px;
+      width: 0;
+    }
   </style>
 </head>
 <body>
   <button class="copy-btn" type="button">COPY</button>
 
-  <div id="test">
-    <button>tasdf</button>
-    <input type="text" placeholder="검색어">
-  </div>
+  <div class="square"></div>
+  <div id="base"></div>
+
   <script>
     document.querySelector('.copy-btn').addEventListener('click', event => {
       let tgt = event.currentTarget;
