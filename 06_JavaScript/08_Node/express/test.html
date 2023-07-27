@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <embed id="embed" type="text/html" src="" width="100%" height="100%">
+
+  <script>
+    const embed = document.getElementById('embed');
+    const xhr = new XMLHttpRequest();
+
+    xhr.onload = e => {
+      embed.src = xhr.responseURL;
+      console.log(xhr)
+    }
+
+    xhr.open('get', 'http://localhost:5050/redirect', true);
+    xhr.send();
+  </script>
+</body>
+</html>
