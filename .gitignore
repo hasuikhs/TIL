@@ -76,7 +76,7 @@ Temporary Items
 .history
 .ionide
 
-/node_modules/
+*/node_modules/*
 
 # Support for Project snippet scope
 
