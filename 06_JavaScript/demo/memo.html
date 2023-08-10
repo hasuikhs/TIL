@@ -478,6 +478,8 @@
         const MEMO_CLASSNAME        = 'memo';
         const MEMO_ING_CLASSNAME    = 'memo-ing';
         const MEMO_UPDATE_CLASSNAME = 'memo-update';
+        const MIN_CHARACTER_LENGTH  = 2;
+        const MAX_CHARACTER_LENGTH  = 500;
 
         this.isDragging    = false;
         this.isUpdate      = false;
@@ -577,7 +579,9 @@
 
               targetTextNode.setAttribute('memo-key', memoKey)
               targetTextNode.textContent = targetText;
-              targetTextNode.className = classNames.join(' ');
+              for (const className of classNames) {
+                targetTextNode.classList.add(className);
+              }
 
               parentNode.replaceChild(afterTextNode, currentNode);
               parentNode.insertBefore(targetTextNode, afterTextNode);
@@ -640,12 +644,16 @@
           let possible = true;
           let message  = '';
 
-          const needCharCount = 2;
           const selectionText = selection.toString().trim();
 
-          if (!selectionText || selectionText.length < needCharCount) {
+          if (!selectionText || selectionText.length < MIN_CHARACTER_LENGTH) {
             possible = false;
-            message  = `Requires least ${ needCharCount } characters`;
+            message  = `Requires least ${ MIN_CHARACTER_LENGTH } characters`;
+          }
+
+          if (selectionText.length > MAX_CHARACTER_LENGTH) {
+            possible = false;
+            message  = `Too many chracters`;
           }
 
           if (possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
@@ -715,7 +723,7 @@
         };
 
         this.openModal = () => {
-          this.$modal.style.bottom = '90px';
+          this.$modal.style.display = 'block';
 
           let xAxis = event.pageX;
           let yAxis = event.pageY;
@@ -809,7 +817,7 @@
               const data = this.storage.find(item => item.memoKey === this.targetMemoKey);
 
               if (data) {
-                this.$memoView.style.bottom = '90px';
+                this.$memoView.style.display = 'block';
 
                 let xAxis = event.x;
                 let yAxis = event.y;
@@ -978,7 +986,7 @@
             if (data) {
               this.isUpdate = true;
               this.$modalTextarea.value = data.memoText;
-              this.$modalNotice.innerText = `${ data.memoText.length || 0 }/100`
+              this.$modalNotice.innerText = `${ data.memoText.length || 0 }/100`;
             }
 
             this.openModal();
