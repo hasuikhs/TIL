@@ -143,6 +143,7 @@
         bottom: 15px;
         border-radius: 50%;
         transition: all ease 0.5s;
+        box-shadow: 2px 2px 4px #D6D6D6;
       }
       #memo-toggle:hover {
         /* color: black; */
@@ -479,7 +480,7 @@
         const MEMO_ING_CLASSNAME    = 'memo-ing';
         const MEMO_UPDATE_CLASSNAME = 'memo-update';
         const MIN_CHARACTER_LENGTH  = 2;
-        const MAX_CHARACTER_LENGTH  = 500;
+        const MAX_CHARACTER_LENGTH  = 1500;
 
         this.isDragging    = false;
         this.isUpdate      = false;
@@ -651,9 +652,10 @@
             message  = `Requires least ${ MIN_CHARACTER_LENGTH } characters`;
           }
 
+          console.log(selectionText.length)
           if (selectionText.length > MAX_CHARACTER_LENGTH) {
             possible = false;
-            message  = `Too many chracters`;
+            message  = `Too many characters`;
           }
 
           if (possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
@@ -661,6 +663,7 @@
             message  = 'Already writing memo';
           }
 
+          console.log(range.commonAncestorContainer)
           if (possible) {
             if (range.commonAncestorContainer.parentNode.classList.contains(MEMO_CLASSNAME)) {
               possible = false;
@@ -668,17 +671,18 @@
             }
           }
 
-          if (possible) {
-            const parentTagList = [ 'li', 'p', 'div' ];
+          // if (possible) {
+          //   const parentTagList = [ 'li', 'p', 'div' ];
 
-            const startNode = selection.anchorNode.parentNode.closest(parentTagList.join(','));
-            const endNode   = selection.focusNode.parentNode.closest(parentTagList.join(','));
+          //   const startNode = selection.anchorNode.parentNode.closest(parentTagList.join(','));
+          //   const endNode   = selection.focusNode.parentNode.closest(parentTagList.join(','));
 
-            if (startNode !== endNode) {
-              possible = false;
-              message  = 'Only available in the same paragraph';
-            }
-          }
+          //   if (startNode !== endNode) {
+          //     console.log(startNode, endNode)
+          //     possible = false;
+          //     message  = 'Only available in the same paragraph';
+          //   }
+          // }
 
           if (possible) {
             const nodes = this.getNodesWithinRange(range);
@@ -1063,6 +1067,7 @@
 
             const selection = window.getSelection();
             const range     = selection.getRangeAt(0);
+            console.log(range)
 
             const { possible, message } = this.isPossibleMemo(selection, range);
 
@@ -1071,6 +1076,7 @@
             } else {
               this.$target       = event.target;
               this.$parentTarget = this.$target.closest('div');
+              console.log(this.$parentTarget)
 
               this.selection    = selection;
               this.selectedText = this.selection.toString();

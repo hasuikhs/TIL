@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 98vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    textarea {
+      resize: none;
+      width: 300px;
+      height: 300px;
+      padding: 15px;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+    textarea::placeholder {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    window.onload = () => {
+      const dataInput = new DataInput();
+    }
+
+    function DataInput() {
+      if (!new.target) {
+        throw new Error('Create object using new operator.');
+      }
+
+      this.inputId = 'text-input';
+      this.channel = new BroadcastChannel('broad-channel');
+
+      this.setEvent = () => {
+        document.querySelector(`#${ this.inputId }`).addEventListener('input', e => {
+          const inputData = e.target.value;
+
+          this.channel.postMessage(inputData);
+        });
+
+        this.channel.onmessage = e => {
+          document.querySelector(`#${ this.inputId }`).value = e.data;
+        }
+      }
+
+      this.init = () => {
+        this.setEvent();
+      }
+
+      this.render = () => {
+        const textarea = document.createElement('textarea');
+        textarea.id = this.inputId;
+        textarea.placeholder = 'input your text.';
+
+        document.body.insertAdjacentElement('afterbegin', textarea);
+
+        this.init();
+      }
+
+      this.render();
+    }
+  </script>
+</body>
+</html>
