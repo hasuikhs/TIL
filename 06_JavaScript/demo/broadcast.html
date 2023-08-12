@@ -36,18 +36,22 @@
       }
 
       this.inputId = 'text-input';
-      this.channel = new BroadcastChannel('broad-channel');
+      const channel = new BroadcastChannel('broad-channel');
 
       this.setEvent = () => {
         document.querySelector(`#${ this.inputId }`).addEventListener('input', e => {
           const inputData = e.target.value;
 
-          this.channel.postMessage(inputData);
+          channel.postMessage(inputData);
         });
 
-        this.channel.onmessage = e => {
+        channel.onmessage = e => {
           document.querySelector(`#${ this.inputId }`).value = e.data;
         }
+
+        window.addEventListener('beforeunload', () => {
+          channel.close();
+        });
       }
 
       this.init = () => {
