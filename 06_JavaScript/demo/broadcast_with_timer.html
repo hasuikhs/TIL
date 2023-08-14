@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 98vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    textarea {
+      resize: none;
+      width: 300px;
+      height: 300px;
+      padding: 15px;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+    textarea::placeholder {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <textarea id="text-input" placeholder="Input your text."></textarea>
+
+  <script>
+    window.onload = () => {
+      const dataInput = new DataInput({ targetId: 'text-input' });
+    }
+
+    function DataInput({ targetId }) {
+      if (!new.target) {
+        throw new Error('Create object using new operator.');
+      }
+
+      this.$target = document.querySelector(`#${ targetId }`)
+      const channel = new BroadcastChannel('broad-channel');
+
+      this.changeText = '';
+      this.timer = undefined;
+
+      this.initTimer = () => {
+        this.changeText = this.$target.value;
+
+        clearTimeout(this.timer);
+        this.timer = setTimeout(this.request, 2_000);
+      }
+
+      this.finalTimer = () => {
+        clearTimeout(this.timer);
+
+        this.request();
+      }
+
+      this.request = () => {
+        channel.postMessage(this.$target.value);
+        console.log('save!');
+      }
+
+      this.setEvent = () => {
+        this.$target.addEventListener('input', () => {
+          this.initTimer();
+        });
+        this.$target.addEventListener('blur', () => {
+          console.log('blur')
+          this.finalTimer();
+        });
+        this.$target.addEventListener('keydown', e => {
+          e.stopPropagation();
+          if (e.keyCode === 13 || e.keyCode === 27) {
+            if (e.keyCode === 27) {
+              return this.$target.blur();
+            }
+            this.finalTimer();
+          }
+        });
+
+        channel.onmessage = e => {
+          this.$target.value = e.data;
+        }
+
+        window.addEventListener('beforeunload', () => {
+          channel.close();
+        });
+      }
+
+      this.init = () => {
+        this.setEvent();
+        addEventListener('test', () => {console.log('tests')})
+      }
+
+      this.init();
+    }
+  </script>
+</body>
+</html>
