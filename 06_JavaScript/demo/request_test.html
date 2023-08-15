@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+          function simulateRequest(success) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (success) {
+              resolve('요청 성공!');
+            } else {
+              reject('요청 실패!');
+            }
+          }, 1000); // 1초 후 응답
+        });
+      }
+
+      function fetchData() {
+        simulateRequest(true)
+          .then(response => {
+            console.log('성공:', response);
+          })
+          .catch(error => {
+            console.log('실패:', error);
+          });
+      }
+
+      function fetchFailData() {
+        simulateRequest(false)
+          .then(response => {
+            console.log('성공:', response); // 실행되지 않음
+          })
+          .catch(error => {
+            console.log('실패:', error); // '요청 실패!' 출력
+          });
+      }
+
+      // 호출
+      fetchData(); // 성공 시나리오 실행
+      fetchFailData(); // 실패 시나리오 실행
+    </script>
+  </body>
+</html>
