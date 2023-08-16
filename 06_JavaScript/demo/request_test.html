@@ -7,7 +7,7 @@
   </head>
   <body>
     <script>
-          function simulateRequest(success) {
+      function simulateRequest(success) {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             if (success) {
@@ -21,20 +21,20 @@
 
       function fetchData() {
         simulateRequest(true)
-          .then(response => {
+          .then((response) => {
             console.log('성공:', response);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log('실패:', error);
           });
       }
 
       function fetchFailData() {
         simulateRequest(false)
-          .then(response => {
+          .then((response) => {
             console.log('성공:', response); // 실행되지 않음
           })
-          .catch(error => {
+          .catch((error) => {
             console.log('실패:', error); // '요청 실패!' 출력
           });
       }
