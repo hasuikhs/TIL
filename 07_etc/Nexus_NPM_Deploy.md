@@ -9,7 +9,7 @@
   ```javascript
   import React, { Component } from 'react';
 
-  class MyComponent extends Component {
+  class HsComponent extends Component {
     constructor() {
       super();
     }
@@ -17,13 +17,13 @@
     render() {
       return (
         <div>
-          test
+          Hello! HsComponent.
         </div>
       );
     }
   }
 
-  export default MyComponent;
+  export default HsComponent;
   ```
 
 - `package.json`
@@ -48,13 +48,14 @@
       "@babel/core": "7.15.0",
       "@babel/preset-env": "7.15.0",
       "@babel/preset-react": "^7.14.5",
-      "babel-core": "^7.0.0-bridge.0",
-      "babel-loader": "^7.1.5",
-      "babel-preset-env": "^1.7.0",
-      "babel-preset-react": "^6.24.1",
+      "babel-loader": "^8.3.0",
       "webpack": "^4.46.0",
       "webpack-cli": "^4.7.2"
-    }
+    },
+    "peerDependencies": {
+      "react": "^15.6.2",
+      "react-dom": "^15.6.2"
+    },
   }
   ```
 
@@ -77,6 +78,9 @@
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
+      library: 'hs-component',
+      libraryTarget: 'umd',
+      umdNamedDefine: true
     },
     module: {
       rules: [
@@ -84,10 +88,7 @@
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env', '@babel/preset-react']
-            }
+            loader: 'babel-loader'
           }
         }
       ]
@@ -158,14 +159,15 @@
       "@babel/preset-react": "^7.14.5",
       "@types/react": "^15.6.2",
       "@types/react-dom": "^15.5.17",
-      "babel-core": "^7.0.0-bridge.0",
-      "babel-loader": "^7.1.5",
-      "babel-preset-env": "^1.7.0",
-      "babel-preset-react": "^6.24.1",
+      "babel-loader": "^8.3.0",
       "ts-loader": "^4.0.1",
       "typescript": "^2.9.2",
       "webpack": "^4.46.0",
       "webpack-cli": "^4.7.2"
+    },
+    "peerDependencies": {
+      "react": "^15.6.2",
+      "react-dom": "^15.6.2"
     }
   }
   ```
@@ -203,7 +205,10 @@
     entry: './src/index.tsx',
     output: {
       filename: 'bundle.js',
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist'),
+      library: 'hs-component-ts',
+      libraryTarget: 'umd',
+      umdNamedDefine: true
     },
     module: {
       rules: [
@@ -213,9 +218,6 @@
           use: [
             {
               loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env', '@babel/preset-react']
-              }
             },
             {
               loader: 'ts-loader'
@@ -228,9 +230,6 @@
           use: [
             {
               loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env', '@babel/preset-react']
-              }
             }
           ]
         }
