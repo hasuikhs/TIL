@@ -117,7 +117,7 @@
 
   interface TestProps {}
 
-  class MyComponentTS extends Component<TestProps> {
+  class HsComponentTs extends Component<TestProps> {
     constructor(props: TestProps) {
       super(props);
     }
@@ -131,14 +131,14 @@
     }
   }
 
-  export default MyComponentTS;
+  export default HsComponentTs;
   ```
 
 - `package.json`
 
   ```json
   {
-    "name": "hs-component-ts",
+    "name": "@types/hs-component",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
@@ -206,7 +206,7 @@
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      library: 'hs-component-ts',
+      library: '@types/hs-component',
       libraryTarget: 'umd',
       umdNamedDefine: true
     },
