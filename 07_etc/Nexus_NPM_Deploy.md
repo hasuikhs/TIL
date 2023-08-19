@@ -79,8 +79,7 @@
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
       library: 'hs-component',
-      libraryTarget: 'umd',
-      umdNamedDefine: true
+      libraryTarget: 'umd'
     },
     module: {
       rules: [
@@ -95,6 +94,51 @@
     }
   }
   ```
+
+  - `output.library`
+    - 빌드한 코드를 전역 변수로 노출할 때 사용되는 변수명
+    - 주로 라이브러리 번들링 시 다른 프로젝트나 환경에서 **해당 라이브러리를 사용할 때 필요한 이름**
+  - `output.libraryTarget`
+    - 라이브러리가 어떤 방식으로 노출될지를 정의
+    - 일반적으로 브라우저나 Node.js에서 모듈 시스템을 사용하거나 전역 변수로 노출할 때의 설정을 지정 가능
+      - `var` (기본값)
+        - 라이브러리가 전역 변수로 노출
+        - 브라우저에서 `window.MyLibrary` 와 같이 접근 가능
+        - 일반적으로 브라우저에서 사용할 때 선택
+      - `umd` (Universal Module Definition)
+        - 라이브러리가 UMD 형태로 번들링되어 브라우저 및 Node.js 모듈 시스템에서 사용 가능
+        - 브라우저에서는 전역 변수로 노출되며, Node.js에서는 CommonJS나 ES Modules를 사용하여 불러 올 수 있음
+        - CommonJS와 AMD를 통합하기 위함
+      - `commonjs`
+        - 라이브러리가 CommonJS 모듈 시스템과 호환되는 방식
+        - Node.js에서 주로 사용되며, `require`로 불러올 수 있음
+      - `amd`
+        - 라이브러리가 AMD 모듈 시스템과 호환되는 방식으로 노출
+        - 비동기 모듈에 대한 표준안을 다루는 그룹, CommonJS가 서버쪽에서 장점이 많은 반면 AMD는 브라우저 쪽에서 더 큰 효과를 발휘
+
+    ```javascript
+    module.exports = {
+      ...
+      output: {
+        ...
+        library: 'MyLibrary',
+        libraryTarget: 'umd'
+      }
+      ...
+    }
+    ```
+
+    ```javascript
+    // 브라우저
+    <script src="./my-library.js"></script>
+    <script>
+      MyLibrary.someFunction();
+    </script>
+
+    // Node.js
+    const MyLibrary = require('./my-library.js');
+    MyLibrary.someFunction();
+    ```
 
 - `root`에 빌드된 파일을 연결하는 `index.js` 파일 추가
   
@@ -207,8 +251,7 @@
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
       library: '@types/hs-component',
-      libraryTarget: 'umd',
-      umdNamedDefine: true
+      libraryTarget: 'umd'
     },
     module: {
       rules: [
