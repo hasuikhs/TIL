@@ -371,6 +371,8 @@ $ brew services start nexus
 
 - `Security` 탭의 `Realms` 클릭
   - `npm Bearer Token Realm`을 `Active`로 이동
+    - nexus에서 npm 저장소에 대한 보안 및 권한 관리를 위해 설정
+    - npm 저장소에 접근하는 사용자 및 클라이언트가 유효한 Bearer Token을 소유해야만 해당 저장소에 접근 가능한 보안을 제공
   ![realms](./Nexus_NPM_Deploy.assets/realms.JPG)
 
 ### 2.3 배포
