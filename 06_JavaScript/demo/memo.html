@@ -494,10 +494,12 @@
         this.$target       = null;
         this.$parentTarget = null;
 
-        this.reverseKey   = false;
         this.selection    = null;
         this.range        = null;
         this.selectedText = null;
+        this.prevSelectionRect = null;
+
+        this.pressArrowLeft = false;
 
         this.$memoView = document.getElementById('memo-view');
 
@@ -698,7 +700,7 @@
                 possible = false;
                 message  = 'Memo cannot overlap each other';
                 break;
-              } else if (node.nodeName === 'IMG' || (node.nodeName === 'EM' && node.textContent === 'IMAGE' )) {
+              } else if (node.nodeName === 'IMG' || (node.nodeName === 'EM' && node.textContent.toUpperCase().trim() === 'IMAGE' )) {
                 possible = false;
                 message  = 'Memo cannot include img or badge';
               } else if (node.nodeName === 'TR' || node.nodeName === 'TD' || node.nodeName === 'TH') {
@@ -951,21 +953,33 @@
         };
 
         this.openMousePopup = event => {
-          this.$mousePopup.style.display  = 'block';
+          this.$mousePopup.style.display = 'block';
 
           let xAxis = undefined;
           let yAxis = undefined;
+          
+          const rect = this.range.getBoundingClientRect();
+          if (event.type === 'keyup') {
 
-          if (event.type === 'selectionchange') {
-            console.log('adfa')
+            if (rect.top !== this.prevSelectionRect.top) {
+              yAxis = window.scrollY + rect.top;
+            } else if (rect.bottom !== this.prevSelectionRect.bottom) {
+              yAxis = window.scrollY + rect.bottom;
+            }
+
+            if (event.keyCode === 37) {
+              xAxis = Number(this.$mousePopup.style.left.split('px')[0]) - 7;
+            } else if (event.keyCode === 39) {
+              xAxis = Number(this.$mousePopup.style.left.split('px')[0]) + 7;
+            }
+
           } else {
-            console.log(event)
             xAxis = event.pageX;
             yAxis = event.pageY;
 
             const popupWidth  = this.$mousePopup.offsetWidth;
             const popupHeight = this.$mousePopup.offsetHeight;
-  
+
             if (xAxis - popupWidth < 0) {
               xAxis = popupWidth / 1.5;
             } else if (window.innerWidth < xAxis + popupWidth * 2) {
@@ -973,10 +987,15 @@
             }
           }
 
-          console.log(xAxis, yAxis)
+          this.prevSelectionRect = rect;
+
           this.$mousePopup.style.left = `${ xAxis }px`;
           this.$mousePopup.style.top  = `${ yAxis }px`;
         };
+
+        this.closeMousePopup = () => {
+          this.$mousePopup.style.display = 'none';
+        }
 
         this.setEventMousePopup = () => {
           this.$mousePopup.addEventListener('mouseover', () => this.isPopupHover = true);
@@ -1071,24 +1090,26 @@
         }
 
         this.getTextSelection = event => {
+          if (this.isDragging) return this.closeMousePopup();
+
           const selection = window.getSelection();
           const range     = selection.getRangeAt(0);
 
           const { possible, message } = this.isPossibleMemo(selection, range);
 
           if (!possible) {
+            this.closeMousePopup();
             console.error(message);
           } else {
             this.$target = event.target;
-            if (event.type === 'selectionchange') {
-              if (this.reverseKey) {
-                this.$target = range.startContainer.parentNode;
-              } else {
-                this.$target =  range.endContainer.parentNode;
-              }
+            if (event.type !== 'mouseup') {
+              this.$target = range.endContainer.parentNode;
             }
 
             this.$parentTarget = range.commonAncestorContainer;
+            if (this.$parentTarget.nodeType === 3) {
+              this.$parentTarget = this.$parentTarget.parentNode;
+            }
 
             this.selection    = selection;
             this.selectedText = this.selection.toString();
@@ -1099,53 +1120,29 @@
           }
         }
 
-        // document.addEventListener('selectionchange', function() {
-        //   var selection = window.getSelection();
-        //   if (selection.rangeCount > 0) {
-        //     var range = selection.getRangeAt(0);
-        //     var rect = range.getBoundingClientRect();
-        //     console.log('Cursor position: ', rect.left, rect.top);
-        //   }
-        // });
-
-
         this.init = () => {
           this.loadStorageAndHighlight();
 
           this.$container.addEventListener('mousedown', () => this.isDragging = false);
-          this.$container.addEventListener('mousemove', () => this.isDragging = true);
-          
-          window.addEventListener('keydown', event => {
-            if (event.shiftKey && (event.keyCode === 37 || event.keyCode === 38)) {
-              this.reverseKey = true;
-            } else if (event.shiftKey && (event.keyCode === 39 || event.keyCode === 40)) {
-              this.reverseKey = false;
+          this.$container.addEventListener('mousemove', event => {
+            if (event.buttons === 1) {
+              this.isDragging = true;
             }
           });
-          window.document.addEventListener('selectionchange', event => this.getTextSelection(event))
+
+          window.document.addEventListener('keyup', event => {
+            const arrowKeys = [37, 38, 39, 40]; // 37: left, 38: up, 39: right, 40: down
+
+            if (event.shiftKey) {
+              if (arrowKeys.includes(event.keyCode)) {
+                this.getTextSelection(event);
+              }
+            }
+          });
 
           this.$container.addEventListener('mouseup', event => {
-            if (!this.isDragging) return;
-
-            const selection = window.getSelection();
-            const range     = selection.getRangeAt(0);
-
-            const { possible, message } = this.isPossibleMemo(selection, range);
-
-            if (!possible) {
-              console.error(message);
-            } else {
-              console.log(event.target)
-              this.$target       = event.target;
-              this.$parentTarget = range.commonAncestorContainer;
-
-              this.selection    = selection;
-              this.selectedText = this.selection.toString();
-              this.range        = this.selection.getRangeAt(0);
-
-              this.showMouseBtnGroup('ADD');
-              this.openMousePopup(event);
-            }
+            this.isDragging = false;
+            this.getTextSelection(event);
           });
 
           this.setEvent();
