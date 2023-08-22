@@ -952,15 +952,12 @@
           });
         };
 
-        this.openMousePopup = event => {
-          this.$mousePopup.style.display = 'block';
-
+        this.calMousePopupLocatoin = event => {
           let xAxis = undefined;
           let yAxis = undefined;
-          
-          const rect = this.range.getBoundingClientRect();
-          if (event.type === 'keyup') {
 
+          const rect = this.range.getBoundingClientRect();
+          if (event.type === 'keyup' || event.type === 'keydown') {
             if (rect.top !== this.prevSelectionRect.top) {
               yAxis = window.scrollY + rect.top;
             } else if (rect.bottom !== this.prevSelectionRect.bottom) {
@@ -972,7 +969,6 @@
             } else if (event.keyCode === 39) {
               xAxis = Number(this.$mousePopup.style.left.split('px')[0]) + 7;
             }
-
           } else {
             xAxis = event.pageX;
             yAxis = event.pageY;
@@ -991,6 +987,12 @@
 
           this.$mousePopup.style.left = `${ xAxis }px`;
           this.$mousePopup.style.top  = `${ yAxis }px`;
+        }
+
+        this.openMousePopup = event => {
+          this.calMousePopupLocatoin(event);
+
+          this.$mousePopup.style.display = 'block';
         };
 
         this.closeMousePopup = () => {
@@ -1130,11 +1132,25 @@
             }
           });
 
+          window.document.addEventListener('keydown', event => { 
+            const arrowKeys = [37, 38, 39, 40]; // 37: left, 38: up, 39: right, 40: down
+
+            if (event.shiftKey) {
+              if (arrowKeys.includes(event.keyCode)) {
+                this.isDragging = true;
+
+                this.calMousePopupLocatoin(event);
+              }
+            }
+          })
+
           window.document.addEventListener('keyup', event => {
             const arrowKeys = [37, 38, 39, 40]; // 37: left, 38: up, 39: right, 40: down
 
             if (event.shiftKey) {
               if (arrowKeys.includes(event.keyCode)) {
+                this.isDragging = false;
+
                 this.getTextSelection(event);
               }
             }
