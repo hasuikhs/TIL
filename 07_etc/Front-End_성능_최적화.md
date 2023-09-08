@@ -100,3 +100,5 @@
 - 메모리 누수와 관련해서는 Memory 탭을 사용
 - Heap snapshot을 체크하고 take 실행
 - 측정된 결과에는 JavaScript Heap 영역에 있는 객체들을 모두 포함
+
+## 2. Rendering
