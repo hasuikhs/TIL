@@ -175,6 +175,16 @@ PromiseAllSettled([
 });
 ```
 
+### 1.6 Promise.rase()
+- 여러 Promise 중에서 가장 먼저 이행되거나 거부된 프로미스의 결과 반환
+- 가장 빨리 이행되는 Promise를 기반으로 처리할 때 유용
+
+```javascript
+const promises = [ promise1, promise2, promise3 ];
+
+Promise.rase(promises)
+  .then(firstResult => console.log('First promise setteld:', firstResult));
+```
 ## 2. Async, Await
 
 > `async`와 `await`는 JavaScript의 비동기 처리 패턴 중 가장 최근에 나온 문법이다. 기존의 비동기 처리 방식인 callback 함수와 `Promise`의 단점을 보완하고 개발자가 읽기 좋은 코드를 작성 가능케 함
