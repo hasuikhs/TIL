@@ -17,7 +17,7 @@
   - 이행(fulfilled) : 작업이 성공적으로 완료
   - 거부(rejected)  : 작업이 실패함
 
-### 1.2 then() Method
+#### 1.1.1 then()
 
 - 작업이 성공적으로 이행되었거나, 실패 했을 때, 어떠한 작업을 해야 하는데 이 작업은 `then` 메소드에 의해 실행
 - **`then` 메소드는 `Promise` 객체에 붙여서 사용**
@@ -35,7 +35,25 @@ promise.then(function(value) {
 
 - `then` 메소드는 `Promise` 객체를 리턴하고 인수로 받은 콜백 함수들의 리턴 값을 이어 받아 chaining이 가능
 
-### 1.3 Callback Hell
+#### 1.1.2 catch()
+
+- Promise가 거부(reject) 됐을 때 실행할 콜백 함수 등록
+
+```javascript
+promise.catch(error => console.log('error', error));
+```
+
+#### 1.1.3 finally()
+
+- Promise가 이행(resolve)되던, 거부(reject)되던 상관없이 항상 실행할 코드 지정
+- 프로미스 체인에서 가장 마지막에 호출
+
+
+```javascript
+promise.finally(() => console.log('final'));
+```
+
+### 1.2 Callback Hell
 
 - `Promise` 이전의 비동기 처리는 Callback 함수를 설정하는 방식으로 이루어짐
 - 비동기가 완료되는 시점에 실행이 되는 callback 함수로 완료를 인지하고 그 다음 처리하게 됨
@@ -67,7 +85,7 @@ promise.then(function(a) {
 
 - 물론 `Promise`를 이용하여 Callback Hell을 완전히 탈출 가능한 것은 아니지만, Callback을 함수로 바로 넘겨받지 않고 객체에 이어서 사용 가능하게  되므로 훨씬 보기 쉬워짐
 
-### 1.4 Promise.all()
+### 1.3 Promise.all()
 
 - 순회 가능한 객체에 주어진 모든 Promise가 이행한 후,  혹은 Promise가 주어지지 않았을 때 이행하는 Promise 반환
 - 주어진 Promise 중 하나가 거부하는 경우, 첫 번째로 거절한 프로미스의 이유를 사용해 자신도 거부
@@ -120,7 +138,7 @@ PromiseAll([
 });
 ```
 
-### 1.5 Promise.allSettled()
+### 1.4 Promise.allSettled()
 
 - `Promise.all()` 과 같은 역할을 함
 - 하지만 하나가 실패하더라도 모든 promise들의 결과를 받을 수 있음
@@ -175,14 +193,14 @@ PromiseAllSettled([
 });
 ```
 
-### 1.6 Promise.rase()
+### 1.5 Promise.race()
 - 여러 Promise 중에서 가장 먼저 이행되거나 거부된 프로미스의 결과 반환
 - 가장 빨리 이행되는 Promise를 기반으로 처리할 때 유용
 
 ```javascript
 const promises = [ promise1, promise2, promise3 ];
 
-Promise.rase(promises)
+Promise.race(promises)
   .then(firstResult => console.log('First promise setteld:', firstResult));
 ```
 ## 2. Async, Await
