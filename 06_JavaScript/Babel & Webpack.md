@@ -211,6 +211,19 @@ module.exports = {
       }
       ```
 
+    - webpack 2 버전에서 [chunk](https://webpack.kr/plugins/commons-chunk-plugin/) 사용하기
+
+      ```javascript
+      module.exports = {
+        ...
+        plugins: [
+          new webpack.optimize.CommonsChunkPlugin({
+
+          })
+        ]
+      }
+      ```
+
   - **optimization**
     - Webpack 최적화 옵션
       - Webpack 4부터 지원
