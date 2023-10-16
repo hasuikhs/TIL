@@ -212,6 +212,8 @@ module.exports = {
       ```
 
     - webpack 2 버전에서 [chunk](https://webpack.kr/plugins/commons-chunk-plugin/) 사용하기
+      - 분리된 공통 모듈은 초기에 한번만 로딩되고, 추후 사용할 때를 대비해 캐싱
+      - 캐싱된 공통 모듈을 빠르게 불러오고, 기타 로직들만 요청해서 가져오기에 페이지 속도가 빨라짐
 
       ```javascript
       module.exports = {
