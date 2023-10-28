@@ -14,8 +14,12 @@
   - 마이크로테스크 큐(Microtask Queue, Event Queue)
     - 마이크로테스크 큐가 메크로테스크 큐 보다 **우선순위가 높음**
     - `process`, `Promise`, `Object.observer`, `MutationObserver`
+    - `Promise`와 관련된 콜백함수나 마이크로태스크로 예약된 작업들이 여기에 속함
+    - 이벤트 루프의 다른 큐보다 높은 우선순위를 갖고 있어, 이벤트 루프의 현재 태스크가 완료된 후 실행
   - 메크로테스크 큐(Macrotask Queue, Job Queue)
-    - `setTimeout`, `setImterval`, `setImmediate`, I/O, UI 렌더링
+    - `setTimeout`, `setImterval`, `setImmediate`, `requestAnimationFrame`, I/O, UI 렌더링
+    - 마이크로테스크 큐의 작업들보다 우선순위가 낮음
+
   ```javascript
   console.log('start');
 
