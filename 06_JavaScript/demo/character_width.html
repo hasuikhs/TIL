@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptatem ipsa sint ab amet provident dicta praesentium nam recusandae perspiciatis nulla fuga, consectetur nesciunt labore ipsum inventore, eum distinctio ex totam sit assumenda earum quos! Quaerat tempora magni nihil voluptate provident quibusdam nulla deserunt veritatis atque? Optio illo deserunt adipisci labore omnis similique ducimus animi delectus qui autem voluptatem, blanditiis placeat dolorem! Doloribus fugit modi, aperiam repudiandae incidunt magni hic necessitatibus porro, a laborum numquam nesciunt ex id molestias tempore totam nihil consequatur voluptatem reiciendis. Impedit, facilis? Delectus, porro tempora veniam blanditiis esse consectetur dolores nihil at perspiciatis libero quam dolore sunt culpa debitis maxime modi, quod voluptas temporibus neque dolorem placeat distinctio necessitatibus. Alias aspernatur ea molestiae earum aperiam? Doloremque, blanditiis fuga. Nihil illum tempore, ut mollitia quisquam hic pariatur repudiandae libero excepturi! Asperiores architecto fugit hic repudiandae aspernatur, aperiam tempora quis quae, molestias praesentium exercitationem quod modi quia eos esse aut itaque molestiae consequatur sit beatae in! Autem, nesciunt, sunt debitis corporis ratione deleniti laboriosam qui culpa repellat sapiente harum earum asperiores! Perferendis nostrum quae ad obcaecati asperiores vero, veritatis similique recusandae dolorum sequi blanditiis quidem praesentium vitae rerum. Soluta adipisci hic molestiae sunt beatae unde, culpa vero!</p>
+  <p>폐폴리우레탄 스크랩(신발바닥, 냉장고부품, 차량부품, 수거된(재생)폴리우레탄 탄성 포장층 등, 이하 "폐폴리우레탄 스크랩")을 수거하여 색상별로 분리하고 분리된 폐폴리우레탄 스크랩에 부착된 이물질을 제거한 다음, 스크랩을 일정 크기로 분쇄하고, 상기 분쇄된 폐폴리우레탄 스크랩 100kg을 기준으로 용융제인 스테아린산 2-5kg, 축광안료 1-10kg, 난연제 1-3kg, 탈색제로서 지당 0.1-1kg 및 명도 조절제로서 중탄 10-30kg 을 혼입하여 교반한 다음 압출기로 압출하고, 상기 압출된 폴리우레탄을 3-10㎜ 크기로 절단함으로써 얻어지는 야광 폐폴리우레탄칩.</p>
+  <script>
+    window.onload = () => {
+      window.addEventListener('mouseup', e => {
+        const selection = window.getSelection();
+        const selectedStr = selection.toString();
+
+        console.log(selectedStr);
+
+        console.log(getTextWidth(selectedStr, ''))
+      });
+    }
+
+    function getTextWidth(text, font) {
+      const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement('canvas'));
+      const context = canvas.getContext('2d');
+      context.font = font;
+
+      document.body.appendChild(canvas)
+
+      const metrics = context.measureText(text);
+      console.log(metrics)
+      return metrics.width;
+    }
+
+    function getCssStyle(element, prop) {
+      return window.getComputedStyle(element, null).getPropertyValue(prop);
+    }
+
+    function getCanvasFont(el = document.body) {
+      const fontWeight = getCssStyle(el, 'font-weight') || 'normal';
+      const fontSize = getCssStyle(el, 'font-size') || '16px';
+      const fontFamily = getCssStyle(el, 'font-family') || 'Times New Roman';
+
+      return `${ fontWeight } ${ fontSize } ${ fontFamily }`;
+    }
+  </script>
+</body>
+</html>
