@@ -61,3 +61,37 @@ arr.sort(function(a, b) {
 });
 ```
 
+```javascript
+class Column {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+const no = new Column('no');
+const id = new Column('id');
+const test = new Column('test');
+
+const arr = [no, id, test];
+
+const sort = ['test', 'no'];
+
+// 'sort' 배열의 순서에 따라 'arr' 배열을 정렬
+arr.sort((a, b) => {
+  const aIndex = sort.indexOf(a.name);
+  const bIndex = sort.indexOf(b.name);
+  
+  // 'sort' 배열에 없는 요소는 가장 뒤로 보냄
+  if (aIndex === -1) {
+    return 1;
+  }
+  if (bIndex === -1) {
+    return -1;
+  }
+  
+  // 'sort' 배열에 있는 요소의 순서에 따라 정렬
+  return aIndex - bIndex;
+});
+
+console.log(arr);
+```
