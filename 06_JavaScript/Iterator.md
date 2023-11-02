@@ -2,14 +2,17 @@
 
 - 반복 가능한(iterable) 객체는 배열을 일반화한 객체
   - **iterable**: iterator를 리턴하는 `[Symbol.iterator]()`를 가진 값
-  - **iterator**: `{ value, done }` 객체를 리턴하는 `next()`를 가진 값
+  - **iterator**
+    - `{ value, done }` 객체를 리턴하는 `next()`를 가진 값
+    - `value` 는 현재 요소의 값, `done`은 이터레이션이 끝났는지의 여부의 bool 값
   - **iterator protocol**: iterable을 `for ...of`, 전개 연산자 등과 함께 동작하도록한 규약
 
 - iterable 이라는 개념을 사용하면 어떤 객체에든 `for...of`  반복문 적용 가능
   - 대표적으로 배열, 문자열
 - 배열이 아닌 객체가 있는데, 이 객체가 어떤 것들의 켈력션을 나타내고 있는 경우 `for..of` 문법 적용하여 유용하게 사용 가능
 
-## 1. Symbol.iterator
+## 1. `[Symbol.iterator]()`
+- iterator 객체 자체에 대한 이터레이터 반환하여 **반복 가능한(iterable)** 객체로 만듦
 
 ```javascript
 let range = {
@@ -56,7 +59,6 @@ for (let num of range) {
   - Iterator 객체와 반복 대상인 객체를 분리 가능
 
   ```javascript
-  // 
   let range = {
   	from: 1,
   	to: 5,
