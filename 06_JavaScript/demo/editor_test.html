@@ -23,7 +23,27 @@
 
   <script>
     const quill = new Quill('#editor', {
-      theme: 'bubble'
+      theme: 'bubble',
+      modules: {
+        toolbar: [
+          [
+            'bold',
+            'italic',
+            'underline'
+          ],
+          [
+            'link',
+            'image'
+          ]
+        ]
+      },
+      formats: [
+        'bold',
+        'italic',
+        'underline',
+        'image',
+        'link'
+      ]
     });
 
     setTimeout(() => {
