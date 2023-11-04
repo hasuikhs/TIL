@@ -12,19 +12,45 @@
       padding: 10px;
       border: 1px solid black;
     }
+    .ql-tooltip.ql-flip {
+      width: 180px;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
   <div id="editor">
-    <p>Hello world!</p>
-    <p>Some initial <strong>bold</strong> text</p>
-    <p><br></p>
   </div>
 
   <script>
     const quill = new Quill('#editor', {
-      theme: 'bubble'
+      theme: 'bubble',
+      modules: {
+        toolbar: [
+          [
+            'bold',
+            'italic',
+            'underline'
+          ],
+          [
+            'link',
+            'image'
+          ]
+        ]
+      },
+      formats: [
+        'bold',
+        'italic',
+        'underline',
+        'image',
+        'link'
+      ],
+      placeholder: 'asdfasdfasdfasd'
     });
+
+    const tooltip = quill.theme.tooltip;
+    const input = tooltip.root.querySelector('input[data-link]');
+    input.dataset.link = 'Enter your URL...!';
 
     setTimeout(() => {
       quill.pasteHTML('<b>some text</b>');
@@ -34,8 +60,8 @@
       if (source == 'api') {
         console.log("An API call triggered this change.");
       } else if (source == 'user') { // 타이핑, 포멧, 핫키
-        const value = quill.root.innerHTML;
-        console.log(value);
+        console.log(quill.getText())
+        console.log(value.root.innerHTML);
       }
     });
   </script>
