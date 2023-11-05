@@ -61,8 +61,21 @@
         console.log("An API call triggered this change.");
       } else if (source == 'user') { // 타이핑, 포멧, 핫키
         console.log(quill.getText())
-        console.log(value.root.innerHTML);
+        console.log(quill.root.innerHTML);
       }
+    });
+
+    // 파일 업로드에 대한 고민 필요
+    quill.getModule('toolbar').addHandler('image', () => {
+      const fileInput = document.createElement('input');
+      fileInput.setAttribute('type', 'file');
+
+      fileInput.click();
+      fileInput.addEventListener('change', () => {
+        const formData = new FormData();
+        const file = fileInput.files[0];
+        formData.append('upload', file);
+      });
     });
   </script>
 </body>
