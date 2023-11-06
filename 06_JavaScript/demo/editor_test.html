@@ -1,82 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-  <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
-  <style>
-    body {
-      margin: 50px;
-      padding: 10px;
-      border: 1px solid black;
-    }
-    .ql-tooltip.ql-flip {
-      width: 180px;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  <div id="editor">
-  </div>
-
-  <script>
-    const quill = new Quill('#editor', {
-      theme: 'bubble',
-      modules: {
-        toolbar: [
-          [
-            'bold',
-            'italic',
-            'underline'
-          ],
-          [
-            'link',
-            'image'
-          ]
-        ]
-      },
-      formats: [
-        'bold',
-        'italic',
-        'underline',
-        'image',
-        'link'
-      ],
-      placeholder: 'asdfasdfasdfasd'
-    });
-
-    const tooltip = quill.theme.tooltip;
-    const input = tooltip.root.querySelector('input[data-link]');
-    input.dataset.link = 'Enter your URL...!';
-
-    setTimeout(() => {
-      quill.pasteHTML('<b>some text</b>');
-    }, 2_000);
-
-    quill.on('text-change', (delta, oldDelta, source) => {
-      if (source == 'api') {
-        console.log("An API call triggered this change.");
-      } else if (source == 'user') { // 타이핑, 포멧, 핫키
-        console.log(quill.getText())
-        console.log(quill.root.innerHTML);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script src="https://unpkg.com/quill-paste-smart@latest/dist/quill-paste-smart.js"></script>
+    <script src="./quill.drop.js"></script>
+    <link
+      href="https://cdn.quilljs.com/1.3.7/quill.bubble.css"
+      rel="stylesheet"
+    />
+    <style>
+      #editor {
+        margin: 50px;
+        padding: 10px;
+        border: 1px solid black;
+        background-color: white;
       }
-    });
+      .ql-tooltip.ql-flip {
+        width: 140px !important;
+        border-radius: 5px;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 3px 9px rgba(0,0,0,.5);
+      }
+      .ql-tooltip.ql-editing.ql-flip {
+        width: 190px !important;
+      }
+      .ql-tooltip-editor input {
+        color: #000 !important;
+      }
+      .ql-bubble .ql-tooltip.ql-flip .ql-tooltip-arrow {
+        border-top: 6px solid #fff;
+      }
+      .ql-toolbar .ql-stroke {
+        fill: none;
+        stroke: #000;
+      }
+      .ql-toolbar .ql-fill {
+        fill: #000;
+        stroke: none;
+      }
+      .ql-toolbar .ql-picker {
+        color: #000;
+      }
+      button:hover .ql-stroke,
+      .ql-picker-label:hover .ql-stroke {
+        fill: none;
+        stroke: #ccc !important;
+      }
 
-    // 파일 업로드에 대한 고민 필요
-    quill.getModule('toolbar').addHandler('image', () => {
-      const fileInput = document.createElement('input');
-      fileInput.setAttribute('type', 'file');
+      .ql-active .ql-stroke {
+        fill: none;
+        stroke: #000 !important;
+      }
 
-      fileInput.click();
-      fileInput.addEventListener('change', () => {
-        const formData = new FormData();
-        const file = fileInput.files[0];
-        formData.append('upload', file);
+      button:hover .ql-fill,
+      .ql-picker-label:hover .ql-fill {
+        fill: #ccc !important;
+        stroke: none;
+      }
+
+      #editor a {
+        cursor: pointer;
+      }
+      .ql-container.ql-bubble:not(.ql-disabled) a:hover::before,
+      .ql-container.ql-bubble:not(.ql-disabled) a:hover::after {
+        display: none;
+      }
+      #link-changer {
+        width: 300px;
+        position: absolute;
+        display: flex;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px 12px;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #link-changer .btn-group {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="editor" spellcheck="false"></div>
+
+    <script>
+      const quill = new Quill('#editor', {
+        theme: 'bubble',
+        modules: {
+          imageDrop: true,
+          // clink: true,
+          toolbar: [
+            ['bold', 'italic', 'underline', 'link'],
+            // ['link', 'image'],
+          ],
+        },
+        formats: ['bold', 'italic', 'underline', 'link']
       });
-    });
-  </script>
-</body>
+
+      const tooltip = quill.theme.tooltip;
+      const input = tooltip.root.querySelector('input[data-link]');
+      input.dataset.link = 'https://www.example.com';
+
+      const Link = Quill.import('formats/link');
+      const originalSanitize = Link.sanitize;
+      Link.sanitize = function customSanitizeLinkInput(linkValueInput) {
+        let val = linkValueInput;
+
+        if (!/^(https|http?:\/\/)/.test(val)) val = `https://${ val }`;
+
+        return originalSanitize.call(this, val);
+      };
+
+      quill.root.addEventListener('click', e => {
+        const aTag = e.target.closest('a');
+        let popupEle = document.querySelector('#link-changer') || null;
+
+        if (aTag) {
+          const xAxis = e.pageX;
+          const yAxis = e.pageY;
+          
+          const text = aTag.textContent || '';
+          const href = aTag.href || '';
+
+          if (!popupEle) {
+            const root = document.querySelector('#editor');
+            popupEle = document.createElement('div');
+            popupEle.id = 'link-changer';
+
+            popupEle.insertAdjacentHTML(
+              'beforeend',
+              `
+                <a href="${ href }" target="_blank">${ href }</a>
+                <button type="button">Edit</button>
+                <button type="button">Remove</button>
+              `
+            );
+
+            root.insertAdjacentElement(
+              'beforeend',
+              popupEle
+            );
+
+            // root.insertAdjacentHTML(
+            //   'beforeend',
+            //   `
+            //     <div id="link-changer">
+            //       <a href="${ href }" target="_blank">${ href }</a>
+            //     </div>
+            //   `
+            // );
+          }
+
+          popupEle.style.left = xAxis;
+          popupEle.style.top = yAxis;
+          popupEle.style.visibility = 'visible';
+
+        } else {
+          popupEle.style.visibility = 'hidden';
+        }
+      });
+
+
+      setTimeout(() => {
+        const value = '<b>some text <a href="https://www.naver.com" target="_blank">go to naver</a></b>';
+        const delta = quill.clipboard.convert(value);
+        quill.setContents(delta, 'silent');
+      }, 2_000);
+
+      quill.on('text-change', (delta, oldDelta, source) => {
+        if (source == 'api') {
+          console.log('An API call triggered this change.');
+        } else if (source == 'user') {
+          // 타이핑, 포멧, 핫키
+          console.log(quill.getText());
+          console.log(quill.root.innerHTML);
+        }
+      });
+
+      // 파일 업로드에 대한 고민 필요
+      quill.getModule('toolbar').addHandler('image', () => {
+        const fileInput = document.createElement('input');
+        fileInput.setAttribute('type', 'file');
+
+        fileInput.click();
+        fileInput.addEventListener('change', () => {
+          const formData = new FormData();
+          const file = fileInput.files[0];
+          formData.append('upload', file);
+        });
+      });
+    </script>
+  </body>
 </html>
