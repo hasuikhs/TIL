@@ -19,7 +19,7 @@
         background-color: white;
       }
       .ql-tooltip.ql-flip {
-        width: 140px !important;
+        width: 138px !important;
         border-radius: 5px;
         background-color: white;
         border: 1px solid #ccc;
@@ -64,12 +64,17 @@
 
       #editor a {
         cursor: pointer;
+        color: blue;
+        text-decoration: none;
+      }
+      #editor a:hover {
+        text-decoration: underline;
       }
       .ql-container.ql-bubble:not(.ql-disabled) a:hover::before,
       .ql-container.ql-bubble:not(.ql-disabled) a:hover::after {
         display: none;
       }
-      #link-changer {
+      #link-editor {
         width: 300px;
         position: absolute;
         display: flex;
@@ -80,7 +85,15 @@
         justify-content: space-between;
         align-items: center;
       }
-      #link-changer .btn-group {
+      #link-editor a {
+        width: 160px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        word-break: break-all;
+      }
+      #link-editor
+      #link-editor .btn-group {
         display: flex;
       }
     </style>
@@ -116,61 +129,85 @@
         return originalSanitize.call(this, val);
       };
 
-      quill.root.addEventListener('click', e => {
-        const aTag = e.target.closest('a');
-        let popupEle = document.querySelector('#link-changer') || null;
+      // quill.getModule('toolbar').addHandler('link', () => {
+      //   const selectedText = quill.getSelection();
+      //   console.log(selectedText)
+      //   // const walker = document.createTreeWalker(selectedText, NodeFilter.SHOW_TEXT);
 
-        if (aTag) {
-          const xAxis = e.pageX;
-          const yAxis = e.pageY;
+      //   // let currentNode;
+      //   // while (currentNode = walker.nextNode()) {
+      //   //   console.log(currentNode)
+      //   // }
+      //   // console.log(selectedText)
+      //   if (selectedText) {
+      //     const currentFormat = quill.getFormat(selectedText.index, selectedText.length);
+      //     console.log(currentFormat)
+      //     // 이미 링크가 존재하지 않으면 새 링크를 만듭니다.
+      //     if (!currentFormat.link) {
+      //       const url = prompt('Enter the URL for the link:');
+      //       if (url) {
+      //         quill.format('link', url);
+      //       }
+      //     }
+      //   }
+      // });
+
+      // quill.root.addEventListener('click', e => {
+      //   const aTag = e.target.closest('a');
+      //   console.log(aTag)
+      //   let popupEle = document.querySelector('#link-editor') || null;
+
+      //   if (aTag) {
+      //     const xAxis = e.pageX;
+      //     const yAxis = e.pageY;
           
-          const text = aTag.textContent || '';
-          const href = aTag.href || '';
+      //     const text = aTag.textContent || '';
+      //     const href = aTag.href || '';
 
-          if (!popupEle) {
-            const root = document.querySelector('#editor');
-            popupEle = document.createElement('div');
-            popupEle.id = 'link-changer';
+      //     if (!popupEle) {
+      //       const root = document.querySelector('#editor');
+      //       popupEle = document.createElement('div');
+      //       popupEle.id = 'link-editor';
 
-            popupEle.insertAdjacentHTML(
-              'beforeend',
-              `
-                <a href="${ href }" target="_blank">${ href }</a>
-                <button type="button">Edit</button>
-                <button type="button">Remove</button>
-              `
-            );
+      //       popupEle.insertAdjacentHTML(
+      //         'beforeend',
+      //         `
+      //           <a href="${ href }" target="_blank">${ href }</a>
+      //           <button type="button">Edit</button>
+      //           <button type="button">Remove</button>
+      //         `
+      //       );
 
-            root.insertAdjacentElement(
-              'beforeend',
-              popupEle
-            );
+      //       root.insertAdjacentElement(
+      //         'beforeend',
+      //         popupEle
+      //       );
 
-            // root.insertAdjacentHTML(
-            //   'beforeend',
-            //   `
-            //     <div id="link-changer">
-            //       <a href="${ href }" target="_blank">${ href }</a>
-            //     </div>
-            //   `
-            // );
-          }
+      //       // root.insertAdjacentHTML(
+      //       //   'beforeend',
+      //       //   `
+      //       //     <div id="link-editor">
+      //       //       <a href="${ href }" target="_blank">${ href }</a>
+      //       //     </div>
+      //       //   `
+      //       // );
+      //     }
 
-          popupEle.style.left = xAxis;
-          popupEle.style.top = yAxis;
-          popupEle.style.visibility = 'visible';
+      //     popupEle.style.left = xAxis;
+      //     popupEle.style.top = yAxis;
+      //     popupEle.style.visibility = 'visible';
 
-        } else {
-          popupEle.style.visibility = 'hidden';
-        }
-      });
+      //   } else {
+      //     popupEle.style.visibility = 'hidden';
+      //   }
+      // });
 
 
       setTimeout(() => {
         const value = '<b>some text <a href="https://www.naver.com" target="_blank">go to naver</a></b>';
         const delta = quill.clipboard.convert(value);
         quill.setContents(delta, 'silent');
-      }, 2_000);
+      }, 1_000);
 
       quill.on('text-change', (delta, oldDelta, source) => {
         if (source == 'api') {
@@ -179,6 +216,7 @@
           // 타이핑, 포멧, 핫키
           console.log(quill.getText());
           console.log(quill.root.innerHTML);
+          console.log(quill.getLength());
         }
       });
 
