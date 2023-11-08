@@ -120,14 +120,18 @@
       input.dataset.link = 'https://www.example.com';
 
       const Link = Quill.import('formats/link');
-      const originalSanitize = Link.sanitize;
-      Link.sanitize = function customSanitizeLinkInput(linkValueInput) {
-        let val = linkValueInput;
 
-        if (!/^(https|http?:\/\/)/.test(val)) val = `https://${ val }`;
+      class CustomLink extends Link {
+        static sanitize(url) {
+          if (!/^(https|http?:\/\/)/.test(url)) {
+            return `https://${ url }`;
+          }
 
-        return originalSanitize.call(this, val);
-      };
+          return super.sanitize(url);
+        }
+      }
+
+      Quill.register(CustomLink);
 
       // quill.getModule('toolbar').addHandler('link', () => {
       //   const selectedText = quill.getSelection();
