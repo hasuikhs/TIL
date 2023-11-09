@@ -129,6 +129,14 @@
 
           return super.sanitize(url);
         }
+
+        static create(value) {
+          let node = super.create(value);
+
+          node.removeAttribute('rel');
+
+          return node;
+        }
       }
 
       Quill.register(CustomLink);
