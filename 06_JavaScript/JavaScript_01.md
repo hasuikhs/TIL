@@ -183,6 +183,7 @@
       console.log(a); // 'undefined'
       a = 5;
       ```
+      - 즉, 선언만 호이스팅되며, 할당은 호이스팅되지 않음
 - `function`은 식 자체가 통째로 끌어올려짐
 - `class`는 호이스팅은 되지만 다만 `uninitialized` 상태이므로 `ReferenceError` 발생
 
@@ -200,6 +201,15 @@
       }
   }
   ```
+
+- 함수 표현식은 호이스팅되지 않음
+  ```javascript
+  sayHi(); // TypeError
+  var sayHi = function() {
+    console.log('hi');
+  }
+  ```
+  - 함수 표현식을 사용할 때는 함수를 호출하기 전에 선언하는 것을 추천
 
 ## 2. 배열(Array)
 
