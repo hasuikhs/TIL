@@ -174,7 +174,22 @@
 - 변수와 함수의 **선언부**(`var`, `let`, `const`, `function`, `class`)에 발생
   - `var`는 `undefined`로 초기화되자만 `let`/`const`/`class`는 `uninitialized`로 초기화
     - `let`/`const`/`class` 값은 실제 할당이 이루어진 지점에 도달해야 할당, **실제 할당 지점 이전에는 변수에 접근 불가능**
-    - 이처럼 변수의 선언과 초기화 사이의 변수에 접근 불가 지점을 TDZ(Temporal Dead Zone: 일시적 사각지대)
+    - 이처럼 변수의 선언과 초기화 사이의 변수에 접근 불가 지점을 **TDZ(Temporal Dead Zone: 일시적 사각지대)**
+      - TDZ는 변수가 선언되기 전에 접근하면 발생하는 현상
+      - 호이스팅이 일어나더라도 TDZ가 존재하면 해당변수에 접근 불가능
+      - 변수 선언 전 접근
+        - 변수가 선언된 직후부터 초기화되기 전까지의 변수 접근 불가능
+        ```javascript
+        console.log(y); // ReferenceError
+        let y = 10;
+        ```
+      - 선언 전에 할당 시도
+        - 변수를 선언하기 전에 할당하려고 할 시 에러
+        ```javascript
+        console.log(z); // ReferenceError
+        z = 20;
+        let z;
+        ```
     - `let`/`const`/`class`는 컴파일 단계에서 어떠한 값으로도 초기화되지 않기때문에 `ReferenceError`가 발생
       ```javascript
       // 컴파일 전 a를 lexical envirionment에 저장하지만 let이므로 어떠한 값으로도 초기화하지 않음
