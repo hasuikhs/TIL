@@ -7,8 +7,11 @@
     <style>
       .item {
         text-align: center;
-        padding: 40px 0px;
-        margin: 0px
+        padding: 40px 450px;
+        margin: 0px;
+        max-width: 500px;
+        max-height: 60px;
+        overflow-y: auto;
       }
 
       .item:nth-child(even) {
@@ -21,8 +24,8 @@
     <p class="list-end"></p>
 
     <script>
-      const count = 10 // 한 번 새로운 item들이 추가될 때 추가되는 item의 갯수
-      let index = 0 // item의 index
+      const count = 10; // 한 번 새로운 item들이 추가될 때 추가되는 item의 갯수
+      let index = 0; // item의 index
 
       // 옵션 객체
       const options = {
@@ -34,17 +37,18 @@
 
       let observer = new IntersectionObserver(function(entries, observer) {
         entries.forEach(entry => {
-          const list = document.querySelector('.list')
+          const list = document.querySelector('.list');
 
           // 타겟 요소와 루트 요소가 교차하면
           if (entry.isIntersecting) {
             for (let i = index; i < index + count; i++) {
               // item을 count 숫자 만큼 생성하고 list에 추가해주기
-              let item = document.createElement('p')
+              let item = document.createElement('div');
 
-              item.textContent = i
-              item.className += 'item'
-              list.appendChild(item)
+              item.contentEditable = true;
+              item.textContent = i;
+              item.className += 'item';
+              list.appendChild(item);
             }
 
             // index에 +count해서 갱신해주기
