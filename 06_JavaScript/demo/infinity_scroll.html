@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      .list {
+        height: 80%;
+        padding: 30px;
+        max-height: 500px;
+        overflow-y: auto;
+      }
+
       .item {
         text-align: center;
         padding: 40px 450px;
@@ -35,6 +42,11 @@
         threshold: 0.1
       }
 
+      const list = document.querySelector('div.list');
+      list.addEventListener('scroll', () => {
+        console.log('scroll')
+      })
+
       let observer = new IntersectionObserver(function(entries, observer) {
         entries.forEach(entry => {
           const list = document.querySelector('.list');
@@ -52,7 +64,7 @@
             }
 
             // index에 +count해서 갱신해주기
-            index += count
+            index += count;
           }
         })
       } ,options)
