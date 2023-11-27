@@ -42,10 +42,10 @@
         threshold: 0.1
       }
 
-      const list = document.querySelector('div.list');
-      list.addEventListener('scroll', () => {
-        console.log('scroll')
-      })
+      // const list = document.querySelector('div.list');
+      // list.addEventListener('scroll', () => {
+      //   console.log('scroll')
+      // })
 
       let observer = new IntersectionObserver(function(entries, observer) {
         entries.forEach(entry => {
@@ -60,6 +60,13 @@
               item.contentEditable = true;
               item.textContent = i;
               item.className += 'item';
+
+              // item.addEventListener('acroll', () => {
+              //   console.log('sd')
+              //   if (item.scrollHeight - item.scrollTop === item.clientHeight) {
+              //     console.log('스크롤 끝')
+              //   }
+              // });
               list.appendChild(item);
             }
 
