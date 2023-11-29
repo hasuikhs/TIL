@@ -1,83 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .list {
-        height: 80%;
-        padding: 30px;
-        max-height: 500px;
-        overflow-y: auto;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #scroll-container {
+      height: 150px; /* 작은 화면에 맞게 조절 */
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+    }
+
+    .item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
+  <title>Infinite Scroll</title>
+</head>
+<body>
+
+<div id="scroll-container">
+  <div id="scroll-content"></div>
+  <div id="sentinel"></div>
+</div>
+
+<script>
+  const scrollContainer = document.getElementById('scroll-container');
+  const scrollContent = document.getElementById('scroll-content');
+  const sentinel = document.getElementById('sentinel');
+
+  let loading = false;
+  let page = 1;
+
+  const fetchData = async () => {
+    loading = true;
+    // 예시: 데이터를 가져오는 API 호출 또는 데이터 생성 로직
+    const data = await fetchItems(page);
+    renderData(data);
+    page++;
+    loading = false;
+  };
+
+  const fetchItems = async (currentPage) => {
+    // 예시 데이터 생성
+    const data = Array.from({ length: 10 }, (_, index) => `Item ${currentPage * 10 + index + 1}`);
+    return data;
+  };
+
+  const renderData = (data) => {
+    data.forEach((item) => {
+      const itemElement = document.createElement('div');
+      itemElement.className = 'item';
+      itemElement.textContent = item;
+      scrollContent.appendChild(itemElement);
+    });
+  };
+
+  const handleIntersection = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !loading) {
+        fetchData();
       }
+    });
+  };
 
-      .item {
-        text-align: center;
-        padding: 40px 450px;
-        margin: 0px;
-        max-width: 500px;
-        max-height: 60px;
-        overflow-y: auto;
-      }
+  // Intersection Observer 설정
+  const observer = new IntersectionObserver(handleIntersection, {
+    root: null,
+    threshold: 0.1, // 화면의 10%가 보일 때 로딩 시작
+  });
 
-      .item:nth-child(even) {
-        background-color: gray;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="list"></div>
-    <p class="list-end"></p>
+  // Sentinel을 감시 대상으로 추가
+  observer.observe(sentinel);
 
-    <script>
-      const count = 10; // 한 번 새로운 item들이 추가될 때 추가되는 item의 갯수
-      let index = 0; // item의 index
+  // 초기 데이터 로딩
+  fetchData();
+</script>
 
-      // 옵션 객체
-      const options = {
-        // null을 설정하거나 무엇도 설정하지 않으면 브라우저 viewport가 기준이 된다.
-        root: null,
-        // 타겟 요소의 10%가 루트 요소와 겹치면 콜백을 실행한다.
-        threshold: 0.1
-      }
-
-      // const list = document.querySelector('div.list');
-      // list.addEventListener('scroll', () => {
-      //   console.log('scroll')
-      // })
-
-      let observer = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-          const list = document.querySelector('.list');
-
-          // 타겟 요소와 루트 요소가 교차하면
-          if (entry.isIntersecting) {
-            for (let i = index; i < index + count; i++) {
-              // item을 count 숫자 만큼 생성하고 list에 추가해주기
-              let item = document.createElement('div');
-
-              item.contentEditable = true;
-              item.textContent = i;
-              item.className += 'item';
-
-              // item.addEventListener('acroll', () => {
-              //   console.log('sd')
-              //   if (item.scrollHeight - item.scrollTop === item.clientHeight) {
-              //     console.log('스크롤 끝')
-              //   }
-              // });
-              list.appendChild(item);
-            }
-
-            // index에 +count해서 갱신해주기
-            index += count;
-          }
-        })
-      } ,options)
-
-      // list의 끝부분을 알려주는 p 타겟 요소를 관찰
-      observer.observe(document.querySelector('.list-end'))
-    </script>
-  </body>
+</body>
 </html>
