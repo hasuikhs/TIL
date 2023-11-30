@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
+    body {
+      /* background-color: black; */
+    }
     .copy-btn {
       background-color: #EAEAEA;
       border-color: transparent;
@@ -35,7 +38,6 @@
       left: 80px;
     }
 
-
     #base {
       background: pink;
       display: inline-block;
@@ -56,6 +58,60 @@
       top: -35px;
       width: 0;
     }
+
+    .canvas {
+      margin: 20px;
+      padding: 10px;
+      width: 300px;
+      height: 440px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      height: 20px;
+      width: 200px;
+    }
+    
+    .tab {
+      width: 40px;
+      border-radius: 4px 4px 0px 0px;
+      box-shadow: 2px -4px 4px -4px #A7A7A7;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .tab:hover {
+      background-color: #EAEAEA;
+    }
+    .tab1 {
+      background-color: aqua;
+    }
+    .tab2 {
+      background-color: aquamarine;
+    }
+    .tab3 {
+      background-color: blanchedalmond;
+    }
+    .tab4 {
+      background-color: cadetblue;
+    }
+
+    .tab-active {
+      height: 20px;
+      background-color: #FFF !important;
+      border: 1px solid #A7A7A7;
+      border-bottom: 0px;
+    }
+
+    .main-canvas {
+      width: 300px;
+      height: 400px;
+      border-radius: 4px;
+      border: 1px solid #A7A7A7;
+      box-shadow: 1px 1px 4px #A7A7A7;
+    }
+
+
   </style>
 </head>
 <body>
@@ -63,6 +119,18 @@
 
   <div class="square"></div>
   <div id="base"></div>
+
+  <div class="canvas">
+    <div class="tabs">
+      <div class="tab tab1 tab-active"></div>
+      <div class="tab tab2"></div>
+      <div class="tab tab3"></div>
+      <div class="tab tab4"></div>
+    </div>
+
+    <div class="main-canvas">
+    </div>
+  </div>
 
   <div id="editor" contenteditable="true" style="width: 100%; height: 500px; border: 1px solid black;"></div>
 
@@ -73,6 +141,18 @@
       setTimeout(() => {
         tgt.innerText = 'COPY';
       }, 1500);
+    });
+
+    document.querySelector('div.tabs').addEventListener('click', event => {
+      const target = event.target.closest('.tab');
+
+      if (target.classList.contains('tab-active')) {
+        return;
+      } else {
+        [...event.currentTarget.children].forEach(e => e.classList.remove('tab-active'));
+        target.classList.add('tab-active');
+      }
+
     });
 
     document.querySelector('#editor').addEventListener('keydown', event => {
