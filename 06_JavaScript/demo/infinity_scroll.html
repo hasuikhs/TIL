@@ -5,14 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     #scroll-container {
-      height: 150px; /* 작은 화면에 맞게 조절 */
+      height: 400px; /* 작은 화면에 맞게 조절 */
+      width: 300px;
       overflow-y: scroll;
       border: 1px solid #ccc;
     }
 
     .item {
       padding: 10px;
-      border-bottom: 1px solid #eee;
+      margin: 10px;
+      min-height: 210px;
+      height: 210px;
+      border: 1px solid #EAEAEA;
+      border-radius: 6px;
+      box-shadow: 0px 0px 4px black;
+      overflow: auto;
+
+      transition: height 1s ease-in-out;
+    }
+    .item:focus {
+      height: 100%;
+    }
+    .active {
+      height: 100%;
+
     }
   </style>
   <title>Infinite Scroll</title>
@@ -52,6 +68,15 @@
       const itemElement = document.createElement('div');
       itemElement.className = 'item';
       itemElement.textContent = item;
+      itemElement.contentEditable = true; // 영역 내에서 수정 가능(커서가 포커싱)일 때 겉의 스크롤이 작동함을 확인
+      
+      // itemElement.addEventListener('focus', ({ target }) => {
+      //   target.classList.add('active');
+      // });
+      // itemElement.addEventListener('blur', ({ target }) => {
+      //   target.classList.remove('active');
+      // });
+
       scrollContent.appendChild(itemElement);
     });
   };
