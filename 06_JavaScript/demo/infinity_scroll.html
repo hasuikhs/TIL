@@ -19,16 +19,9 @@
       border: 1px solid #EAEAEA;
       border-radius: 6px;
       box-shadow: 0px 0px 4px black;
-      overflow: auto;
+      overflow: hidden;
 
       transition: height 1s ease-in-out;
-    }
-    .item:focus {
-      height: 100%;
-    }
-    .active {
-      height: 100%;
-
     }
   </style>
   <title>Infinite Scroll</title>
@@ -70,15 +63,30 @@
       itemElement.textContent = item;
       itemElement.contentEditable = true; // 영역 내에서 수정 가능(커서가 포커싱)일 때 겉의 스크롤이 작동함을 확인
       
-      // itemElement.addEventListener('focus', ({ target }) => {
-      //   target.classList.add('active');
-      // });
-      // itemElement.addEventListener('blur', ({ target }) => {
-      //   target.classList.remove('active');
-      // });
+      itemElement.addEventListener('focus', () => {
+        adjustHeight(itemElement, 'auto');
+      });
+
+      itemElement.addEventListener('blur', () => {
+        adjustHeight(itemElement, '210px');
+      });
 
       scrollContent.appendChild(itemElement);
     });
+  };
+
+  const adjustHeight = (element, heightValue) => {
+    const originalHeight = element.clientHeight;
+
+    element.style.height = heightValue;
+    const targetHeight = element.clientHeight;
+
+    if (originalHeight !== targetHeight) {
+      element.style.height = `${ originalHeight }px`;
+      requestAnimationFrame(() => {
+        element.style.height = `${ targetHeight }px`;
+      });
+    }
   };
 
   const handleIntersection = (entries, observer) => {
