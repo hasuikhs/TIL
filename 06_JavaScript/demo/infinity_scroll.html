@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     #scroll-container {
-      height: 400px; /* 작은 화면에 맞게 조절 */
+      height: 400px;
       width: 300px;
       overflow-y: scroll;
       border: 1px solid #ccc;
@@ -20,7 +20,6 @@
       border-radius: 6px;
       box-shadow: 0px 0px 4px black;
       overflow: hidden;
-
       transition: height 1s ease-in-out;
     }
   </style>
@@ -34,26 +33,24 @@
 </div>
 
 <script>
-  const scrollContainer = document.getElementById('scroll-container');
-  const scrollContent = document.getElementById('scroll-content');
-  const sentinel = document.getElementById('sentinel');
+  const scrollContainer = document.querySelector('#scroll-container');
+  const scrollContent = document.querySelector('#scroll-content');
+  const sentinel = document.querySelector('#sentinel');
 
-  let loading = false;
-  let page = 1;
+  let isLoading = false;
+  let currentPage = 1;
 
   const fetchData = async () => {
-    loading = true;
-    // 예시: 데이터를 가져오는 API 호출 또는 데이터 생성 로직
-    const data = await fetchItems(page);
+    isLoading = true;
+    const data = await fetchItems(currentPage);
     renderData(data);
-    page++;
-    loading = false;
+    currentPage++;
+    isLoading = false;
   };
 
-  const fetchItems = async (currentPage) => {
-    // 예시 데이터 생성
-    const data = Array.from({ length: 10 }, (_, index) => `Item ${currentPage * 10 + index + 1}`);
-    return data;
+  const fetchItems = async (page) => {
+    const items = Array.from({ length: 10 }, (_, index) => `Item ${page * 10 + index + 1}`);
+    return items;
   };
 
   const renderData = (data) => {
@@ -61,52 +58,34 @@
       const itemElement = document.createElement('div');
       itemElement.className = 'item';
       itemElement.textContent = item;
-      itemElement.contentEditable = true; // 영역 내에서 수정 가능(커서가 포커싱)일 때 겉의 스크롤이 작동함을 확인
+      itemElement.contentEditable = true;
       
-      itemElement.addEventListener('focus', () => {
-        adjustHeight(itemElement, 'auto');
-      });
-
-      itemElement.addEventListener('blur', () => {
-        adjustHeight(itemElement, '210px');
-      });
+      itemElement.addEventListener('focus', () => adjustHeight(itemElement, 'auto'));
+      itemElement.addEventListener('blur', () => adjustHeight(itemElement, '210px'));
 
       scrollContent.appendChild(itemElement);
     });
   };
 
-  const adjustHeight = (element, heightValue) => {
+  const adjustHeight = (element, height) => {
     const originalHeight = element.clientHeight;
-
-    element.style.height = heightValue;
+    element.style.height = height;
     const targetHeight = element.clientHeight;
 
     if (originalHeight !== targetHeight) {
-      element.style.height = `${ originalHeight }px`;
-      requestAnimationFrame(() => {
-        element.style.height = `${ targetHeight }px`;
-      });
+      element.style.height = `${originalHeight}px`;
+      requestAnimationFrame(() => element.style.height = `${targetHeight}px`);
     }
   };
 
-  const handleIntersection = (entries, observer) => {
+  const handleIntersection = (entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting && !loading) {
-        fetchData();
-      }
+      if (entry.isIntersecting && !isLoading) fetchData();
     });
   };
 
-  // Intersection Observer 설정
-  const observer = new IntersectionObserver(handleIntersection, {
-    root: null,
-    threshold: 0.1, // 화면의 10%가 보일 때 로딩 시작
-  });
-
-  // Sentinel을 감시 대상으로 추가
+  const observer = new IntersectionObserver(handleIntersection, { root: null, threshold: 0.1 });
   observer.observe(sentinel);
-
-  // 초기 데이터 로딩
   fetchData();
 </script>
 

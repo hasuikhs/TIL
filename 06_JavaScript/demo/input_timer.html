@@ -142,81 +142,56 @@
   <script>
     const toastPopBtn = document.getElementById('toast-pop-btn');
     const toast = document.getElementById('modal-toast');
-
     const blurBtn = document.getElementById('blur-btn');
     const modalBlur = document.getElementById('modal-blur');
-
     const textarea = document.getElementById('status');
     const typing = document.querySelector('#text-wrapper .stage');
 
-    const input = document.getElementById('input');
-
-    textarea.addEventListener('focus', () => {
-      typing.classList.add('show');
-    });
-    textarea.addEventListener('blur', () => {
-      typing.classList.remove('show');
-    });
+    textarea.addEventListener('focus', () => typing.classList.add('show'));
+    textarea.addEventListener('blur', () => typing.classList.remove('show'));
 
     toastPopBtn.addEventListener('click', () => {
-      modalBlur.classList.add('show')
+      modalBlur.classList.add('show');
       toast.classList.add('show');
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-      setTimeout(() => {
-        modalBlur.classList.remove('show');
-      }, 2500);
+      setTimeout(() => toast.classList.remove('show'), 3000);
+      setTimeout(() => modalBlur.classList.remove('show'), 2500);
     });
 
     blurBtn.addEventListener('click', () => {
       modalBlur.classList.add('show');
-      setTimeout(() => {
-        modalBlur.classList.remove('show');
-      }, 3000);
+      setTimeout(() => modalBlur.classList.remove('show'), 3000);
     });
   </script>
 
   <script>
-    const inputTimer = new InputTimer({ targetId: 'status', alarmId: 'alarm' });
-
-    function InputTimer({ targetId, alarmId }) {
-      if (!new.target) {
-        throw new Error('error');
+    class InputTimer {
+      constructor({ targetId, alarmId }) {
+        this.$target = document.getElementById(targetId);
+        this.$alarm  = document.getElementById(alarmId);
+        this.changeText = '';
+        this.timer = undefined;
+        this.init();
       }
 
-      this.$target = document.getElementById(targetId);
-      this.$alarm  = document.getElementById(alarmId);
-
-      this.changeText = '';
-
-      this.timer = undefined;
-
-      this.request = () => {
+      request = () => {
         console.log('save!');
       }
 
-      this.initTimer = () => {
+      initTimer = () => {
         this.changeText = this.$target.value;
-
         clearTimeout(this.timer);
         this.timer = setTimeout(this.request, 2_000);
       }
 
-      this.finalTimer = () => {
+      finalTimer = () => {
         clearTimeout(this.timer);
-
         this.request();
         this.$alarm.style.borderTopColor = 'green';
       }
 
-      this.setEvent = () => {
-        this.$target.addEventListener('input', (e) => {
-          this.initTimer();
-        });
-        this.$target.addEventListener('blur', () => {
-          this.finalTimer();
-        });
+      setEvent = () => {
+        this.$target.addEventListener('input', this.initTimer);
+        this.$target.addEventListener('blur', this.finalTimer);
         this.$target.addEventListener('keydown', e => {
           if (e.keyCode === 13 || e.keyCode === 27) {
             this.finalTimer();
@@ -226,12 +201,12 @@
         });
       }
 
-      this.init = () => {
+      init = () => {
         this.setEvent();
       }
-
-      this.init();
     }
+
+    const inputTimer = new InputTimer({ targetId: 'status', alarmId: 'alarm' });
   </script>
 </body>
 </html>
