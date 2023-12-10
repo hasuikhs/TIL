@@ -348,19 +348,24 @@ showAvatar();
 ```javascript
 // 공통으로 테스트할 함수
 function fetchTest(param) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log(param);
-            resolve();
-        }, 2_000);
-    });
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(param.c);
+      resolve();
+    }, param.num);
+  });
 }
 ```
 
 - forEach에 async/await 
 
   ```javascript
-  let arr = ['a', 'b', 'c', 'd'];
+  let arr = [
+    { c: 'a', num: 2000 },
+    { c: 'b', num: 1000 },
+    { c: 'c', num: 3000 },
+    { c: 'd', num: 500 }
+  ];
   
   arr.forEach(async (char) => {
       await fetchTest(char);
@@ -369,10 +374,10 @@ function fetchTest(param) {
   console.log('forEach 실행 완료');
   
   // forEach 실행 완료
-  // a
-  // b
-  // c
   // d
+  // b
+  // a
+  // c
   ```
 
   - **forEach에서는 비동기 작업이 끝나는걸 기다리지 않음**
@@ -382,11 +387,9 @@ function fetchTest(param) {
 
   ```javascript
   (async function test() {
-  	for await (let char of arr) {
-          await fetchTest(char);
-      }
-      
-      console.log('for await 실행 완료');
+    for await (let param of arr) {
+      await fetchTest(param);
+    };
   })();
   
   // a
@@ -398,6 +401,19 @@ function fetchTest(param) {
 
   - 이제야 의도한 대로 하나당 2초씩 총 8초에 걸쳐 출력된 후 최종적으로 실행 완료라고 출력함
   - 다만, for await 라도 `fetchTest()` 함수 앞에 `await`를 빼면 위의 forEach와 같게 결과를 받을 수 있음
+
+- for
+  
+  ```javascript
+  (async function test() {
+    for (let i = 0; i < arr.length; i++) {
+      await fetchTest(arr[i]);
+    }
+  })();
+  ```
+
+  - for 또한 for await ... of 와 같은 결과를 얻지만 for await ... of 가 더 코드가 간결하며, 비동기 작업을 다룰 때 자연스럽게 보임
+  - 또한 인덱스를 직접 다룰 필요 없이 코드를 읽고 이해하기가 더 쉬움
 
 ## :information_source: 비교
 
