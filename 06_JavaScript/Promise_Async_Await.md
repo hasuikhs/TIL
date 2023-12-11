@@ -4,20 +4,20 @@
 
 ## 1. Promise
 
-> JavaScript에서 **Promise는 비동기적으로 실행하는 작업의 결과(성공 or 실패)를 나타내는 객체**
+> JavaScript에서 **`Promise`는 비동기적으로 실행하는 작업의 결과(성공 or 실패)를 나타내는 객체**
 
 ### 1.1 Promise 생성자
 
 - 생성자 함수와 동일하게 `new`로 `Promise` 객체를 만들 수 있음
 - 이 때 인자로는 `Executor`가 들어가는데 `Excutor`는 `resolve`와 `reject` 라는 두 개의 함수를 매개변수로 받는 실행 함수
-- **`Excutor`는 비동기 작업을 시작하고 모든 작업을 끝낸 후, 해당 작업이 성공적으로 이행 되면 `resolve` 함수를 호출하고, 중간에 오류가 발생한 경우 `reject` 함수를 호출**
+- **`Excutor`는 비동기 작업을 시작하고 모든 작업을 끝낸 후, 해당 작업이 성공적으로 이행 되면 `resolve()` 함수를 호출하고, 중간에 오류가 발생한 경우 `reject()` 함수를 호출**
 
 - `Promise` 객체는 3가지 상태를 가짐
-  - 대기(pending) : 아직 실행되지 않은 초기 상태
-  - 이행(fulfilled) : 작업이 성공적으로 완료
-  - 거부(rejected)  : 작업이 실패함
+  - 대기(`pending`) : 아직 실행되지 않은 초기 상태
+  - 이행(`fulfilled`) : 작업이 성공적으로 완료
+  - 거부(`rejected`)  : 작업이 실패함
 
-#### 1.1.1 then()
+#### 1.1.1 `then()`
 
 - 작업이 성공적으로 이행되었거나, 실패 했을 때, 어떠한 작업을 해야 하는데 이 작업은 `then` 메소드에 의해 실행
 - **`then` 메소드는 `Promise` 객체에 붙여서 사용**
@@ -35,17 +35,17 @@ promise.then(function(value) {
 
 - `then` 메소드는 `Promise` 객체를 리턴하고 인수로 받은 콜백 함수들의 리턴 값을 이어 받아 chaining이 가능
 
-#### 1.1.2 catch()
+#### 1.1.2 `catch()`
 
-- Promise가 거부(reject) 됐을 때 실행할 콜백 함수 등록
+- `Promise`가 거부(reject) 됐을 때 실행할 콜백 함수 등록
 
 ```javascript
 promise.catch(error => console.log('error', error));
 ```
 
-#### 1.1.3 finally()
+#### 1.1.3 `finally()`
 
-- Promise가 이행(resolve)되던, 거부(reject)되던 상관없이 항상 실행할 코드 지정
+- `Promise`가 이행(resolve)되던, 거부(reject)되던 상관없이 항상 실행할 코드 지정
 - 프로미스 체인에서 가장 마지막에 호출
 
 
@@ -85,11 +85,11 @@ promise.then(function(a) {
 
 - 물론 `Promise`를 이용하여 Callback Hell을 완전히 탈출 가능한 것은 아니지만, Callback을 함수로 바로 넘겨받지 않고 객체에 이어서 사용 가능하게  되므로 훨씬 보기 쉬워짐
 
-### 1.3 Promise.all()
+### 1.3 `Promise.all()`
 
-- 순회 가능한 객체에 주어진 모든 Promise가 이행한 후,  혹은 Promise가 주어지지 않았을 때 이행하는 Promise 반환
-- 주어진 Promise 중 하나가 거부하는 경우, 첫 번째로 거절한 프로미스의 이유를 사용해 자신도 거부
-- **즉, 모든 Promise가 이행될 때까지 기다렸다가 그 결과값을 담은 배열을 반환하거나, 처음으로 거부되는 때에 종료**
+- 순회 가능한 객체에 주어진 모든 `Promise`가 이행한 후,  혹은 `Promise`가 주어지지 않았을 때 이행하는 `Promise` 반환
+- 주어진 `Promise` 중 하나가 거부하는 경우, 첫 번째로 거절한 프로미스의 이유를 사용해 자신도 거부
+- **즉, 모든 `Promise`가 이행될 때까지 기다렸다가 그 결과값을 담은 배열을 반환하거나, 처음으로 거부되는 때에 종료**
 
 ```javascript
 const promise1 = Promise.resolve(3);
@@ -138,10 +138,10 @@ PromiseAll([
 });
 ```
 
-### 1.4 Promise.allSettled()
+### 1.4 `Promise.allSettled()`
 
 - `Promise.all()` 과 같은 역할을 함
-- 하지만 하나가 실패하더라도 모든 promise들의 결과를 받을 수 있음
+- 하지만 하나가 실패하더라도 모든 `Promise`들의 결과를 받을 수 있음
   - status 값에 따라 처리해야 함
 
 ```javascript
@@ -193,9 +193,9 @@ PromiseAllSettled([
 });
 ```
 
-### 1.5 Promise.race()
-- 여러 Promise 중에서 가장 먼저 이행되거나 거부된 프로미스의 결과 반환
-- 가장 빨리 이행되는 Promise를 기반으로 처리할 때 유용
+### 1.5 `Promise.race()`
+- 여러 `Promise` 중에서 가장 먼저 이행되거나 거부된 프로미스의 결과 반환
+- 가장 빨리 이행되는 `Promise`를 기반으로 처리할 때 유용
 
 ```javascript
 const promises = [ promise1, promise2, promise3 ];
@@ -203,7 +203,7 @@ const promises = [ promise1, promise2, promise3 ];
 Promise.race(promises)
   .then(firstResult => console.log('First promise setteld:', firstResult));
 ```
-## 2. Async, Await
+## 2. `async`, `await`
 
 > `async`와 `await`는 JavaScript의 비동기 처리 패턴 중 가장 최근에 나온 문법이다. 기존의 비동기 처리 방식인 callback 함수와 `Promise`의 단점을 보완하고 개발자가 읽기 좋은 코드를 작성 가능케 함
 >
@@ -341,7 +341,7 @@ async function showAvatar() {
 showAvatar();
 ```
 
-## 3. for await ... of
+## 3. `for await ... of`
 
 - 반복문 내에서 일어나는 모든 비동기 구문을 기다려주는 구문
 
@@ -357,7 +357,7 @@ function fetchTest(param) {
 }
 ```
 
-- forEach에 async/await 
+- `forEach`에 `async`/`await`
 
   ```javascript
   let arr = [
@@ -380,10 +380,10 @@ function fetchTest(param) {
   // c
   ```
 
-  - **forEach에서는 비동기 작업이 끝나는걸 기다리지 않음**
+  - **`forEach`에서는 비동기 작업이 끝나는걸 기다리지 않음**
   - 2초 뒤에 모든 a, b, c, d가 출력됨
 
-- for await ... of
+- `for await ... of`
 
   ```javascript
   (async function test() {
@@ -400,9 +400,9 @@ function fetchTest(param) {
   ```
 
   - 이제야 의도한 대로 하나당 2초씩 총 8초에 걸쳐 출력된 후 최종적으로 실행 완료라고 출력함
-  - 다만, for await 라도 `fetchTest()` 함수 앞에 `await`를 빼면 위의 forEach와 같게 결과를 받을 수 있음
+  - 다만, `for await ... of` 라도 `fetchTest()` 함수 앞에 `await`를 빼면 위의 forEach와 같게 결과를 받을 수 있음
 
-- for
+- `for`
   
   ```javascript
   (async function test() {
@@ -412,7 +412,7 @@ function fetchTest(param) {
   })();
   ```
 
-  - for 또한 for await ... of 와 같은 결과를 얻지만 for await ... of 가 더 코드가 간결하며, 비동기 작업을 다룰 때 자연스럽게 보임
+  - `for `또한 `for await ... of` 와 같은 결과를 얻지만 `for await ... of` 가 더 코드가 간결하며, 비동기 작업을 다룰 때 자연스럽게 보임
   - 또한 인덱스를 직접 다룰 필요 없이 코드를 읽고 이해하기가 더 쉬움
 
 ## :information_source: 비교
