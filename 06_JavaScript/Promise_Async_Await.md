@@ -228,7 +228,6 @@ async function 함수명() {
 - 일반 함수에는 `await`는 사용 불가능
 
 - `await`는 최상위 레벨 코드에는 사용 불가능
-
   ```javascript
   // 최상위 레벨 코드 
   let response = await fetch(url);
@@ -238,6 +237,16 @@ async function 함수명() {
       let response = await fetch(url);
   }
   ```
+  - 모듈에서는 보통 IIAFE(Immediately Invoked Async Function Expressions)를 활용해 만듦
+  
+    ```javascript
+    (async () => {
+      let response = await fetch(url);
+    })();
+    ```
+
+  - 단, **ES2022 부터는 모듈의 최상위 레벨에서 `await`를 사용 가능**
+
 
 ### 2.2 예외 처리
 
