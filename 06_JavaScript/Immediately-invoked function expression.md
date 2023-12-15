@@ -78,3 +78,12 @@
   // 전역 변수 i를 iife의 매개변수로 넘겨주어 증가 되는 i의 값을 순차적으로 들어감
   // 하지만 매개 변수 i를 빼고 console.log(i)로 고치면 이미 모두 증가된 10의 값이 10번 출력됨
   ```
+
+- 즉시실행비동기함수(Immediately Invoked Async Funtion Expression: IIAFE)
+  - js에서 비동기 함수 표현식을 즉시 호출하는 패턴
+  - IIFE의 확장 형태로, 비동기적 코드에 적용
+  ```javascript
+  (async () => {
+    let result = await someAsyncFunction();
+  })();
+  ```
