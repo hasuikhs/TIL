@@ -144,7 +144,9 @@
     }
 
     .deleted.slide-out {
-      animation: slideOut 0.5s ease-out;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.5s ease-out, opacity 0.5s ease-out;
     }
 
     #text-box {
@@ -215,15 +217,26 @@
     });
 
     function deleteItem(button) {
-      let item = button.parentNode;
-      item.classList.add("deleted");
-      setTimeout(function() {
-        item.classList.add("slide-out");
-        setTimeout(function() {
-          item.remove();
-        }, 500);
-      }, 500);
-    }
+  let item = button.parentNode;
+
+  // "deleted" 클래스 추가
+  item.classList.add("deleted");
+
+  // "transitionend" 이벤트 리스너 등록
+  item.addEventListener("transitionend", function handleTransitionEnd() {
+    // "slide-out" 클래스 추가
+    item.classList.add("slide-out");
+
+    // 다시 "transitionend" 이벤트 리스너 등록
+    item.addEventListener("transitionend", function handleSlideOutEnd() {
+      // "transitionend" 이벤트 리스너 제거
+      item.removeEventListener("transitionend", handleSlideOutEnd);
+
+      // 아이템 제거
+      item.remove();
+    });
+  });
+}
 
   </script>
 </body>
