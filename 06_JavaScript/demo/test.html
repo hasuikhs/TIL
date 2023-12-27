@@ -217,26 +217,18 @@
     });
 
     function deleteItem(button) {
-  let item = button.parentNode;
+      let item = button.parentNode;
 
-  // "deleted" 클래스 추가
-  item.classList.add("deleted");
+      item.classList.add('deleted');
 
-  // "transitionend" 이벤트 리스너 등록
-  item.addEventListener("transitionend", function handleTransitionEnd() {
-    // "slide-out" 클래스 추가
-    item.classList.add("slide-out");
+      item.addEventListener('transitionend', () => {
+        item.classList.add('slide-out');
 
-    // 다시 "transitionend" 이벤트 리스너 등록
-    item.addEventListener("transitionend", function handleSlideOutEnd() {
-      // "transitionend" 이벤트 리스너 제거
-      item.removeEventListener("transitionend", handleSlideOutEnd);
-
-      // 아이템 제거
-      item.remove();
-    });
-  });
-}
+        item.addEventListener('transitionend', () => {
+          item.remove();
+        });
+      });
+    }
 
   </script>
 </body>
