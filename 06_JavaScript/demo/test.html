@@ -161,6 +161,49 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .balloon-container-left {
+      position: relative;
+      width: 200px;
+      padding: 20px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 8px;
+      margin-top: 50px;
+    }
+
+    .balloon-container-left::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -20px; /* 조정한 부분 */
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #007bff transparent transparent;
+      transform: translateY(-50%); /* 조정한 부분 */
+    }
+
+    .balloon-container-right {
+      position: relative;
+      width: 200px;
+      padding: 20px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 8px;
+      margin-left: auto;
+      margin-right: 50px; /* 오른쪽 여백 조정 */
+    }
+
+    .balloon-container-right::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -20px; /* 오른쪽에 꼬리 위치 조정 */
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent transparent #007bff;
+      transform: translateY(-50%);
+    }
   </style>
 </head>
 <body>
@@ -191,6 +234,15 @@
   <div id="text-box">
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt veritatis fuga asperiores accusantium deleniti eos possimus odit modi non facilis?
   </div>
+
+  <div class="balloon-container-left">
+    This is a balloon.
+  </div>
+
+  <div class="balloon-container-right">
+    This is a balloon.
+  </div>
+
   <script>
     document.querySelector('.copy-btn').addEventListener('click', event => {
       let tgt = event.currentTarget;
