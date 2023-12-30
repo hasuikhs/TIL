@@ -271,16 +271,27 @@
     function deleteItem(button) {
       let item = button.parentNode;
 
+      // 첫 번째 트랜지션: 삭제를 위한 표시
       item.classList.add('deleted');
 
-      item.addEventListener('transitionend', () => {
+      item.addEventListener('transitionend', function handleFirstTransitionEnd() {
+        // 'slide-out' 클래스를 추가하여 추가적인 트랜지션 효과 시작
         item.classList.add('slide-out');
 
-        item.addEventListener('transitionend', () => {
+        // 첫 번째 트랜지션 이벤트 리스너 제거
+        item.removeEventListener('transitionend', handleFirstTransitionEnd);
+
+        // 두 번째 트랜지션: 실제 요소 삭제
+        item.addEventListener('transitionend', function handleSecondTransitionEnd() {
+          // 요소 제거
           item.remove();
+
+          // 두 번째 트랜지션 이벤트 리스너 제거
+          item.removeEventListener('transitionend', handleSecondTransitionEnd);
         });
       });
     }
+
 
   </script>
 </body>
