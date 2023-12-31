@@ -23,7 +23,7 @@ function getConsonantCorrection(charCode) {
   }
 
   if (INIT_CONSONANT.indexOf(charCode) === -1) {
-    throw new Error('incorrect consonant character.');
+    return 0;
   }
 
   return ALL_CONSONANT.indexOf(charCode) - INIT_CONSONANT.indexOf(charCode);
@@ -51,7 +51,8 @@ function transform(value, test) {
     }
   }
 
+  console.log(value === test, value, test);
   return value;
 }
 
-console.log(transform('Qㅏ', '빠'));
+console.log(transform('sㅏㄴ', '난'));
