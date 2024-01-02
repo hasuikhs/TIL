@@ -161,6 +161,49 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .balloon-container-left {
+      position: relative;
+      width: 200px;
+      padding: 20px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 8px;
+      margin-top: 50px;
+    }
+
+    .balloon-container-left::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -20px; /* 조정한 부분 */
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #007bff transparent transparent;
+      transform: translateY(-50%); /* 조정한 부분 */
+    }
+
+    .balloon-container-right {
+      position: relative;
+      width: 200px;
+      padding: 20px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 8px;
+      margin-left: auto;
+      margin-right: 50px; /* 오른쪽 여백 조정 */
+    }
+
+    .balloon-container-right::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -20px; /* 오른쪽에 꼬리 위치 조정 */
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent transparent #007bff;
+      transform: translateY(-50%);
+    }
   </style>
 </head>
 <body>
@@ -191,6 +234,15 @@
   <div id="text-box">
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt veritatis fuga asperiores accusantium deleniti eos possimus odit modi non facilis?
   </div>
+
+  <div class="balloon-container-left">
+    This is a balloon.
+  </div>
+
+  <div class="balloon-container-right">
+    This is a balloon.
+  </div>
+
   <script>
     document.querySelector('.copy-btn').addEventListener('click', event => {
       let tgt = event.currentTarget;
@@ -217,26 +269,29 @@
     });
 
     function deleteItem(button) {
-  let item = button.parentNode;
+      let item = button.parentNode;
 
-  // "deleted" 클래스 추가
-  item.classList.add("deleted");
+      // 첫 번째 트랜지션: 삭제를 위한 표시
+      item.classList.add('deleted');
 
-  // "transitionend" 이벤트 리스너 등록
-  item.addEventListener("transitionend", function handleTransitionEnd() {
-    // "slide-out" 클래스 추가
-    item.classList.add("slide-out");
+      item.addEventListener('transitionend', function handleFirstTransitionEnd() {
+        // 'slide-out' 클래스를 추가하여 추가적인 트랜지션 효과 시작
+        item.classList.add('slide-out');
 
-    // 다시 "transitionend" 이벤트 리스너 등록
-    item.addEventListener("transitionend", function handleSlideOutEnd() {
-      // "transitionend" 이벤트 리스너 제거
-      item.removeEventListener("transitionend", handleSlideOutEnd);
+        // 첫 번째 트랜지션 이벤트 리스너 제거
+        item.removeEventListener('transitionend', handleFirstTransitionEnd);
 
-      // 아이템 제거
-      item.remove();
-    });
-  });
-}
+        // 두 번째 트랜지션: 실제 요소 삭제
+        item.addEventListener('transitionend', function handleSecondTransitionEnd() {
+          // 요소 제거
+          item.remove();
+
+          // 두 번째 트랜지션 이벤트 리스너 제거
+          item.removeEventListener('transitionend', handleSecondTransitionEnd);
+        });
+      });
+    }
+
 
   </script>
 </body>
