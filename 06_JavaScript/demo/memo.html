@@ -219,6 +219,16 @@
           background-color: #fddbae;
         }
       }
+
+      .tab-inde, .tab-all {
+        display: none;
+      }
+      .visible {
+        display: block;
+      }
+      .tab-group button:focus {
+        background-color: yellow;
+      }
     </style>
     
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -405,6 +415,112 @@
           </div>
         </div>
       </div>
+
+
+      <div id="P-0006">
+        <div class="tab-group">
+          <button type="button" class="inde">독립</button>
+          <button type="button" class="all">전체</button>
+
+          <!-- 독립 -->
+          <div class="tab-inde visible">
+            <div>
+              <dl class="claim-container">
+                <div class="root-claim-wrapper">
+                  <div class="independent-claim-wrapper">
+                    <div class="independent-claim-title">
+                      <div class="btn-toggle-more-text plus">
+                        <em class="claim-number claim-number-1">
+                          [청구항 1]
+                        </em>
+                      </div>
+                      <em class="independent-badge ml-5 mr-5">독</em>
+                      <div id="TOOLTIP_INDEPENDENT_CLAIM_wrapper" class="tooltip-wrapper undefined">
+                        <div class="btn-tooltip-question"></div>
+                        <div id="TOOLTIP_INDEPENDENT_CLAIM" class="tooltip undefined bottom-left tooltip-yellow " style="width: 330px;">
+                          <span>로직에 의해</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="independent-claim-content">
+                      <span class="pb-10" style="display: inline-block;">
+                        <span>
+                          <p id="CLM-0001" type="CLAIM">제1방향으로 배치된 게이트라인들과 제2방향으로 배치된 데이터라인들이 표시패널.<br>
+                          </p>
+                        </span>
+                      </span>
+
+                      <span> <!-- 추가 -->
+                        <div class="independent-claim-wrapper pl-20">
+                          <div class="independent-claim-title">
+                            <em class="claim-number claim-number-2">
+                              [청구항 2]
+                            </em>
+                          </div>
+                          <div class="independent-claim-content">
+                            <span>
+                              <p id="CLM-0002" type="CLAIM">제1항에 있어서,<br>상기 적어도 하나의 차단전극과 전기적으로 연결된 표시패널.<br>
+                              </p>
+                            </span>
+                          </div>
+                        </div>
+                      </span>
+
+                    </div>
+                  </div>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <!-- 전체 -->
+          <div class="tab-all">
+            <div>
+              <dl class="claim-container">
+                <div class="root-claim-wrapper">
+                  <div class="independent-claim-wrapper">
+                    <div class="independent-claim-title">
+                      <em class="claim-number claim-number-1">
+                        [청구항 1]
+                      </em>
+                      <em class="independent-badge ml-5 mr-5">독</em>
+                      <div id="TOOLTIP_INDEPENDENT_CLAIM_wrapper" class="tooltip-wrapper undefined">
+                        <div class="btn-tooltip-question"></div>
+                        <div id="TOOLTIP_INDEPENDENT_CLAIM" class="tooltip undefined bottom-left tooltip-yellow " style="width: 330px;">
+                          <span>로직에 의해</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="independent-claim-content">
+                      <span class="pb-10" style="display: inline-block;">
+                        <span>
+                          <p id="CLM-0001" type="CLAIM">제1방향으로 배치된 게이트라인들과 제2방향으로 배치된 데이터라인들이 표시패널.<br>
+                          </p>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="independent-claim-wrapper">
+                    <div class="independent-claim-title">
+                      <em class="claim-number claim-number-2">
+                        [청구항 2]
+                      </em>
+                    </div>
+                    <div class="independent-claim-content">
+                      <span class="false" style="display: inline-block;">
+                        <span>
+                          <p id="CLM-0002" type="CLAIM">제1항에 있어서,<br>상기 적어도 하나의 차단전극과 전기적으로 연결된 표시패널.<br>
+                          </p>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- <div id="memo-toggle">
@@ -469,6 +585,21 @@
       window.onload = () => {
         const memo = new Memo({ documentId: 'test', containerId: 'container' });
       };
+      const indeBtn = document.querySelector('#P-0006 button.inde');
+      const allBtn = document.querySelector('#P-0006 button.all');
+
+      const area1 = document.querySelector('.tab-inde');
+      const area2 = document.querySelector('.tab-all');
+      
+      indeBtn.addEventListener('click', event => {
+        area1.classList.add('visible');
+        area2.classList.remove('visible');
+      });
+
+      allBtn.addEventListener('click', () => {
+        area1.classList.remove('visible');
+        area2.classList.add('visible');
+      });
 
       function Memo({ documentId, containerId }) {
         if (!new.target) {
@@ -572,6 +703,7 @@
               end   -= nodeTextLength;
             } else {
               const parentNode = currentNode.parentNode;
+              console.log(parentNode)
 
               const beforeText = nodeText.substring(0, start);
               const targetText = nodeText.substring(start, Math.min(end, nodeTextLength));
@@ -650,7 +782,8 @@
 
           const selectionText = selection.toString().trim();
 
-          if (!range.startContainer.parentNode.closest(`div[id="${ containerId }"]`) || !range.endContainer.parentNode.closest(`div[id="${ containerId }"]`)) {
+
+          if (!range.startContainer || !range.startContainer.parentNode.closest(`div[id="${ containerId }"]`) || !range.endContainer.parentNode.closest(`div[id="${ containerId }"]`)) {
             possible = false;
             message  = `Out of range`;
           }
@@ -692,14 +825,19 @@
 
           if (possible) {
             const nodes = this.getNodesWithinRange(range);
+            console.log(nodes)
 
             for (let i = 0, len = nodes.length; i < len; i++) {
               const node = nodes[i];
 
+              console.log(node)
               if (node.classList.contains(MEMO_CLASSNAME)) {
                 possible = false;
                 message  = 'Memo cannot overlap each other';
                 break;
+              } else if (node.nodeName === 'BUTTON') {
+                possible = false;
+                message  = 'Memo cannot includes button';
               } else if (node.nodeName === 'IMG' || (node.nodeName === 'EM' && node.textContent.toUpperCase().trim() === 'IMAGE' )) {
                 possible = false;
                 message  = 'Memo cannot include img or badge';
@@ -920,6 +1058,7 @@
                   memoText,
                 });
 
+                console.log(this.selectedText, this.range.start, this.range.end)
                 window.alert('저장되었습니다.');
               }
 
@@ -1095,8 +1234,9 @@
           if (this.isDragging) return this.closeMousePopup();
 
           const selection = window.getSelection();
-          const range     = selection.getRangeAt(0);
+          const range     = selection.rangeCount && selection.getRangeAt(0);
 
+          console.log(selection, range)
           const { possible, message } = this.isPossibleMemo(selection, range);
 
           if (!possible) {
