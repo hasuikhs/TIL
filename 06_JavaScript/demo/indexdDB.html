@@ -8,112 +8,73 @@
   <body>
     <script>
       window.onload = async () => {
-        const isSupport = await check();
+        const dbName = 'hi';
+        const storeName = 'person';
 
-        const result = await writeIndexedDB('person', [
-          {
-            id: 1,
-            name: 'a'
-          },
-          {
-            id:2,
-            name: 'b'
-          }
-        ])
+        const result = await writeIndexedDB(dbName, storeName, [
+          { id: 1, name: 'a' },
+          { id: 2, name: 'b' }
+        ]);
 
-        const select = await selectOneIndexedDB('person', 2);
-        console.log(select)
+        const select = await selectOneIndexedDB(dbName, storeName, 2);
+        console.log(select);
       };
 
-      function check() {
-        return new Promise((resolve, reject) => {
-          if (!window.indexedDB) {
-            resolve(false);
-          } else {
-            let db;
-            const request = window.indexedDB.open('hi');
+      let dbInstance = null;
 
-            request.onupgradeneeded = e => {
-              db = e.target.result;
-              db.createObjectStore('person', { keyPath: 'id' });
+      async function getDB(dbName, storeName) {
+        if (dbInstance) return dbInstance;
+
+        return new Promise((resolve, reject) => {
+          const request = window.indexedDB.open(dbName);
+
+          request.onupgradeneeded = e => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(storeName)) {
+              db.createObjectStore(storeName, { keyPath: 'id' });
             }
-            request.onerror = e => {
-              reject(Error('indexedDB connect error'));
-            }
-            request.onsuccess = e => {
-              db = request.result;
-              resolve(true);
-            }
-          }
+          };
+
+          request.onerror = e => {
+            reject(Error('IndexedDB connection error: ' + e.target.error));
+          };
+
+          request.onsuccess = e => {
+            dbInstance = e.target.result;
+            resolve(dbInstance);
+          };
         });
       }
 
-      function writeIndexedDB(tableName, data) {
+      async function writeIndexedDB(dbName, storeName, data) {
+        const db = await getDB(dbName, storeName);
         return new Promise((resolve, reject) => {
-          const request = window.indexedDB.open('hi');
+          const transaction = db.transaction([storeName], 'readwrite');
+          const objectStore = transaction.objectStore(storeName);
 
-          request.onerror = e => {
-            reject(Error('DataBase error', e.target.errorCode));
-          }
-          request.onsuccess = e => {
-            const db = request.result;
-            const transaction = db.transaction([ tableName ], 'readwrite');
-            const result = [];
+          const writePromises = data.map(item => {
+            return new Promise((resolve, reject) => {
+              const request = objectStore.add(item);
+              request.onsuccess = () => resolve(item.id);
+              request.onerror = e => reject(Error('Error writing data: ' + e.target.error));
+            });
+          });
 
-            transaction.oncomplete = e => {
-              resolve({
-                status: 200,
-                result: result
-              });
-            }
-            transaction.onerror = e => {
-              resolve({
-                status: 400
-              });
-            }
-
-            const objStore = transaction.objectStore(tableName);
-            for (const d of data) {
-              const request = objStore.add(d);
-
-              request.onsuccess = e => {
-                result.push(e.target.result);
-              }
-            }
-          }
+          Promise.all(writePromises)
+            .then(results => resolve({ status: 200, result: results }))
+            .catch(error => reject({ status: 400, error: error }));
         });
       }
 
-      function selectOneIndexedDB(tableName, key) {
+      async function selectOneIndexedDB(dbName, storeName, key) {
+        const db = await getDB(dbName, storeName);
         return new Promise((resolve, reject) => {
-          const request = window.indexedDB.open('hi');
+          const transaction = db.transaction([storeName]);
+          const objectStore = transaction.objectStore(storeName);
+          const request = objectStore.get(key);
 
-          request.onerror = e => {
-            reject(Error('DataBase error', e.target.errorCode));
-          }
-          request.onsuccess = e => {
-            const db = request.result;
-            const transaction = db.transaction([ tableName ]);
-            let result;
-
-            transaction.oncomplete = e => {
-              resolve({
-                status: 200,
-                result
-              });
-            }
-            transaction.onerror = e => {
-              resolve({
-                status: 400
-              });
-            }
-
-            const objStore = transaction.objectStore(tableName);
-            const select = objStore.get(key);
-            select.onsuccess = e => {
-              result = e.target.result;
-            }
-          }
+          request.onsuccess = () => resolve({ status: 200, result: request.result });
+          request.onerror = () => reject(Error('Error reading data'));
         });
       }
     </script>
