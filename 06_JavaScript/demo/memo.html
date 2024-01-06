@@ -1200,6 +1200,10 @@
               selector += `[num="${ element.getAttribute('num') }"]`
             } else if (element.getAttribute('key')) {
               selector += `[key="${ element.getAttribute('key') }"]`
+            } else if (targetClass && element.classList.contains(targetClass)) {
+              selector += `.${targetClass}`;
+              path.unshift(selector);
+              break;
             }
             // else  {
             //   let sibling = element, nth = 1;
