@@ -1188,7 +1188,7 @@
           });
         };
 
-        this.getSelectorPath = element => {
+        this.getSelectorPath = (element, targetClass) => {
           if (!(element instanceof Element)) return;
 
           let path = [];

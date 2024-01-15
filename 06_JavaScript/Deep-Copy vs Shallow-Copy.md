@@ -15,8 +15,8 @@
 - Array와 Object에서 복사는 기본적으로 Shallow-Copy가 됨
 
   ```javascript
-  var oiginArr = [1, 2, 3, 4];
-  var copiedArr = OriginArr;
+  var originArr = [1, 2, 3, 4];
+  var copiedArr = originArr;
   
   console.log(originArr);	// [1, 2, 3, 4]
   console.log(copiedArr);	// [1, 2, 3, 4]
@@ -51,6 +51,8 @@
       console.log(originArr);	// [1, 2, 3]
       console.log(copiedArr);	// [1, 2, 3, 4]
       ```
+
+      - ES5의 `slice()` 메서드나 ES6의 전개 연산자(`...`)는 배열의 첫 번째 레벨만 복사하며, 이는 중첩된 객체나 배열에는 적용되지 않음
 
     - Object
 
@@ -97,6 +99,9 @@
 - JSON 객체를 이용하는 방법도 존재
   - 단, 이 방법은 내부에 함수가 존재하면 문제가 발생 가능
   - 이는 `JSON.stringify()` 함수가 함수를 serialize하지 않기 때문
+    - `JSON.parse(JSON.stringify(object))` 방법은 객체가 함수, `undefined`, 또는 순환 참조를 포함할 경우 부적합
+    - 이 방법을 사용할 때, 객체 내부의 함수와 `undefined` 값은 무시되거나 제거
+    - 순환 참조가 있는 경우, `JSON.stringify` 함수는 오류를 발생
   - 함수가 있는 객체를 serialize하려고 하면, 함수는 undefined로 반환
   - 그렇기 때문에 함수가 있는 객체를 deep copy하려면 lodash 라이브러리의 `cloneDeep()` 함수를 사용하거나 직접 재귀적으로 복사하는 방식으로 구현해야 함
   
@@ -117,7 +122,12 @@
 
 - 객체에 변수를 저장하면, 실제 값을 저장하는 것이 아니라 객체의 참조를 저장
 
-- 복사가 이루어지면 서로 다른 변수에 할당되지만,  서로 같은 메모리의 참조를 바라보게 되어 영향을 줄 수 있음
+- 복사가 이루어지면 서로 다른 변수에 할당되지만, 서로 같은 메모리의 참조를 바라보게 되어 영향을 줄 수 있음
+  - 얕은 복사(Shallow-Copy)에서는 복사된 객체의 최상위 프로퍼티들만 새로운 메모리 공간에 할당
+  - 내부의 객체(중첩된 객체)나 배열은 원본 객체와 동일한 참조를 공유
+  - 내부 객체 또는 배열을 수정할 경우 원본 객체에도 영향을 미칠 수 있다는 것을 의미
+  - 따라서 복잡한 객체 구조를 다룰 때는 이러한 특성을 고려해야 함
+
 
 - shallow copy를 구현하는 방법으로는 위에 언급되었다 시피
   - `Object.assign()` 메소드나 전개 연산자(`...`)를 사용 가능
