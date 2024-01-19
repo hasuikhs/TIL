@@ -72,6 +72,8 @@
     element.style.height = height;
     const targetHeight = element.clientHeight;
 
+    console.log(originalHeight, targetHeight)
+
     if (originalHeight !== targetHeight) {
       element.style.height = `${originalHeight}px`;
       requestAnimationFrame(() => element.style.height = `${targetHeight}px`);
