@@ -1,56 +1,110 @@
 <!DOCTYPE html>
 <html lang="ko">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="date"></div>
     <script>
-        // localstorage가 브라우저의 다른 탭/창에서 변경되었을시 알려줌
-        window.onstorage = () => {
-            console.log('스토리지')
+      // localstorage가 브라우저의 다른 탭/창에서 변경되었을시 알려줌
+      window.onstorage = () => {
+        console.log('스토리지')
+        const storageManager = new LocalStorageManager();
+      }
+
+      window.onload = () => {
+        var date = document.querySelector('#date');
+        var saveStr = 'before';
+        date.innerHTML = 'DATE: ' + dateFormat(new Date(2021, 7, 14));
+
+        var storageData1 = {
+          'saveDate': saveStr,
+          'expireTime': dateFormat(new Date(2021, 7, 14))
         }
 
-        window.onload = () => {
-            var date = document.querySelector('#date');
-            var saveStr = 'before';
-            date.innerHTML = 'DATE: ' + dateFormat(new Date(2021, 7, 14));
-    
-            var storageData1 = {
-                'saveDate': saveStr,
-                'expireTime': dateFormat(new Date(2021, 7, 14))
+        localStorage.setItem('saveData', JSON.stringify(storageData1));
+
+        setTimeout(() => {
+          var storageData2 = JSON.parse(localStorage.getItem('saveData'));
+
+          if (storageData2['expireTime'] != dateFormat(new Date())) {
+            localStorage.removeItem('saveData');
+          }
+        }, 5000);
+
+      }
+
+      class LocalStorageManager {
+        constructor() {
+          if (LocalStorageManager.instance) {
+            return LocalStorageManager.instance;
+          }
+
+          this.storageKey = 'test';
+          this.maxRetries = 5;
+          this.retryInterval = 5000;
+          LocalStorageManager.instance = this;
+        }
+
+        getData() {
+          const storageData = localStorage.getItem(this.storageKey);
+          return storageData ? JSON.parse(storageData) : {};
+        }
+
+        saveData(id, newData) {
+          const data = this.getData();
+
+          if (newData === null) {
+            delete data[id];
+          } else {
+            data[id] = { ...data[id], ...newData };
+          }
+          localStorage.setItem(this.storageKey, JSON.stringify(data));
+        }
+
+        handleChange(id, data) {
+          const now = new Date().toISOString();
+          const newData = { ...data, updDate: now, retryCnt: 0 };
+          this.saveData(id, newData);
+          this.sendToAPI(id, newData);
+        }
+
+        async sendToAPI(id, data) {
+          const copyData = JSON.parse(JSON.stringify(data)); // 데이터 복사
+          delete copyData.retryCnt;
+          try {
+            // 요청 함수 요청 보낼때는 copyData 보내기
+            this.saveData(id, null); // 요청 성공시
+          } catch (error) {
+            const newData = { ...data, retryCnt: data.retryCnt + 1 };
+            if (newData.retryCnt < this.maxRetries) {
+              setTimeout(() => this.sendToAPI(id, newData), this.retryInterval);
+              this.saveData(id, newData);
             }
-    
-            localStorage.setItem('saveData', JSON.stringify(storageData1));
-    
-            setTimeout(() => {
-                var storageData2 = JSON.parse(localStorage.getItem('saveData'));
-    
-                if (storageData2['expireTime'] != dateFormat(new Date())) {
-                    localStorage.removeItem('saveData');
-                }
-            }, 5000);
-
+          }
         }
 
+        init() {
+          const data = localStorage.getItem(this.storageKey);
 
-
-        function dateFormat(date) {
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-
-            month = month < 10 ? `0${month}` : month;
-            day = day < 10 ? `0${day}` : day;
-
-            return `${year}-${month}-${day}`;
+          data && Object.entries(data).forEach(([ id, itemData ]) => this.sendToAPI(id, itemData));
         }
+      }
+
+      function dateFormat(date) {
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+
+          month = month < 10 ? `0${month}` : month;
+          day = day < 10 ? `0${day}` : day;
+
+          return `${year}-${month}-${day}`;
+      }
     </script>
-</body>
-
+  </body>
 </html>
