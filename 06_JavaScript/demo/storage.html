@@ -95,15 +95,15 @@
         }
       }
 
-      function dateFormat(date) {
-          var year = date.getFullYear();
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
+      function dateFormat(date, format = 'YYYY-MM-DD') {
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
 
-          month = month < 10 ? `0${month}` : month;
-          day = day < 10 ? `0${day}` : day;
+        month = month < 10 ? `0${month}` : month;
+        day = day < 10 ? `0${day}` : day;
 
-          return `${year}-${month}-${day}`;
+        return format.replace('YYYY', year).replace('MM', month).replace('DD', day);
       }
     </script>
   </body>
