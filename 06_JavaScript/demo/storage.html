@@ -38,62 +38,76 @@
 
       }
 
+      const STATUS_CODE = {
+        SUCCESS: 'SUCCESS',
+        FAILURE: 'FAILURE',
+        NORMAL:  'NORMAL'
+      };
+
       class LocalStorageManager {
-        constructor() {
-          if (LocalStorageManager.instance) {
-            return LocalStorageManager.instance;
+      constructor() {
+        if (LocalStorageManager.instance) {
+          return LocalStorageManager.instance;
+        }
+
+        this.storageKey = STORAGE_CONFIG.STORAGE_KEY;
+        this.maxRetries = STORAGE_CONFIG.MAX_RETRY_CNT;
+        this.retryInterval = STORAGE_CONFIG.SAVE_INTERVAL_FOR_FAIL;
+        LocalStorageManager.instance = this;
+      }
+
+      getData() {
+        const storageData = localStorage.getItem(this.storageKey);
+        return storageData ? JSON.parse(storageData) : {};
+      }
+
+      saveData(id, newData) {
+        const data = this.getData();
+
+        if (newData === null) {
+          delete data[id];
+        } else {
+          data[id] = { ...data[id], ...newData };
+        }
+        localStorage.setItem(this.storageKey, JSON.stringify(data));
+      }
+
+      handleChange(id, data, setStatus) {
+        const now = new Date().toISOString();
+        const newData = { ...data, updDate: now, retryCnt: 0 };
+
+        this.saveData(id, newData);
+        this.sendToAPI(id, newData, setStatus);
+      }
+
+      async sendToAPI(id, data, setStatus) {
+        const copyData = JSON.parse(JSON.stringify(data)); // 데이터 복사
+        delete copyData.retryCnt;
+        delete copyData.isNew;
+
+        try {
+          // 요청 함수 요청 보낼때는 copyData 보내기
+          setStatus & setStatus(STATUS_CODE.SUCCESS);
+        } catch (error) {
+          if (!data.retryCnt) {
+            data.retryCnt = 0;
           }
 
-          this.storageKey = 'test';
-          this.maxRetries = 5;
-          this.retryInterval = 5000;
-          LocalStorageManager.instance = this;
-        }
-
-        getData() {
-          const storageData = localStorage.getItem(this.storageKey);
-          return storageData ? JSON.parse(storageData) : {};
-        }
-
-        saveData(id, newData) {
-          const data = this.getData();
-
-          if (newData === null) {
-            delete data[id];
-          } else {
-            data[id] = { ...data[id], ...newData };
+          setStatus && setStatus(STATUS_CODE.FAILURE);
+          const newData = { ...data, retryCnt: data.retryCnt + 1 };
+          if (newData.retryCnt < this.maxRetries) {
+            setTimeout(() => this.sendToAPI(id, newData), this.retryInterval);
+            this.saveData(id, newData);
           }
-          localStorage.setItem(this.storageKey, JSON.stringify(data));
-        }
-
-        handleChange(id, data) {
-          const now = new Date().toISOString();
-          const newData = { ...data, updDate: now, retryCnt: 0 };
-          this.saveData(id, newData);
-          this.sendToAPI(id, newData);
-        }
-
-        async sendToAPI(id, data) {
-          const copyData = JSON.parse(JSON.stringify(data)); // 데이터 복사
-          delete copyData.retryCnt;
-          try {
-            // 요청 함수 요청 보낼때는 copyData 보내기
-            this.saveData(id, null); // 요청 성공시
-          } catch (error) {
-            const newData = { ...data, retryCnt: data.retryCnt + 1 };
-            if (newData.retryCnt < this.maxRetries) {
-              setTimeout(() => this.sendToAPI(id, newData), this.retryInterval);
-              this.saveData(id, newData);
-            }
-          }
-        }
-
-        init() {
-          const data = localStorage.getItem(this.storageKey);
-
-          data && Object.entries(data).forEach(([ id, itemData ]) => this.sendToAPI(id, itemData));
         }
       }
+
+      init() {
+        const data = localStorage.getItem(this.storageKey);
+
+        data && Object.entries(data).forEach(([ id, itemData ]) => this.sendToAPI(id, itemData));
+      }
+    }
 
       function dateFormat(date, format = 'YYYY-MM-DD') {
         let year = date.getFullYear();
