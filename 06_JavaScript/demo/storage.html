@@ -45,69 +45,81 @@
       };
 
       class LocalStorageManager {
-      constructor() {
-        if (LocalStorageManager.instance) {
-          return LocalStorageManager.instance;
-        }
-
-        this.storageKey = STORAGE_CONFIG.STORAGE_KEY;
-        this.maxRetries = STORAGE_CONFIG.MAX_RETRY_CNT;
-        this.retryInterval = STORAGE_CONFIG.SAVE_INTERVAL_FOR_FAIL;
-        LocalStorageManager.instance = this;
-      }
-
-      getData() {
-        const storageData = localStorage.getItem(this.storageKey);
-        return storageData ? JSON.parse(storageData) : {};
-      }
-
-      saveData(id, newData) {
-        const data = this.getData();
-
-        if (newData === null) {
-          delete data[id];
-        } else {
-          data[id] = { ...data[id], ...newData };
-        }
-        localStorage.setItem(this.storageKey, JSON.stringify(data));
-      }
-
-      handleChange(id, data, setStatus) {
-        const now = new Date().toISOString();
-        const newData = { ...data, updDate: now, retryCnt: 0 };
-
-        this.saveData(id, newData);
-        this.sendToAPI(id, newData, setStatus);
-      }
-
-      async sendToAPI(id, data, setStatus) {
-        const copyData = JSON.parse(JSON.stringify(data)); // 데이터 복사
-        delete copyData.retryCnt;
-        delete copyData.isNew;
-
-        try {
-          // 요청 함수 요청 보낼때는 copyData 보내기
-          setStatus & setStatus(STATUS_CODE.SUCCESS);
-        } catch (error) {
-          if (!data.retryCnt) {
-            data.retryCnt = 0;
+        constructor() {
+          if (LocalStorageManager.instance) {
+            return LocalStorageManager.instance;
           }
 
-          setStatus && setStatus(STATUS_CODE.FAILURE);
-          const newData = { ...data, retryCnt: data.retryCnt + 1 };
-          if (newData.retryCnt < this.maxRetries) {
-            setTimeout(() => this.sendToAPI(id, newData), this.retryInterval);
-            this.saveData(id, newData);
+          this.timer = null;
+          this.storageKey = STORAGE_CONFIG.STORAGE_KEY;
+          this.maxRetries = STORAGE_CONFIG.MAX_RETRY_CNT;
+          this.retryInterval = STORAGE_CONFIG.SAVE_INTERVAL_FOR_FAIL;
+          LocalStorageManager.instance = this;
+        }
+
+        getData() {
+          const storageData = localStorage.getItem(this.storageKey);
+          return storageData ? JSON.parse(storageData) : {};
+        }
+
+        saveData(id, newData) {
+          const data = this.getData();
+
+          if (newData === null) {
+            delete data[id];
+          } else {
+            data[id] = { ...data[id], ...newData };
+          }
+          localStorage.setItem(this.storageKey, JSON.stringify(data));
+        }
+
+        handleChange(id, data) {
+          const newData = { ...data, retryCnt: 0 };
+
+          this.saveData(id, newData);
+          return this.sendToAPI(id, newData);
+        }
+
+        async sendToAPI(id, data, option = { force: false }) {
+          const copyData = JSON.parse(JSON.stringify(data)); // 데이터 복사
+
+          delete copyData.retryCnt;
+          delete copyData.isNew;
+
+          return new Promise(async (resolve, reject) => {
+            try {
+              if (this.timer) {
+                clearTimeout(this.timer);
+                this.timer = null;
+              }
+
+              // const { METHOD, SET_PARAM } = REQEUST_API.UPDATE;
+
+              // 요청 함수 요청 보낼때는 copyData 보내기
+              // const response = await request({ method: METHOD, data: SET_PARAM(copyData) });
+              this.saveData(id, null);
+              resolve(STATUS_CODE.SUCCESS);
+            } catch (error) {
+              if (!option.force) {
+                data.retryCnt = (data.retryCnt || 0) + 1;
+              }
+
+              if (!option.force && data.retryCnt < this.maxRetries) {
+                this.timer = setTimeout(() => this.sendToAPI(id, data, option), 2000);
+              }
+
+              this.saveData(id, data);
+              reject(STATUS_CODE.FAILURE);
+            }
+          });
+        }
+
+          init() {
+            const data = JSON.parse(localStorage.getItem(this.storageKey));
+
+            data && Object.entries(data).forEach(([ id, itemData ]) => this.sendToAPI(id, itemData, { force: true }));
           }
         }
-      }
-
-      init() {
-        const data = localStorage.getItem(this.storageKey);
-
-        data && Object.entries(data).forEach(([ id, itemData ]) => this.sendToAPI(id, itemData));
-      }
-    }
 
       function dateFormat(dateString, format = 'YYYY-MM-DD HH:mm:ss') {
         const date = new Date(dateString);
