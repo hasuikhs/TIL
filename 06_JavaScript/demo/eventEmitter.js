@@ -1,6 +1,11 @@
 class EventEmitter {
   constructor() {
+    if (EventEmitter.instance) {
+      return EventEmitter.instance;
+    }
+
     this.events = {};
+    EventEmitter.instance = this;
   }
 
   on(eventName, listener) {
