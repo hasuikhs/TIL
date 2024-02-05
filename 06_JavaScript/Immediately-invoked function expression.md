@@ -87,3 +87,7 @@
     let result = await someAsyncFunction();
   })();
   ```
+
+- JS ES6+ 모듈 시스템 (`import`/`export`)이 도입되면서, IIFE의 중요성은 다소 감소
+  - 모듈 시스템은 각 파일이 자체 스코프를 가지기 때문에, 전역 스코프 오염을 방지하는 기존의 IIFㄷ 목적 중 일부를 자연스럽게 해결
+  
