@@ -327,14 +327,15 @@
       window.addEventListener('scroll', throttledHandleScroll);
 
 
-      function checkVisibility() {
-        const rect = this.serviceButtonRef.getBoundingClientRect();
+      function checkVisibility(targetSelector) {
+        const element = document.querySelector(targetSelector)l
+        const elementRect = element.getBoundingClientRect();
 
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+        const centerX = elementRect.left + elementRect.width / 2;
+        const centerY = elementRect.top + elementRect.height / 2;
         const elementAtCenter = document.elementFromPoint(centerX, centerY);
 
-        if (this.serviceButtonRef.contains(elementAtCenter)) {
+        if (elementRect.contains(elementAtCenter)) {
           console.log("보임");
         } else {
           console.log("안보임");
