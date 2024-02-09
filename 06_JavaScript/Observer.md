@@ -158,9 +158,11 @@ new IntersectionObserver(callback[, options]);
   - `root`
     - 기본값은 `null`로 브라우저의 ViewPort
     - 교차 영역의 기준이 될 `root` 요소, `observe`의 대상으로 등록할 요소는 반드시 `root`의 하위 요소여야 함
+      - Observer가 관찰할 영역 정의
+      - `root`로 지정된 요소 내부에서만 교차를 감지
   - `rootMargin`
     - 기본값은 `0px, 0px, 0px, 0px`
-    - `root` 범위를 확장하거나 축소 가능
+    - `root` 범위를 확장하거나 축소 가능(요소의 가시 영역을 조정, CSS의 `margin`과 유사)
   - `threshold`
     - 기본값은 0.0
     - array로 값을 지정 가능 (`[0, 0.3, 1]`  세 경우 모두 실행됨)
