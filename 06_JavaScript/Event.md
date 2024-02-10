@@ -207,18 +207,18 @@ window.onload = function () {
 ```javascript
 // 익명 함수로 처리하는 방법
 window.onload = function () {
-	let btn = document.getElementById("btn")
-	const idText = document.getElementById("text")
+  let btn = document.getElementById("btn")
+  const idText = document.getElementById("text")
 
-	btn.addEventListener("click", () => {
-    	idText.append("마우스가 버튼을 클릭!")
-    }, false)
-    btn.addEventListener("mouseover", () => {
-        idText.append("마우스가 버튼 위로 진입!")
-    }, false)
-    btn.addEventListener("mouseleave", () => {
-        idText.append("마우스가 버튼 위에서 탈출!")
-    }, false)
+  btn.addEventListener("click", () => {
+    idText.append("마우스가 버튼을 클릭!")
+  }, false)
+  btn.addEventListener("mouseover", () => {
+    idText.append("마우스가 버튼 위로 진입!")
+  }, false)
+  btn.addEventListener("mouseleave", () => {
+    idText.append("마우스가 버튼 위에서 탈출!")
+  }, false)
 }
 ```
 
@@ -238,7 +238,7 @@ window.onload = function () {
 </script>
 ```
 
-- 위의 코드는 버튼을 클릭하면 event1이 **두번** 찍힘
+- 위의 코드는 버튼을 클릭하면 event1이 **두 번** 찍힘
 
 ```html
 <button id="btn" type="button">버튼</button>
@@ -252,11 +252,13 @@ window.onload = function () {
 </script>
 ```
 
-- 위의 코드는 버튼을 클릭하면 test가 **한번** 찍힘
+- 위의 코드는 버튼을 클릭하면 test가 **한 번** 찍힘
 
 #### 이유
 
 - JavaScript는 함수로 레퍼런스를 갖는 객체
 - **동일한 레퍼런스를 갖은 이벤트 핸들러가 여러 번 등록된다면 중복 처리되어 하나만 남게 됨**
-- 그러므로 첫번째 코드에서 익명함수는 모두 새로운 객체가 생성되어 바인딩
-- 그러나 두번째 코드에서는 레퍼런스가 같은 함수가 중복 등록되어 하나만 남게 되었음
+- 그러므로 첫 번째 코드에서 익명 함수는 모두 새로운 객체가 생성되어 바인딩
+  - 각각의 익명 함수는 고유한 레퍼런스를 가지기 때문에 서로 다른 레퍼런스를 가지므로 모두 별개로 취급되어 중복 실행
+- 그러나 두 번째 코드에서는 레퍼런스가 같은 함수가 중복 등록되어 하나만 남게 되었음
+  - 일반적으로 명명된 함수를 사용하는 것이 관리 측면에서 더 편리함
