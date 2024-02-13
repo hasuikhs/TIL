@@ -523,9 +523,9 @@
       </div>
     </div>
 
-    <!-- <div id="memo-toggle">
+    <div id="memo-toggle">
       <i class="fa-solid fa-note-sticky"></i>
-    </div> -->
+    </div>
 
     <div id="memo-main">
       <div id="memo-tool-bar">
@@ -687,6 +687,37 @@
           }
         };
 
+        this.matchText = (element, start, end, targetText) => {
+          if (end < start) throw new Error('Incorrect data');
+
+          let extractedText = '';
+          let treeWalker = this.createTreeWalker(element);
+          let currentNode;
+          while ((currentNode = treeWalker.nextNode())) {
+            const nodeText       = this.TextByRegex(currentNode.nodeValue);
+            const nodeTextLength = nodeText.length;
+
+            if (!nodeText) continue;
+
+            if (start >= nodeTextLength) {
+              start -= nodeTextLength;
+              end   -= nodeTextLength;
+            } else {
+              const beforeTextLength = start;
+              const targetTextLength = Math.min(end, nodeTextLength) - start;
+
+              extractedText += nodeText.substring(start, start + targetTextLength);
+
+              start = 0;
+              end -= (targetTextLength + beforeTextLength);
+
+              if (end <= 0) break;
+            }
+          }
+
+          return extractedText === targetText;
+        }
+
         this.addHighlightElement = (element, start, end, memoKey, classNames = []) => {
           if (end < start) throw new Error('Incorrect data');
 
@@ -703,7 +734,6 @@
               end   -= nodeTextLength;
             } else {
               const parentNode = currentNode.parentNode;
-              console.log(parentNode)
 
               const beforeText = nodeText.substring(0, start);
               const targetText = nodeText.substring(start, Math.min(end, nodeTextLength));
@@ -751,9 +781,12 @@
                 const items   = groupData[groupSelector];
                 const element = document.querySelector(groupSelector);
 
+                console.log(element)
                 for (let i = 0, itemLen = items.length; i < itemLen; i++) {
                   const item = items[i];
                   const { start, end, targetText, memoKey } = item;
+
+                  console.log(this.matchText(element, start, end, targetText))
 
                   this.addHighlightElement(element, start, end, memoKey, [ MEMO_CLASSNAME ]);
                 }
