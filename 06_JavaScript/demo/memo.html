@@ -809,80 +809,60 @@
           return nodes;
         };
 
-        this.isPossibleMemo = (selection, range) => {
-          let possible = true;
-          let message  = '';
-
+        this.isPossibleMemo = (selection, range, event) => {
           const selectionText = selection.toString().trim();
 
+          const initialConditions = [
+            {
+              check: !range.startContainer || !event.currentTarget.contains(range.startContainer.parentNode) || !event.currentTarget.contains(range.endContainer.parentNode),
+              message: 'RANGE'
+            },
+            {
+              check: !selectionText || selectionText.length < MIN_CHARACTER_LENGTH,
+              message: 'LEAST'
+            },
+            {
+              check: selectionText.length > MAX_CHARACTER_LENGTH,
+              message: 'MANY'
+            },
+            {
+              check: range.commonAncestorContainer.parentNode.classList.contains(MEMO_CLASSNAME),
+              message: 'OVERLAP'
+            }
+          ];
 
-          if (!range.startContainer || !range.startContainer.parentNode.closest(`div[id="${ containerId }"]`) || !range.endContainer.parentNode.closest(`div[id="${ containerId }"]`)) {
-            possible = false;
-            message  = `Out of range`;
-          }
-
-          if (!selectionText || selectionText.length < MIN_CHARACTER_LENGTH) {
-            possible = false;
-            message  = `Requires least ${ MIN_CHARACTER_LENGTH } characters`;
-          }
-
-          if (selectionText.length > MAX_CHARACTER_LENGTH) {
-            possible = false;
-            message  = `Too many characters`;
-          }
-
-          if (possible && document.getElementsByClassName(MEMO_ING_CLASSNAME).length) {
-            possible = false;
-            message  = 'Already writing memo';
-          }
-
-          if (possible) {
-            if (range.commonAncestorContainer.parentNode.classList.contains(MEMO_CLASSNAME)) {
-              possible = false;
-              message  = 'Memo already exists';
+          for (const condition of initialConditions) {
+            if (condition.check) {
+              return { possible: false, message: condition.message };
             }
           }
 
-          // if (possible) {
-          //   const parentTagList = [ 'li', 'p', 'div' ];
+          const nodes = getNodesWithinRange(range);
+          for (const node of nodes) {
+            const nodeName = node.nodeName.toUpperCase();
+            const textContent = node.textContent.toUpperCase().trim();
 
-          //   const startNode = selection.anchorNode.parentNode.closest(parentTagList.join(','));
-          //   const endNode   = selection.focusNode.parentNode.closest(parentTagList.join(','));
+            const nodeConditions = {
+              'BUTTON': 'BUTTON',
+              'IMG': 'IMAGE',
+              'EM': textContent === 'IMAGE' ? 'IMAGE' : '',
+              'TR': 'TABLE',
+              'TD': 'TABLE',
+              'TH': 'TABLE'
+            };
 
-          //   if (startNode !== endNode) {
-          //     console.log(startNode, endNode)
-          //     possible = false;
-          //     message  = 'Only available in the same paragraph';
-          //   }
-          // }
+            const nodeCondition = nodeConditions[nodeName];
+            if (nodeCondition) {
+              return { possible: false, message: nodeCondition };
+            }
 
-          if (possible) {
-            const nodes = this.getNodesWithinRange(range);
-            console.log(nodes)
-
-            for (let i = 0, len = nodes.length; i < len; i++) {
-              const node = nodes[i];
-
-              console.log(node)
-              if (node.classList.contains(MEMO_CLASSNAME)) {
-                possible = false;
-                message  = 'Memo cannot overlap each other';
-                break;
-              } else if (node.nodeName === 'BUTTON') {
-                possible = false;
-                message  = 'Memo cannot includes button';
-              } else if (node.nodeName === 'IMG' || (node.nodeName === 'EM' && node.textContent.toUpperCase().trim() === 'IMAGE' )) {
-                possible = false;
-                message  = 'Memo cannot include img or badge';
-              } else if (node.nodeName === 'TR' || node.nodeName === 'TD' || node.nodeName === 'TH') {
-                possible = false;
-                message  = 'Memo cannot use between table elements';
-              }
+            if (node.classList.contains(DRAG_CONFIG.MEMO_CLASSNAME)) {
+              return { possible: false, message: 'OVERLAP' };
             }
           }
 
-          return { possible, message };
-        };
+          return { possible: true, message: '' };
+        }
 
         this.highlightSelectedTextAndOpenModal = () => {
           if (this.range) {
