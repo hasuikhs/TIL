@@ -1208,7 +1208,6 @@
           while (element.nodeType === Node.ELEMENT_NODE) {
             let selector = element.nodeName.toLowerCase();
 
-
             if (element.id) {
               selector += `#${element.id}`;
             } else {
@@ -1226,30 +1225,29 @@
                   child = child.nextSibling;
                 }
 
-              selector += `:nth-of-type(${index})`;
+                selector += `:nth-of-type(${index})`;
+              }
+            }
+
+            if (element.getAttribute('num')) {
+              selector += `[num="${element.getAttribute('num')}"]`;
+            } else if (element.getAttribute('key')) {
+              selector += `[key="${element.getAttribute('key')}"]`;
+            }
+
+            path.unshift(selector);
+            element = element.parentNode;
+
+            if (!element || element === document) {
+              break;
             }
           }
 
-          if (element.getAttribute('num')) {
-            selector += `[num="${element.getAttribute('num')}"]`;
-          } else if (element.getAttribute('key')) {
-            selector += `[key="${element.getAttribute('key')}"]`;
+          if (path.indexOf(`div#${targetId}`) === -1) {
+            path.unshift(`div#${targetId}`);
           }
 
-          path.unshift(selector);
-          element = element.parentNode;
-
-          if (!element || element === document) {
-            break;
-          }
-        }
-
-  if (path.indexOf(`div#${targetId}`) === -1) {
-    path.unshift(`div#${targetId}`);
-  }
-
-  return path.join(' ');
-}path.join(' > ');
+          return path.join(' ');
         };
 
         this.memoToggleEvent = () => {
