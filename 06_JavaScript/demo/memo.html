@@ -1201,36 +1201,55 @@
           });
         };
 
-        this.getSelectorPath = (element, targetClass) => {
+        this.getSelectorPath = (element, targetId) => {
           if (!(element instanceof Element)) return;
 
           let path = [];
           while (element.nodeType === Node.ELEMENT_NODE) {
             let selector = element.nodeName.toLowerCase();
-            if (element.id) {
-              selector += `#${ element.id }`;
-            } else if (element.getAttribute('num')) {
-              selector += `[num="${ element.getAttribute('num') }"]`
-            } else if (element.getAttribute('key')) {
-              selector += `[key="${ element.getAttribute('key') }"]`
-            } else if (targetClass && element.classList.contains(targetClass)) {
-              selector += `.${targetClass}`;
-              path.unshift(selector);
-              break;
-            }
-            // else  {
-            //   let sibling = element, nth = 1;
-            //   while (sibling.nodeType === Node.ELEMENT_NODE && (sibling = sibling.previousSibling) && nth++) {
-            //     selector += `:nth-child(${ nth })`;
-            //   }
-            // }
-            path.unshift(selector);
 
-            if (element.id) break;
-            element = element.parentNode;
+
+            if (element.id) {
+              selector += `#${element.id}`;
+            } else {
+              const parent = element.parentNode;
+              let index = 1;
+              if (parent) {
+                let child = parent.firstChild;
+                while (child) {
+                  if (child.nodeType === Node.ELEMENT_NODE && child.nodeName === element.nodeName) {
+                    if (child === element) {
+                      break;
+                    }
+                    index++;
+                  }
+                  child = child.nextSibling;
+                }
+
+              selector += `:nth-of-type(${index})`;
+            }
           }
 
-          return path.join(' > ');
+          if (element.getAttribute('num')) {
+            selector += `[num="${element.getAttribute('num')}"]`;
+          } else if (element.getAttribute('key')) {
+            selector += `[key="${element.getAttribute('key')}"]`;
+          }
+
+          path.unshift(selector);
+          element = element.parentNode;
+
+          if (!element || element === document) {
+            break;
+          }
+        }
+
+  if (path.indexOf(`div#${targetId}`) === -1) {
+    path.unshift(`div#${targetId}`);
+  }
+
+  return path.join(' ');
+}path.join(' > ');
         };
 
         this.memoToggleEvent = () => {
