@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .slide {
+        overflow: hidden;
+        width: 300px;
+        max-height: 200px; /* 초기 높이 설정 */
+        min-height: 200px;
+        border: 1px solid black;
+        transition: max-height 5000ms ease;
+      }
+  
+      .slide.active {
+        max-height: 5500px; /* 활성화 시 최대 높이 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="slide" contenteditable="true">
+        <!-- 컨텐츠 추가 -->
+      </div>
+    </div>
+  
+    <script>
+      const slide = document.querySelector('.slide');
+  
+      slide.addEventListener('focusin', e => {
+        e.target.classList.add('active');
+      });
+  
+      slide.addEventListener('focusout', e => {
+        e.target.classList.remove('active');
+      })
+    </script>
+  </body>
+  
+</html>
