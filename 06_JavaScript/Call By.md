@@ -5,6 +5,8 @@
 ## 1. Call By Value
 
 - **복사된 값을 인자로 넘겨서** 원본에는 영향을 미치지 않는 형태
+  - 함수 내에서 변수를 자유롭게 조작해도 외부에 영향을 미치지 않음
+  - 큰 크기의 데이터를 복사할 때는 복사 과정에서 추가 메모리 사용이 발생하기에 성능 저하 발생 가능
 - JavaScript에서 원시형(primitive type) 의 경우에 해당
 
 ```javascript
@@ -48,6 +50,9 @@ console.log(num);	// 5
 ## 2. Call By Reference
 
 - 실제 **원본 데이터가 존재하는 주소를 가리키는 주소값을 인자로 넘겨** 매개변수로 전달
+  - 메모리를 효율적으로 사용 가능, 큰 데이터도 주소값만 전달하므로 복사로 인한 성능 저하 없음
+  - 함수를 통해 객체의 상태를 직접 변경 가능하여, OOP에서 유용
+  - 단, 원본 데이터가 변경될 위험이 있어, side effect 주의해야함
 - JavaScript에서 객체형(Object, Array, function 등)에 해당되며 이를 참조 변수(reference variable)이라 불림
 
 ```javascript

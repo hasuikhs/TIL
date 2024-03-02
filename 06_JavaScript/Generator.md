@@ -25,18 +25,18 @@
     function* generateNaturalNumbers() {
     let number = 1;
 
-    while (true) {
-      yield number;
-      number++;
+      while (true) {
+        yield number;
+        number++;
+      }
     }
-  }
 
-  const numbers = generateNaturalNumbers();
+    const numbers = generateNaturalNumbers();
 
-  for (let i = 0; i < 10; i++) {
-    console.log(numbers.next().value);
-  }
-  // 출력 결과: 1 2 3 4 5 6 7 8 9 10
+    for (let i = 0; i < 10; i++) {
+      console.log(numbers.next().value);
+    }
+    // 출력 결과: 1 2 3 4 5 6 7 8 9 10
     ```
   - 코드의 간결성
     - generator를 사용하면 코드의 가독성이 높아지며, 코드를 더 쉽게 유지보수 가능
