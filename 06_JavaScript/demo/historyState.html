@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="push-btn">
+    push
+  </button>
+  <script>
+    window.onload = () => {
+      window.addEventListener('popstate', changeState.bind(this));
+
+      const pushState = history.pushState;
+
+      history.pushState = (...args) => {
+        console.log('push call')
+        pushState.apply(history, args);
+        changeState();
+      };
+
+      const pushBtn = document.querySelector('#push-btn');
+      pushBtn.addEventListener('click', () => {
+        history.pushState({ page: 1 }, null, '/push');
+      });
+    }
+
+    function changeState() {
+      console.log('변경')
+      console.log(history)
+    }
+  </script>
+</body>
+</html>
