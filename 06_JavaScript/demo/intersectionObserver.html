@@ -35,6 +35,8 @@
     <div class="box">9</div>
     <div class="box">10</div>
 
+    <button id="force-btn">force</button>
+
     <script>
       // target 선언
       const boxes = document.querySelectorAll(".box");
@@ -64,6 +66,12 @@
 
       // target 관찰
       boxes.forEach((box) => observer.observe(box));
+
+      function trigger() {
+        callback([{ isIntersecting: true }], observer);
+      }
+
+      document.querySelector('#force-btn').addEventListener('click', trigger);
     </script>
   </body>
 </html>
