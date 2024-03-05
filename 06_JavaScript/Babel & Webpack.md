@@ -248,7 +248,22 @@ module.exports = {
             // all: 권장, 모든 코드의 중복 요소 확인하여 분리
             // initial: 기본
             // async: 비동기 호출 요소 분리
-            chunks: 'all | initial | async'
+            chunks: 'all | initial | async',
+            // splitChunks 기능의 핵심 부분으로, 모듈을 어떤 방식으로 그룹화하고, 어떤 조건으로 분리할지 결정
+            // webpack이 모듈을 공통 청크로 분맇라 규칙을 정의
+            // cacheGroups 설정을 통해 행동을 더 세밀하게 제어 가능
+            cacheGroups: {
+              vendors: {
+                test: /[\\/]node_modules[\\/]/,
+                name: 'vendors',
+                chunks: 'all'
+              },
+              commons: {
+                name: 'commons',
+                chunks: 'initial',
+                minChunks: 2
+              }
+            }
           }
         }
       }
