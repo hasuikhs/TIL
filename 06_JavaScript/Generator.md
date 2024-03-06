@@ -272,3 +272,58 @@
     }
   )
   ```
+
+- in React
+  ```javascript
+  class MyComponent extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        data: null,
+        loading: false,
+        error: null,
+      };
+    }
+
+    componentDidMount() {
+      this.loadData();
+    }
+
+    loadData = async () => {
+      const generator = this.fetchData();
+      let result = generator.next();
+
+      while (!result.done) {
+        try {
+          const data = await result.value;
+          this.setState({ data, loading: false });
+          result = generator.next(data);
+        } catch (error) {
+          this.setState({ error, loading: false });
+          result = generator.throw(error);
+        }
+      }
+    };
+
+    *fetchData() {
+      this.setState({ loading: true });
+      const response = yield fetch('https://api.example.com/data');
+      const data = yield response.json();
+      return data;
+    }
+
+    render() {
+      const { data, loading, error } = this.state;
+
+      if (loading) return <div>Loading...</div>;
+      if (error) return <div>Error: {error.message}</div>;
+
+      return (
+        <div>
+          <h1>Data Loaded</h1>
+          <pre>{ JSON.stringify(data, null, 2) }</pre>
+        </div>
+      );
+    }
+  }
+  ```
