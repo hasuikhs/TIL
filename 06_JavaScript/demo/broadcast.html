@@ -30,19 +30,20 @@
   <script>
     class DataInput {
       constructor({ targetId }) {
-        if (!document.querySelector(`#${targetId}`)) {
+        this.target = document.querySelector(`#${targetId}`);
+        if (!this.target) {
           throw new Error(`Element with ID ${targetId} not found.`);
         }
-
-        this.target = document.querySelector(`#${targetId}`);
         this.channel = new BroadcastChannel('broad-channel');
+        this.handleInput = this.handleInput.bind(this); // 바인딩 참조 저장
+        this.cleanup = this.cleanup.bind(this); // 바인딩 참조 저장
         this.setEvent();
       }
 
       setEvent() {
-        this.target.addEventListener('input', this.handleInput.bind(this));
-        this.channel.onmessage = this.handleMessage.bind(this);
-        window.addEventListener('beforeunload', this.cleanup.bind(this));
+        this.target.addEventListener('input', this.handleInput);
+        this.channel.onmessage = (e) => this.handleMessage(e);
+        window.addEventListener('beforeunload', this.cleanup);
       }
 
       handleInput(e) {
@@ -56,13 +57,13 @@
 
       cleanup() {
         this.channel.close();
-        this.target.removeEventListener('input', this.handleInput.bind(this));
-        window.removeEventListener('beforeunload', this.cleanup.bind(this));
+        this.target.removeEventListener('input', this.handleInput);
+        window.removeEventListener('beforeunload', this.cleanup);
       }
     }
 
     window.onload = () => {
-      const dataInput = new DataInput({ targetId: 'text-input' });
+      new DataInput({ targetId: 'text-input' });
     };
   </script>
 </body>
