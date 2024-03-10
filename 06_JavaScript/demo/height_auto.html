@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
       .slide {
@@ -11,9 +11,9 @@
         max-height: 200px; /* 초기 높이 설정 */
         min-height: 200px;
         border: 1px solid black;
-        transition: max-height 5000ms ease;
+        transition: max-height 500ms ease;
       }
-  
+
       .slide.active {
         max-height: 5500px; /* 활성화 시 최대 높이 */
       }
@@ -25,18 +25,34 @@
         <!-- 컨텐츠 추가 -->
       </div>
     </div>
-  
+
     <script>
       const slide = document.querySelector('.slide');
-  
+
+      function adjustMaxHeight() {
+        if (slide.classList.contains('active')) {
+          const actualHeight = slide.scrollHeight;
+          slide.style.maxHeight = `${actualHeight}px`;
+        } else {
+          slide.style.maxHeight = "200px";
+        }
+      }
+
       slide.addEventListener('focusin', e => {
         e.target.classList.add('active');
+        adjustMaxHeight();
       });
-  
+
       slide.addEventListener('focusout', e => {
         e.target.classList.remove('active');
-      })
+        adjustMaxHeight();
+      });
+
+      slide.addEventListener('input', () => {
+        if (slide.classList.contains('active')) {
+          adjustMaxHeight();
+        }
+      });
     </script>
   </body>
-  
 </html>
