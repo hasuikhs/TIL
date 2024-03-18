@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 200vh;
+      width: 1000px;
+      min-width: 800px;
+      overflow: scroll;
+    }
+    /* 모든 요소에 대해 스크롤바 항상 표시 */
+    * {
+      scrollbar-width: auto; /* Firefox */
+      -ms-overflow-style: scrollbar; /* Internet Explorer 10+ */
+    }
+
+    /* 웹킷 기반 브라우저(Chrome, Safari 등)에서 스크롤바 항상 표시 */
+    *::-webkit-scrollbar {
+      width: 16px; /* 스크롤바의 너비 설정 */
+    }
+
+    *::-webkit-scrollbar-track {
+      background: #f1f1f1; /* 스크롤바 트랙의 배경 색상 */
+    }
+
+    *::-webkit-scrollbar-thumb {
+      background: #888; /* 스크롤바 썸(움직이는 부분)의 배경 색상 */
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+      background: #555; /* 스크롤바 썸에 마우스를 올렸을 때의 배경 색상 */
+    }
+  </style>
+</head>
+<body>
+  
+</body>
+</html>
