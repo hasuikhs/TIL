@@ -271,6 +271,10 @@
 
       });
 
+      document.querySelector('#editor').addEventListener('input', event => {
+        event.preventDefault();
+      })
+
       document.querySelector('#editor').addEventListener('keydown', event => {
         console.log(event.target.innerHTML)
       });
