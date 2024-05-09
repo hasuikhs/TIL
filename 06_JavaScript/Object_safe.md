@@ -27,9 +27,21 @@ delete frozenObject.name; // 무시됨
 console.log(frozenObject); // { name: "Alice", age: 30 }
 ```
 
+#### `Object.isFrozen()`
+
+- 객체 `Object.freeze()`로 얼려져서 변경 불가능한 상태인지 확인
+
+```javascript
+const frozen = Object.freeze({ name: "Alice", age: 30 });
+const notFrozen = { name: "Bob", age: 25 };
+
+console.log(Object.isFrozen(frozen));     // true
+console.log(Object.isFrozen(notFrozen));  // false
+```
+
 ## 2. `Object.seal()`
 
-- 기존 속성의 값만 변경 가능
+- 객체를 밀봉하여, 기존 속성의 값만 변경 가능
 
 - 세부 사항
   - 속성 추가/삭제 불가능
@@ -51,9 +63,21 @@ delete sealedObject.name; // 무시됨
 console.log(sealedObject); // { name: "Bob", age: 30 }
 ```
 
+#### `Object.isSealed()`
+
+- 객체가 `Object.seal()`로 밀봉되어 있는지 확인
+
+```javascript
+const sealed = Object.seal({ name: "Bob", age: 25 });
+const notSealed = { name: "Charlie", age: 35 };
+
+console.log(Object.isSealed(sealed));     // true
+console.log(Object.isSealed(notSealed));  // false
+```
+
 ## 3. `Object.preventExtensions()`
 
-- 새로운 속성을 추가 불가능
+- 객체의 확장을 막아서, 새로운 속성을 추가 불가능
 - 세부 사항
   - 속성 추가 불가능
   - 기존 속성 삭제 가능
@@ -72,4 +96,16 @@ nonExtensibleObject.city = "Chicago"; // 무시됨
 delete nonExtensibleObject.name; // 삭제됨
 
 console.log(nonExtensibleObject); // { age: 40 }
+```
+
+#### `Object.isExtensible()`
+
+- 객체가 확장 가능한지 여부 확인
+
+```javascript
+const extensible = { name: "Dave", age: 40 };
+const nonExtensible = Object.preventExtensions({ name: "Charlie", age: 35 });
+
+console.log(Object.isExtensible(extensible));     // true
+console.log(Object.isExtensible(nonExtensible));  // false
 ```
