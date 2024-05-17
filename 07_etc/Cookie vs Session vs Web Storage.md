@@ -93,9 +93,18 @@
   - 세션 정보를 하나의 저장 장치에 공유하는 것
   - 각각의 클라이언트를 다른 서버에 Binding하는 방법
   - 비록 Load-Balancing 관점과 시스템 효율성이 떨어지더라도 어느 정도 감수
+  - **Sticky Sessions**: 클라이언트가 최초로 연결된 서버에 지속적으로 연결되도록하는 방법, 이는 Load Balancer가 클라이언트 요청을 항상 동일한 서버로 전달하도록 설정
+    ```bash
+    # nginx
+    upstream backend {
+      ip_hash;
+      server backend1.example.com;
+      server backend2.example.com;
+    }
+    ```
 - **저장 장치**
   - 엄청난 용량의 저장 장치를 사용하는 대신 Memory 기반의 저장장치를 사용
-  - 대신 Client의 최대 인원을 제한하는 단점
+  - 대신 Client의 최대 인원을 제한하는 단점이 있지만, 세션 스토리지의 용량 문제를 해결하는데 도움이 됨
 
 ### 2.3 Client-Side 관점의 세션
 
@@ -105,7 +114,7 @@
 
 ### 2.4 보장되어야 할 것
 
-- **Confidentiality(비밀성)** : 서버이외에는 어느 누구도 세션 데이터를 해석 불가능해야 함
+- **Confidentiality(비밀성)** : 서버 이외에는 어느 누구도 세션 데이터를 해석 불가능해야 함, 세션 데이터는 HTTPS를 통해 암호화된 채널로 전송
 - **Data Integrity(데이터 무결성)** : 서버와 별개로 세션 데이터를 조작해서는 안됨(실수 or 악의적)
 - **Authenticity(진정성)** : 서버를 제외하고는 올바른 세션을 시작할 수 없음
 
