@@ -38,6 +38,34 @@
       $ npm version 1.2.3
       ```
 
+- **사전 배포 태그**
+  - `premajor`
+    ```bash
+    $ npm version premajor
+    # 1.0.0 -> 2.0.0-0
+
+    $ npm version premajor --preid=alpha
+    # 1.0.0 -> 2.0.0-alpha.0
+    ```
+
+  - `preminor`
+    ```bash
+    $ npm version preminor
+    # 1.0.0 -> 1.1.0-0
+
+    $ npm version preminor --preid=alpha
+    # 1.0.0 -> 1.1.0-alpha.0
+    ```
+
+  - `prepatch`
+    ```bash
+    $ npm version prepatch
+    # 1.0.0 -> 1.0.1-0
+
+    $ npm version prepatch --preid=alpha
+    # 1.0.0 -> 1.0.1-alpha.0
+    ```
+
 #### Git 태그 버전 관리
 
 - `npm version`을 실행하면 **버전 번호와 같은 이름의 Git tag 생성**
