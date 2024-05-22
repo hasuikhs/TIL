@@ -66,6 +66,16 @@
     # 1.0.0 -> 1.0.1-alpha.0
     ```
 
+  - `prerelease`
+    - `prerelease` 는 `prepatch`와 같이 동작하는 것처럼 보이지만 사전 배포 태그의 버전을 올릴 수 있음
+    ```bash
+    $ npm version prerelease
+    # 1.0.0 -> 1.0.1-0
+
+    $ npm version prerelease
+    # 1.0.1-0 -> 1.0.1-1
+    ```
+
 #### Git 태그 버전 관리
 
 - `npm version`을 실행하면 **버전 번호와 같은 이름의 Git tag 생성**
