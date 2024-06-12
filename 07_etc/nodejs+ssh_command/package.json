@@ -15,7 +15,7 @@
     "tunnel-ssh": "^4.1.4"
   },
   "devDependencies": {
-    "nexe": "^3.3.7"
+    "nexe": "^4.0.0-rc.6"
   },
   "scripts": {
     "start": "node index.js",
